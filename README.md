@@ -2,6 +2,7 @@
 
 A comprehensive Model Context Protocol (MCP) server that provides real-time Pokemon Go data including events, raids, research tasks, and egg hatches. Built using the LeekDuck API data source for the most up-to-date information.
 
+
 ## 🌟 Features
 
 ### 📅 Event Management
@@ -103,6 +104,12 @@ A comprehensive Model Context Protocol (MCP) server that provides real-time Poke
      }
    }
    ```
+   
+## Showcase
+![image](https://github.com/user-attachments/assets/6f6c359d-52a9-4412-973a-0fc0542d0cdb)
+![image](https://github.com/user-attachments/assets/a465c6f6-beeb-421d-bbd3-9d2acad450b6)
+![image](https://github.com/user-attachments/assets/8de4533d-f9b2-4463-ba25-61b75ce85785)
+
 
 ## 🛠️ Available Tools
 
