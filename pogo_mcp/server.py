@@ -254,14 +254,32 @@ def register_cross_cutting_tools():
                             result += f"Focus: {', '.join(spawns)}\n"
                     result += f"Link: {event.link}\n\n"
             
-            # Priority raids
+            # Priority raids (with fallback for missing data)
             raids_data = all_data.get("raids", [])
-            shiny_raids = [r for r in raids_data if r.can_be_shiny]
-            if shiny_raids:
-                result += "## ⚔️ Priority Raids (Shiny Hunting)\n\n"
-                for raid in shiny_raids[:5]:  # Top 5 shiny raids
-                    result += f"• **{raid.name}** ({raid.tier}) ✨\n"
-                result += "\n"
+            if raids_data:
+                shiny_raids = [r for r in raids_data if r.can_be_shiny]
+                if shiny_raids:
+                    result += "## ⚔️ Priority Raids (Shiny Hunting)\n\n"
+                    
+                    # Check if raids were extracted from events (fallback source)
+                    is_from_events = any(r.extra_data and r.extra_data.get("source") == "events_fallback" for r in shiny_raids)
+                    if is_from_events:
+                        result += "*📅 Raid data extracted from active events*\n\n"
+                    
+                    for raid in shiny_raids[:5]:  # Top 5 shiny raids
+                        tier_info = f" ({raid.tier})" if raid.tier != "Unknown" else ""
+                        event_info = ""
+                        
+                        # Add event context if this raid was extracted from events
+                        if raid.extra_data and raid.extra_data.get("source") == "events_fallback":
+                            event_name = raid.extra_data.get("event_name", "")
+                            event_info = f" - *{event_name}*"
+                        
+                        result += f"• **{raid.name}**{tier_info} ✨{event_info}\n"
+                    result += "\n"
+            else:
+                result += "## ⚔️ Raids Status\n\n"
+                result += "⚠️ No raid data available from either raids.json or active events.\n\n"
             
             # Quick research tasks
             research_data = all_data.get("research", [])
@@ -288,13 +306,40 @@ def register_cross_cutting_tools():
                     result += f"• {egg.name} ✨\n"
                 result += "\n"
             
-            # Summary recommendations
+            # Summary recommendations (adaptive based on available data)
             result += "## 📋 Today's Action Plan\n\n"
             result += "1. **Events:** Participate in any active events first\n"
-            result += "2. **Raids:** Focus on shiny-eligible raid bosses\n"
+            if raids_data:
+                result += "2. **Raids:** Focus on shiny-eligible raid bosses\n"
+            else:
+                result += "2. **Raids:** Check local raid apps for current bosses\n"
             result += "3. **Research:** Complete easy tasks with shiny rewards\n"
             result += "4. **Eggs:** Incubate 2km eggs for quick shiny chances\n"
             result += "5. **Walking:** Remember Adventure Sync rewards at 25km/50km\n"
+            
+            # Add data source status with improved messaging
+            missing_sources = []
+            fallback_used = []
+            
+            if not all_data.get("raids", []):
+                missing_sources.append("raids")
+            elif any(r.extra_data and r.extra_data.get("source") == "events_fallback" for r in all_data.get("raids", [])):
+                fallback_used.append("raids (extracted from events)")
+                
+            if not all_data.get("research", []):
+                missing_sources.append("research") 
+            if not all_data.get("eggs", []):
+                missing_sources.append("eggs")
+            if not all_data.get("events", []):
+                missing_sources.append("events")
+            
+            if missing_sources or fallback_used:
+                result += "\n---\n"
+                if fallback_used:
+                    result += f"ℹ️ **Fallback data sources used:** {', '.join(fallback_used)}\n"
+                if missing_sources:
+                    result += f"⚠️ **Unavailable data sources:** {', '.join(missing_sources)}\n"
+                result += "Recommendations are based on currently available data.\n"
             
             return result
             
@@ -353,7 +398,7 @@ def register_cross_cutting_tools():
             
             result += "## 💾 Cache Status\n\n"
             result += "\n".join(cache_info)
-            result += f"\n\n**Cache Duration:** {api_client._cache_duration}s (5 minutes)\n"
+            result += f"\n\n**Cache Duration:** {api_client._cache_duration}s (24 hours)\n"
             
             # Available tools
             result += "\n## 🛠️ Available Tools\n\n"

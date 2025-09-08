@@ -1,12 +1,11 @@
 """API client for fetching data from LeekDuck Pokemon Go API."""
 
-import asyncio
+import json
 import logging
+from pathlib import Path
 from typing import Dict, List, Optional, Union
 from datetime import datetime, timezone
 from dateutil import parser
-
-import httpx
 
 from .types import (
     EventInfo, RaidInfo, ResearchTaskInfo, EggInfo, PokemonInfo, 
@@ -17,24 +16,37 @@ logger = logging.getLogger(__name__)
 
 
 class LeekDuckAPIClient:
-    """Client for fetching Pokemon Go data from LeekDuck API."""
-    
-    BASE_URLS = {
-        "events": "https://raw.githubusercontent.com/bigfoott/ScrapedDuck/refs/heads/data/events.json",
-        "raids": "https://raw.githubusercontent.com/bigfoott/ScrapedDuck/refs/heads/data/raids.json", 
-        "research": "https://raw.githubusercontent.com/bigfoott/ScrapedDuck/refs/heads/data/research.json",
-        "eggs": "https://raw.githubusercontent.com/bigfoott/ScrapedDuck/refs/heads/data/eggs.json"
-    }
+    """Client for fetching Pokemon Go data using local scraper."""
     
     def __init__(self, timeout: int = 30):
         """Initialize the API client."""
         self.timeout = timeout
         self._cache: Dict[str, List[Dict]] = {}
         self._cache_timestamp: Dict[str, datetime] = {}
-        self._cache_duration = 300  # 5 minutes cache
+        self._cache_duration = 86400  # 24 hours cache
+        
+        # Path to local scraped data directory
+        self._local_data_dir = Path(__file__).parent.parent / "data"
+    
+    def _load_local_data(self, endpoint: str) -> List[Dict]:
+        """Load data from local JSON files."""
+        local_file = self._local_data_dir / f"{endpoint}.json"
+        
+        if not local_file.exists():
+            logger.error(f"Local file {local_file} does not exist. Run the scraper first.")
+            return []
+        
+        try:
+            with open(local_file, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                logger.info(f"Loaded {len(data)} items from local {endpoint} data")
+                return data
+        except Exception as e:
+            logger.error(f"Error loading local {endpoint} data: {e}")
+            return []
     
     async def _fetch_data(self, endpoint: str) -> List[Dict]:
-        """Fetch data from a specific endpoint with caching."""
+        """Fetch data from local files with simple caching."""
         now = datetime.now(timezone.utc)
         
         # Check if we have fresh cached data
@@ -44,28 +56,14 @@ class LeekDuckAPIClient:
             logger.info(f"Using cached data for {endpoint}")
             return self._cache[endpoint]
         
-        url = self.BASE_URLS[endpoint]
-        logger.info(f"Fetching data from {url}")
+        # Load from local file
+        data = self._load_local_data(endpoint)
         
-        async with httpx.AsyncClient(timeout=self.timeout) as client:
-            try:
-                response = await client.get(url)
-                response.raise_for_status()
-                data = response.json()  # This is synchronous in httpx!
-                
-                # Cache the data
-                self._cache[endpoint] = data
-                self._cache_timestamp[endpoint] = now
-                
-                logger.info(f"Successfully fetched {len(data)} items from {endpoint}")
-                return data
-                
-            except httpx.HTTPError as e:
-                logger.error(f"HTTP error fetching {endpoint}: {e}")
-                raise
-            except Exception as e:
-                logger.error(f"Error fetching {endpoint}: {e}")
-                raise
+        # Cache the data
+        self._cache[endpoint] = data
+        self._cache_timestamp[endpoint] = now
+        
+        return data
     
     async def get_events(self) -> List[EventInfo]:
         """Get all Pokemon Go events."""
@@ -174,19 +172,103 @@ class LeekDuckAPIClient:
         
         return eggs
     
+    def extract_raids_from_events(self, events_data: List[EventInfo]) -> List[RaidInfo]:
+        """Extract raid boss data from events as fallback when raids.json is unavailable."""
+        extracted_raids = []
+        current_time = datetime.now(timezone.utc)
+        
+        # Simple tier inference based on common patterns
+        def infer_tier(name: str) -> str:
+            name_lower = name.lower()
+            if name_lower.startswith("mega "):
+                return "Mega"
+            elif any(legendary in name_lower for legendary in [
+                "palkia", "dialga", "giratina", "rayquaza", "kyogre", "groudon",
+                "lugia", "ho-oh", "mewtwo", "mew", "celebi", "jirachi", "deoxys",
+                "reshiram", "zekrom", "kyurem", "xerneas", "yveltal", "zygarde"
+            ]):
+                return "5*"
+            else:
+                return "Unknown"
+        
+        for event in events_data:
+            # Check if event is currently active and contains raid data
+            if (event.extra_data and 
+                "raidbattles" in event.extra_data and
+                event.start_time <= current_time <= event.end_time):
+                
+                raid_data = event.extra_data["raidbattles"]
+                bosses = raid_data.get("bosses", [])
+                
+                for boss in bosses:
+                    boss_name = boss.get("name", "Unknown")
+                    # Create RaidInfo object from event boss data
+                    raid = RaidInfo(
+                        name=boss_name,
+                        tier=infer_tier(boss_name),
+                        can_be_shiny=boss.get("canBeShiny", False),
+                        types=[],  # Would need to lookup types elsewhere
+                        image=boss.get("image", ""),
+                        extra_data={
+                            "source": "events_fallback",
+                            "event_name": event.name,
+                            "event_end": event.end_time.isoformat()
+                        }
+                    )
+                    extracted_raids.append(raid)
+                    
+        logger.info(f"Extracted {len(extracted_raids)} raid bosses from {len(events_data)} events")
+        return extracted_raids
+    
     async def get_all_data(self) -> Dict[str, Union[List[EventInfo], List[RaidInfo], List[ResearchTaskInfo], List[EggInfo]]]:
-        """Get all data from all endpoints concurrently."""
+        """Get all data from all endpoints with individual error handling."""
         logger.info("Fetching all Pokemon Go data...")
         
-        # Fetch all data concurrently
-        events_task = asyncio.create_task(self.get_events())
-        raids_task = asyncio.create_task(self.get_raids())
-        research_task = asyncio.create_task(self.get_research())
-        eggs_task = asyncio.create_task(self.get_eggs())
+        # Initialize results with empty lists
+        events = []
+        raids = []
+        research = []
+        eggs = []
         
-        events, raids, research, eggs = await asyncio.gather(
-            events_task, raids_task, research_task, eggs_task
-        )
+        # Fetch each data source individually with error handling
+        try:
+            events = await self.get_events()
+            logger.info(f"Successfully fetched {len(events)} events")
+        except Exception as e:
+            logger.warning(f"Failed to fetch events data: {e}")
+            events = []
+        
+        try:
+            raids = await self.get_raids()
+            logger.info(f"Successfully fetched {len(raids)} raids from raids.json")
+        except Exception as e:
+            logger.warning(f"Failed to fetch raids data from raids.json: {e}")
+            logger.info("Attempting to extract raid data from events as fallback...")
+            try:
+                raids = self.extract_raids_from_events(events)
+                if raids:
+                    logger.info(f"Successfully extracted {len(raids)} raid bosses from events data")
+                else:
+                    logger.warning("No raid data found in events either")
+            except Exception as extract_error:
+                logger.error(f"Failed to extract raids from events: {extract_error}")
+                raids = []
+        
+        try:
+            research = await self.get_research()
+            logger.info(f"Successfully fetched {len(research)} research tasks")
+        except Exception as e:
+            logger.warning(f"Failed to fetch research data: {e}")
+            research = []
+        
+        try:
+            eggs = await self.get_eggs()
+            logger.info(f"Successfully fetched {len(eggs)} egg data")
+        except Exception as e:
+            logger.warning(f"Failed to fetch eggs data: {e}")
+            eggs = []
+        
+        logger.info("Completed fetching Pokemon Go data with individual error handling")
         
         return {
             "events": events,
