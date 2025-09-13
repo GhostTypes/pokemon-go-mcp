@@ -1,0 +1,112 @@
+name: Scrape Pokemon Go Data
+
+on:
+  schedule:
+    # Run every hour at minute 0
+    - cron: '0 * * * *'
+  workflow_dispatch:
+    # Allow manual triggering
+    inputs:
+      force_scrape:
+        description: 'Force scrape even with cached data'
+        required: false
+        default: 'false'
+        type: boolean
+
+jobs:
+  scrape:
+    name: Scrape Pokemon Go Data
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install httpx beautifulsoup4 requests
+
+      - name: Run Pokemon Go scraper
+        run: |
+          mkdir -p data
+          python pogo_scraper/scraper.py --all --output-dir data --cache-duration 0
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+
+      - name: Verify scraped data
+        run: |
+          echo "Checking scraped data files..."
+          ls -la data/
+          echo "Events count: $(cat data/events.json | python -c "import sys, json; print(len(json.load(sys.stdin)))")" || echo "events.json not found"
+          echo "Raids count: $(cat data/raids.json | python -c "import sys, json; print(len(json.load(sys.stdin)))")" || echo "raids.json not found"
+          echo "Research count: $(cat data/research.json | python -c "import sys, json; print(len(json.load(sys.stdin)))")" || echo "research.json not found"
+          echo "Eggs count: $(cat data/eggs.json | python -c "import sys, json; print(len(json.load(sys.stdin)))")" || echo "eggs.json not found"
+
+      - name: Clean up for data branch
+        run: |
+          # Move data files to temp location
+          mv data ../temp_data
+
+          # Clean repository (keep .git)
+          find . -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
+
+          # Move data files back
+          mv ../temp_data/* .
+
+          # Clean up temp directory
+          rmdir ../temp_data
+
+      - name: Configure Git
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+      - name: Create/Update data branch
+        run: |
+          # Create orphan branch (or switch to existing data branch)
+          git checkout --orphan data || git checkout data
+
+          # Add all data files
+          git add --all
+
+          # Check if there are changes to commit
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          # Create commit with timestamp
+          git commit -m "Update Pokemon Go data - $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+
+      - name: Push to data branch
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: data
+          force: true
+
+      - name: Create release summary
+        if: success()
+        run: |
+          echo "## Pokemon Go Data Updated 🎉" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Successfully scraped and updated Pokemon Go data at $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Data Files Updated:" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ events.json" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ raids.json" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ research.json" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ eggs.json" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Access Data:" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch:** \`data\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **Raw Files:** \`https://raw.githubusercontent.com/${{ github.repository }}/data/[filename].json\`" >> $GITHUB_STEP_SUMMARY
