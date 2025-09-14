@@ -2,7 +2,13 @@
   "permissions": {
     "allow": [
       "Bash(git clone:*)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "WebFetch(domain:leekduck.com)",
+      "Bash(curl -s \"https://leekduck.com/events/september-communityday2025/\")",
+      "Bash(dir:*)",
+      "Bash(python run_tests.py:*)",
+      "Bash(python:*)",
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": []

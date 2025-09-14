@@ -9,7 +9,7 @@ packages = ["pogo_mcp"]
 name = "pogo-mcp-server"
 version = "1.0.0"
 description = "A comprehensive MCP server for Pokemon Go events, raids, research, and eggs using LeekDuck API data"
-authors = [{name = "Your Name", email = "your.email@example.com"}]
+authors = [{name = "GhostTypes", email = "email@example.com"}]
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
@@ -17,6 +17,7 @@ dependencies = [
     "httpx>=0.27.0",
     "python-dateutil>=2.8.2",
     "typing-extensions>=4.0.0",
+	"emoji>=2.14.1",
 ]
 
 [project.optional-dependencies]

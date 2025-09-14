@@ -103,6 +103,7 @@ class RaidInfo:
     combat_power: Dict[str, Dict[str, int]]
     boosted_weather: List[WeatherInfo]
     image: str
+    extra_data: Optional[Dict[str, Any]] = None
 
 
 @dataclass
@@ -121,7 +122,7 @@ class EggInfo:
     is_adventure_sync: bool
     image: str
     can_be_shiny: bool
-    combat_power: Dict[str, int]
+    combat_power: int
     is_regional: bool
     is_gift_exchange: bool
 

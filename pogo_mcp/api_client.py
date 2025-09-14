@@ -120,7 +120,8 @@ class LeekDuckAPIClient:
                 types=types,
                 combat_power=item.get("combatPower", {}),
                 boosted_weather=weather,
-                image=item.get("image", "")
+                image=item.get("image", ""),
+                extra_data=item.get("extra_data")
             )
             raids.append(raid)
         
@@ -138,7 +139,7 @@ class LeekDuckAPIClient:
                 pokemon = PokemonInfo(
                     name=reward_data.get("name", ""),
                     image=reward_data.get("image", ""),
-                    can_be_shiny=reward_data.get("canBeShiny", False),
+                    can_be_shiny=reward_data.get("can_be_shiny", False),
                     combat_power=reward_data.get("combatPower")
                 )
                 rewards.append(pokemon)
@@ -164,7 +165,7 @@ class LeekDuckAPIClient:
                 is_adventure_sync=item.get("isAdventureSync", False),
                 image=item.get("image", ""),
                 can_be_shiny=item.get("canBeShiny", False),
-                combat_power=item.get("combatPower", {}),
+                combat_power=item.get("combatPower", -1),
                 is_regional=item.get("isRegional", False),
                 is_gift_exchange=item.get("isGiftExchange", False)
             )
@@ -192,14 +193,12 @@ class LeekDuckAPIClient:
                 return "Unknown"
         
         for event in events_data:
-            # Check if event is currently active and contains raid data
-            if (event.extra_data and 
-                "raidbattles" in event.extra_data and
-                event.start_time <= current_time <= event.end_time):
-                
+            # Check if event contains raid data (skip time check for now - let server handle filtering)
+            if (event.extra_data and "raidbattles" in event.extra_data):
+
                 raid_data = event.extra_data["raidbattles"]
                 bosses = raid_data.get("bosses", [])
-                
+
                 for boss in bosses:
                     boss_name = boss.get("name", "Unknown")
                     # Create RaidInfo object from event boss data
@@ -208,11 +207,13 @@ class LeekDuckAPIClient:
                         tier=infer_tier(boss_name),
                         can_be_shiny=boss.get("canBeShiny", False),
                         types=[],  # Would need to lookup types elsewhere
+                        combat_power={"normal": {"min": -1, "max": -1}, "boosted": {"min": -1, "max": -1}},
+                        boosted_weather=[],
                         image=boss.get("image", ""),
                         extra_data={
                             "source": "events_fallback",
                             "event_name": event.name,
-                            "event_end": event.end_time.isoformat()
+                            "event_end": event.end
                         }
                     )
                     extracted_raids.append(raid)
@@ -240,7 +241,11 @@ class LeekDuckAPIClient:
         
         try:
             raids = await self.get_raids()
-            logger.info(f"Successfully fetched {len(raids)} raids from raids.json")
+            if len(raids) > 0:
+                logger.info(f"Successfully fetched {len(raids)} raids from raids.json")
+            else:
+                logger.warning("No raids data found in raids.json - attempting fallback...")
+                raise Exception("Empty raids data")
         except Exception as e:
             logger.warning(f"Failed to fetch raids data from raids.json: {e}")
             logger.info("Attempting to extract raid data from events as fallback...")
