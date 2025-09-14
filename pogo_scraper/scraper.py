@@ -207,7 +207,7 @@ Examples:
     parser.add_argument('--raids', action='store_true', help='Scrape raids data')
     parser.add_argument('--research', action='store_true', help='Scrape research data')
     parser.add_argument('--eggs', action='store_true', help='Scrape eggs data')
-    parser.add_-argument('--rocket-lineups', action='store_true', help='Scrape Team Rocket lineups data')
+    parser.add_argument('--rocket-lineups', action='store_true', help='Scrape Team Rocket lineups data')
 
     # Configuration
     parser.add_argument('--output-dir', default='data', help='Output directory for scraped data')
