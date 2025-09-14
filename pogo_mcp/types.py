@@ -125,6 +125,8 @@ class EggInfo:
     combat_power: int
     is_regional: bool
     is_gift_exchange: bool
+    is_route_gift: bool = False
+    rarity: int = 1
 
 
 @dataclass

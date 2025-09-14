@@ -168,7 +168,9 @@ class LeekDuckAPIClient:
                 can_be_shiny=item.get("canBeShiny", False),
                 combat_power=item.get("combatPower", -1),
                 is_regional=item.get("isRegional", False),
-                is_gift_exchange=item.get("isGiftExchange", False)
+                is_gift_exchange=item.get("isGiftExchange", False),
+                is_route_gift=item.get("isRouteGift", False),
+                rarity=item.get("rarity", 1)
             )
             eggs.append(egg)
 

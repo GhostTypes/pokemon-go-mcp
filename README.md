@@ -146,6 +146,7 @@ A comprehensive Model Context Protocol (MCP) server that provides real-time Poke
 - `search_egg_pokemon` - Find specific Pokemon in eggs
 - `get_regional_egg_pokemon` - Region-exclusive egg Pokemon
 - `get_gift_exchange_pokemon` - 7km gift egg Pokemon
+- `get_route_gift_pokemon` - 7km route gift egg Pokemon
 - `get_adventure_sync_rewards` - Adventure Sync rewards
 - `get_egg_recommendations` - Smart incubation strategy
 
@@ -192,6 +193,7 @@ Use get_all_shiny_pokemon to see every shiny currently available, then:
 - get_shiny_raids for raid targets
 - get_shiny_research_rewards for research tasks  
 - get_shiny_egg_hatches for egg planning
+- get_route_gift_pokemon for special route gift opportunities
 - get_shiny_shadow_pokemon for Shadow Pokemon
 ```
 

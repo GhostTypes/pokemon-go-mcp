@@ -171,8 +171,8 @@ Note: You get ONE of the rewards listed, not all of them."""
 def format_egg_summary(egg: EggInfo) -> str:
     """Format an egg Pokemon into a readable summary."""
     cp_info = ""
-    if egg.combat_power:
-        cp_info = f"CP: {egg.combat_power.get('min', 'N/A')}-{egg.combat_power.get('max', 'N/A')}"
+    if egg.combat_power and egg.combat_power != -1:
+        cp_info = f"CP: {egg.combat_power}"
     
     features = []
     if egg.can_be_shiny:
@@ -181,8 +181,15 @@ def format_egg_summary(egg: EggInfo) -> str:
         features.append("🌍 Regional")
     if egg.is_gift_exchange:
         features.append("🎁 Gift Exchange")
+    if egg.is_route_gift:
+        features.append("🛣️ Route Gift")
     if egg.is_adventure_sync:
         features.append("🏃 Adventure Sync")
+    
+    # Add rarity indicator
+    if egg.rarity > 1:
+        rarity_stars = "⭐" * egg.rarity
+        features.append(f"Rarity: {rarity_stars}")
     
     features_str = " | ".join(features) if features else "Standard"
     

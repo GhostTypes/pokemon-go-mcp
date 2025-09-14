@@ -264,6 +264,39 @@ def register_egg_tools(mcp: FastMCP) -> None:
         except Exception as e:
             logger.error(f"Error fetching gift exchange Pokemon: {e}")
             return f"Error fetching gift exchange Pokemon: {str(e)}"
+
+    @mcp.tool()
+    async def get_route_gift_pokemon() -> str:
+        """Get Pokemon that are available from route gift eggs (7km eggs from route gifts).
+        
+        Returns Pokemon that can be hatched from 7km eggs received from route gifts,
+        which often contain special variants.
+        """
+        try:
+            eggs = await api_client.get_eggs()
+            route_gift_eggs = [e for e in eggs if e.is_route_gift]
+            
+            if not route_gift_eggs:
+                return "No route gift Pokemon found in current egg pools."
+            
+            result = f"# 🎁 Route Gift Pokemon ({len(route_gift_eggs)} found)\n\n"
+            result += "These Pokemon can be hatched from 7km eggs received from route gifts:\n\n"
+            
+            for egg in route_gift_eggs:
+                result += format_egg_summary(egg) + "\n\n"
+            
+            # Statistics
+            shiny_count = len([e for e in route_gift_eggs if e.can_be_shiny])
+            regional_count = len([e for e in route_gift_eggs if e.is_regional])
+            
+            result += f"**Summary:** {len(route_gift_eggs)} Pokemon from route gifts, "
+            result += f"{shiny_count} can be shiny, {regional_count} are regional\n"
+            
+            return result
+            
+        except Exception as e:
+            logger.error(f"Error fetching route gift Pokemon: {e}")
+            return f"Error fetching route gift Pokemon: {str(e)}"
     
     @mcp.tool()
     async def get_adventure_sync_rewards() -> str:

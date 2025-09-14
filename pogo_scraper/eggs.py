@@ -39,6 +39,7 @@ async def scrape_eggs(scraper, base_url: str) -> List[Dict]:
         current_type = ""
         current_adventure_sync = False
         current_gift_exchange = False
+        current_route_gift = False
 
         # Find all h2 headers and their following egg-grid containers
         headers = page_content.find_all('h2')
@@ -47,8 +48,11 @@ async def scrape_eggs(scraper, base_url: str) -> List[Dict]:
 
             # Parse egg type info
             current_adventure_sync = "(Adventure Sync Rewards)" in egg_type_text
-            current_gift_exchange = "(From Route Gift)" in egg_type_text
+            current_gift_exchange = "(From Gift)" in egg_type_text
+            current_route_gift = "(From Route Gift)" in egg_type_text
             current_type = egg_type_text.split(" Eggs")[0]
+            if "(From" in current_type:
+                current_type = current_type.split(" (From")[0]
 
             # Find the next egg-grid container after this header
             next_grid = header.find_next_sibling('ul', class_='egg-grid')
@@ -57,7 +61,7 @@ async def scrape_eggs(scraper, base_url: str) -> List[Dict]:
                 pokemon_cards = next_grid.select('li.pokemon-card')
                 for card in pokemon_cards:
                     try:
-                        egg = parse_egg_item(card, current_type, current_adventure_sync, current_gift_exchange)
+                        egg = parse_egg_item(card, current_type, current_adventure_sync, current_gift_exchange, current_route_gift)
                         if egg:
                             eggs.append(egg)
                     except Exception as e:
@@ -72,7 +76,7 @@ async def scrape_eggs(scraper, base_url: str) -> List[Dict]:
         return scraper._load_fallback_data("eggs.json", [])
 
 
-def parse_egg_item(item, egg_type: str, is_adventure_sync: bool, is_gift_exchange: bool) -> Optional[Dict]:
+def parse_egg_item(item, egg_type: str, is_adventure_sync: bool, is_gift_exchange: bool, is_route_gift: bool = False) -> Optional[Dict]:
     """Parse individual egg item"""
     try:
         pokemon = {
@@ -83,7 +87,9 @@ def parse_egg_item(item, egg_type: str, is_adventure_sync: bool, is_gift_exchang
             'canBeShiny': False,
             'combatPower': -1,  # Single CP value instead of range
             'isRegional': False,
-            'isGiftExchange': is_gift_exchange
+            'isGiftExchange': is_gift_exchange,
+            'isRouteGift': is_route_gift,
+            'rarity': 1  # Default rarity
         }
 
         # Name
@@ -99,6 +105,12 @@ def parse_egg_item(item, egg_type: str, is_adventure_sync: bool, is_gift_exchang
 
         # Regional
         pokemon['isRegional'] = bool(item.select_one('.regional-icon'))
+
+        # Rarity - Count the number of mini-egg icons
+        rarity_elem = item.select_one('.rarity')
+        if rarity_elem:
+            mini_eggs = rarity_elem.select('svg.mini-egg')
+            pokemon['rarity'] = len(mini_eggs)
 
         # Combat Power - Updated to correctly parse single CP values
         cp_elem = item.select_one('.cp-range')
