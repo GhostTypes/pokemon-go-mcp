@@ -1,7 +1,6 @@
 # Pokemon Go MCP Server
 
-A comprehensive Model Context Protocol (MCP) server that provides real-time Pokemon Go data including events, raids, research tasks, and egg hatches. Built using the LeekDuck API data source for the most up-to-date information.
-
+A comprehensive Model Context Protocol (MCP) server that provides real-time Pokemon Go data including events, raids, research tasks, egg hatches, and Team Rocket lineups. Built with our own custom scraper that saves data locally to JSON files.
 
 ## 🌟 Features
 
@@ -36,6 +35,14 @@ A comprehensive Model Context Protocol (MCP) server that provides real-time Poke
 - **Gift Exchange**: 7km egg Pokemon from friends
 - **Adventure Sync**: Weekly walking reward Pokemon
 - **Incubation Strategy**: Smart recommendations for egg prioritization
+
+### 🚀 Team Rocket Intelligence
+- **Current Lineups**: All Team Rocket trainer lineups with Pokemon options
+- **Shadow Pokemon**: Detailed information about Shadow Pokemon types and weaknesses
+- **Encounter Rewards**: Find trainers that offer specific Pokemon as encounter rewards
+- **Type Specialization**: Filter trainers by their Pokemon type specialty
+- **Shiny Shadow Pokemon**: Find all Shadow Pokemon that can be shiny
+- **Battle Effectiveness**: Calculate type effectiveness against specific Shadow Pokemon
 
 ### 🔍 Cross-Platform Tools
 - **Universal Shiny Search**: Find all available shiny Pokemon across all sources  
@@ -87,13 +94,6 @@ A comprehensive Model Context Protocol (MCP) server that provides real-time Poke
    ```
 
 ### Integration with Claude Desktop
-
-1. **Install in Claude Desktop:**
-   ```bash
-   uv run mcp install server.py --name "Pokemon Go Data"
-   ```
-
-2. **Manual configuration** (add to Claude Desktop config):
    ```json
    {
      "mcpServers": {
@@ -149,6 +149,15 @@ A comprehensive Model Context Protocol (MCP) server that provides real-time Poke
 - `get_adventure_sync_rewards` - Adventure Sync rewards
 - `get_egg_recommendations` - Smart incubation strategy
 
+### Team Rocket Tools
+- `get_team_rocket_lineups` - All current Team Rocket trainer lineups
+- `search_rocket_by_pokemon` - Find trainers using specific Pokemon
+- `get_shiny_shadow_pokemon` - All Shadow Pokemon that can be shiny
+- `get_rocket_encounters` - Pokemon available as encounter rewards
+- `get_rocket_trainers_by_type` - Filter trainers by Pokemon type
+- `calculate_pokemon_weakness` - Type effectiveness against Shadow Pokemon
+- `get_rocket_trainer_details` - Detailed information about a trainer
+
 ### Cross-Platform Tools
 - `get_all_shiny_pokemon` - All shiny Pokemon across sources
 - `search_pokemon_everywhere` - Universal Pokemon search
@@ -183,17 +192,14 @@ Use get_all_shiny_pokemon to see every shiny currently available, then:
 - get_shiny_raids for raid targets
 - get_shiny_research_rewards for research tasks  
 - get_shiny_egg_hatches for egg planning
+- get_shiny_shadow_pokemon for Shadow Pokemon
 ```
 
 ## 🔄 Data Sources
 
-This server uses the **LeekDuck API** (ScrapedDuck project) which provides:
-- Real-time event information
-- Current raid boss rotations  
-- Active field research tasks
-- Current egg pools
+This server uses our custom-built scraper that collects data from Pokemon Go resources and saves it locally to JSON files in the `data` directory. The scraper runs automatically and updates the local data files.
 
-Data is cached for 5 minutes to balance freshness with API performance. Use `clear_cache` to force immediate updates.
+Data is cached for 24 hours to balance freshness with performance. Use `clear_cache` to force immediate updates.
 
 ## 🏗️ Architecture
 
@@ -202,13 +208,15 @@ pogo-mcp-server/
 ├── pogo_mcp/
 │   ├── __init__.py          # Package initialization
 │   ├── server.py            # Main MCP server with cross-cutting tools
-│   ├── api_client.py        # LeekDuck API client with caching
+│   ├── api_client.py        # Local data client with caching
 │   ├── types.py             # Type definitions and data classes
 │   ├── utils.py             # Utility functions and formatters
 │   ├── events.py            # Event-related tools
 │   ├── raids.py             # Raid-related tools  
 │   ├── research.py          # Research-related tools
-│   └── eggs.py              # Egg-related tools
+│   ├── eggs.py              # Egg-related tools
+│   └── rocket_lineups.py    # Team Rocket-related tools
+├── data/                    # Local JSON data files (git-ignored)
 ├── tests/                   # Test files
 ├── server.py                # Main entry point
 ├── pyproject.toml           # Project configuration
@@ -218,8 +226,8 @@ pogo-mcp-server/
 ### Key Components
 
 - **FastMCP**: Modern MCP server framework for easy tool registration
-- **Async HTTP Client**: High-performance API calls with connection pooling
-- **Smart Caching**: 5-minute cache with manual refresh capability  
+- **Custom Scraper**: Built-in scraper that collects and saves data to local JSON files
+- **Local Data Client**: Reads data from local JSON files with smart caching
 - **Type Safety**: Full type hints and data validation
 - **Modular Design**: Separate modules for each data domain
 - **Comprehensive Utilities**: Rich formatting and search capabilities
@@ -235,29 +243,26 @@ cd pogo-mcp-server
 # Install with development dependencies  
 uv sync --all-extras --dev
 
-# Run tests
-uv run pytest
-
 # Code formatting
-uv run ruff format .
+ruff format .
 
 # Linting  
-uv run ruff check .
+ruff check .
 
 # Type checking
-uv run pyright
+pyright
 ```
 
 ### Testing
 ```bash
 # Run all tests
-uv run pytest
+python run_tests.py
 
 # Run with coverage
-uv run pytest --cov=pogo_mcp
+pytest --cov=pogo_mcp
 
 # Test specific module
-uv run pytest tests/test_events.py
+pytest tests/test_events_parsing.py
 ```
 
 ### Adding New Tools
@@ -293,7 +298,7 @@ async def my_new_tool(param: str) -> str:
 1. **Fork** the repository
 2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)  
 3. **Make** your changes with tests
-4. **Run** the test suite (`uv run pytest`)
+4. **Run** the test suite (`uv run python run_tests.py`)
 5. **Commit** your changes (`git commit -m 'Add amazing feature'`)
 6. **Push** to the branch (`git push origin feature/amazing-feature`)
 7. **Open** a Pull Request
@@ -304,16 +309,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-- **LeekDuck** for providing comprehensive Pokemon Go data
-- **ScrapedDuck** project for the API endpoints
+- **LeekDuck** for providing comprehensive Pokemon Go data sources
 - **Anthropic** for the Model Context Protocol
-
-## 📞 Support
-
-- **Issues**: [GitHub Issues](https://github.com/your-repo/pogo-mcp-server/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/your-repo/pogo-mcp-server/discussions)  
-- **Documentation**: This README and inline code documentation
-
----
 
 **Built with ❤️ for the Pokemon Go community**
