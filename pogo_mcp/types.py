@@ -1,87 +1,51 @@
-"""Type definitions for Pokemon Go MCP server."""
-
-from typing import Any, Dict, List, Optional, Union
+from typing import List, Dict, Optional, Union
 from dataclasses import dataclass
 from datetime import datetime
 
 
 @dataclass
-class PokemonInfo:
-    """Information about a Pokemon."""
-    name: str
-    image: str
-    can_be_shiny: bool = False
-    combat_power: Optional[Dict[str, Dict[str, int]]] = None
-
-
-@dataclass
 class TypeInfo:
-    """Pokemon type information."""
+    """Pokemon type information"""
     name: str
     image: str
 
 
 @dataclass
 class WeatherInfo:
-    """Weather information."""
+    """Weather boost information"""
     name: str
     image: str
+
+
+@dataclass
+class PokemonInfo:
+    """Basic Pokemon information"""
+    name: str
+    image: str
+    can_be_shiny: bool = False
+    combat_power: Optional[Dict] = None
 
 
 @dataclass
 class BonusInfo:
-    """Event bonus information."""
+    """Community day bonus information"""
     text: str
     image: str
-
-
-@dataclass
-class RewardInfo:
-    """Research task reward information."""
-    text: str
-    image: str
-
-
-@dataclass
-class TaskInfo:
-    """Research task information."""
-    text: str
-    reward: RewardInfo
-
-
-@dataclass
-class ResearchStepInfo:
-    """Special research step information."""
-    name: str
-    step: int
-    tasks: List[TaskInfo]
 
 
 @dataclass
 class EventExtraData:
-    """Extra data for Community Day events."""
-    spawns: List[PokemonInfo] = None
-    bonuses: List[BonusInfo] = None
-    bonus_disclaimers: List[str] = None
-    shinies: List[PokemonInfo] = None
-    special_research: List[ResearchStepInfo] = None
-
-    def __post_init__(self):
-        if self.spawns is None:
-            self.spawns = []
-        if self.bonuses is None:
-            self.bonuses = []
-        if self.bonus_disclaimers is None:
-            self.bonus_disclaimers = []
-        if self.shinies is None:
-            self.shinies = []
-        if self.special_research is None:
-            self.special_research = []
+    """Additional event-specific data"""
+    generic: Optional[Dict] = None
+    communityday: Optional[Dict] = None
+    raidbattles: Optional[Dict] = None
+    spotlight: Optional[Dict] = None
+    breakthrough: Optional[Dict] = None
 
 
 @dataclass
 class EventInfo:
-    """Information about a Pokemon Go event."""
+    """Event information"""
     event_id: str
     name: str
     event_type: str
@@ -90,25 +54,25 @@ class EventInfo:
     image: str
     start: str
     end: str
-    extra_data: Optional[Dict[str, Any]] = None
+    extra_data: Optional[EventExtraData] = None
 
 
 @dataclass
 class RaidInfo:
-    """Information about a raid boss."""
+    """Raid boss information"""
     name: str
     tier: str
     can_be_shiny: bool
     types: List[TypeInfo]
-    combat_power: Dict[str, Dict[str, int]]
+    combat_power: Dict
     boosted_weather: List[WeatherInfo]
     image: str
-    extra_data: Optional[Dict[str, Any]] = None
+    extra_data: Optional[Dict] = None
 
 
 @dataclass
 class ResearchTaskInfo:
-    """Information about a field research task."""
+    """Field research task information"""
     text: str
     rewards: List[PokemonInfo]
     task_type: Optional[str] = None
@@ -116,7 +80,7 @@ class ResearchTaskInfo:
 
 @dataclass
 class EggInfo:
-    """Information about Pokemon hatching from eggs."""
+    """Egg hatch information"""
     name: str
     egg_type: str
     is_adventure_sync: bool
@@ -125,43 +89,64 @@ class EggInfo:
     combat_power: int
     is_regional: bool
     is_gift_exchange: bool
-    is_route_gift: bool = False
-    rarity: int = 1
+    is_route_gift: bool
+    rarity: int
 
 
 @dataclass
 class ShadowPokemonInfo:
-    """Information about a Shadow Pokemon in Team Rocket lineups."""
+    """Shadow Pokemon information for Team Rocket encounters"""
     name: str
     types: List[str]
-    weaknesses: Dict[str, List[str]]  # 'double' and 'single' weakness lists
+    weaknesses: Dict[str, List[str]]
     image: str
     can_be_shiny: bool
 
 
 @dataclass
 class RocketLineupSlot:
-    """Information about a lineup slot for Team Rocket."""
+    """Individual slot in a Rocket trainer's lineup"""
     slot: int
-    is_encounter: bool  # Whether this slot is the reward encounter
+    is_encounter: bool
     pokemon: List[ShadowPokemonInfo]
 
 
 @dataclass
 class RocketTrainerInfo:
-    """Information about a Team Rocket trainer."""
+    """Team Rocket trainer information"""
     name: str
     title: str
     quote: str
     image: str
-    type: Optional[str]  # Pokemon type for grunt trainers
+    type: str
     lineups: List[RocketLineupSlot]
 
 
-# Type aliases for common data structures
-EventList = List[EventInfo]
-RaidList = List[RaidInfo]
-ResearchList = List[ResearchTaskInfo]
-EggList = List[EggInfo]
-RocketList = List[RocketTrainerInfo]
-ApiData = Dict[str, Any]
+@dataclass
+class PromoCodeReward:
+    """Reward information for a promo code"""
+    name: str
+    url: str
+    type: str
+
+
+@dataclass
+class PromoCodeInfo:
+    """Promo code information"""
+    code: str
+    title: str
+    description: str
+    redemption_url: str
+    rewards: List[PromoCodeReward]
+    expiration: str
+
+
+@dataclass
+class ApiData:
+    """Complete API data structure"""
+    events: List[EventInfo]
+    raids: List[RaidInfo]
+    research: List[ResearchTaskInfo]
+    eggs: List[EggInfo]
+    rocket_lineups: List[RocketTrainerInfo]
+    promo_codes: List[PromoCodeInfo]

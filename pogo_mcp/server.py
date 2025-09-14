@@ -13,6 +13,7 @@ from .raids import register_raid_tools
 from .research import register_research_tools
 from .eggs import register_egg_tools
 from .rocket_lineups import register_rocket_tools
+from .promo_codes import register_promo_code_tools
 from .utils import (
     get_current_time_str, format_json_output, search_pokemon_by_name,
     filter_shiny_pokemon, validate_pokemon_name, is_event_active
@@ -402,7 +403,8 @@ def register_cross_cutting_tools():
             result += f"• **Raid Bosses:** {len(all_data['raids'])} total\n"
             result += f"• **Research Tasks:** {len(all_data['research'])} total\n"
             result += f"• **Egg Pokemon:** {len(all_data['eggs'])} total\n"
-            result += f"• **Team Rocket Trainers:** {len(all_data.get('rocket_lineups', []))} total\n\n"
+            result += f"• **Team Rocket Trainers:** {len(all_data.get('rocket_lineups', []))} total\n"
+            result += f"• **Active Promo Codes:** {len(all_data.get('promo_codes', []))} total\n\n"
             
             # Active content
             active_events = [e for e in all_data["events"] if is_event_active(e, current_time)]
@@ -427,7 +429,7 @@ def register_cross_cutting_tools():
             
             # Cache status
             cache_info = []
-            for endpoint in ["events", "raids", "research", "eggs", "rocket-lineups"]:
+            for endpoint in ["events", "raids", "research", "eggs", "rocket-lineups", "promo-codes"]:
                 if endpoint in api_client._cache_timestamp:
                     last_fetch = api_client._cache_timestamp[endpoint]
                     age_seconds = (current_time - last_fetch).total_seconds()
@@ -457,10 +459,8 @@ def register_cross_cutting_tools():
             result += "• get_egg_hatches, get_egg_hatches_by_distance, get_shiny_egg_hatches\n"
             result += "• search_egg_pokemon, get_regional_egg_pokemon, get_gift_exchange_pokemon\n\n"
 
-            result += "### Team Rocket Tools\n"
-            result += "• get_team_rocket_lineups, search_rocket_by_pokemon, get_shiny_shadow_pokemon\n"
-            result += "• get_rocket_encounters, get_rocket_trainers_by_type, calculate_pokemon_weakness\n"
-            result += "• get_rocket_trainer_details\n\n"
+            result += "### Promo Code Tools\n"
+            result += "• get_active_promo_codes\n\n"
 
             result += "### Cross-Platform Tools\n"
             result += "• get_all_shiny_pokemon, search_pokemon_everywhere, get_daily_priorities\n"
@@ -498,6 +498,7 @@ def main():
     register_research_tools(mcp)
     register_egg_tools(mcp)
     register_rocket_tools(mcp)
+    register_promo_code_tools(mcp)
     register_cross_cutting_tools()
     
     logger.info("All tools registered successfully")

@@ -10,7 +10,8 @@ from dateutil import parser
 from .types import (
     EventInfo, RaidInfo, ResearchTaskInfo, EggInfo, PokemonInfo,
     TypeInfo, WeatherInfo, BonusInfo, EventExtraData, ApiData,
-    RocketTrainerInfo, ShadowPokemonInfo, RocketLineupSlot
+    RocketTrainerInfo, ShadowPokemonInfo, RocketLineupSlot,
+    PromoCodeInfo, PromoCodeReward
 )
 
 logger = logging.getLogger(__name__)
@@ -216,6 +217,34 @@ class LeekDuckAPIClient:
 
         return trainers
     
+    async def get_promo_codes(self) -> List[PromoCodeInfo]:
+        """Get all active promo codes."""
+        data = await self._fetch_data("promo-codes")
+        promo_codes = []
+
+        for item in data:
+            # Parse rewards
+            rewards = []
+            for reward_data in item.get("rewards", []):
+                reward = PromoCodeReward(
+                    name=reward_data.get("name", ""),
+                    url=reward_data.get("url", ""),
+                    type=reward_data.get("type", "")
+                )
+                rewards.append(reward)
+
+            promo_code = PromoCodeInfo(
+                code=item.get("code", ""),
+                title=item.get("title", ""),
+                description=item.get("description", ""),
+                redemption_url=item.get("redemption_url", ""),
+                rewards=rewards,
+                expiration=item.get("expiration", "")
+            )
+            promo_codes.append(promo_code)
+
+        return promo_codes
+    
     def extract_raids_from_events(self, events_data: List[EventInfo]) -> List[RaidInfo]:
         """Extract raid boss data from events as fallback when raids.json is unavailable."""
         extracted_raids = []
@@ -264,7 +293,7 @@ class LeekDuckAPIClient:
         logger.info(f"Extracted {len(extracted_raids)} raid bosses from {len(events_data)} events")
         return extracted_raids
     
-    async def get_all_data(self) -> Dict[str, Union[List[EventInfo], List[RaidInfo], List[ResearchTaskInfo], List[EggInfo], List[RocketTrainerInfo]]]:
+    async def get_all_data(self) -> Dict[str, Union[List[EventInfo], List[RaidInfo], List[ResearchTaskInfo], List[EggInfo], List[RocketTrainerInfo], List[PromoCodeInfo]]]:
         """Get all data from all endpoints with individual error handling."""
         logger.info("Fetching all Pokemon Go data...")
 
@@ -274,6 +303,7 @@ class LeekDuckAPIClient:
         research = []
         eggs = []
         rocket_lineups = []
+        promo_codes = []
         
         # Fetch each data source individually with error handling
         try:
@@ -324,6 +354,13 @@ class LeekDuckAPIClient:
             logger.warning(f"Failed to fetch rocket lineups data: {e}")
             rocket_lineups = []
 
+        try:
+            promo_codes = await self.get_promo_codes()
+            logger.info(f"Successfully fetched {len(promo_codes)} promo codes")
+        except Exception as e:
+            logger.warning(f"Failed to fetch promo codes data: {e}")
+            promo_codes = []
+
         logger.info("Completed fetching Pokemon Go data with individual error handling")
 
         return {
@@ -331,7 +368,8 @@ class LeekDuckAPIClient:
             "raids": raids,
             "research": research,
             "eggs": eggs,
-            "rocket_lineups": rocket_lineups
+            "rocket_lineups": rocket_lineups,
+            "promo_codes": promo_codes
         }
     
     def clear_cache(self):

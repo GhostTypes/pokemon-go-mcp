@@ -3,14 +3,6 @@
 Pokemon Go LeekDuck Data Scraper
 
 A robust Python scraper for Pokemon Go data from leekduck.com
-Replaces the broken ScrapedDuck scraper with improved reliability and error handling.
-
-Features:
-- Scrapes events, raids, research, and eggs data
-- Caches data locally to avoid repeated requests
-- CLI interface with individual data source selection
-- Improved error handling and fallbacks
-- Compatible with existing Pokemon Go MCP server
 """
 
 import argparse
@@ -28,27 +20,27 @@ import requests
 
 # Import page-specific scrapers
 try:
-    from . import events, raids, research, eggs, rocket_lineups
+    from . import events, raids, research, eggs, rocket_lineups, promo_codes
 except ImportError:
     # Fallback for when running as main script
-    import events, raids, research, eggs, rocket_lineups
+    import events, raids, research, eggs, rocket_lineups, promo_codes
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 
-### <<< ADDED START: Debugging hook for HTTP responses >>> ###
+
 async def log_response_hook(response):
     """Event hook to log details of each HTTP response."""
-    await response.aread()  # Make sure the response body is available
-    logger.info("--- HTTP Response Debug ---")
-    logger.info(f"URL: {response.request.url}")
-    logger.info(f"Status Code: {response.status_code}")
+    #await response.aread()  # Make sure the response body is available
+    #logger.info("--- HTTP Response Debug ---")
+    #logger.info(f"URL: {response.request.url}")
+    #logger.info(f"Status Code: {response.status_code}")
     # Log the first 500 characters to check for CAPTCHA or error pages
-    logger.info(f"Response Text (first 500 chars):\n{response.text[:500]}")
-    logger.info("---------------------------")
-### <<< ADDED END >>> ###
+    #logger.info(f"Response Text (first 500 chars):\n{response.text[:500]}")
+    #logger.info("---------------------------")
+    return
 
 
 class LeekDuckScraper:
@@ -131,6 +123,10 @@ class LeekDuckScraper:
         """Scrape Team Rocket lineups data from leekduck.com"""
         return await rocket_lineups.scrape_rocket_lineups(self, self.base_url)
 
+    async def scrape_promo_codes(self) -> List[Dict]:
+        """Scrape promo codes data from leekduck.com"""
+        return await promo_codes.scrape_promo_codes(self, self.base_url)
+
 
     def _load_fallback_data(self, filename: str, default: Any) -> Any:
         """Load fallback data from cache or return default"""
@@ -161,7 +157,8 @@ class LeekDuckScraper:
             'raids': self.scrape_raids(),
             'research': self.scrape_research(),
             'eggs': self.scrape_eggs(),
-            'rocket_lineups': self.scrape_rocket_lineups()
+            'rocket_lineups': self.scrape_rocket_lineups(),
+            'promo_codes': self.scrape_promo_codes()
         }
         
         for name, task in tasks.items():
@@ -208,6 +205,7 @@ Examples:
     parser.add_argument('--research', action='store_true', help='Scrape research data')
     parser.add_argument('--eggs', action='store_true', help='Scrape eggs data')
     parser.add_argument('--rocket-lineups', action='store_true', help='Scrape Team Rocket lineups data')
+    parser.add_argument('--promo-codes', action='store_true', help='Scrape promo codes data')
 
     # Configuration
     parser.add_argument('--output-dir', default='data', help='Output directory for scraped data')
@@ -222,7 +220,7 @@ Examples:
     
     # Determine what to scrape
     if args.all:
-        scrape_targets = ['events', 'raids', 'research', 'eggs', 'rocket_lineups']
+        scrape_targets = ['events', 'raids', 'research', 'eggs', 'rocket_lineups', 'promo_codes']
     else:
         scrape_targets = []
         if args.events: scrape_targets.append('events')
@@ -230,10 +228,11 @@ Examples:
         if args.research: scrape_targets.append('research')
         if args.eggs: scrape_targets.append('eggs')
         if getattr(args, 'rocket_lineups', False): scrape_targets.append('rocket_lineups')
+        if getattr(args, 'promo_codes', False): scrape_targets.append('promo_codes')
 
         # Default to all if nothing specified
         if not scrape_targets:
-            scrape_targets = ['events', 'raids', 'research', 'eggs', 'rocket_lineups']
+            scrape_targets = ['events', 'raids', 'research', 'eggs', 'rocket_lineups', 'promo_codes']
     
     logger.info(f"Starting Pokemon Go data scraper...")
     logger.info(f"Scraping: {', '.join(scrape_targets)}")
@@ -256,6 +255,8 @@ Examples:
                     results[target] = await scraper.scrape_eggs()
                 elif target == 'rocket_lineups':
                     results[target] = await scraper.scrape_rocket_lineups()
+                elif target == 'promo_codes':
+                    results[target] = await scraper.scrape_promo_codes()
                 
                 logger.info(f"✅ {target}: {len(results[target])} items")
                 
@@ -274,9 +275,10 @@ if __name__ == "__main__":
     try:
         import httpx
         import bs4
+        import lxml
     except ImportError as e:
         print(f"Missing required dependency: {e}")
-        print("Install with: pip install httpx beautifulsoup4")
+        print("Install with: pip install httpx beautifulsoup4 lxml")
         sys.exit(1)
     
     # Run the scraper

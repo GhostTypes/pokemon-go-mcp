@@ -36,7 +36,7 @@ async def scrape_raids(scraper, base_url: str) -> List[Dict]:
         if not raid_bosses:
             raise ValueError("Could not find raid-bosses container")
 
-        # Process each tier
+        # Process each tier in regular raids
         tiers = raid_bosses.find_all(class_='tier')
         for tier_div in tiers:
             # Get tier name
@@ -53,6 +53,27 @@ async def scrape_raids(scraper, base_url: str) -> List[Dict]:
                 except Exception as e:
                     logger.warning(f"Error parsing raid boss: {e}")
                     continue
+
+        # Find shadow raid bosses container
+        shadow_raid_bosses = soup.find(class_='shadow-raid-bosses')
+        if shadow_raid_bosses:
+            # Process each tier in shadow raids
+            shadow_tiers = shadow_raid_bosses.find_all(class_='tier')
+            for tier_div in shadow_tiers:
+                # Get tier name
+                tier_header = tier_div.find('h2', class_='header')
+                current_tier = tier_header.get_text(strip=True) if tier_header else "Unknown"
+                
+                # Process cards in this tier
+                cards = tier_div.select('.grid .card')
+                for card in cards:
+                    try:
+                        boss = parse_raid_boss(card, current_tier, base_url)
+                        if boss:
+                            bosses.append(boss)
+                    except Exception as e:
+                        logger.warning(f"Error parsing shadow raid boss: {e}")
+                        continue
 
         scraper._save_data(bosses, "raids.json")
         return bosses
