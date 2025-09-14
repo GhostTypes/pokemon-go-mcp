@@ -6,7 +6,7 @@ from typing import List, Dict, Any, Optional, Union
 from datetime import datetime, timezone
 from dateutil import parser
 
-from .types import EventInfo, RaidInfo, ResearchTaskInfo, EggInfo, PokemonInfo
+from .types import EventInfo, RaidInfo, ResearchTaskInfo, EggInfo, PokemonInfo, RocketTrainerInfo, ShadowPokemonInfo
 
 logger = logging.getLogger(__name__)
 
@@ -244,12 +244,142 @@ def extract_community_day_info(event: EventInfo) -> Optional[Dict[str, Any]]:
     """Extract Community Day specific information from an event."""
     if not event.extra_data or "communityday" not in event.extra_data:
         return None
-    
+
     cd_data = event.extra_data["communityday"]
-    
+
     return {
         "featured_pokemon": [spawn.get("name") for spawn in cd_data.get("spawns", [])],
         "bonuses": [bonus.get("text") for bonus in cd_data.get("bonuses", [])],
         "shiny_available": [shiny.get("name") for shiny in cd_data.get("shinies", [])],
         "special_research": cd_data.get("specialresearch", [])
     }
+
+
+# Team Rocket / Shadow Pokemon utilities
+def format_rocket_summary(trainer: RocketTrainerInfo) -> str:
+    """Format a Team Rocket trainer summary for display."""
+    summary = f"**{trainer.name}**"
+    if trainer.title:
+        summary += f" - {trainer.title}"
+    if trainer.type:
+        summary += f" ({trainer.type.title()} type)"
+
+    if trainer.quote:
+        summary += f"\n*\"{trainer.quote}\"*"
+
+    # Count total Pokemon options and encounters
+    total_pokemon = sum(len(slot.pokemon) for slot in trainer.lineups)
+    encounter_slots = [slot for slot in trainer.lineups if slot.is_encounter]
+    encounter_pokemon = sum(len(slot.pokemon) for slot in encounter_slots)
+
+    summary += f"\n• {total_pokemon} Pokemon options across {len(trainer.lineups)} slots"
+    if encounter_pokemon > 0:
+        summary += f"\n• {encounter_pokemon} possible encounter rewards"
+
+    return summary
+
+
+def filter_trainers_by_type(trainers: List[RocketTrainerInfo], trainer_type: str) -> List[RocketTrainerInfo]:
+    """Filter Team Rocket trainers by type."""
+    trainer_type_lower = trainer_type.lower()
+    return [t for t in trainers if t.type and t.type.lower() == trainer_type_lower]
+
+
+def search_rocket_trainers_by_pokemon(trainers: List[RocketTrainerInfo], pokemon_name: str) -> List[RocketTrainerInfo]:
+    """Search for Team Rocket trainers that have a specific Pokemon."""
+    pokemon_name_lower = pokemon_name.lower()
+    matching_trainers = []
+
+    for trainer in trainers:
+        has_pokemon = False
+        for slot in trainer.lineups:
+            for pokemon in slot.pokemon:
+                if pokemon_name_lower in pokemon.name.lower():
+                    has_pokemon = True
+                    break
+            if has_pokemon:
+                break
+
+        if has_pokemon:
+            matching_trainers.append(trainer)
+
+    return matching_trainers
+
+
+def get_shiny_shadow_pokemon(trainers: List[RocketTrainerInfo]) -> List[ShadowPokemonInfo]:
+    """Get all Shadow Pokemon that can be shiny."""
+    shiny_pokemon = []
+    seen_names = set()
+
+    for trainer in trainers:
+        for slot in trainer.lineups:
+            for pokemon in slot.pokemon:
+                if pokemon.can_be_shiny and pokemon.name not in seen_names:
+                    shiny_pokemon.append(pokemon)
+                    seen_names.add(pokemon.name)
+
+    return sorted(shiny_pokemon, key=lambda p: p.name)
+
+
+def get_rocket_encounters(trainers: List[RocketTrainerInfo]) -> List[tuple[str, List[ShadowPokemonInfo]]]:
+    """Get all possible Team Rocket encounter rewards organized by trainer."""
+    encounters = []
+
+    for trainer in trainers:
+        encounter_pokemon = []
+        for slot in trainer.lineups:
+            if slot.is_encounter:
+                encounter_pokemon.extend(slot.pokemon)
+
+        if encounter_pokemon:
+            encounters.append((trainer.name, encounter_pokemon))
+
+    return encounters
+
+
+def calculate_type_effectiveness(attacking_type: str, defending_types: List[str]) -> float:
+    """Calculate type effectiveness multiplier for Team Rocket battles."""
+    # Simplified type effectiveness chart for common interactions
+    TYPE_CHART = {
+        'normal': {'weak_to': ['fighting'], 'resists': [], 'immune_to': ['ghost']},
+        'fire': {'weak_to': ['water', 'ground', 'rock'], 'resists': ['fire', 'grass', 'ice', 'bug', 'steel', 'fairy'], 'immune_to': []},
+        'water': {'weak_to': ['grass', 'electric'], 'resists': ['fire', 'water', 'ice', 'steel'], 'immune_to': []},
+        'grass': {'weak_to': ['fire', 'ice', 'poison', 'flying', 'bug'], 'resists': ['water', 'electric', 'grass', 'ground'], 'immune_to': []},
+        'electric': {'weak_to': ['ground'], 'resists': ['flying', 'steel', 'electric'], 'immune_to': []},
+        'ice': {'weak_to': ['fire', 'fighting', 'rock', 'steel'], 'resists': ['ice'], 'immune_to': []},
+        'fighting': {'weak_to': ['flying', 'psychic', 'fairy'], 'resists': ['rock', 'bug', 'dark'], 'immune_to': []},
+        'poison': {'weak_to': ['ground', 'psychic'], 'resists': ['grass', 'fighting', 'poison', 'bug', 'fairy'], 'immune_to': []},
+        'ground': {'weak_to': ['water', 'grass', 'ice'], 'resists': ['poison', 'rock'], 'immune_to': ['electric']},
+        'flying': {'weak_to': ['electric', 'ice', 'rock'], 'resists': ['grass', 'fighting', 'bug'], 'immune_to': ['ground']},
+        'psychic': {'weak_to': ['bug', 'ghost', 'dark'], 'resists': ['fighting', 'psychic'], 'immune_to': []},
+        'bug': {'weak_to': ['fire', 'flying', 'rock'], 'resists': ['grass', 'fighting', 'ground'], 'immune_to': []},
+        'rock': {'weak_to': ['water', 'grass', 'fighting', 'ground', 'steel'], 'resists': ['normal', 'fire', 'poison', 'flying'], 'immune_to': []},
+        'ghost': {'weak_to': ['ghost', 'dark'], 'resists': ['poison', 'bug'], 'immune_to': ['normal', 'fighting']},
+        'dragon': {'weak_to': ['ice', 'dragon', 'fairy'], 'resists': ['fire', 'water', 'electric', 'grass'], 'immune_to': []},
+        'dark': {'weak_to': ['fighting', 'bug', 'fairy'], 'resists': ['ghost', 'dark'], 'immune_to': ['psychic']},
+        'steel': {'weak_to': ['fire', 'fighting', 'ground'], 'resists': ['normal', 'grass', 'ice', 'flying', 'psychic', 'bug', 'rock', 'dragon', 'steel', 'fairy'], 'immune_to': ['poison']},
+        'fairy': {'weak_to': ['poison', 'steel'], 'resists': ['fighting', 'bug', 'dark'], 'immune_to': ['dragon']}
+    }
+
+    attacking_type = attacking_type.lower()
+    effectiveness = 1.0
+
+    for defending_type in defending_types:
+        defending_type = defending_type.lower()
+
+        if defending_type not in TYPE_CHART:
+            continue
+
+        type_data = TYPE_CHART[defending_type]
+
+        # Check immunities (0x damage)
+        if attacking_type in type_data['immune_to']:
+            return 0.0
+        # Check weaknesses (2x damage)
+        elif attacking_type in type_data['weak_to']:
+            effectiveness *= 2.0
+        # Check resistances (0.5x damage)
+        elif attacking_type in type_data['resists']:
+            effectiveness *= 0.5
+
+    return effectiveness

@@ -8,8 +8,9 @@ from datetime import datetime, timezone
 from dateutil import parser
 
 from .types import (
-    EventInfo, RaidInfo, ResearchTaskInfo, EggInfo, PokemonInfo, 
-    TypeInfo, WeatherInfo, BonusInfo, EventExtraData, ApiData
+    EventInfo, RaidInfo, ResearchTaskInfo, EggInfo, PokemonInfo,
+    TypeInfo, WeatherInfo, BonusInfo, EventExtraData, ApiData,
+    RocketTrainerInfo, ShadowPokemonInfo, RocketLineupSlot
 )
 
 logger = logging.getLogger(__name__)
@@ -157,7 +158,7 @@ class LeekDuckAPIClient:
         """Get all Pokemon available from eggs."""
         data = await self._fetch_data("eggs")
         eggs = []
-        
+
         for item in data:
             egg = EggInfo(
                 name=item.get("name", ""),
@@ -170,8 +171,48 @@ class LeekDuckAPIClient:
                 is_gift_exchange=item.get("isGiftExchange", False)
             )
             eggs.append(egg)
-        
+
         return eggs
+
+    async def get_rocket_lineups(self) -> List[RocketTrainerInfo]:
+        """Get all Team Rocket trainer lineups."""
+        data = await self._fetch_data("rocket-lineups")
+        trainers = []
+
+        for item in data:
+            # Parse lineup slots
+            lineups = []
+            for lineup_data in item.get("lineups", []):
+                # Parse Pokemon in each slot
+                pokemon_list = []
+                for pokemon_data in lineup_data.get("pokemon", []):
+                    shadow_pokemon = ShadowPokemonInfo(
+                        name=pokemon_data.get("name", ""),
+                        types=pokemon_data.get("types", []),
+                        weaknesses=pokemon_data.get("weaknesses", {"double": [], "single": []}),
+                        image=pokemon_data.get("image", ""),
+                        can_be_shiny=pokemon_data.get("can_be_shiny", False)
+                    )
+                    pokemon_list.append(shadow_pokemon)
+
+                lineup_slot = RocketLineupSlot(
+                    slot=lineup_data.get("slot", 0),
+                    is_encounter=lineup_data.get("is_encounter", False),
+                    pokemon=pokemon_list
+                )
+                lineups.append(lineup_slot)
+
+            trainer = RocketTrainerInfo(
+                name=item.get("name", ""),
+                title=item.get("title", ""),
+                quote=item.get("quote", ""),
+                image=item.get("image", ""),
+                type=item.get("type"),
+                lineups=lineups
+            )
+            trainers.append(trainer)
+
+        return trainers
     
     def extract_raids_from_events(self, events_data: List[EventInfo]) -> List[RaidInfo]:
         """Extract raid boss data from events as fallback when raids.json is unavailable."""
@@ -221,15 +262,16 @@ class LeekDuckAPIClient:
         logger.info(f"Extracted {len(extracted_raids)} raid bosses from {len(events_data)} events")
         return extracted_raids
     
-    async def get_all_data(self) -> Dict[str, Union[List[EventInfo], List[RaidInfo], List[ResearchTaskInfo], List[EggInfo]]]:
+    async def get_all_data(self) -> Dict[str, Union[List[EventInfo], List[RaidInfo], List[ResearchTaskInfo], List[EggInfo], List[RocketTrainerInfo]]]:
         """Get all data from all endpoints with individual error handling."""
         logger.info("Fetching all Pokemon Go data...")
-        
+
         # Initialize results with empty lists
         events = []
         raids = []
         research = []
         eggs = []
+        rocket_lineups = []
         
         # Fetch each data source individually with error handling
         try:
@@ -272,14 +314,22 @@ class LeekDuckAPIClient:
         except Exception as e:
             logger.warning(f"Failed to fetch eggs data: {e}")
             eggs = []
-        
+
+        try:
+            rocket_lineups = await self.get_rocket_lineups()
+            logger.info(f"Successfully fetched {len(rocket_lineups)} Team Rocket trainers")
+        except Exception as e:
+            logger.warning(f"Failed to fetch rocket lineups data: {e}")
+            rocket_lineups = []
+
         logger.info("Completed fetching Pokemon Go data with individual error handling")
-        
+
         return {
             "events": events,
-            "raids": raids, 
+            "raids": raids,
             "research": research,
-            "eggs": eggs
+            "eggs": eggs,
+            "rocket_lineups": rocket_lineups
         }
     
     def clear_cache(self):

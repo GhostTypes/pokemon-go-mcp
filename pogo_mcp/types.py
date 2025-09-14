@@ -127,9 +127,39 @@ class EggInfo:
     is_gift_exchange: bool
 
 
+@dataclass
+class ShadowPokemonInfo:
+    """Information about a Shadow Pokemon in Team Rocket lineups."""
+    name: str
+    types: List[str]
+    weaknesses: Dict[str, List[str]]  # 'double' and 'single' weakness lists
+    image: str
+    can_be_shiny: bool
+
+
+@dataclass
+class RocketLineupSlot:
+    """Information about a lineup slot for Team Rocket."""
+    slot: int
+    is_encounter: bool  # Whether this slot is the reward encounter
+    pokemon: List[ShadowPokemonInfo]
+
+
+@dataclass
+class RocketTrainerInfo:
+    """Information about a Team Rocket trainer."""
+    name: str
+    title: str
+    quote: str
+    image: str
+    type: Optional[str]  # Pokemon type for grunt trainers
+    lineups: List[RocketLineupSlot]
+
+
 # Type aliases for common data structures
 EventList = List[EventInfo]
 RaidList = List[RaidInfo]
 ResearchList = List[ResearchTaskInfo]
 EggList = List[EggInfo]
+RocketList = List[RocketTrainerInfo]
 ApiData = Dict[str, Any]

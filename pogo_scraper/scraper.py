@@ -28,14 +28,27 @@ import requests
 
 # Import page-specific scrapers
 try:
-    from . import events, raids, research, eggs
+    from . import events, raids, research, eggs, rocket_lineups
 except ImportError:
     # Fallback for when running as main script
-    import events, raids, research, eggs
+    import events, raids, research, eggs, rocket_lineups
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
+
+
+### <<< ADDED START: Debugging hook for HTTP responses >>> ###
+async def log_response_hook(response):
+    """Event hook to log details of each HTTP response."""
+    await response.aread()  # Make sure the response body is available
+    logger.info("--- HTTP Response Debug ---")
+    logger.info(f"URL: {response.request.url}")
+    logger.info(f"Status Code: {response.status_code}")
+    # Log the first 500 characters to check for CAPTCHA or error pages
+    logger.info(f"Response Text (first 500 chars):\n{response.text[:500]}")
+    logger.info("---------------------------")
+### <<< ADDED END >>> ###
 
 
 class LeekDuckScraper:
@@ -61,7 +74,8 @@ class LeekDuckScraper:
                 'Accept-Encoding': 'gzip, deflate, br',
                 'Connection': 'keep-alive',
                 'Upgrade-Insecure-Requests': '1',
-            }
+            },
+            event_hooks={'response': [log_response_hook]}  ### <<< MODIFIED: Added event hook >>> ###
         )
         return self
     
@@ -112,8 +126,12 @@ class LeekDuckScraper:
     async def scrape_eggs(self) -> List[Dict]:
         """Scrape egg hatch data from leekduck.com"""
         return await eggs.scrape_eggs(self, self.base_url)
-    
-    
+
+    async def scrape_rocket_lineups(self) -> List[Dict]:
+        """Scrape Team Rocket lineups data from leekduck.com"""
+        return await rocket_lineups.scrape_rocket_lineups(self, self.base_url)
+
+
     def _load_fallback_data(self, filename: str, default: Any) -> Any:
         """Load fallback data from cache or return default"""
         cache_file = self.output_dir / filename
@@ -142,7 +160,8 @@ class LeekDuckScraper:
             'events': self.scrape_events(),
             'raids': self.scrape_raids(),
             'research': self.scrape_research(),
-            'eggs': self.scrape_eggs()
+            'eggs': self.scrape_eggs(),
+            'rocket_lineups': self.scrape_rocket_lineups()
         }
         
         for name, task in tasks.items():
@@ -188,7 +207,8 @@ Examples:
     parser.add_argument('--raids', action='store_true', help='Scrape raids data')
     parser.add_argument('--research', action='store_true', help='Scrape research data')
     parser.add_argument('--eggs', action='store_true', help='Scrape eggs data')
-    
+    parser.add_-argument('--rocket-lineups', action='store_true', help='Scrape Team Rocket lineups data')
+
     # Configuration
     parser.add_argument('--output-dir', default='data', help='Output directory for scraped data')
     parser.add_argument('--cache-duration', type=int, default=300, help='Cache duration in seconds')
@@ -202,17 +222,18 @@ Examples:
     
     # Determine what to scrape
     if args.all:
-        scrape_targets = ['events', 'raids', 'research', 'eggs']
+        scrape_targets = ['events', 'raids', 'research', 'eggs', 'rocket_lineups']
     else:
         scrape_targets = []
         if args.events: scrape_targets.append('events')
         if args.raids: scrape_targets.append('raids')
         if args.research: scrape_targets.append('research')
         if args.eggs: scrape_targets.append('eggs')
-        
+        if getattr(args, 'rocket_lineups', False): scrape_targets.append('rocket_lineups')
+
         # Default to all if nothing specified
         if not scrape_targets:
-            scrape_targets = ['events', 'raids', 'research', 'eggs']
+            scrape_targets = ['events', 'raids', 'research', 'eggs', 'rocket_lineups']
     
     logger.info(f"Starting Pokemon Go data scraper...")
     logger.info(f"Scraping: {', '.join(scrape_targets)}")
@@ -233,6 +254,8 @@ Examples:
                     results[target] = await scraper.scrape_research()
                 elif target == 'eggs':
                     results[target] = await scraper.scrape_eggs()
+                elif target == 'rocket_lineups':
+                    results[target] = await scraper.scrape_rocket_lineups()
                 
                 logger.info(f"✅ {target}: {len(results[target])} items")
                 

@@ -12,6 +12,7 @@ from .events import register_event_tools
 from .raids import register_raid_tools
 from .research import register_research_tools
 from .eggs import register_egg_tools
+from .rocket_lineups import register_rocket_tools
 from .utils import (
     get_current_time_str, format_json_output, search_pokemon_by_name,
     filter_shiny_pokemon, validate_pokemon_name, is_event_active
@@ -82,6 +83,17 @@ def register_cross_cutting_tools():
                     if egg.name not in sources:
                         sources[egg.name] = []
                     sources[egg.name].append(f"Egg: {egg.egg_type}")
+
+            # From Team Rocket lineups
+            for trainer in all_data.get("rocket_lineups", []):
+                for slot in trainer.lineups:
+                    for pokemon in slot.pokemon:
+                        if pokemon.can_be_shiny:
+                            shiny_pokemon.add(pokemon.name)
+                            if pokemon.name not in sources:
+                                sources[pokemon.name] = []
+                            encounter_text = " (Encounter)" if slot.is_encounter else ""
+                            sources[pokemon.name].append(f"Team Rocket: {trainer.name}{encounter_text}")
             
             if not shiny_pokemon:
                 return "No shiny Pokemon found across all sources."
@@ -184,9 +196,26 @@ def register_cross_cutting_tools():
                         features.append("🌍 Regional")
                     if egg.is_gift_exchange:
                         features.append("🎁 Gift")
-                    
+
                     feature_str = f" ({', '.join(features)})" if features else ""
                     result += f"• **{egg.name}** from {egg.egg_type}{feature_str}\n"
+                result += "\n"
+
+            # Search in Team Rocket lineups
+            rocket_matches = []
+            for trainer in all_data.get("rocket_lineups", []):
+                for slot in trainer.lineups:
+                    for pokemon in slot.pokemon:
+                        if name_lower in pokemon.name.lower():
+                            encounter_text = " (Encounter Reward)" if slot.is_encounter else ""
+                            shiny_status = " ✨" if pokemon.can_be_shiny else ""
+                            rocket_matches.append(f"{trainer.name} → {pokemon.name}{shiny_status}{encounter_text}")
+
+            if rocket_matches:
+                found_anywhere = True
+                result += "## 🚀 Team Rocket Lineups\n\n"
+                for match in rocket_matches:
+                    result += f"• {match}\n"
                 result += "\n"
             
             if not found_anywhere:
@@ -372,23 +401,33 @@ def register_cross_cutting_tools():
             result += f"• **Events:** {len(all_data['events'])} total\n"
             result += f"• **Raid Bosses:** {len(all_data['raids'])} total\n"
             result += f"• **Research Tasks:** {len(all_data['research'])} total\n"
-            result += f"• **Egg Pokemon:** {len(all_data['eggs'])} total\n\n"
+            result += f"• **Egg Pokemon:** {len(all_data['eggs'])} total\n"
+            result += f"• **Team Rocket Trainers:** {len(all_data.get('rocket_lineups', []))} total\n\n"
             
             # Active content
             active_events = [e for e in all_data["events"] if is_event_active(e, current_time)]
             shiny_raids = [r for r in all_data["raids"] if r.can_be_shiny]
             shiny_research = [t for t in all_data["research"] if any(r.can_be_shiny for r in t.rewards)]
             shiny_eggs = [e for e in all_data["eggs"] if e.can_be_shiny]
-            
+
+            # Count shiny Shadow Pokemon
+            shiny_shadows = 0
+            for trainer in all_data.get('rocket_lineups', []):
+                for slot in trainer.lineups:
+                    for pokemon in slot.pokemon:
+                        if pokemon.can_be_shiny:
+                            shiny_shadows += 1
+
             result += "## 🎮 Active Content\n\n"
             result += f"• **Active Events:** {len(active_events)}\n"
             result += f"• **Shiny Raids:** {len(shiny_raids)}\n"
             result += f"• **Shiny Research:** {len(shiny_research)}\n"
-            result += f"• **Shiny Eggs:** {len(shiny_eggs)}\n\n"
+            result += f"• **Shiny Eggs:** {len(shiny_eggs)}\n"
+            result += f"• **Shiny Shadow Pokemon:** {shiny_shadows}\n\n"
             
             # Cache status
             cache_info = []
-            for endpoint in ["events", "raids", "research", "eggs"]:
+            for endpoint in ["events", "raids", "research", "eggs", "rocket-lineups"]:
                 if endpoint in api_client._cache_timestamp:
                     last_fetch = api_client._cache_timestamp[endpoint]
                     age_seconds = (current_time - last_fetch).total_seconds()
@@ -417,7 +456,12 @@ def register_cross_cutting_tools():
             result += "### Egg Tools\n"
             result += "• get_egg_hatches, get_egg_hatches_by_distance, get_shiny_egg_hatches\n"
             result += "• search_egg_pokemon, get_regional_egg_pokemon, get_gift_exchange_pokemon\n\n"
-            
+
+            result += "### Team Rocket Tools\n"
+            result += "• get_team_rocket_lineups, search_rocket_by_pokemon, get_shiny_shadow_pokemon\n"
+            result += "• get_rocket_encounters, get_rocket_trainers_by_type, calculate_pokemon_weakness\n"
+            result += "• get_rocket_trainer_details\n\n"
+
             result += "### Cross-Platform Tools\n"
             result += "• get_all_shiny_pokemon, search_pokemon_everywhere, get_daily_priorities\n"
             
@@ -453,6 +497,7 @@ def main():
     register_raid_tools(mcp)
     register_research_tools(mcp)
     register_egg_tools(mcp)
+    register_rocket_tools(mcp)
     register_cross_cutting_tools()
     
     logger.info("All tools registered successfully")
