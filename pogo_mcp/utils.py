@@ -89,9 +89,39 @@ def filter_raids_by_type(raids: List[RaidInfo], pokemon_type: str) -> List[RaidI
 
 
 def filter_eggs_by_distance(eggs: List[EggInfo], distance: str) -> List[EggInfo]:
-    """Filter eggs by distance (e.g., '2 km', '5 km', '10 km')."""
-    distance_lower = distance.lower()
-    return [e for e in eggs if distance_lower in e.egg_type.lower()]
+    """Filter eggs by distance (e.g., '2 km', '5 km', '10 km', '5', 5)."""
+    # Normalize distance input to handle both "5" and "5km" formats
+    distance_str = str(distance).strip().lower()
+
+    # If it's just a number, add " km" to match egg_type format
+    if distance_str.isdigit() or (distance_str.replace('.', '').isdigit()):
+        distance_normalized = f"{distance_str} km"
+    else:
+        # Remove "km" and add it back with proper spacing
+        distance_clean = distance_str.replace('km', '').replace('k', '').strip()
+        if distance_clean.isdigit() or (distance_clean.replace('.', '').isdigit()):
+            distance_normalized = f"{distance_clean} km"
+        else:
+            # Use original if it doesn't match expected patterns
+            distance_normalized = distance_str
+
+    # Filter eggs by exact egg_type match
+    filtered = []
+    for egg in eggs:
+        # Extract just the distance from egg_type (e.g., "2 km" from "2 km Adventure Sync")
+        egg_distance = egg.egg_type.lower()
+        # Handle cases like "2 km adventure sync" - extract just the "X km" part
+        if ' km' in egg_distance:
+            parts = egg_distance.split()
+            if len(parts) >= 2 and parts[1] == 'km':
+                egg_distance_only = f"{parts[0]} km"
+                if egg_distance_only == distance_normalized:
+                    filtered.append(egg)
+        # Also check exact match for simple cases
+        elif egg_distance == distance_normalized:
+            filtered.append(egg)
+
+    return filtered
 
 
 def filter_research_by_reward(research: List[ResearchTaskInfo], pokemon_name: str) -> List[ResearchTaskInfo]:

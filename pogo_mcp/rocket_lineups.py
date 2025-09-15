@@ -9,7 +9,7 @@ from .api_client import api_client
 from .types import RocketTrainerInfo, ShadowPokemonInfo, RocketLineupSlot
 from .utils import (
     format_rocket_summary, filter_trainers_by_type, search_rocket_trainers_by_pokemon,
-    get_shiny_shadow_pokemon, get_rocket_encounters, calculate_type_effectiveness,
+    get_shiny_shadow_pokemon as get_shiny_shadow_pokemon_util, get_rocket_encounters as get_rocket_encounters_util, calculate_type_effectiveness,
     get_current_time_str, validate_pokemon_name
 )
 
@@ -72,7 +72,7 @@ def register_rocket_tools(mcp: FastMCP) -> None:
             # Summary statistics
             total_pokemon = sum(sum(len(slot.pokemon) for slot in trainer.lineups) for trainer in trainers)
             total_encounters = sum(sum(len(slot.pokemon) for slot in trainer.lineups if slot.is_encounter) for trainer in trainers)
-            shiny_count = len(get_shiny_shadow_pokemon(trainers))
+            shiny_count = len(get_shiny_shadow_pokemon_util(trainers))
 
             result += "## 📊 Summary\n\n"
             result += f"• **{len(trainers)}** trainers total\n"
@@ -141,7 +141,7 @@ def register_rocket_tools(mcp: FastMCP) -> None:
         """
         try:
             trainers = await api_client.get_rocket_lineups()
-            shiny_pokemon = get_shiny_shadow_pokemon(trainers)
+            shiny_pokemon = get_shiny_shadow_pokemon_util(trainers)
 
             if not shiny_pokemon:
                 return "No shiny Shadow Pokemon found in current Team Rocket lineups."
@@ -190,7 +190,7 @@ def register_rocket_tools(mcp: FastMCP) -> None:
         """
         try:
             trainers = await api_client.get_rocket_lineups()
-            encounters = get_rocket_encounters(trainers)
+            encounters = get_rocket_encounters_util(trainers)
 
             if not encounters:
                 return "No Team Rocket encounter data found."

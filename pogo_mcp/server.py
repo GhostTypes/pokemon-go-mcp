@@ -5,7 +5,7 @@ import asyncio
 from typing import Dict, List, Any, Optional
 from datetime import datetime, timezone
 
-from mcp.server.fastmcp import FastMCP
+from fastmcp import FastMCP
 
 from .api_client import api_client
 from .events import register_event_tools
@@ -24,10 +24,12 @@ from .types import PokemonInfo
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Create the FastMCP server
+# Create the FastMCP server with host and port configuration
+import os
 mcp = FastMCP(
     "Pokemon Go MCP Server",
-    dependencies=["httpx>=0.27.0", "python-dateutil>=2.8.2"]
+    host="0.0.0.0",
+    port=int(os.environ.get('MCP_PORT', '8000'))
 )
 
 
@@ -491,7 +493,7 @@ def register_cross_cutting_tools():
 def main():
     """Main entry point for the MCP server."""
     logger.info("Starting Pokemon Go MCP Server...")
-    
+
     # Register all tools
     register_event_tools(mcp)
     register_raid_tools(mcp)
@@ -500,11 +502,24 @@ def main():
     register_rocket_tools(mcp)
     register_promo_code_tools(mcp)
     register_cross_cutting_tools()
-    
+
     logger.info("All tools registered successfully")
-    
-    # Run the server
-    mcp.run()
+
+    # Run the server - check for HTTP/SSE mode via environment variable
+    transport = os.environ.get('MCP_TRANSPORT', 'stdio')
+
+    if transport == 'http':
+        host = os.environ.get('MCP_HOST', '0.0.0.0')
+        port = int(os.environ.get('MCP_PORT', '8000'))
+        logger.info(f"Starting HTTP Streamable Transport server on {host}:{port}")
+        mcp.run(transport="http")
+    elif transport == 'sse':
+        port = int(os.environ.get('MCP_PORT', '8000'))
+        logger.info(f"Starting SSE server on port {port}")
+        mcp.run(transport="sse")
+    else:
+        logger.info("Starting stdio server")
+        mcp.run()
 
 
 if __name__ == "__main__":

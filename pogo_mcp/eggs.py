@@ -15,6 +15,23 @@ from .utils import (
 logger = logging.getLogger(__name__)
 
 
+def _normalize_distance_display(distance: str) -> str:
+    """Normalize distance for display purposes."""
+    distance_str = str(distance).strip().lower()
+
+    # If it's just a number, add "km"
+    if distance_str.isdigit() or (distance_str.replace('.', '').isdigit()):
+        return f"{distance_str} km"
+
+    # Remove "km" and add it back with proper spacing
+    distance_clean = distance_str.replace('km', '').replace('k', '').strip()
+    if distance_clean.isdigit() or (distance_clean.replace('.', '').isdigit()):
+        return f"{distance_clean} km"
+
+    # Return capitalized original if it doesn't match expected patterns
+    return distance.title()
+
+
 def register_egg_tools(mcp: FastMCP) -> None:
     """Register all egg-related tools with the MCP server."""
     
@@ -76,20 +93,26 @@ def register_egg_tools(mcp: FastMCP) -> None:
     @mcp.tool()
     async def get_egg_hatches_by_distance(distance: str) -> str:
         """Get Pokemon available from eggs of a specific distance.
-        
+
         Args:
-            distance: Egg distance to filter by (2km, 5km, 7km, 10km, 12km, etc.)
-            
+            distance: Egg distance to filter by. Accepts various formats:
+                     - With units: "2km", "5km", "7km", "10km", "12km"
+                     - With space: "2 km", "5 km", "7 km", "10 km", "12 km"
+                     - Just numbers: "2", "5", "7", "10", "12"
+
         Returns Pokemon that can hatch from eggs of the specified distance.
         """
         try:
             eggs = await api_client.get_eggs()
             filtered_eggs = filter_eggs_by_distance(eggs, distance)
-            
+
+            # Normalize distance for display
+            normalized_distance = _normalize_distance_display(distance)
+
             if not filtered_eggs:
-                return f"No Pokemon found in {distance} eggs."
-            
-            result = f"# {distance.title()} Egg Hatches ({len(filtered_eggs)} Pokemon)\n\n"
+                return f"No Pokemon found in {normalized_distance} eggs."
+
+            result = f"# {normalized_distance} Egg Hatches ({len(filtered_eggs)} Pokemon)\n\n"
             
             for egg in filtered_eggs:
                 result += format_egg_summary(egg) + "\n\n"

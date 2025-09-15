@@ -17,6 +17,7 @@ try:
     from .parsers.events.raid_battle_details import parse_raid_battle_details
     from .parsers.events.timed_reseach_code_details import parse_timed_research_code_details
     from .parsers.events.research_breakthrough_details import parse_breakthrough_details
+    from .parsers.events.generic_event_details import parse_generic_event_details
     from .parsers.events.base_event import parse_event_item, infer_event_type
 except ImportError:
     # Absolute imports for when running as a standalone script
@@ -25,6 +26,7 @@ except ImportError:
     from parsers.events.raid_battle_details import parse_raid_battle_details
     from parsers.events.timed_reseach_code_details import parse_timed_research_code_details
     from parsers.events.research_breakthrough_details import parse_breakthrough_details
+    from parsers.events.generic_event_details import parse_generic_event_details
     from parsers.events.base_event import parse_event_item, infer_event_type
 
 logger = logging.getLogger(__name__)
@@ -126,7 +128,7 @@ async def fetch_event_details(scraper, event: Dict) -> None:
         if soup.find(id='field-research-tasks'):
             generic_data['hasFieldResearchTasks'] = True
 
-        # Set generic data
+        # Set basic generic data
         event['extraData']['generic'] = generic_data
 
         # Get event-type specific data
@@ -140,6 +142,9 @@ async def fetch_event_details(scraper, event: Dict) -> None:
             await parse_breakthrough_details(soup, event)
         elif event['eventType'] == 'timed-research-promo':
             await parse_timed_research_code_details(soup, event)
+        elif event['eventType'] == 'event':
+            # Use generic parser for standard "event" type events
+            await parse_generic_event_details(soup, event)
         # Add more event types as needed
 
     except Exception as e:
