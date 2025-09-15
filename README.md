@@ -93,17 +93,82 @@ A comprehensive Model Context Protocol (MCP) server that provides real-time Poke
    uv run mcp dev server.py
    ```
 
-### Integration with Claude Desktop
-   ```json
-   {
-     "mcpServers": {
-       "pokemon-go": {
-         "command": "uv",
-         "args": ["run", "python", "/path/to/pogo-mcp-server/server.py"]
-       }
-     }
-   }
+### Integration Options
+
+#### Claude Desktop
+Add to your Claude Desktop configuration:
+```json
+{
+  "mcpServers": {
+    "pokemon-go": {
+      "command": "uv",
+      "args": ["run", "python", "/path/to/pokemon-go-mcp/pogo_mcp/server.py"]
+    }
+  }
+}
+```
+
+#### Claude Code
+Add the server using the built-in command:
+```bash
+# Quick add with claude mcp command
+claude mcp add pokemon-go uv run python /path/to/pokemon-go-mcp/pogo_mcp/server.py
+
+# Or manually create .mcp.json in your project directory
+echo '{"servers": {"pokemon-go": {"command": "uv", "args": ["run", "python", "/path/to/pokemon-go-mcp/pogo_mcp/server.py"]}}}' > .mcp.json
+```
+
+#### VS Code
+Create `.vscode/mcp.json` in your workspace:
+```json
+{
+  "servers": {
+    "pokemon-go-stdio": {
+      "command": "uv",
+      "args": ["run", "python", "/path/to/pokemon-go-mcp/pogo_mcp/server.py"]
+    },
+    "pokemon-go-http": {
+      "type": "http",
+      "url": "http://localhost:8000",
+      "description": "Pokemon Go MCP Server via HTTP"
+    }
+  }
+}
+```
+
+#### n8n Workflows
+Install the MCP community node and configure:
+
+1. **Install n8n MCP Node:**
+   ```bash
+   npm install n8n-nodes-mcp
+   # Set environment: N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE=true
    ```
+
+2. **Configure MCP Client Node:**
+   - **Connection Type:** HTTP Streamable (Recommended)
+   - **URL:** `http://localhost:8000` (when running with `MCP_TRANSPORT=http`)
+   - **Headers:** Optional authentication headers if needed
+
+3. **Docker Deployment for n8n:**
+   ```bash
+   # Build and run the Pokemon Go MCP server
+   docker build -t pokemon-go-mcp .
+   docker run -d -p 8000:8000 -e MCP_TRANSPORT=http pokemon-go-mcp
+   ```
+
+#### HTTP/SSE Transport Modes
+For automation tools and Docker deployments:
+```bash
+# HTTP transport (recommended for web integrations)
+MCP_TRANSPORT=http MCP_PORT=8000 python pogo_mcp/server.py
+
+# SSE transport (for legacy systems)
+MCP_TRANSPORT=sse MCP_PORT=8000 python pogo_mcp/server.py
+
+# Default stdio transport
+python pogo_mcp/server.py
+```
    
 ## Showcase
 ![image](https://github.com/user-attachments/assets/6f6c359d-52a9-4412-973a-0fc0542d0cdb)

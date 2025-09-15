@@ -17,7 +17,9 @@
       "Bash(docker build:*)",
       "Bash(docker run:*)",
       "Bash(docker logs:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "WebFetch(domain:code.visualstudio.com)",
+      "WebFetch(domain:www.npmjs.com)"
     ],
     "deny": [],
     "ask": []
