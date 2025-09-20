@@ -1,0 +1,30 @@
+[
+  {
+    "code": "MLBxPOKEMONGO",
+    "title": "MLB-branded Cap Avatar Item",
+    "description": "To celebrate the Pokémon GO and Major League Baseball collaboration, trainers can redeem this code to get an exclusive MLB-branded cap avatar item. Learn more[here](https://pokemongo.com/post/mlb-2025).",
+    "redemption_url": "https://store.pokemongo.com/offer-redemption?passcode=MLBxPOKEMONGO",
+    "rewards": [
+      {
+        "name": "MLB-branded Cap",
+        "url": "https://leekduck.com/assets/img/avatar_items/n_hat_mlb_0_icon.png",
+        "type": "item"
+      }
+    ],
+    "expiration": "2025-09-26 23:59:59 -0800"
+  },
+  {
+    "code": "FENDIxFRGMTxPOKEMON",
+    "title": "FENDI x FRGMT x POKÉMON Hoodie Avatar Item",
+    "description": "Trainers can redeem this code to get an exclusive FENDI x FRGMT x POKÉMON hoodie avatar item. (This code should have expired on January 4, 2025 but it appears to still work.)",
+    "redemption_url": "https://store.pokemongo.com/offer-redemption?passcode=FENDIxFRGMTxPOKEMON",
+    "rewards": [
+      {
+        "name": "FENDI x FRGMT x POKÉMON hoodie",
+        "url": "https://leekduck.com/assets/img/avatar_items/n_shirt_partneritemsjan2024hoodie_0_icon.png",
+        "type": "item"
+      }
+    ],
+    "expiration": "2026-01-04 23:59:59 -0800"
+  }
+]
