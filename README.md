@@ -1,17 +1,17 @@
 # Pokemon Go MCP Server
 
-A comprehensive Model Context Protocol (MCP) server that provides real-time Pokemon Go data including events, raids, research tasks, egg hatches, and Team Rocket lineups. Built with our own custom scraper that saves data locally to JSON files.
+A comprehensive Model Context Protocol (MCP) server that provides real-time Pokemon Go data including events, raids, research tasks, egg hatches, and Team Rocket lineups.
 
 ## 🌟 Features
 
-### 📅 Event Management
+### 📅 Events
 - **Current Events**: Get all active and upcoming Pokemon Go events
 - **Event Details**: Detailed information about specific events including Community Days
 - **Event Spawns**: See which Pokemon are spawning more frequently
 - **Event Bonuses**: Track active XP, Stardust, and other bonuses
 - **Community Day Info**: Specialized Community Day information with featured Pokemon and exclusive moves
 
-### ⚔️ Raid Intelligence  
+### ⚔️ Raids
 - **Current Raid Bosses**: Complete list of all raid bosses organized by tier
 - **Shiny Raids**: Filter raids to show only shiny-eligible bosses
 - **Raid Search**: Find specific Pokemon in raids
@@ -19,7 +19,7 @@ A comprehensive Model Context Protocol (MCP) server that provides real-time Poke
 - **Weather Boosted**: Find raids boosted by current weather conditions
 - **Raid Recommendations**: Smart recommendations based on your priorities
 
-### 🔬 Research Optimization
+### 🔬 Research
 - **Field Research Tasks**: Complete list of current research tasks and rewards
 - **Reward Search**: Find tasks that reward specific Pokemon
 - **Shiny Research**: Tasks that can reward shiny Pokemon
@@ -27,7 +27,7 @@ A comprehensive Model Context Protocol (MCP) server that provides real-time Poke
 - **Task Type Filtering**: Filter by catch, battle, spin, etc.
 - **Smart Recommendations**: Personalized task recommendations
 
-### 🥚 Egg Hatch Planning
+### 🥚 Egg Hatches
 - **Egg Pool Data**: All Pokemon currently hatching from eggs
 - **Distance Filtering**: Filter by 2km, 5km, 10km, etc.
 - **Shiny Egg Hatches**: Pokemon that can hatch shiny
@@ -36,7 +36,7 @@ A comprehensive Model Context Protocol (MCP) server that provides real-time Poke
 - **Adventure Sync**: Weekly walking reward Pokemon
 - **Incubation Strategy**: Smart recommendations for egg prioritization
 
-### 🚀 Team Rocket Intelligence
+### 🚀 Team Rocket Lineups
 - **Current Lineups**: All Team Rocket trainer lineups with Pokemon options
 - **Shadow Pokemon**: Detailed information about Shadow Pokemon types and weaknesses
 - **Encounter Rewards**: Find trainers that offer specific Pokemon as encounter rewards
@@ -262,12 +262,6 @@ Use get_all_shiny_pokemon to see every shiny currently available, then:
 - get_shiny_shadow_pokemon for Shadow Pokemon
 ```
 
-## 🔄 Data Sources
-
-This server uses our custom-built scraper that collects data from Pokemon Go resources and saves it locally to JSON files in the `data` directory. The scraper runs automatically and updates the local data files.
-
-Data is cached for 24 hours to balance freshness with performance. Use `clear_cache` to force immediate updates.
-
 ## 🏗️ Architecture
 
 ```
@@ -331,52 +325,6 @@ pytest --cov=pogo_mcp
 # Test specific module
 pytest tests/test_events_parsing.py
 ```
-
-### Adding New Tools
-
-1. **Create tool function** in appropriate module (events.py, raids.py, etc.)
-2. **Register tool** with `@mcp.tool()` decorator
-3. **Add documentation** with clear docstring
-4. **Add type hints** for all parameters and return values
-5. **Handle errors** gracefully with try/catch blocks
-6. **Add tests** in corresponding test file
-
-Example:
-```python
-@mcp.tool()
-async def my_new_tool(param: str) -> str:
-    """Description of what this tool does.
-    
-    Args:
-        param: Description of the parameter
-        
-    Returns detailed information about...
-    """
-    try:
-        # Implementation here
-        return result
-    except Exception as e:
-        logger.error(f"Error in my_new_tool: {e}")
-        return f"Error: {str(e)}"
-```
-
-## 🤝 Contributing
-
-1. **Fork** the repository
-2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)  
-3. **Make** your changes with tests
-4. **Run** the test suite (`uv run python run_tests.py`)
-5. **Commit** your changes (`git commit -m 'Add amazing feature'`)
-6. **Push** to the branch (`git push origin feature/amazing-feature`)
-7. **Open** a Pull Request
-
 ## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- **LeekDuck** for providing comprehensive Pokemon Go data sources
-- **Anthropic** for the Model Context Protocol
-
-**Built with ❤️ for the Pokemon Go community**
