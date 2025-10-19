@@ -9,8 +9,8 @@ from mcp.server.fastmcp import FastMCP
 from .api_client import api_client
 from .types import EventInfo
 from .utils import (
-    is_event_active, is_event_upcoming, format_event_summary, 
-    get_current_time_str, extract_community_day_info, format_json_output
+    is_event_active, is_event_upcoming, format_event_summary,
+    get_current_time_str, extract_community_day_info, extract_raid_day_info, format_json_output
 )
 
 logger = logging.getLogger(__name__)
@@ -94,22 +94,53 @@ def register_event_tools(mcp: FastMCP) -> None:
             # Add extra details if available
             if event.extra_data:
                 result += "## Additional Details\n\n"
-                
+
                 # Community Day specific info
                 cd_info = extract_community_day_info(event)
                 if cd_info:
                     if cd_info["featured_pokemon"]:
                         result += f"**Featured Pokemon:** {', '.join(cd_info['featured_pokemon'])}\n\n"
-                    
+
                     if cd_info["bonuses"]:
                         result += "**Event Bonuses:**\n"
                         for bonus in cd_info["bonuses"]:
                             result += f"• {bonus}\n"
                         result += "\n"
-                    
+
                     if cd_info["shiny_available"]:
                         result += f"**Shiny Available:** {', '.join(cd_info['shiny_available'])}\n\n"
-                
+
+                # Raid Day specific info
+                rd_info = extract_raid_day_info(event)
+                if rd_info:
+                    if rd_info["raid_bosses"]:
+                        result += f"**Raid Bosses:** {', '.join(rd_info['raid_bosses'])}\n\n"
+
+                    if rd_info["bonuses"]:
+                        result += "**Free Bonuses:**\n"
+                        for bonus in rd_info["bonuses"]:
+                            result += f"• {bonus}\n"
+                        result += "\n"
+
+                    if rd_info["ticket_bonuses"]:
+                        result += "**Ticket Bonuses:**\n"
+                        for bonus in rd_info["ticket_bonuses"]:
+                            result += f"• {bonus}\n"
+                        result += "\n"
+
+                    if rd_info["research"]:
+                        result += "**Timed Research:**\n"
+                        for research_step in rd_info["research"]:
+                            result += f"• {research_step.get('name', 'Unknown')}\n"
+                            tasks = research_step.get('tasks', [])
+                            if tasks:
+                                for task in tasks:
+                                    result += f"  - {task.get('text', 'Unknown task')}\n"
+                        result += "\n"
+
+                    if rd_info["shiny_available"]:
+                        result += f"**Shiny Available:** {', '.join(rd_info['shiny_available'])}\n\n"
+
                 # Raw extra data
                 result += "**Raw Event Data:**\n"
                 result += f"```json\n{format_json_output(event.extra_data)}\n```\n"
@@ -231,13 +262,24 @@ def register_event_tools(mcp: FastMCP) -> None:
             bonuses_found = False
             for event in active_events:
                 event_bonuses = []
-                
+
                 if event.extra_data and "communityday" in event.extra_data:
                     cd_data = event.extra_data["communityday"]
                     bonuses = cd_data.get("bonuses", [])
                     for bonus in bonuses:
                         event_bonuses.append(bonus.get("text", "Unknown"))
-                
+
+                if event.extra_data and "raidday" in event.extra_data:
+                    rd_data = event.extra_data["raidday"]
+                    # Add free bonuses
+                    bonuses = rd_data.get("bonuses", [])
+                    for bonus in bonuses:
+                        event_bonuses.append(bonus.get("text", "Unknown"))
+                    # Add ticket bonuses (marked as premium)
+                    ticket_bonuses = rd_data.get("ticketBonuses", [])
+                    for bonus in ticket_bonuses:
+                        event_bonuses.append(f"[TICKET] {bonus.get('text', 'Unknown')}")
+
                 if event_bonuses:
                     bonuses_found = True
                     result += f"## {event.name}\n"

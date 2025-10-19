@@ -15,6 +15,7 @@ try:
     from .parsers.events.spotlight_details import parse_spotlight_details
     from .parsers.events.comday_details import  parse_community_day_details
     from .parsers.events.raid_battle_details import parse_raid_battle_details
+    from .parsers.events.raid_day_details import parse_raid_day_details
     from .parsers.events.timed_reseach_code_details import parse_timed_research_code_details
     from .parsers.events.research_breakthrough_details import parse_breakthrough_details
     from .parsers.events.generic_event_details import parse_generic_event_details
@@ -24,6 +25,7 @@ except ImportError:
     from parsers.events.spotlight_details import parse_spotlight_details
     from parsers.events.comday_details import  parse_community_day_details
     from parsers.events.raid_battle_details import parse_raid_battle_details
+    from parsers.events.raid_day_details import parse_raid_day_details
     from parsers.events.timed_reseach_code_details import parse_timed_research_code_details
     from parsers.events.research_breakthrough_details import parse_breakthrough_details
     from parsers.events.generic_event_details import parse_generic_event_details
@@ -134,6 +136,8 @@ async def fetch_event_details(scraper, event: Dict) -> None:
         # Get event-type specific data
         if event['eventType'] == 'community-day':
             await parse_community_day_details(soup, event)
+        elif event['eventType'] == 'raid-day':
+            await parse_raid_day_details(soup, event)
         elif event['eventType'] == 'raid-battles':
             await parse_raid_battle_details(soup, event)
         elif event['eventType'] == 'pokemon-spotlight-hour':

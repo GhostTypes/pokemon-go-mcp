@@ -39,6 +39,7 @@ class EventExtraData:
     generic: Optional[Dict] = None
     communityday: Optional[Dict] = None
     raidbattles: Optional[Dict] = None
+    raidday: Optional[Dict] = None
     spotlight: Optional[Dict] = None
     breakthrough: Optional[Dict] = None
 

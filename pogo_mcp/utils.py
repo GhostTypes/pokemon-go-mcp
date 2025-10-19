@@ -292,6 +292,22 @@ def extract_community_day_info(event: EventInfo) -> Optional[Dict[str, Any]]:
     }
 
 
+def extract_raid_day_info(event: EventInfo) -> Optional[Dict[str, Any]]:
+    """Extract Raid Day specific information from an event."""
+    if not event.extra_data or "raidday" not in event.extra_data:
+        return None
+
+    rd_data = event.extra_data["raidday"]
+
+    return {
+        "raid_bosses": [boss.get("name") for boss in rd_data.get("bosses", [])],
+        "bonuses": [bonus.get("text") for bonus in rd_data.get("bonuses", [])],
+        "ticket_bonuses": [bonus.get("text") for bonus in rd_data.get("ticketBonuses", [])],
+        "research": rd_data.get("research", []),
+        "shiny_available": [shiny.get("name") for shiny in rd_data.get("shinies", [])]
+    }
+
+
 # Team Rocket / Shadow Pokemon utilities
 def format_rocket_summary(trainer: RocketTrainerInfo) -> str:
     """Format a Team Rocket trainer summary for display."""

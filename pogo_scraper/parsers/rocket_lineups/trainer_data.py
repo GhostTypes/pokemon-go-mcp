@@ -6,6 +6,8 @@ import logging
 from bs4 import BeautifulSoup
 from typing import Dict, Optional
 
+logger = logging.getLogger(__name__)
+
 
 def parse_rocket_trainer(profile, base_url: str) -> Optional[Dict]:
     """Parse individual rocket trainer profile"""
@@ -44,8 +46,9 @@ def parse_rocket_trainer(profile, base_url: str) -> Optional[Dict]:
             if trainer['image'].startswith('/'):
                 trainer['image'] = f"{base_url}{trainer['image']}"
 
-        # Type (for grunts)
-        type_img = employee_info.select_one('.type img')
+        # Type (for grunts) - search in the entire profile, not just employee_info
+        # because .type is a sibling of .employee-info
+        type_img = profile.select_one('.type img')
         if type_img:
             type_src = type_img.get('src', '')
             # Extract type name from image path (e.g., "/assets/img/type_symbols/normal.png" -> "normal")
