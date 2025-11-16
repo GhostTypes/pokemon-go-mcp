@@ -1,0 +1,1831 @@
+[
+  {
+    "eventID": "go-pass-into-the-wild",
+    "name": "GO Pass: Into the Wild",
+    "eventType": "event",
+    "heading": "GO Pass",
+    "link": "https://leekduck.com/events/go-pass-into-the-wild/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2025-11-10T10:00:00.000",
+    "end": "2025-11-16T18:00:00.000",
+    "extraData": {
+      "generic": {
+        "hasSpawns": false,
+        "hasFieldResearchTasks": false,
+        "spawns": [],
+        "bonuses": [],
+        "features": [],
+        "fieldResearch": [],
+        "raids": []
+      }
+    }
+  },
+  {
+    "eventID": "pokemon-go-wild-area-2025-global",
+    "name": "Pokémon GO Wild Area: Global",
+    "eventType": "event",
+    "heading": "Wild Area",
+    "link": "https://leekduck.com/events/pokemon-go-wild-area-2025-global/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2025-11-15T10:00:00.000",
+    "end": "2025-11-16T18:00:00.000",
+    "extraData": {
+      "generic": {
+        "hasSpawns": true,
+        "hasFieldResearchTasks": true,
+        "spawns": [],
+        "bonuses": [],
+        "features": [],
+        "fieldResearch": [
+          {
+            "text": "Catch 10 Dark‑type Pokémon",
+            "reward": "Ultra Ball×3",
+            "image": "https://cdn.leekduck.com/assets/img/items/Ultra Ball.png"
+          },
+          {
+            "text": "Catch 2 mighty Pokémon",
+            "reward": "Mighty Houndoom",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pokemon_icon_229_00.png"
+          },
+          {
+            "text": "Catch 4 different species of Dark‑type Pokémon",
+            "reward": "Skorupi",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pokemon_icon_451_00.png"
+          },
+          {
+            "text": "Hatch an Egg",
+            "reward": "Sandile",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pokemon_icon_551_00.png"
+          },
+          {
+            "text": "Make 1 Excellent Throw",
+            "reward": "Golden Razz Berry×1",
+            "image": "https://cdn.leekduck.com/assets/img/items/Golden Razz Berry.png"
+          },
+          {
+            "text": "Power up Dark‑type Pokémon 5 times",
+            "reward": "Alolan Grimer",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pokemon_icon_088_61.png"
+          },
+          {
+            "text": "Transfer 5 Dark‑type Pokémon",
+            "reward": "Poké Ball×10",
+            "image": "https://cdn.leekduck.com/assets/img/items/Poke Ball.png"
+          },
+          {
+            "text": "Use a Dark‑type Charged Attack in a battle",
+            "reward": "Impidimp",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm859.icon.png"
+          },
+          {
+            "text": "Catch 10 Fairy‑type Pokémon",
+            "reward": "Ultra Ball×3",
+            "image": "https://cdn.leekduck.com/assets/img/items/Ultra Ball.png"
+          },
+          {
+            "text": "Catch 2 mighty Pokémon",
+            "reward": "Mighty Galarian Rapidash",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pokemon_icon_078_31.png"
+          },
+          {
+            "text": "Catch 4 different species of Fairy‑type Pokémon",
+            "reward": "Togetic",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pokemon_icon_176_00.png"
+          },
+          {
+            "text": "Hatch an Egg",
+            "reward": "Carbink",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm703.icon.png"
+          },
+          {
+            "text": "Make 1 Excellent Throw",
+            "reward": "Silver Pinap Berry×1",
+            "image": "https://cdn.leekduck.com/assets/img/items/Silver Pinap Berry.png"
+          },
+          {
+            "text": "Power up Fairy‑type Pokémon 5 times",
+            "reward": "Alolan Vulpix",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pokemon_icon_037_61.png"
+          },
+          {
+            "text": "Transfer 5 Fairy‑type Pokémon",
+            "reward": "Poké Ball×10",
+            "image": "https://cdn.leekduck.com/assets/img/items/Poke Ball.png"
+          },
+          {
+            "text": "Use a Fairy‑type Charged Attack in a battle",
+            "reward": "Impidimp",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm859.icon.png"
+          }
+        ],
+        "raids": []
+      }
+    }
+  },
+  {
+    "eventID": "pokemon-showcase-cresselia-darkrai-grimmsnarl-2025-11-16",
+    "name": "Cresselia, Darkrai, and Grimmsnarl PokéStop Showcases",
+    "eventType": "pokestop-showcase",
+    "heading": "PokéStop Showcase",
+    "link": "https://leekduck.com/events/pokemon-showcase-cresselia-darkrai-grimmsnarl-2025-11-16/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2025-11-15T10:00:00.000",
+    "end": "2025-11-16T18:00:00.000",
+    "extraData": {
+      "generic": {
+        "hasSpawns": false,
+        "hasFieldResearchTasks": false
+      }
+    }
+  },
+  {
+    "eventID": "max-mondays-2025-11-17",
+    "name": "Dynamax Toxtricity during Max Monday",
+    "eventType": "event",
+    "heading": "Max Mondays",
+    "link": "https://leekduck.com/events/max-mondays-2025-11-17/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2025-11-17T18:00:00.000",
+    "end": "2025-11-17T19:00:00.000",
+    "extraData": {
+      "generic": {
+        "hasSpawns": false,
+        "hasFieldResearchTasks": false,
+        "spawns": [],
+        "bonuses": [],
+        "features": [],
+        "fieldResearch": [],
+        "raids": []
+      }
+    }
+  },
+  {
+    "eventID": "mega-tyranitar-altaria-in-mega-raids-november-2025",
+    "name": "Mega Tyranitar and Mega Altaria in Mega Raids",
+    "eventType": "raid-battles",
+    "heading": "Raid Battles",
+    "link": "https://leekduck.com/events/mega-tyranitar-altaria-in-mega-raids-november-2025/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2025-11-11T10:00:00.000",
+    "end": "2025-11-18T10:00:00.000",
+    "extraData": {
+      "generic": {
+        "hasSpawns": false,
+        "hasFieldResearchTasks": false
+      },
+      "raidbattles": {
+        "bosses": [
+          {
+            "name": "Mega Tyranitar",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm248.fMEGA.icon.png",
+            "canBeShiny": true
+          },
+          {
+            "name": "Mega Altaria",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_334_51.png",
+            "canBeShiny": true
+          }
+        ],
+        "shinies": [
+          {
+            "name": "Tyranitar",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_248_00_shiny.png"
+          },
+          {
+            "name": "Mega Tyranitar",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm248.fMEGA.s.icon.png"
+          },
+          {
+            "name": "Altaria",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_334_00_shiny.png"
+          },
+          {
+            "name": "Mega Altaria",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_334_51_shiny.png"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "eventID": "gbl-tales-of-transformation_great-league_ultra-league_master-league-split-3",
+    "name": "Great League, Ultra League, and Master League | Tales of Transformation",
+    "eventType": "event",
+    "heading": "GO Battle League",
+    "link": "https://leekduck.com/events/gbl-tales-of-transformation_great-league_ultra-league_master-league-split-3/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2025-11-11T13:00:00.000-0800",
+    "end": "2025-11-18T13:00:00.000-0800",
+    "extraData": {
+      "generic": {
+        "hasSpawns": false,
+        "hasFieldResearchTasks": false,
+        "spawns": [],
+        "bonuses": [],
+        "features": [],
+        "fieldResearch": [],
+        "raids": []
+      }
+    }
+  },
+  {
+    "eventID": "pokemonspotlighthour2025-11-18",
+    "name": "Sableye Spotlight Hour",
+    "eventType": "pokemon-spotlight-hour",
+    "heading": "Pokémon Spotlight Hour",
+    "link": "https://leekduck.com/events/pokemonspotlighthour2025-11-18/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2025-11-18T18:00:00.000",
+    "end": "2025-11-18T19:00:00.000",
+    "extraData": {
+      "generic": {
+        "hasSpawns": true,
+        "hasFieldResearchTasks": false
+      },
+      "spotlight": {
+        "name": "Sableye",
+        "canBeShiny": true,
+        "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_302_00.png",
+        "bonus": "2× Catch Stardust",
+        "list": [
+          {
+            "name": "Sableye",
+            "canBeShiny": true,
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_302_00.png"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "eventID": "raidhour20251119",
+    "name": "Heatran Raid Hour",
+    "eventType": "event",
+    "heading": "Raid Hour",
+    "link": "https://leekduck.com/events/raidhour20251119/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2025-11-19T18:00:00.000",
+    "end": "2025-11-19T19:00:00.000",
+    "extraData": {
+      "generic": {
+        "hasSpawns": false,
+        "hasFieldResearchTasks": false,
+        "spawns": [],
+        "bonuses": [],
+        "features": [],
+        "fieldResearch": [],
+        "raids": []
+      }
+    }
+  },
+  {
+    "eventID": "high-voltage-2025",
+    "name": "High Voltage",
+    "eventType": "event",
+    "heading": "Event",
+    "link": "https://leekduck.com/events/high-voltage-2025/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2025-11-18T10:00:00.000",
+    "end": "2025-11-22T20:00:00.000",
+    "extraData": {
+      "generic": {
+        "hasSpawns": true,
+        "hasFieldResearchTasks": true,
+        "spawns": [
+          {
+            "name": "Emolga",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_587_00.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Dedenne",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_702_00.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Togedemaru",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm777.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Shinx",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_403_00.png",
+            "can_be_shiny": true
+          }
+        ],
+        "bonuses": [
+          {
+            "text": "2× XP for successfully catching Pokémon with Nice Throws or better",
+            "image": "https://cdn.leekduck.com/assets/img/events/bonuses/xp.png"
+          },
+          {
+            "text": "2× Stardust for catching Pokémon",
+            "image": "https://cdn.leekduck.com/assets/img/events/bonuses/stardust2x.png"
+          },
+          {
+            "text": "Increased chance to encounter Shiny Emolga, Shiny Dedenne, and Shiny Togedemaru",
+            "image": "https://cdn.leekduck.com/assets/img/events/bonuses/wildgrass.png"
+          }
+        ],
+        "features": [],
+        "fieldResearch": [
+          {
+            "text": "Research task (details TBD)",
+            "reward": "Magnemite",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pokemon_icon_081_00.png"
+          },
+          {
+            "text": "Research task (details TBD)",
+            "reward": "Yamper",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm835.icon.png"
+          },
+          {
+            "text": "Research task (details TBD)",
+            "reward": "Morpeko",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm877.fFULL_BELLY.icon.png"
+          }
+        ],
+        "raids": []
+      }
+    }
+  },
+  {
+    "eventID": "max-mondays-2025-11-24",
+    "name": "Dynamax Eevee during Max Monday",
+    "eventType": "event",
+    "heading": "Max Mondays",
+    "link": "https://leekduck.com/events/max-mondays-2025-11-24/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2025-11-24T18:00:00.000",
+    "end": "2025-11-24T19:00:00.000",
+    "extraData": {
+      "generic": {
+        "hasSpawns": false,
+        "hasFieldResearchTasks": false,
+        "spawns": [],
+        "bonuses": [],
+        "features": [],
+        "fieldResearch": [],
+        "raids": []
+      }
+    }
+  },
+  {
+    "eventID": "dynamax-eevee-max-battle-weekend",
+    "name": "Dynamax Eevee Max Battle Weekend",
+    "eventType": "event",
+    "heading": "Max Battles",
+    "link": "https://leekduck.com/events/dynamax-eevee-max-battle-weekend/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2025-11-21T06:00:00.000",
+    "end": "2025-11-24T21:00:00.000",
+    "extraData": {
+      "generic": {
+        "hasSpawns": true,
+        "hasFieldResearchTasks": false,
+        "spawns": [
+          {
+            "name": "Eevee",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_133_00.png",
+            "can_be_shiny": true
+          }
+        ],
+        "bonuses": [
+          {
+            "text": "1/2 Adventuring distance to receive Max Particles*",
+            "image": "https://cdn.leekduck.com/assets/img/events/bonuses/maxparticle.png"
+          },
+          {
+            "text": "Power Spots will refresh more frequently",
+            "image": "https://cdn.leekduck.com/assets/img/events/bonuses/powerspot.png"
+          },
+          {
+            "text": "2× Max Particles from Power Spots",
+            "image": "https://cdn.leekduck.com/assets/img/events/bonuses/maxparticle.png"
+          }
+        ],
+        "features": [],
+        "fieldResearch": [],
+        "raids": []
+      }
+    }
+  },
+  {
+    "eventID": "heatran-in-5-star-raid-battles-november-2025",
+    "name": "Heatran in 5-star Raid Battles",
+    "eventType": "raid-battles",
+    "heading": "Raid Battles",
+    "link": "https://leekduck.com/events/heatran-in-5-star-raid-battles-november-2025/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2025-11-18T10:00:00.000",
+    "end": "2025-11-25T10:00:00.000",
+    "extraData": {
+      "generic": {
+        "hasSpawns": false,
+        "hasFieldResearchTasks": false
+      },
+      "raidbattles": {
+        "bosses": [
+          {
+            "name": "Heatran",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_485_00.png",
+            "canBeShiny": true
+          }
+        ],
+        "shinies": [
+          {
+            "name": "Heatran",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_485_00_shiny.png"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "eventID": "mega-ampharos-manectric-in-mega-raids-november-2025",
+    "name": "Mega Ampharos and Mega Manectric in Mega Raids",
+    "eventType": "raid-battles",
+    "heading": "Raid Battles",
+    "link": "https://leekduck.com/events/mega-ampharos-manectric-in-mega-raids-november-2025/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2025-11-18T10:00:00.000",
+    "end": "2025-11-25T10:00:00.000",
+    "extraData": {
+      "generic": {
+        "hasSpawns": false,
+        "hasFieldResearchTasks": false
+      },
+      "raidbattles": {
+        "bosses": [
+          {
+            "name": "Mega Ampharos",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_181_51.png",
+            "canBeShiny": true
+          },
+          {
+            "name": "Mega Manectric",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_310_51.png",
+            "canBeShiny": true
+          }
+        ],
+        "shinies": [
+          {
+            "name": "Ampharos",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_181_00_shiny.png"
+          },
+          {
+            "name": "Mega Ampharos",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_181_51_shiny.png"
+          },
+          {
+            "name": "Manectric",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_310_00_shiny.png"
+          },
+          {
+            "name": "Mega Manectric",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_310_51_shiny.png"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "eventID": "gbl-tales-of-transformation_2025-championship-series-cup_master-league-mega-edition",
+    "name": "2025 Championship Series Cup and Master League: Mega Edition | Tales of Transformation",
+    "eventType": "event",
+    "heading": "GO Battle League",
+    "link": "https://leekduck.com/events/gbl-tales-of-transformation_2025-championship-series-cup_master-league-mega-edition/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2025-11-18T13:00:00.000-0800",
+    "end": "2025-11-25T13:00:00.000-0800",
+    "extraData": {
+      "generic": {
+        "hasSpawns": false,
+        "hasFieldResearchTasks": false,
+        "spawns": [],
+        "bonuses": [],
+        "features": [],
+        "fieldResearch": [],
+        "raids": []
+      }
+    }
+  },
+  {
+    "eventID": "pokemonspotlighthour2025-11-25",
+    "name": "Scraggy Spotlight Hour",
+    "eventType": "pokemon-spotlight-hour",
+    "heading": "Pokémon Spotlight Hour",
+    "link": "https://leekduck.com/events/pokemonspotlighthour2025-11-25/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2025-11-25T18:00:00.000",
+    "end": "2025-11-25T19:00:00.000",
+    "extraData": {
+      "generic": {
+        "hasSpawns": true,
+        "hasFieldResearchTasks": false
+      },
+      "spotlight": {
+        "name": "Scraggy",
+        "canBeShiny": true,
+        "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_559_00.png",
+        "bonus": "2× Catch XP",
+        "list": [
+          {
+            "name": "Scraggy",
+            "canBeShiny": true,
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_559_00.png"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "eventID": "raidhour20251126",
+    "name": "Cobalion, Terrakion, and Virizion Raid Hour",
+    "eventType": "event",
+    "heading": "Raid Hour",
+    "link": "https://leekduck.com/events/raidhour20251126/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2025-11-26T18:00:00.000",
+    "end": "2025-11-26T19:00:00.000",
+    "extraData": {
+      "generic": {
+        "hasSpawns": false,
+        "hasFieldResearchTasks": false,
+        "spawns": [],
+        "bonuses": [],
+        "features": [],
+        "fieldResearch": [],
+        "raids": []
+      }
+    }
+  },
+  {
+    "eventID": "november-communityday2025",
+    "name": "Pikipek Community Day",
+    "eventType": "community-day",
+    "heading": "Community Day",
+    "link": "https://leekduck.com/events/november-communityday2025/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2025-11-30T14:00:00.000",
+    "end": "2025-11-30T17:00:00.000",
+    "extraData": {
+      "generic": {
+        "hasSpawns": true,
+        "hasFieldResearchTasks": true
+      },
+      "communityday": {
+        "spawns": [
+          {
+            "name": "Pikipek",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm731.icon.png"
+          }
+        ],
+        "bonuses": [
+          {
+            "text": "Increased Spawns",
+            "image": "https://cdn.leekduck.com/assets/img/events/bonuses/wildgrass.png"
+          },
+          {
+            "text": "3x Catch XP",
+            "image": "https://cdn.leekduck.com/assets/img/events/bonuses/xp.png"
+          },
+          {
+            "text": "3-hour Incense**",
+            "image": "https://cdn.leekduck.com/assets/img/events/bonuses/incense.png"
+          },
+          {
+            "text": "1-hour Lures***",
+            "image": "https://cdn.leekduck.com/assets/img/events/bonuses/lure.png"
+          },
+          {
+            "text": "2x Catch Candy",
+            "image": "https://cdn.leekduck.com/assets/img/events/bonuses/candy.png"
+          },
+          {
+            "text": "2x Chance to receive Candy XL from catching Pokémon",
+            "image": "https://cdn.leekduck.com/assets/img/events/bonuses/candyxl.png"
+          },
+          {
+            "text": "One additional Special Trade can be made for a maximum of three for the day*",
+            "image": "https://cdn.leekduck.com/assets/img/events/bonuses/trade.png"
+          },
+          {
+            "text": "Trades made will require 50% less Stardust*",
+            "image": "https://cdn.leekduck.com/assets/img/events/bonuses/stardust2x.png"
+          }
+        ],
+        "bonusDisclaimers": [
+          "* While most bonuses are only active during the three hours of the event, these bonuses will be active from 2:00 p.m. to 9:00 p.m. local time.** The three-hour Incense bonus excludes Daily Adventure Incense.*** The one-hour lure bonus excludes Golden Lure Modules."
+        ],
+        "shinies": [
+          {
+            "name": "Pikipek",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm731.s.icon.png"
+          },
+          {
+            "name": "Trumbeak",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm732.s.icon.png"
+          },
+          {
+            "name": "Toucannon",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm733.s.icon.png"
+          }
+        ],
+        "specialresearch": [
+          {
+            "name": "Pikipek Special Research (1/3)",
+            "step": 1,
+            "tasks": [
+              {
+                "text": "Catch 3 Pokémon",
+                "reward": {
+                  "text": "Pikipek",
+                  "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm731.icon.png"
+                }
+              },
+              {
+                "text": "Catch 5 Pokémon",
+                "reward": {
+                  "text": "Pikipek",
+                  "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm731.icon.png"
+                }
+              },
+              {
+                "text": "Catch 10 Pokémon",
+                "reward": {
+                  "text": "Pikipek",
+                  "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm731.icon.png"
+                }
+              },
+              {
+                "text": "Make 7 Nice Throws",
+                "reward": {
+                  "text": "Ultra Ball×20",
+                  "image": "https://cdn.leekduck.com/assets/img/items/Ultra Ball.png"
+                }
+              },
+              {
+                "text": "Make 5 Great Throws",
+                "reward": {
+                  "text": "Lucky Egg×1",
+                  "image": "https://cdn.leekduck.com/assets/img/items/Lucky Egg.png"
+                }
+              },
+              {
+                "text": "Make 5 Curveball Throws",
+                "reward": {
+                  "text": "Incense×1",
+                  "image": "https://cdn.leekduck.com/assets/img/items/Incense.png"
+                }
+              }
+            ],
+            "rewards": [
+              {
+                "text": "Pikipek",
+                "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm731.icon.png"
+              },
+              {
+                "text": "×50",
+                "image": "https://cdn.leekduck.com/assets/img/candy/regular/731.png"
+              },
+              {
+                "text": "×5",
+                "image": "https://cdn.leekduck.com/assets/img/candy/xl/731.png"
+              }
+            ]
+          },
+          {
+            "name": "Pikipek Special Research (2/3)",
+            "step": 2,
+            "tasks": [
+              {
+                "text": "Catch 3 Pokémon",
+                "reward": {
+                  "text": "Pikipek",
+                  "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm731.icon.png"
+                }
+              },
+              {
+                "text": "Catch 5 Pokémon",
+                "reward": {
+                  "text": "Pikipek",
+                  "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm731.icon.png"
+                }
+              },
+              {
+                "text": "Catch 10 Pokémon",
+                "reward": {
+                  "text": "Trumbeak",
+                  "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm732.icon.png"
+                }
+              },
+              {
+                "text": "Use 3 Berries to help catch Pokémon",
+                "reward": {
+                  "text": "Ultra Ball×20",
+                  "image": "https://cdn.leekduck.com/assets/img/items/Ultra Ball.png"
+                }
+              },
+              {
+                "text": "Use 5 Berries to help catch Pokémon",
+                "reward": {
+                  "text": "Charged TM×1",
+                  "image": "https://cdn.leekduck.com/assets/img/items/Charged TM.png"
+                }
+              },
+              {
+                "text": "Use 7 Berries to help catch Pokémon",
+                "reward": {
+                  "text": "Silver Pinap Berry×3",
+                  "image": "https://cdn.leekduck.com/assets/img/items/Silver Pinap Berry.png"
+                }
+              }
+            ],
+            "rewards": [
+              {
+                "text": "Pikipek",
+                "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm731.icon.png"
+              },
+              {
+                "text": "×7500",
+                "image": "https://cdn.leekduck.com/assets/img/items/Stardust.png"
+              },
+              {
+                "text": "×3",
+                "image": "https://cdn.leekduck.com/assets/img/items/Rare Candy.png"
+              }
+            ]
+          },
+          {
+            "name": "Pikipek Special Research (3/3)",
+            "step": 3,
+            "tasks": [
+              {
+                "text": "Catch 3 Pokémon",
+                "reward": {
+                  "text": "Pikipek",
+                  "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm731.icon.png"
+                }
+              },
+              {
+                "text": "Catch 5 Pokémon",
+                "reward": {
+                  "text": "Pikipek",
+                  "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm731.icon.png"
+                }
+              },
+              {
+                "text": "Catch 10 Pokémon",
+                "reward": {
+                  "text": "Toucannon",
+                  "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm733.icon.png"
+                }
+              },
+              {
+                "text": "Spin 3 PokéStops or Gyms",
+                "reward": {
+                  "text": "Ultra Ball×20",
+                  "image": "https://cdn.leekduck.com/assets/img/items/Ultra Ball.png"
+                }
+              },
+              {
+                "text": "Spin 5 PokéStops or Gyms",
+                "reward": {
+                  "text": "Rocket Radar×1",
+                  "image": "https://cdn.leekduck.com/assets/img/items/Rocket Radar.png"
+                }
+              },
+              {
+                "text": "Explore 1 km",
+                "reward": {
+                  "text": "Premium Battle Pass×1",
+                  "image": "https://cdn.leekduck.com/assets/img/items/Premium Battle Pass.png"
+                }
+              }
+            ],
+            "rewards": [
+              {
+                "text": "Pikipek",
+                "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm731.icon.png"
+              },
+              {
+                "text": "10000 XP",
+                "image": "/assets/img/icons/xp.png"
+              },
+              {
+                "text": "×1",
+                "image": "https://cdn.leekduck.com/assets/img/items/Rare Candy XL.png"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  {
+    "eventID": "dynamax-max-battle-weekend-2025-2",
+    "name": "Dynamax Max Battle Weekend",
+    "eventType": "event",
+    "heading": "Event",
+    "link": "https://leekduck.com/events/dynamax-max-battle-weekend-2025-2/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2025-11-29T10:00:00.000",
+    "end": "2025-11-30T20:00:00.000",
+    "extraData": {
+      "generic": {
+        "hasSpawns": false,
+        "hasFieldResearchTasks": false,
+        "spawns": [],
+        "bonuses": [],
+        "features": [],
+        "fieldResearch": [],
+        "raids": []
+      }
+    }
+  },
+  {
+    "eventID": "final-justice-2025",
+    "name": "Final Justice",
+    "eventType": "event",
+    "heading": "Event",
+    "link": "https://leekduck.com/events/final-justice-2025/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2025-11-25T10:00:00.000",
+    "end": "2025-11-30T20:00:00.000",
+    "extraData": {
+      "generic": {
+        "hasSpawns": true,
+        "hasFieldResearchTasks": true,
+        "spawns": [
+          {
+            "name": "Hitmonlee",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_106_00.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Hitmonchan",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_107_00.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Hitmontop",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_237_00.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Hisuian Sneasel",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm215.fHISUIAN.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Crabrawler",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm739.icon.png",
+            "can_be_shiny": true
+          }
+        ],
+        "bonuses": [
+          {
+            "text": "Receive up to two free Raid Passes from spinning Gym Photo Discs during the event",
+            "image": "https://cdn.leekduck.com/assets/img/events/bonuses/freeraidpass.png"
+          },
+          {
+            "text": "Increased chance of encountering Shiny Hitmonlee, Shiny Hitmonchan, and Shiny Hitmontop",
+            "image": "https://cdn.leekduck.com/assets/img/events/bonuses/wildgrass.png"
+          }
+        ],
+        "features": [
+          {
+            "name": "Keldeo (Resolute)",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm647.fRESOLUTE.icon.png",
+            "can_be_shiny": false,
+            "type": "featured_pokemon"
+          }
+        ],
+        "fieldResearch": [
+          {
+            "text": "Research task (details TBD)",
+            "reward": "Galarian Farfetch'd",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pokemon_icon_083_31.png"
+          },
+          {
+            "text": "Research task (details TBD)",
+            "reward": "Hisuian Lilligant",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm549.fHISUIAN.icon.png"
+          },
+          {
+            "text": "Research task (details TBD)",
+            "reward": "Throh",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pokemon_icon_538_00.png"
+          },
+          {
+            "text": "Research task (details TBD)",
+            "reward": "Sawk",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pokemon_icon_539_00.png"
+          },
+          {
+            "text": "Research task (details TBD)",
+            "reward": "Keldeo Candy×0",
+            "image": "https://cdn.leekduck.com/assets/img/candy/regular/647.png"
+          }
+        ],
+        "raids": []
+      }
+    }
+  },
+  {
+    "eventID": "trade-days-tales-of-transformation",
+    "name": "Trade Days | Tales of Transformation",
+    "eventType": "event",
+    "heading": "Event",
+    "link": "https://leekduck.com/events/trade-days-tales-of-transformation/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2025-09-07T00:00:00.000",
+    "end": "2025-11-30T23:59:59.000",
+    "extraData": {
+      "generic": {
+        "hasSpawns": false,
+        "hasFieldResearchTasks": false,
+        "spawns": [],
+        "bonuses": [
+          {
+            "text": "One additional Special Trade",
+            "image": "https://cdn.leekduck.com/assets/img/events/bonuses/trade.png"
+          },
+          {
+            "text": "Increased chance of Lucky Trade for any trade",
+            "image": "https://cdn.leekduck.com/assets/img/events/bonuses/trade.png"
+          },
+          {
+            "text": "-10% Stardust cost for trades",
+            "image": "https://cdn.leekduck.com/assets/img/events/bonuses/stardust.png"
+          },
+          {
+            "text": "Earn two Candy XL from trades",
+            "image": "https://cdn.leekduck.com/assets/img/events/bonuses/candyxl.png"
+          }
+        ],
+        "features": [],
+        "fieldResearch": [],
+        "raids": []
+      }
+    }
+  },
+  {
+    "eventID": "max-mondays-2025-12-01",
+    "name": "Dynamax Darumaka during Max Monday",
+    "eventType": "event",
+    "heading": "Max Mondays",
+    "link": "https://leekduck.com/events/max-mondays-2025-12-01/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2025-12-01T18:00:00.000",
+    "end": "2025-12-01T19:00:00.000",
+    "extraData": {
+      "generic": {
+        "hasSpawns": false,
+        "hasFieldResearchTasks": false,
+        "spawns": [],
+        "bonuses": [],
+        "features": [],
+        "fieldResearch": [],
+        "raids": []
+      }
+    }
+  },
+  {
+    "eventID": "go-pass-november-2025",
+    "name": "GO Pass: November",
+    "eventType": "event",
+    "heading": "GO Pass",
+    "link": "https://leekduck.com/events/go-pass-november-2025/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2025-11-04T10:00:00.000",
+    "end": "2025-12-02T10:00:00.000",
+    "extraData": {
+      "generic": {
+        "hasSpawns": false,
+        "hasFieldResearchTasks": false,
+        "spawns": [],
+        "bonuses": [],
+        "features": [],
+        "fieldResearch": [],
+        "raids": []
+      }
+    }
+  },
+  {
+    "eventID": "season-20-tales-of-transformation",
+    "name": "Tales of Transformation",
+    "eventType": "event",
+    "heading": "Season",
+    "link": "https://leekduck.com/events/season-20-tales-of-transformation/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2025-09-02T10:00:00.000",
+    "end": "2025-12-02T10:00:00.000",
+    "extraData": {
+      "generic": {
+        "hasSpawns": true,
+        "hasFieldResearchTasks": false,
+        "spawns": [],
+        "bonuses": [],
+        "features": [],
+        "fieldResearch": [],
+        "raids": []
+      }
+    }
+  },
+  {
+    "eventID": "cobalion-terrakion-virizion-in-5-star-raid-battles-november-december-2025",
+    "name": "Cobalion, Terrakion, and Virizion in 5-star Raid Battles",
+    "eventType": "raid-battles",
+    "heading": "Raid Battles",
+    "link": "https://leekduck.com/events/cobalion-terrakion-virizion-in-5-star-raid-battles-november-december-2025/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2025-11-25T10:00:00.000",
+    "end": "2025-12-02T10:00:00.000",
+    "extraData": {
+      "generic": {
+        "hasSpawns": false,
+        "hasFieldResearchTasks": false
+      },
+      "raidbattles": {
+        "bosses": [
+          {
+            "name": "Cobalion",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_638_00.png",
+            "canBeShiny": true
+          },
+          {
+            "name": "Terrakion",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_639_00.png",
+            "canBeShiny": true
+          },
+          {
+            "name": "Virizion",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_640_00.png",
+            "canBeShiny": true
+          }
+        ],
+        "shinies": [
+          {
+            "name": "Cobalion",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_638_00_shiny.png"
+          },
+          {
+            "name": "Terrakion",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_639_00_shiny.png"
+          },
+          {
+            "name": "Virizion",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_640_00_shiny.png"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "eventID": "mega-aerodactyl-medicham-garchomp-in-mega-raids-november-december-2025",
+    "name": "Mega Aerodactyl, Mega Medicham, and Mega Garchomp in Mega Raids",
+    "eventType": "raid-battles",
+    "heading": "Raid Battles",
+    "link": "https://leekduck.com/events/mega-aerodactyl-medicham-garchomp-in-mega-raids-november-december-2025/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2025-11-25T10:00:00.000",
+    "end": "2025-12-02T10:00:00.000",
+    "extraData": {
+      "generic": {
+        "hasSpawns": false,
+        "hasFieldResearchTasks": false
+      },
+      "raidbattles": {
+        "bosses": [
+          {
+            "name": "Mega Aerodactyl",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm142.fMEGA.icon.png",
+            "canBeShiny": true
+          },
+          {
+            "name": "Mega Medicham",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm308.fMEGA.icon.png",
+            "canBeShiny": true
+          },
+          {
+            "name": "Mega Garchomp",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/poke_capture_0445_001_mf_n_00000000_f_n.png",
+            "canBeShiny": true
+          }
+        ],
+        "shinies": [
+          {
+            "name": "Aerodactyl",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_142_00_shiny.png"
+          },
+          {
+            "name": "Mega Aerodactyl",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm142.fMEGA.s.icon.png"
+          },
+          {
+            "name": "Medicham",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_308_00_shiny.png"
+          },
+          {
+            "name": "Mega Medicham",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm308.fMEGA.s.icon.png"
+          },
+          {
+            "name": "Garchomp",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_445_00_shiny.png"
+          },
+          {
+            "name": "Mega Garchomp",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/poke_capture_0445_001_mf_n_00000000_f_r.png"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "eventID": "gbl-tales-of-transformation_catch-cup-tales-of-transformation-great-edition_ultra-league_master-league",
+    "name": "Catch Cup: Tales of Transformation: Great Edition, Ultra League, and Master League | Tales of Transformation",
+    "eventType": "event",
+    "heading": "GO Battle League",
+    "link": "https://leekduck.com/events/gbl-tales-of-transformation_catch-cup-tales-of-transformation-great-edition_ultra-league_master-league/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2025-11-25T13:00:00.000-0800",
+    "end": "2025-12-02T13:00:00.000-0800",
+    "extraData": {
+      "generic": {
+        "hasSpawns": false,
+        "hasFieldResearchTasks": false,
+        "spawns": [],
+        "bonuses": [],
+        "features": [],
+        "fieldResearch": [],
+        "raids": []
+      }
+    }
+  },
+  {
+    "eventID": "shadow-latios-in-shadow-raids-november-december-2025",
+    "name": "Shadow Latios in Shadow Raids",
+    "eventType": "raid-battles",
+    "heading": "Raid Battles",
+    "link": "https://leekduck.com/events/shadow-latios-in-shadow-raids-november-december-2025/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2025-11-02T06:00:00.000",
+    "end": "2025-12-02T22:00:00.000",
+    "extraData": {
+      "generic": {
+        "hasSpawns": false,
+        "hasFieldResearchTasks": false
+      },
+      "raidbattles": {
+        "bosses": [
+          {
+            "name": "Latios",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_381_00.png",
+            "canBeShiny": true
+          }
+        ],
+        "shinies": [
+          {
+            "name": "Latios",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_381_00_shiny.png"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "eventID": "december-communityday2025",
+    "name": "December Community Day 2025",
+    "eventType": "community-day",
+    "heading": "Community Day",
+    "link": "https://leekduck.com/events/december-communityday2025/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2025-12-06T14:00:00.000",
+    "end": "2025-12-07T17:00:00.000",
+    "extraData": {
+      "generic": {
+        "hasSpawns": true,
+        "hasFieldResearchTasks": true
+      },
+      "communityday": {
+        "spawns": [
+          {
+            "name": "Vanillite",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_582_00.png"
+          },
+          {
+            "name": "Karrablast",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_588_00.png"
+          },
+          {
+            "name": "Shelmet",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_616_00.png"
+          },
+          {
+            "name": "Sprigatito",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm906.icon.png"
+          },
+          {
+            "name": "Fuecoco",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm909.icon.png"
+          },
+          {
+            "name": "Pawmi",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm921.icon.png"
+          },
+          {
+            "name": "Solosis",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_577_00.png"
+          },
+          {
+            "name": "Red Flower Flabébé",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm669.fRED.icon.png"
+          },
+          {
+            "name": "Blue Flower Flabébé",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm669.fBLUE.icon.png"
+          },
+          {
+            "name": "Yellow Flower Flabébé",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm669.fYELLOW.icon.png"
+          },
+          {
+            "name": "Pikipek",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm731.icon.png"
+          },
+          {
+            "name": "Jangmo-o",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm782.icon.png"
+          },
+          {
+            "name": "Rookidee",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm821.icon.png"
+          },
+          {
+            "name": "Quaxly",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm912.icon.png"
+          },
+          {
+            "name": "Machop",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_066_00.png"
+          },
+          {
+            "name": "Eevee",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_133_00.png"
+          },
+          {
+            "name": "Totodile",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_158_00.png"
+          },
+          {
+            "name": "Ralts",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_280_00.png"
+          }
+        ],
+        "bonuses": [
+          {
+            "text": "Increased Spawns",
+            "image": "https://cdn.leekduck.com/assets/img/events/bonuses/wildgrass.png"
+          },
+          {
+            "text": "2x XP for catching Pokémon",
+            "image": "https://cdn.leekduck.com/assets/img/events/bonuses/xp.png"
+          },
+          {
+            "text": "2x Stardust for catching Pokémon",
+            "image": "https://cdn.leekduck.com/assets/img/events/bonuses/stardust2x.png"
+          },
+          {
+            "text": "1/2 Hatch Distance when Eggs are placed into Incubators during the event period",
+            "image": "https://cdn.leekduck.com/assets/img/events/bonuses/eggdistance.png"
+          },
+          {
+            "text": "2x Catch Candy",
+            "image": "https://cdn.leekduck.com/assets/img/events/bonuses/candy.png"
+          },
+          {
+            "text": "2x Chance to receive Candy XL from catching Pokémon",
+            "image": "https://cdn.leekduck.com/assets/img/events/bonuses/candyxl.png"
+          },
+          {
+            "text": "3-hour Incense**",
+            "image": "https://cdn.leekduck.com/assets/img/events/bonuses/incense.png"
+          },
+          {
+            "text": "1-hour Lures**",
+            "image": "https://cdn.leekduck.com/assets/img/events/bonuses/lure.png"
+          },
+          {
+            "text": "One additional Special Trade can be made for a maximum of three for the day**",
+            "image": "https://cdn.leekduck.com/assets/img/events/bonuses/trade.png"
+          },
+          {
+            "text": "Trades made will require 50% less Stardust**",
+            "image": "https://cdn.leekduck.com/assets/img/events/bonuses/stardust2x.png"
+          }
+        ],
+        "bonusDisclaimers": [
+          "* These Evolution requirements will return to the usual requirements on December 7, 2025, at 9:00 p.m. local time. Prior progress made on the usual requirements will reset when the event begins.** While most bonuses are only active on December 6 and 7 from 2:00 p.m. to 5:00 p.m. local time, these bonuses will be active from Saturday, December 6, at 9:00 a.m. to Sunday, December 7, at 9:00 p.m. local time.*** The three-hour Incense bonus excludes Daily Adventure Incense.**** Lure Modules activated during the event will last for one hour."
+        ],
+        "shinies": [
+          {
+            "name": "Karrablast",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_588_00_shiny.png"
+          },
+          {
+            "name": "Escavalier",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_589_00_shiny.png"
+          },
+          {
+            "name": "Shelmet",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_616_00_shiny.png"
+          },
+          {
+            "name": "Accelgor",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_617_00_shiny.png"
+          },
+          {
+            "name": "Vanillite",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_582_00_shiny.png"
+          },
+          {
+            "name": "Vanillish",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_583_00_shiny.png"
+          },
+          {
+            "name": "Vanilluxe",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_584_00_shiny.png"
+          },
+          {
+            "name": "Sprigatito",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm906.s.icon.png"
+          },
+          {
+            "name": "Floragato",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm907.s.icon.png"
+          },
+          {
+            "name": "Meowscarada",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm908.s.icon.png"
+          },
+          {
+            "name": "Fuecoco",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm909.s.icon.png"
+          },
+          {
+            "name": "Crocalor",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm910.s.icon.png"
+          },
+          {
+            "name": "Skeledirge",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm911.s.icon.png"
+          },
+          {
+            "name": "Pawmi",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm921.s.icon.png"
+          },
+          {
+            "name": "Pawmo",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm922.s.icon.png"
+          },
+          {
+            "name": "Pawmot",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm923.s.icon.png"
+          },
+          {
+            "name": "Solosis",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_577_00_shiny.png"
+          },
+          {
+            "name": "Duosion",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_578_00_shiny.png"
+          },
+          {
+            "name": "Reuniclus",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_579_00_shiny.png"
+          },
+          {
+            "name": "Red Flower Flabébé",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm669.fRED.s.icon.png"
+          },
+          {
+            "name": "Blue Flower Flabébé",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm669.fBLUE.s.icon.png"
+          },
+          {
+            "name": "Yellow Flower Flabébé",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm669.fYELLOW.s.icon.png"
+          },
+          {
+            "name": "White Flower Flabébé",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm669.fWHITE.s.icon.png"
+          },
+          {
+            "name": "Orange Flower Flabébé",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm669.fORANGE.s.icon.png"
+          },
+          {
+            "name": "Floette",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm670.fRED.s.icon.png"
+          },
+          {
+            "name": "Florges",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm671.fRED.s.icon.png"
+          },
+          {
+            "name": "Pikipek",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm731.s.icon.png"
+          },
+          {
+            "name": "Trumbeak",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm732.s.icon.png"
+          },
+          {
+            "name": "Toucannon",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm733.s.icon.png"
+          },
+          {
+            "name": "Jangmo-o",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm782.s.icon.png"
+          },
+          {
+            "name": "Hakamo-o",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm783.s.icon.png"
+          },
+          {
+            "name": "Kommo-o",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm784.s.icon.png"
+          },
+          {
+            "name": "Rookidee",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm821.s.icon.png"
+          },
+          {
+            "name": "Corvisquire",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm822.s.icon.png"
+          },
+          {
+            "name": "Corviknight",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm823.s.icon.png"
+          },
+          {
+            "name": "Quaxly",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm912.s.icon.png"
+          },
+          {
+            "name": "Quaxwell",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm913.s.icon.png"
+          },
+          {
+            "name": "Quaquaval",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm914.s.icon.png"
+          },
+          {
+            "name": "Machop",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_066_00_shiny.png"
+          },
+          {
+            "name": "Machoke",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_067_00_shiny.png"
+          },
+          {
+            "name": "Machamp",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_068_00_shiny.png"
+          },
+          {
+            "name": "Eevee",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_133_00_shiny.png"
+          },
+          {
+            "name": "Vaporeon",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_134_00_shiny.png"
+          },
+          {
+            "name": "Jolteon",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_135_00_shiny.png"
+          },
+          {
+            "name": "Flareon",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_136_00_shiny.png"
+          },
+          {
+            "name": "Espeon",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_196_00_shiny.png"
+          },
+          {
+            "name": "Umbreon",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_197_00_shiny.png"
+          },
+          {
+            "name": "Leafeon",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_470_00_shiny.png"
+          },
+          {
+            "name": "Glaceon",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_471_00_shiny.png"
+          },
+          {
+            "name": "Sylveon",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_700_00_shiny.png"
+          },
+          {
+            "name": "Totodile",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_158_00_shiny.png"
+          },
+          {
+            "name": "Croconaw",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_159_00_shiny.png"
+          },
+          {
+            "name": "Feraligatr",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_160_00_shiny.png"
+          },
+          {
+            "name": "Ralts",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_280_00_shiny.png"
+          },
+          {
+            "name": "Kirlia",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_281_00_shiny.png"
+          },
+          {
+            "name": "Gardevoir",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_282_00_shiny.png"
+          },
+          {
+            "name": "Gallade",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_475_00_shiny.png"
+          }
+        ],
+        "specialresearch": []
+      }
+    }
+  },
+  {
+    "eventID": "pokemon-go-city-safari-sydney-2025",
+    "name": "Sydney, Australia - Pokémon GO City Safari",
+    "eventType": "event",
+    "heading": "City Safari",
+    "link": "https://leekduck.com/events/pokemon-go-city-safari-sydney-2025/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2025-12-13T10:00:00.000+1100",
+    "end": "2025-12-14T18:00:00.000+1100",
+    "extraData": {
+      "generic": {
+        "hasSpawns": true,
+        "hasFieldResearchTasks": true,
+        "spawns": [],
+        "bonuses": [],
+        "features": [],
+        "fieldResearch": [],
+        "raids": []
+      }
+    }
+  },
+  {
+    "eventID": "pokemon-go-city-safari-buenos-aires-2025",
+    "name": "Buenos Aires, Argentina - Pokémon GO City Safari",
+    "eventType": "event",
+    "heading": "City Safari",
+    "link": "https://leekduck.com/events/pokemon-go-city-safari-buenos-aires-2025/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2025-12-13T10:00:00.000-0300",
+    "end": "2025-12-14T18:00:00.000-0300",
+    "extraData": {
+      "generic": {
+        "hasSpawns": true,
+        "hasFieldResearchTasks": true,
+        "spawns": [],
+        "bonuses": [],
+        "features": [],
+        "fieldResearch": [],
+        "raids": []
+      }
+    }
+  },
+  {
+    "eventID": "pokemon-go-city-safari-miami-2025",
+    "name": "Miami, USA - Pokémon GO City Safari",
+    "eventType": "event",
+    "heading": "City Safari",
+    "link": "https://leekduck.com/events/pokemon-go-city-safari-miami-2025/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2025-12-13T10:00:00.000-0500",
+    "end": "2025-12-14T18:00:00.000-0500",
+    "extraData": {
+      "generic": {
+        "hasSpawns": true,
+        "hasFieldResearchTasks": true,
+        "spawns": [],
+        "bonuses": [],
+        "features": [],
+        "fieldResearch": [],
+        "raids": []
+      }
+    }
+  },
+  {
+    "eventID": "max-battle-day-december-2025",
+    "name": "Max Battle Day",
+    "eventType": "event",
+    "heading": "Max Battles",
+    "link": "https://leekduck.com/events/max-battle-day-december-2025/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2025-12-14T14:00:00.000",
+    "end": "2025-12-14T17:00:00.000",
+    "extraData": {
+      "generic": {
+        "hasSpawns": false,
+        "hasFieldResearchTasks": false,
+        "spawns": [],
+        "bonuses": [],
+        "features": [],
+        "fieldResearch": [],
+        "raids": []
+      }
+    }
+  },
+  {
+    "eventID": "research-day-december-2025",
+    "name": "Research Day",
+    "eventType": "event",
+    "heading": "Research Day",
+    "link": "https://leekduck.com/events/research-day-december-2025/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2025-12-20T14:00:00.000",
+    "end": "2025-12-20T17:00:00.000",
+    "extraData": {
+      "generic": {
+        "hasSpawns": false,
+        "hasFieldResearchTasks": false,
+        "spawns": [],
+        "bonuses": [],
+        "features": [],
+        "fieldResearch": [],
+        "raids": []
+      }
+    }
+  },
+  {
+    "eventID": "january-communitydayclassic2026",
+    "name": "January Community Day Classic",
+    "eventType": "community-day",
+    "heading": "Community Day",
+    "link": "https://leekduck.com/events/january-communitydayclassic2026/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2026-01-04T14:00:00.000",
+    "end": "2026-01-04T17:00:00.000",
+    "extraData": {
+      "generic": {
+        "hasSpawns": false,
+        "hasFieldResearchTasks": false
+      }
+    }
+  },
+  {
+    "eventID": "raid-day-january-2026",
+    "name": "Raid Day",
+    "eventType": "raid-day",
+    "heading": "Raid Day",
+    "link": "https://leekduck.com/events/raid-day-january-2026/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2026-01-10T14:00:00.000",
+    "end": "2026-01-10T17:00:00.000",
+    "extraData": {
+      "generic": {
+        "hasSpawns": false,
+        "hasFieldResearchTasks": false
+      }
+    }
+  },
+  {
+    "eventID": "january-communityday2026",
+    "name": "January Community Day",
+    "eventType": "community-day",
+    "heading": "Community Day",
+    "link": "https://leekduck.com/events/january-communityday2026/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2026-01-18T14:00:00.000",
+    "end": "2026-01-18T17:00:00.000",
+    "extraData": {
+      "generic": {
+        "hasSpawns": false,
+        "hasFieldResearchTasks": false
+      }
+    }
+  },
+  {
+    "eventID": "shadow-raid-day-january-2026",
+    "name": "Shadow Raid Day",
+    "eventType": "raid-day",
+    "heading": "Raid Day",
+    "link": "https://leekduck.com/events/shadow-raid-day-january-2026/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2026-01-24T14:00:00.000",
+    "end": "2026-01-24T17:00:00.000",
+    "extraData": {
+      "generic": {
+        "hasSpawns": false,
+        "hasFieldResearchTasks": false
+      }
+    }
+  },
+  {
+    "eventID": "february-communityday2026",
+    "name": "February Community Day",
+    "eventType": "community-day",
+    "heading": "Community Day",
+    "link": "https://leekduck.com/events/february-communityday2026/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2026-02-01T14:00:00.000",
+    "end": "2026-02-01T17:00:00.000",
+    "extraData": {
+      "generic": {
+        "hasSpawns": false,
+        "hasFieldResearchTasks": false
+      }
+    }
+  },
+  {
+    "eventID": "max-battle-weekend-february-2026",
+    "name": "Max Battle Weekend",
+    "eventType": "event",
+    "heading": "Max Battles",
+    "link": "https://leekduck.com/events/max-battle-weekend-february-2026/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2026-01-31T06:00:00.000",
+    "end": "2026-02-01T21:00:00.000",
+    "extraData": {
+      "generic": {
+        "hasSpawns": false,
+        "hasFieldResearchTasks": false,
+        "spawns": [],
+        "bonuses": [],
+        "features": [],
+        "fieldResearch": [],
+        "raids": []
+      }
+    }
+  },
+  {
+    "eventID": "catch-mastery-day-february-2026",
+    "name": "Catch Mastery Day",
+    "eventType": "event",
+    "heading": "Event",
+    "link": "https://leekduck.com/events/catch-mastery-day-february-2026/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2026-02-07T10:00:00.000",
+    "end": "2026-02-07T20:00:00.000",
+    "extraData": {
+      "generic": {
+        "hasSpawns": false,
+        "hasFieldResearchTasks": false,
+        "spawns": [],
+        "bonuses": [],
+        "features": [],
+        "fieldResearch": [],
+        "raids": []
+      }
+    }
+  },
+  {
+    "eventID": "raid-day-february-2026",
+    "name": "Raid Day",
+    "eventType": "raid-day",
+    "heading": "Raid Day",
+    "link": "https://leekduck.com/events/raid-day-february-2026/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2026-02-14T14:00:00.000",
+    "end": "2026-02-14T17:00:00.000",
+    "extraData": {
+      "generic": {
+        "hasSpawns": false,
+        "hasFieldResearchTasks": false
+      }
+    }
+  },
+  {
+    "eventID": "max-battle-day-february-2026",
+    "name": "Max Battle Day",
+    "eventType": "event",
+    "heading": "Max Battles",
+    "link": "https://leekduck.com/events/max-battle-day-february-2026/",
+    "image": " https://cdn.leekduck.com",
+    "start": "2026-02-15T14:00:00.000",
+    "end": "2026-02-15T17:00:00.000",
+    "extraData": {
+      "generic": {
+        "hasSpawns": false,
+        "hasFieldResearchTasks": false,
+        "spawns": [],
+        "bonuses": [],
+        "features": [],
+        "fieldResearch": [],
+        "raids": []
+      }
+    }
+  }
+]
