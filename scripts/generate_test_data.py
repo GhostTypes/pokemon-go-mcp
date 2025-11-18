@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Generate real JSON data from downloaded HTML fixtures."""
+"""Generate JSON test data from HTML fixtures.
+
+This script parses HTML fixtures from tests/fixtures/ and generates
+JSON data files in the data/ directory for testing the MCP server.
+"""
 
 import json
 import os
@@ -14,14 +18,18 @@ from pogo_scraper.eggs import parse_egg_item
 from pogo_scraper.rocket_lineups import parse_rocket_trainer
 from pogo_scraper.promo_codes import parse_promo_card
 
+
 def main():
+    """Generate all JSON test data from HTML fixtures."""
     fixtures_dir = Path('tests/fixtures')
     data_dir = Path('data')
     data_dir.mkdir(exist_ok=True)
     base_url = "https://leekduck.com"
 
+    print("🎮 Generating Pokemon Go MCP test data...\n")
+
     # Parse Events
-    print("Parsing events...")
+    print("📅 Parsing events...")
     with open(fixtures_dir / 'current_events.html', 'r', encoding='utf-8') as f:
         soup = BeautifulSoup(f.read(), 'lxml')
 
@@ -37,7 +45,7 @@ def main():
     print(f"  ✓ Generated {len(events)} events")
 
     # Parse Raids
-    print("Parsing raids...")
+    print("⚔️  Parsing raids...")
     with open(fixtures_dir / 'current_raids.html', 'r', encoding='utf-8') as f:
         soup = BeautifulSoup(f.read(), 'lxml')
 
@@ -90,7 +98,7 @@ def main():
     print(f"  ✓ Generated {len(raids)} raids")
 
     # Parse Research
-    print("Parsing research...")
+    print("🔬 Parsing research...")
     with open(fixtures_dir / 'current_research.html', 'r', encoding='utf-8') as f:
         soup = BeautifulSoup(f.read(), 'lxml')
 
@@ -110,7 +118,7 @@ def main():
     print(f"  ✓ Generated {len(research)} research tasks")
 
     # Parse Eggs
-    print("Parsing eggs...")
+    print("🥚 Parsing eggs...")
     with open(fixtures_dir / 'current_eggs.html', 'r', encoding='utf-8') as f:
         soup = BeautifulSoup(f.read(), 'lxml')
 
@@ -149,7 +157,7 @@ def main():
     print(f"  ✓ Generated {len(eggs)} eggs")
 
     # Parse Rocket Lineups
-    print("Parsing rocket lineups...")
+    print("🚀 Parsing rocket lineups...")
     with open(fixtures_dir / 'current_rocket_lineups.html', 'r', encoding='utf-8') as f:
         soup = BeautifulSoup(f.read(), 'lxml')
 
@@ -169,7 +177,7 @@ def main():
     print(f"  ✓ Generated {len(lineups)} rocket lineups")
 
     # Parse Promo Codes
-    print("Parsing promo codes...")
+    print("🎁 Parsing promo codes...")
     with open(fixtures_dir / 'current_promos.html', 'r', encoding='utf-8') as f:
         soup = BeautifulSoup(f.read(), 'lxml')
 
@@ -188,11 +196,12 @@ def main():
         json.dump(promos, f, indent=2)
     print(f"  ✓ Generated {len(promos)} promo codes")
 
-    print("\n✅ All real JSON data generated successfully!")
-    print("\nGenerated files:")
-    for json_file in data_dir.glob('*.json'):
+    print("\n✅ All test data generated successfully!\n")
+    print("📦 Generated files:")
+    for json_file in sorted(data_dir.glob('*.json')):
         size = json_file.stat().st_size
-        print(f"  {json_file.name}: {size:,} bytes")
+        print(f"  • {json_file.name}: {size:,} bytes")
+
 
 if __name__ == "__main__":
     main()

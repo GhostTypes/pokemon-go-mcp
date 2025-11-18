@@ -1,0 +1,35 @@
+[
+  {
+    "code": "SYJMGFM3SWRLQ",
+    "title": "800 Max Particles and 4 Purified Gems",
+    "description": "A reward for helping Pok\u00e9mon GO\u2019s YouTube channel gain 8,000 subscribers.",
+    "redemption_url": "https://store.pokemongo.com/offer-redemption?passcode=SYJMGFM3SWRLQ",
+    "rewards": [
+      {
+        "name": "Max Particle",
+        "url": "https://cdn.leekduck.com/assets/img/items/Max Particle.png",
+        "type": "item"
+      },
+      {
+        "name": "Purified Gem",
+        "url": "https://cdn.leekduck.com/assets/img/items/Purified Gem.png",
+        "type": "item"
+      }
+    ],
+    "expiration": "2025-11-17 23:59:59 -0800"
+  },
+  {
+    "code": "FENDIxFRGMTxPOKEMON",
+    "title": "FENDI x FRGMT x POK\u00c9MON Hoodie Avatar Item",
+    "description": "Trainers can redeem this code to get an exclusive FENDI x FRGMT x POK\u00c9MON hoodie avatar item. (This code should have expired on January 4, 2025 but it appears to still work.)",
+    "redemption_url": "https://store.pokemongo.com/offer-redemption?passcode=FENDIxFRGMTxPOKEMON",
+    "rewards": [
+      {
+        "name": "FENDI x FRGMT x POK\u00c9MON hoodie",
+        "url": "https://cdn.leekduck.com/assets/img/avatar_items/n_shirt_partneritemsjan2024hoodie_0_icon.png",
+        "type": "item"
+      }
+    ],
+    "expiration": "2026-01-04 23:59:59 -0800"
+  }
+]
