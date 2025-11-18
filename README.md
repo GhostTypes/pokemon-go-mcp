@@ -1,102 +1,150 @@
-# Pokemon Go MCP Server
+<div align="center">
+  <h1>Pokemon Go MCP Server</h1>
+  <p>A comprehensive Model Context Protocol (MCP) server providing real-time Pokemon Go data including events, raids, research tasks, egg hatches, and Team Rocket lineups</p>
+</div>
 
-A comprehensive Model Context Protocol (MCP) server that provides real-time Pokemon Go data including events, raids, research tasks, egg hatches, and Team Rocket lineups.
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.10+-blue?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.10+">
+  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="MIT License">
+  <img src="https://img.shields.io/badge/MCP-Compatible-purple?style=for-the-badge" alt="MCP Compatible">
+  <img src="https://img.shields.io/badge/Platform-Linux%20%7C%20macOS%20%7C%20Windows-lightgrey?style=for-the-badge" alt="Platform Support">
+</p>
 
-## 🌟 Features
+---
 
-### 📅 Events
-- **Current Events**: Get all active and upcoming Pokemon Go events
-- **Event Details**: Detailed information about specific events including Community Days
-- **Event Spawns**: See which Pokemon are spawning more frequently
-- **Event Bonuses**: Track active XP, Stardust, and other bonuses
-- **Community Day Info**: Specialized Community Day information with featured Pokemon and exclusive moves
+<div align="center">
+  <h2>Feature Overview</h2>
+</div>
 
-### ⚔️ Raids
-- **Current Raid Bosses**: Complete list of all raid bosses organized by tier
-- **Shiny Raids**: Filter raids to show only shiny-eligible bosses
-- **Raid Search**: Find specific Pokemon in raids
-- **Type Filtering**: Get raids by Pokemon type (Fire, Water, etc.)
-- **Weather Boosted**: Find raids boosted by current weather conditions
-- **Raid Recommendations**: Smart recommendations based on your priorities
+<div align="center">
+<table>
+  <tr>
+    <th>Category</th>
+    <th>Features</th>
+    <th>Key Capabilities</th>
+  </tr>
+  <tr>
+    <td><strong>Events</strong></td>
+    <td>Current Events, Event Details, Community Days</td>
+    <td>Real-time event tracking, spawn data, bonuses, exclusive moves</td>
+  </tr>
+  <tr>
+    <td><strong>Raids</strong></td>
+    <td>Raid Bosses, Tier Filtering, Shiny Tracking</td>
+    <td>Complete raid listings, type filtering, weather boost detection</td>
+  </tr>
+  <tr>
+    <td><strong>Research</strong></td>
+    <td>Field Tasks, Reward Tracking, Task Filtering</td>
+    <td>Task discovery, shiny rewards, easy completion paths</td>
+  </tr>
+  <tr>
+    <td><strong>Eggs</strong></td>
+    <td>Egg Pools, Distance Filtering, Shiny Tracking</td>
+    <td>Distance-based filtering, regional exclusives, Adventure Sync rewards</td>
+  </tr>
+  <tr>
+    <td><strong>Team Rocket</strong></td>
+    <td>Lineups, Shadow Pokemon, Encounter Rewards</td>
+    <td>Complete trainer lineups, type effectiveness, shiny shadows</td>
+  </tr>
+  <tr>
+    <td><strong>Cross-Platform</strong></td>
+    <td>Universal Search, Daily Priorities, Status</td>
+    <td>Multi-source search, curated recommendations, cache management</td>
+  </tr>
+</table>
+</div>
 
-### 🔬 Research
-- **Field Research Tasks**: Complete list of current research tasks and rewards
-- **Reward Search**: Find tasks that reward specific Pokemon
-- **Shiny Research**: Tasks that can reward shiny Pokemon
-- **Easy Tasks**: Quick-completion tasks for efficient farming
-- **Task Type Filtering**: Filter by catch, battle, spin, etc.
-- **Smart Recommendations**: Personalized task recommendations
+---
 
-### 🥚 Egg Hatches
-- **Egg Pool Data**: All Pokemon currently hatching from eggs
-- **Distance Filtering**: Filter by 2km, 5km, 10km, etc.
-- **Shiny Egg Hatches**: Pokemon that can hatch shiny
-- **Regional Pokemon**: Region-exclusive Pokemon from eggs
-- **Gift Exchange**: 7km egg Pokemon from friends
-- **Adventure Sync**: Weekly walking reward Pokemon
-- **Incubation Strategy**: Smart recommendations for egg prioritization
+<div align="center">
+  <h2>Quick Start</h2>
+</div>
 
-### 🚀 Team Rocket Lineups
-- **Current Lineups**: All Team Rocket trainer lineups with Pokemon options
-- **Shadow Pokemon**: Detailed information about Shadow Pokemon types and weaknesses
-- **Encounter Rewards**: Find trainers that offer specific Pokemon as encounter rewards
-- **Type Specialization**: Filter trainers by their Pokemon type specialty
-- **Shiny Shadow Pokemon**: Find all Shadow Pokemon that can be shiny
-- **Battle Effectiveness**: Calculate type effectiveness against specific Shadow Pokemon
-
-### 🔍 Cross-Platform Tools
-- **Universal Shiny Search**: Find all available shiny Pokemon across all sources  
-- **Pokemon Finder**: Search for any Pokemon across events, raids, research, and eggs
-- **Daily Priorities**: Curated daily recommendations based on active content
-- **Server Status**: Data freshness and cache information
-
-## 🚀 Quick Start
+<div align="center">
+<table>
+  <tr>
+    <th>Step</th>
+    <th>Command</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><strong>1. Clone</strong></td>
+    <td><code>git clone &lt;repository-url&gt;</code></td>
+    <td>Clone the repository</td>
+  </tr>
+  <tr>
+    <td><strong>2. Navigate</strong></td>
+    <td><code>cd pokemon-go-mcp</code></td>
+    <td>Enter project directory</td>
+  </tr>
+  <tr>
+    <td><strong>3. Install (uv)</strong></td>
+    <td><code>uv sync</code></td>
+    <td>Install with uv package manager (recommended)</td>
+  </tr>
+  <tr>
+    <td><strong>3. Install (pip)</strong></td>
+    <td><code>pip install -e .</code></td>
+    <td>Install with pip</td>
+  </tr>
+  <tr>
+    <td><strong>4. Run</strong></td>
+    <td><code>uv run python server.py</code></td>
+    <td>Start the MCP server</td>
+  </tr>
+</table>
+</div>
 
 ### Prerequisites
+
 - Python 3.10 or higher
 - `uv` package manager (recommended) or `pip`
 
-### Installation
+---
 
-1. **Clone and setup:**
-   ```bash
-   git clone <repository-url>
-   cd pogo-mcp-server
-   ```
+<div align="center">
+  <h2>Integration Options</h2>
+</div>
 
-2. **Using uv (recommended):**
-   ```bash
-   uv sync
-   ```
+<div align="center">
+<table>
+  <tr>
+    <th>Platform</th>
+    <th>Configuration</th>
+    <th>Notes</th>
+  </tr>
+  <tr>
+    <td><strong>Claude Desktop</strong></td>
+    <td>Add to <code>claude_desktop_config.json</code></td>
+    <td>Requires absolute path to server.py</td>
+  </tr>
+  <tr>
+    <td><strong>Claude Code</strong></td>
+    <td>Use <code>claude mcp add</code> command</td>
+    <td>Or create <code>.mcp.json</code> manually</td>
+  </tr>
+  <tr>
+    <td><strong>VS Code</strong></td>
+    <td>Create <code>.vscode/mcp.json</code></td>
+    <td>Supports stdio and HTTP transports</td>
+  </tr>
+  <tr>
+    <td><strong>n8n Workflows</strong></td>
+    <td>Install <code>n8n-nodes-mcp</code></td>
+    <td>HTTP transport recommended</td>
+  </tr>
+  <tr>
+    <td><strong>Docker</strong></td>
+    <td>Use <code>docker build</code> and <code>docker run</code></td>
+    <td>Supports HTTP/SSE transports</td>
+  </tr>
+</table>
+</div>
 
-3. **Using pip:**
-   ```bash
-   pip install -e .
-   ```
+### Claude Desktop Configuration
 
-### Running the Server
-
-1. **Start the server:**
-   ```bash
-   # Using uv
-   uv run python server.py
-   
-   # Using pip
-   python server.py
-   
-   # Direct module execution
-   python -m pogo_mcp.server
-   ```
-
-2. **For development with auto-reload:**
-   ```bash
-   uv run mcp dev server.py
-   ```
-
-### Integration Options
-
-#### Claude Desktop
-Add to your Claude Desktop configuration:
 ```json
 {
   "mcpServers": {
@@ -108,8 +156,8 @@ Add to your Claude Desktop configuration:
 }
 ```
 
-#### Claude Code
-Add the server using the built-in command:
+### Claude Code Configuration
+
 ```bash
 # Quick add with claude mcp command
 claude mcp add pokemon-go uv run python /path/to/pokemon-go-mcp/pogo_mcp/server.py
@@ -118,8 +166,10 @@ claude mcp add pokemon-go uv run python /path/to/pokemon-go-mcp/pogo_mcp/server.
 echo '{"servers": {"pokemon-go": {"command": "uv", "args": ["run", "python", "/path/to/pokemon-go-mcp/pogo_mcp/server.py"]}}}' > .mcp.json
 ```
 
-#### VS Code
+### VS Code Configuration
+
 Create `.vscode/mcp.json` in your workspace:
+
 ```json
 {
   "servers": {
@@ -136,8 +186,7 @@ Create `.vscode/mcp.json` in your workspace:
 }
 ```
 
-#### n8n Workflows
-Install the MCP community node and configure:
+### n8n Workflows
 
 1. **Install n8n MCP Node:**
    ```bash
@@ -146,9 +195,9 @@ Install the MCP community node and configure:
    ```
 
 2. **Configure MCP Client Node:**
-   - **Connection Type:** HTTP Streamable (Recommended)
-   - **URL:** `http://localhost:8000` (when running with `MCP_TRANSPORT=http`)
-   - **Headers:** Optional authentication headers if needed
+   - Connection Type: HTTP Streamable (Recommended)
+   - URL: `http://localhost:8000` (when running with `MCP_TRANSPORT=http`)
+   - Headers: Optional authentication headers if needed
 
 3. **Docker Deployment for n8n:**
    ```bash
@@ -157,115 +206,310 @@ Install the MCP community node and configure:
    docker run -d -p 8000:8000 -e MCP_TRANSPORT=http pokemon-go-mcp
    ```
 
-#### HTTP/SSE Transport Modes
-For automation tools and Docker deployments:
-```bash
-# HTTP transport (recommended for web integrations)
-MCP_TRANSPORT=http MCP_PORT=8000 python pogo_mcp/server.py
+### Transport Modes
 
-# SSE transport (for legacy systems)
-MCP_TRANSPORT=sse MCP_PORT=8000 python pogo_mcp/server.py
+<div align="center">
+<table>
+  <tr>
+    <th>Transport</th>
+    <th>Command</th>
+    <th>Use Case</th>
+  </tr>
+  <tr>
+    <td><strong>HTTP</strong></td>
+    <td><code>MCP_TRANSPORT=http MCP_PORT=8000 python pogo_mcp/server.py</code></td>
+    <td>Web integrations, automation tools</td>
+  </tr>
+  <tr>
+    <td><strong>SSE</strong></td>
+    <td><code>MCP_TRANSPORT=sse MCP_PORT=8000 python pogo_mcp/server.py</code></td>
+    <td>Legacy systems</td>
+  </tr>
+  <tr>
+    <td><strong>stdio</strong></td>
+    <td><code>python pogo_mcp/server.py</code></td>
+    <td>Default, Claude Desktop</td>
+  </tr>
+</table>
+</div>
 
-# Default stdio transport
-python pogo_mcp/server.py
-```
-   
-## Showcase
-![image](https://github.com/user-attachments/assets/6f6c359d-52a9-4412-973a-0fc0542d0cdb)
-![image](https://github.com/user-attachments/assets/a465c6f6-beeb-421d-bbd3-9d2acad450b6)
-![image](https://github.com/user-attachments/assets/8de4533d-f9b2-4463-ba25-61b75ce85785)
+---
 
+<div align="center">
+  <h2>Showcase</h2>
+</div>
 
-## 🛠️ Available Tools
+<div align="center">
 
-### Event Tools
-- `get_current_events` - List all active and upcoming events
-- `get_event_details` - Detailed information about a specific event  
-- `get_community_day_info` - Community Day specifics
-- `get_event_spawns` - Pokemon spawning more frequently
-- `get_event_bonuses` - Active event bonuses
-- `search_events` - Search events by name/type
+![Pokemon Go MCP Server Showcase 1](https://github.com/user-attachments/assets/6f6c359d-52a9-4412-973a-0fc0542d0cdb)
 
-### Raid Tools
-- `get_current_raids` - All current raid bosses by tier
-- `get_raid_by_tier` - Filter raids by tier (1, 3, 5, Mega)
-- `get_shiny_raids` - Only shiny-eligible raid bosses
-- `search_raid_boss` - Find specific Pokemon in raids
-- `get_raids_by_type` - Filter by Pokemon type
-- `get_weather_boosted_raids` - Raids boosted by weather
-- `get_raid_recommendations` - Smart raid recommendations
+![Pokemon Go MCP Server Showcase 2](https://github.com/user-attachments/assets/a465c6f6-beeb-421d-bbd3-9d2acad450b6)
 
-### Research Tools  
-- `get_current_research` - All field research tasks
-- `search_research_by_reward` - Find tasks by Pokemon reward
-- `get_research_by_task_type` - Filter by task type
-- `get_shiny_research_rewards` - Tasks with shiny rewards
-- `get_easy_research_tasks` - Quick-completion tasks
-- `search_research_tasks` - Search tasks by description
-- `get_research_recommendations` - Personalized recommendations
+![Pokemon Go MCP Server Showcase 3](https://github.com/user-attachments/assets/8de4533d-f9b2-4463-ba25-61b75ce85785)
 
-### Egg Tools
-- `get_egg_hatches` - All Pokemon from eggs  
-- `get_egg_hatches_by_distance` - Filter by egg distance
-- `get_shiny_egg_hatches` - Shiny-eligible egg Pokemon
-- `search_egg_pokemon` - Find specific Pokemon in eggs
-- `get_regional_egg_pokemon` - Region-exclusive egg Pokemon
-- `get_gift_exchange_pokemon` - 7km gift egg Pokemon
-- `get_route_gift_pokemon` - 7km route gift egg Pokemon
-- `get_adventure_sync_rewards` - Adventure Sync rewards
-- `get_egg_recommendations` - Smart incubation strategy
+</div>
 
-### Team Rocket Tools
-- `get_team_rocket_lineups` - All current Team Rocket trainer lineups
-- `search_rocket_by_pokemon` - Find trainers using specific Pokemon
-- `get_shiny_shadow_pokemon` - All Shadow Pokemon that can be shiny
-- `get_rocket_encounters` - Pokemon available as encounter rewards
-- `get_rocket_trainers_by_type` - Filter trainers by Pokemon type
-- `calculate_pokemon_weakness` - Type effectiveness against Shadow Pokemon
-- `get_rocket_trainer_details` - Detailed information about a trainer
+---
 
-### Cross-Platform Tools
-- `get_all_shiny_pokemon` - All shiny Pokemon across sources
-- `search_pokemon_everywhere` - Universal Pokemon search
-- `get_daily_priorities` - Daily activity recommendations  
-- `get_server_status` - Server and data status
-- `clear_cache` - Force fresh data retrieval
+<div align="center">
+  <h2>Available Tools</h2>
+</div>
 
-## 📊 Example Usage
+<div align="center">
+<table>
+  <tr>
+    <th>Tool Name</th>
+    <th>Category</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><code>get_current_events</code></td>
+    <td>Events</td>
+    <td>List all active and upcoming events</td>
+  </tr>
+  <tr>
+    <td><code>get_event_details</code></td>
+    <td>Events</td>
+    <td>Detailed information about a specific event</td>
+  </tr>
+  <tr>
+    <td><code>get_community_day_info</code></td>
+    <td>Events</td>
+    <td>Community Day specifics and featured Pokemon</td>
+  </tr>
+  <tr>
+    <td><code>get_event_spawns</code></td>
+    <td>Events</td>
+    <td>Pokemon spawning more frequently during events</td>
+  </tr>
+  <tr>
+    <td><code>get_event_bonuses</code></td>
+    <td>Events</td>
+    <td>Active event bonuses (XP, Stardust, etc.)</td>
+  </tr>
+  <tr>
+    <td><code>search_events</code></td>
+    <td>Events</td>
+    <td>Search events by name or type</td>
+  </tr>
+  <tr>
+    <td><code>get_current_raids</code></td>
+    <td>Raids</td>
+    <td>All current raid bosses by tier</td>
+  </tr>
+  <tr>
+    <td><code>get_raid_by_tier</code></td>
+    <td>Raids</td>
+    <td>Filter raids by tier (1, 3, 5, Mega)</td>
+  </tr>
+  <tr>
+    <td><code>get_shiny_raids</code></td>
+    <td>Raids</td>
+    <td>Only shiny-eligible raid bosses</td>
+  </tr>
+  <tr>
+    <td><code>search_raid_boss</code></td>
+    <td>Raids</td>
+    <td>Find specific Pokemon in raids</td>
+  </tr>
+  <tr>
+    <td><code>get_raids_by_type</code></td>
+    <td>Raids</td>
+    <td>Filter raids by Pokemon type</td>
+  </tr>
+  <tr>
+    <td><code>get_weather_boosted_raids</code></td>
+    <td>Raids</td>
+    <td>Raids boosted by weather conditions</td>
+  </tr>
+  <tr>
+    <td><code>get_raid_recommendations</code></td>
+    <td>Raids</td>
+    <td>Smart raid recommendations based on priorities</td>
+  </tr>
+  <tr>
+    <td><code>get_current_research</code></td>
+    <td>Research</td>
+    <td>All field research tasks and rewards</td>
+  </tr>
+  <tr>
+    <td><code>search_research_by_reward</code></td>
+    <td>Research</td>
+    <td>Find tasks by Pokemon reward</td>
+  </tr>
+  <tr>
+    <td><code>get_research_by_task_type</code></td>
+    <td>Research</td>
+    <td>Filter by task type (catch, battle, spin, etc.)</td>
+  </tr>
+  <tr>
+    <td><code>get_shiny_research_rewards</code></td>
+    <td>Research</td>
+    <td>Tasks with shiny reward potential</td>
+  </tr>
+  <tr>
+    <td><code>get_easy_research_tasks</code></td>
+    <td>Research</td>
+    <td>Quick-completion tasks for efficient farming</td>
+  </tr>
+  <tr>
+    <td><code>search_research_tasks</code></td>
+    <td>Research</td>
+    <td>Search tasks by description</td>
+  </tr>
+  <tr>
+    <td><code>get_research_recommendations</code></td>
+    <td>Research</td>
+    <td>Personalized research task recommendations</td>
+  </tr>
+  <tr>
+    <td><code>get_egg_hatches</code></td>
+    <td>Eggs</td>
+    <td>All Pokemon currently hatching from eggs</td>
+  </tr>
+  <tr>
+    <td><code>get_egg_hatches_by_distance</code></td>
+    <td>Eggs</td>
+    <td>Filter by egg distance (2km, 5km, 10km, etc.)</td>
+  </tr>
+  <tr>
+    <td><code>get_shiny_egg_hatches</code></td>
+    <td>Eggs</td>
+    <td>Shiny-eligible egg Pokemon</td>
+  </tr>
+  <tr>
+    <td><code>search_egg_pokemon</code></td>
+    <td>Eggs</td>
+    <td>Find specific Pokemon in egg pools</td>
+  </tr>
+  <tr>
+    <td><code>get_regional_egg_pokemon</code></td>
+    <td>Eggs</td>
+    <td>Region-exclusive Pokemon from eggs</td>
+  </tr>
+  <tr>
+    <td><code>get_gift_exchange_pokemon</code></td>
+    <td>Eggs</td>
+    <td>7km gift egg Pokemon from friends</td>
+  </tr>
+  <tr>
+    <td><code>get_route_gift_pokemon</code></td>
+    <td>Eggs</td>
+    <td>7km route gift egg Pokemon</td>
+  </tr>
+  <tr>
+    <td><code>get_adventure_sync_rewards</code></td>
+    <td>Eggs</td>
+    <td>Adventure Sync weekly walking rewards</td>
+  </tr>
+  <tr>
+    <td><code>get_egg_recommendations</code></td>
+    <td>Eggs</td>
+    <td>Smart incubation strategy recommendations</td>
+  </tr>
+  <tr>
+    <td><code>get_team_rocket_lineups</code></td>
+    <td>Team Rocket</td>
+    <td>All current Team Rocket trainer lineups</td>
+  </tr>
+  <tr>
+    <td><code>search_rocket_by_pokemon</code></td>
+    <td>Team Rocket</td>
+    <td>Find trainers using specific Pokemon</td>
+  </tr>
+  <tr>
+    <td><code>get_shiny_shadow_pokemon</code></td>
+    <td>Team Rocket</td>
+    <td>All Shadow Pokemon that can be shiny</td>
+  </tr>
+  <tr>
+    <td><code>get_rocket_encounters</code></td>
+    <td>Team Rocket</td>
+    <td>Pokemon available as encounter rewards</td>
+  </tr>
+  <tr>
+    <td><code>get_rocket_trainers_by_type</code></td>
+    <td>Team Rocket</td>
+    <td>Filter trainers by Pokemon type specialty</td>
+  </tr>
+  <tr>
+    <td><code>calculate_pokemon_weakness</code></td>
+    <td>Team Rocket</td>
+    <td>Type effectiveness against Shadow Pokemon</td>
+  </tr>
+  <tr>
+    <td><code>get_rocket_trainer_details</code></td>
+    <td>Team Rocket</td>
+    <td>Detailed information about a specific trainer</td>
+  </tr>
+  <tr>
+    <td><code>get_all_shiny_pokemon</code></td>
+    <td>Cross-Platform</td>
+    <td>All shiny Pokemon across all sources</td>
+  </tr>
+  <tr>
+    <td><code>search_pokemon_everywhere</code></td>
+    <td>Cross-Platform</td>
+    <td>Universal Pokemon search across all data</td>
+  </tr>
+  <tr>
+    <td><code>get_daily_priorities</code></td>
+    <td>Cross-Platform</td>
+    <td>Curated daily activity recommendations</td>
+  </tr>
+  <tr>
+    <td><code>get_server_status</code></td>
+    <td>Cross-Platform</td>
+    <td>Server status and data freshness information</td>
+  </tr>
+  <tr>
+    <td><code>clear_cache</code></td>
+    <td>Cross-Platform</td>
+    <td>Force fresh data retrieval from sources</td>
+  </tr>
+</table>
+</div>
+
+---
+
+<div align="center">
+  <h2>Example Usage</h2>
+</div>
 
 ### Get Today's Priorities
-```
-Use the get_daily_priorities tool to get curated recommendations for:
+
+Use the `get_daily_priorities` tool to get curated recommendations for:
 - Active events to participate in
-- Priority raids for shiny hunting  
+- Priority raids for shiny hunting
 - Easy research tasks with valuable rewards
 - Optimal egg hatching strategy
-```
 
 ### Find a Specific Pokemon
-```
-Use search_pokemon_everywhere with "Dratini" to find:
+
+Use `search_pokemon_everywhere` with "Dratini" to find:
 - If it's featured in any current events
 - Whether it's available as a raid boss
 - Which research tasks reward it
 - If it can be hatched from eggs
 - Shiny availability across all sources
-```
 
 ### Plan Your Shiny Hunt
-```
-Use get_all_shiny_pokemon to see every shiny currently available, then:
-- get_shiny_raids for raid targets
-- get_shiny_research_rewards for research tasks  
-- get_shiny_egg_hatches for egg planning
-- get_route_gift_pokemon for special route gift opportunities
-- get_shiny_shadow_pokemon for Shadow Pokemon
-```
 
-## 🏗️ Architecture
+Use `get_all_shiny_pokemon` to see every shiny currently available, then:
+- `get_shiny_raids` for raid targets
+- `get_shiny_research_rewards` for research tasks
+- `get_shiny_egg_hatches` for egg planning
+- `get_route_gift_pokemon` for special route gift opportunities
+- `get_shiny_shadow_pokemon` for Shadow Pokemon
+
+---
+
+<div align="center">
+  <h2>Architecture</h2>
+</div>
 
 ```
-pogo-mcp-server/
+pokemon-go-mcp/
 ├── pogo_mcp/
 │   ├── __init__.py          # Package initialization
 │   ├── server.py            # Main MCP server with cross-cutting tools
@@ -273,7 +517,7 @@ pogo-mcp-server/
 │   ├── types.py             # Type definitions and data classes
 │   ├── utils.py             # Utility functions and formatters
 │   ├── events.py            # Event-related tools
-│   ├── raids.py             # Raid-related tools  
+│   ├── raids.py             # Raid-related tools
 │   ├── research.py          # Research-related tools
 │   ├── eggs.py              # Egg-related tools
 │   └── rocket_lineups.py    # Team Rocket-related tools
@@ -284,30 +528,61 @@ pogo-mcp-server/
 └── README.md                # This file
 ```
 
-### Key Components
+<div align="center">
+<table>
+  <tr>
+    <th>Component</th>
+    <th>Technology</th>
+    <th>Purpose</th>
+  </tr>
+  <tr>
+    <td><strong>FastMCP</strong></td>
+    <td>MCP Framework</td>
+    <td>Modern MCP server framework for easy tool registration</td>
+  </tr>
+  <tr>
+    <td><strong>Custom Scraper</strong></td>
+    <td>Python</td>
+    <td>Built-in scraper that collects and saves data to local JSON files</td>
+  </tr>
+  <tr>
+    <td><strong>Local Data Client</strong></td>
+    <td>Python</td>
+    <td>Reads data from local JSON files with smart caching</td>
+  </tr>
+  <tr>
+    <td><strong>Type Safety</strong></td>
+    <td>Python Type Hints</td>
+    <td>Full type hints and data validation throughout codebase</td>
+  </tr>
+  <tr>
+    <td><strong>Modular Design</strong></td>
+    <td>Python Modules</td>
+    <td>Separate modules for each data domain (events, raids, etc.)</td>
+  </tr>
+</table>
+</div>
 
-- **FastMCP**: Modern MCP server framework for easy tool registration
-- **Custom Scraper**: Built-in scraper that collects and saves data to local JSON files
-- **Local Data Client**: Reads data from local JSON files with smart caching
-- **Type Safety**: Full type hints and data validation
-- **Modular Design**: Separate modules for each data domain
-- **Comprehensive Utilities**: Rich formatting and search capabilities
+---
 
-## 🧪 Development
+<div align="center">
+  <h2>Development</h2>
+</div>
 
 ### Setup Development Environment
+
 ```bash
 # Clone repository
 git clone <repository-url>
-cd pogo-mcp-server
+cd pokemon-go-mcp
 
-# Install with development dependencies  
+# Install with development dependencies
 uv sync --all-extras --dev
 
 # Code formatting
 ruff format .
 
-# Linting  
+# Linting
 ruff check .
 
 # Type checking
@@ -315,16 +590,31 @@ pyright
 ```
 
 ### Testing
-```bash
-# Run all tests
-python run_tests.py
 
-# Run with coverage
-pytest --cov=pogo_mcp
+<div align="center">
+<table>
+  <tr>
+    <th>Command</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><code>python run_tests.py</code></td>
+    <td>Run all tests</td>
+  </tr>
+  <tr>
+    <td><code>pytest --cov=pogo_mcp</code></td>
+    <td>Run tests with coverage report</td>
+  </tr>
+  <tr>
+    <td><code>pytest tests/test_events_parsing.py</code></td>
+    <td>Test specific module</td>
+  </tr>
+</table>
+</div>
 
-# Test specific module
-pytest tests/test_events_parsing.py
-```
-## 📝 License
+---
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+<div align="center">
+  <h2>License</h2>
+  <p>This project is licensed under the MIT License - see the <a href="LICENSE">LICENSE</a> file for details.</p>
+</div>
