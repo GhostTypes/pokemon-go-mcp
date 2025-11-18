@@ -42,6 +42,44 @@ jobs:
         env:
           PYTHONPATH: ${{ github.workspace }}
 
+      - name: Validate scraping succeeded
+        run: |
+          echo "Validating that scraping was successful..."
+
+          # Check if data files exist
+          if [ ! -f data/events.json ] || [ ! -f data/raids.json ] || [ ! -f data/research.json ] || [ ! -f data/eggs.json ]; then
+            echo "❌ ERROR: One or more data files were not created"
+            echo "This indicates a critical failure in the scraping process"
+            exit 1
+          fi
+
+          # Count total items across all files
+          TOTAL_ITEMS=0
+          for file in data/events.json data/raids.json data/research.json data/eggs.json data/rocket-lineups.json data/promo-codes.json; do
+            if [ -f "$file" ]; then
+              COUNT=$(python -c "import sys, json; data=json.load(open('$file')); print(len(data) if isinstance(data, list) else 0)")
+              TOTAL_ITEMS=$((TOTAL_ITEMS + COUNT))
+              echo "  $file: $COUNT items"
+            fi
+          done
+
+          echo "Total items scraped: $TOTAL_ITEMS"
+
+          # Fail if no data was scraped (indicates LeekDuck is down or blocking requests)
+          if [ $TOTAL_ITEMS -eq 0 ]; then
+            echo ""
+            echo "❌ ERROR: Scraping failed - no data was retrieved from any source"
+            echo "This typically indicates that:"
+            echo "  - LeekDuck.com is down or returning errors (500, 503, etc.)"
+            echo "  - LeekDuck.com is blocking our requests"
+            echo "  - Network connectivity issues"
+            echo ""
+            echo "Please check the scraper logs above for HTTP error details"
+            exit 1
+          fi
+
+          echo "✅ Validation passed: Successfully scraped $TOTAL_ITEMS items"
+
       - name: Verify scraped data
         run: |
           echo "Checking scraped data files..."
