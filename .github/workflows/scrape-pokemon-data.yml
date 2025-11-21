@@ -89,16 +89,28 @@ jobs:
           echo "Research count: $(cat data/research.json | python -c "import sys, json; print(len(json.load(sys.stdin)))")" || echo "research.json not found"
           echo "Eggs count: $(cat data/eggs.json | python -c "import sys, json; print(len(json.load(sys.stdin)))")" || echo "eggs.json not found"
 
+      - name: Generate README with statistics
+        run: |
+          cd data
+          python3 ../generate_data_readme.py
+          cd ..
+
       - name: Clean up for data branch
         run: |
-          # Move data files to temp location
+          # Move data files and README to temp location
           mv data ../temp_data
+
+          # Also move the README generator script
+          mv generate_data_readme.py ../temp_readme_script.py
 
           # Clean repository (keep .git)
           find . -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
 
-          # Move data files back
+          # Move data files and README back
           mv ../temp_data/* .
+
+          # Restore the README generator script (it will be in the data branch)
+          mv ../temp_readme_script.py generate_data_readme.py
 
           # Clean up temp directory
           rmdir ../temp_data
