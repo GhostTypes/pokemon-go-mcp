@@ -122,8 +122,59 @@ jobs:
             exit 0
           fi
 
-          # Create commit with timestamp
-          git commit -m "Update Pokemon Go data - $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+          # Generate statistics for commit message body
+          STATS_BODY=""
+
+          # Count items in each data file
+          if [ -f events.json ]; then
+            EVENTS_COUNT=$(python3 -c "import json; print(len(json.load(open('events.json'))))" 2>/dev/null || echo "0")
+            if [ "$EVENTS_COUNT" != "0" ]; then
+              STATS_BODY="${STATS_BODY}- ${EVENTS_COUNT} events\n"
+            fi
+          fi
+
+          if [ -f raids.json ]; then
+            RAIDS_COUNT=$(python3 -c "import json; print(len(json.load(open('raids.json'))))" 2>/dev/null || echo "0")
+            if [ "$RAIDS_COUNT" != "0" ]; then
+              STATS_BODY="${STATS_BODY}- ${RAIDS_COUNT} raids\n"
+            fi
+          fi
+
+          if [ -f research.json ]; then
+            RESEARCH_COUNT=$(python3 -c "import json; print(len(json.load(open('research.json'))))" 2>/dev/null || echo "0")
+            if [ "$RESEARCH_COUNT" != "0" ]; then
+              STATS_BODY="${STATS_BODY}- ${RESEARCH_COUNT} research\n"
+            fi
+          fi
+
+          if [ -f eggs.json ]; then
+            EGGS_COUNT=$(python3 -c "import json; print(len(json.load(open('eggs.json'))))" 2>/dev/null || echo "0")
+            if [ "$EGGS_COUNT" != "0" ]; then
+              STATS_BODY="${STATS_BODY}- ${EGGS_COUNT} eggs\n"
+            fi
+          fi
+
+          if [ -f rocket-lineups.json ]; then
+            ROCKET_COUNT=$(python3 -c "import json; print(len(json.load(open('rocket-lineups.json'))))" 2>/dev/null || echo "0")
+            if [ "$ROCKET_COUNT" != "0" ]; then
+              STATS_BODY="${STATS_BODY}- ${ROCKET_COUNT} rocket lineups\n"
+            fi
+          fi
+
+          if [ -f promo-codes.json ]; then
+            PROMO_COUNT=$(python3 -c "import json; print(len(json.load(open('promo-codes.json'))))" 2>/dev/null || echo "0")
+            if [ "$PROMO_COUNT" != "0" ]; then
+              STATS_BODY="${STATS_BODY}- ${PROMO_COUNT} promo codes\n"
+            fi
+          fi
+
+          # Create commit with timestamp as subject and stats as body
+          TIMESTAMP=$(date -u '+%Y-%m-%d %H:%M:%S UTC')
+          COMMIT_MSG="Update Pokemon Go data - ${TIMESTAMP}
+
+$(echo -e "${STATS_BODY}")"
+
+          git commit -m "$COMMIT_MSG"
 
       - name: Push to data branch
         uses: ad-m/github-push-action@master
