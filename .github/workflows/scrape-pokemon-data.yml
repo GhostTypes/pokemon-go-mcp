@@ -170,10 +170,7 @@ jobs:
 
           # Create commit with timestamp as subject and stats as body
           TIMESTAMP=$(date -u '+%Y-%m-%d %H:%M:%S UTC')
-          COMMIT_MSG="Update Pokemon Go data - ${TIMESTAMP}
-
-$(echo -e "${STATS_BODY}")"
-
+          printf -v COMMIT_MSG "Update Pokemon Go data - %s\n\n%b" "$TIMESTAMP" "$STATS_BODY"
           git commit -m "$COMMIT_MSG"
 
       - name: Push to data branch
