@@ -5,6 +5,7 @@ Pokemon Go Team Rocket Lineups Scraper Module
 Handles scraping and parsing of Team Rocket lineup data from leekduck.com
 """
 
+import json
 import logging
 from typing import Dict, List
 from bs4 import BeautifulSoup
@@ -28,7 +29,6 @@ async def scrape_rocket_lineups(scraper, base_url: str) -> List[Dict]:
     if not scraper._should_fetch(cache_file):
         logger.info("Using cached rocket lineups data")
         with open(cache_file, 'r', encoding='utf-8') as f:
-            import json
             return json.load(f)
 
     try:

@@ -5,6 +5,8 @@ Pokemon Go Events Scraper Module
 Handles scraping and parsing of event data from leekduck.com
 """
 
+import asyncio
+import json
 import logging
 from typing import Dict, List, Optional, Any
 from bs4 import BeautifulSoup
@@ -42,7 +44,6 @@ async def scrape_events(scraper, base_url: str) -> List[Dict]:
     if not scraper._should_fetch(cache_file):
         logger.info("Using cached events data")
         with open(cache_file, 'r', encoding='utf-8') as f:
-            import json
             return json.load(f)
 
     try:
@@ -71,7 +72,8 @@ async def scrape_events(scraper, base_url: str) -> List[Dict]:
         all_events = []
         seen_event_ids = set()  # Track event IDs to prevent duplicates
 
-        # Process both current and upcoming events
+        # Process both current and upcoming events - collect first, fetch later
+        events_to_fetch = []
         for category in ['current', 'upcoming']:
             event_links = soup.select(f'div.events-list.{category}-events a.event-item-link')
 
@@ -89,12 +91,14 @@ async def scrape_events(scraper, base_url: str) -> List[Dict]:
                         if event_id:
                             seen_event_ids.add(event_id)
 
-                        # Fetch detailed event data from individual event page
-                        await fetch_event_details(scraper, event)
-                        all_events.append(event)
+                        events_to_fetch.append(event)
                 except Exception as e:
                     logger.warning(f"Error parsing event: {e}")
                     continue
+
+        # Batch fetch event details concurrently
+        await asyncio.gather(*[fetch_event_details(scraper, event) for event in events_to_fetch], return_exceptions=True)
+        all_events.extend(events_to_fetch)
 
         scraper._save_data(all_events, "events.json")
         return all_events

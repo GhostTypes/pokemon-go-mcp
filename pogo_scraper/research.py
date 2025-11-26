@@ -5,6 +5,7 @@ Pokemon Go Research Scraper Module
 Handles scraping and parsing of field research data from leekduck.com
 """
 
+import json
 import logging
 from typing import Dict, List, Optional, Any
 from bs4 import BeautifulSoup
@@ -20,7 +21,6 @@ async def scrape_research(scraper, base_url: str) -> List[Dict]:
     if not scraper._should_fetch(cache_file):
         logger.info("Using cached research data")
         with open(cache_file, 'r', encoding='utf-8') as f:
-            import json
             return json.load(f)
 
     try:
@@ -53,23 +53,18 @@ async def scrape_research(scraper, base_url: str) -> List[Dict]:
 def parse_research_task(item) -> Optional[Dict]:
     """Parse individual research task"""
     try:
-        task = {
-            'text': '',
-            'rewards': []
-        }
-
         # Task text (updated selector)
         text_elem = item.select_one('.task-text')
-        task['text'] = text_elem.get_text(strip=True) if text_elem else ""
+        task_text = text_elem.get_text(strip=True) if text_elem else ""
 
-        # Rewards (updated selector)
+        if not task_text:
+            return None
+
+        # Rewards (updated selector) - collect all at once
         reward_items = item.select('.reward')
-        for reward_item in reward_items:
-            reward = parse_research_reward(reward_item)
-            if reward:
-                task['rewards'].append(reward)
+        rewards = [r for r in (parse_research_reward(ri) for ri in reward_items) if r]
 
-        return task if task['text'] and task['rewards'] else None
+        return {'text': task_text, 'rewards': rewards} if rewards else None
 
     except Exception as e:
         logger.warning(f"Error parsing research task: {e}")
@@ -79,24 +74,21 @@ def parse_research_task(item) -> Optional[Dict]:
 def parse_research_reward(reward_item) -> Optional[Dict]:
     """Parse individual research reward"""
     try:
-        reward = {
-            'name': '',
-            'image': '',
-            'can_be_shiny': False
-        }
-
-        # Name (updated selector)
+        # Extract all elements upfront
         name_elem = reward_item.select_one('.reward-label span')
-        reward['name'] = name_elem.get_text(strip=True) if name_elem else ""
+        name = name_elem.get_text(strip=True) if name_elem else ""
 
-        # Image (updated selector)
+        if not name:
+            return None
+
         img_elem = reward_item.select_one('.reward-image')
-        reward['image'] = img_elem.get('src', '') if img_elem else ""
+        shiny_elem = reward_item.select_one('.shiny-icon')
 
-        # Shiny
-        reward['can_be_shiny'] = bool(reward_item.select_one('.shiny-icon'))
-
-        return reward if reward['name'] else None
+        return {
+            'name': name,
+            'image': img_elem.get('src', '') if img_elem else "",
+            'can_be_shiny': bool(shiny_elem)
+        }
 
     except Exception as e:
         logger.warning(f"Error parsing research reward: {e}")

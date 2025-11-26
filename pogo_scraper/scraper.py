@@ -85,19 +85,17 @@ class LeekDuckScraper:
         return cache_age > self.cache_duration
     
     def _save_data(self, data: Any, filename: str) -> None:
-        """Save data to JSON file"""
+        """Save data to JSON file - optimized single-pass write"""
         output_file = self.output_dir / filename
+        min_output_file = self.output_dir / filename.replace('.json', '.min.json')
 
+        # Write both files efficiently
         with open(output_file, 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
-        
-        # Also create minified version
-        min_filename = filename.replace('.json', '.min.json')
-        min_output_file = self.output_dir / min_filename
-        
+
         with open(min_output_file, 'w', encoding='utf-8') as f:
             json.dump(data, f, separators=(',', ':'), ensure_ascii=False)
-        
+
         logger.info(f"Saved {len(data) if isinstance(data, list) else 'data'} items to {output_file}")
     
     async def scrape_events(self) -> List[Dict]:

@@ -5,6 +5,7 @@ Pokemon Go Eggs Scraper Module
 Handles scraping and parsing of egg hatch data from leekduck.com
 """
 
+import json
 import logging
 from typing import Dict, List, Optional, Any
 from bs4 import BeautifulSoup
@@ -20,7 +21,6 @@ async def scrape_eggs(scraper, base_url: str) -> List[Dict]:
     if not scraper._should_fetch(cache_file):
         logger.info("Using cached eggs data")
         with open(cache_file, 'r', encoding='utf-8') as f:
-            import json
             return json.load(f)
 
     try:
@@ -79,32 +79,29 @@ async def scrape_eggs(scraper, base_url: str) -> List[Dict]:
 def parse_egg_item(item, egg_type: str, is_adventure_sync: bool, is_gift_exchange: bool, is_route_gift: bool = False) -> Optional[Dict]:
     """Parse individual egg item"""
     try:
+        # Extract all elements upfront
+        name_elem = item.select_one('span.name')
+        name = name_elem.get_text(strip=True) if name_elem else ""
+
+        if not name:
+            return None
+
+        img_elem = item.select_one('img')
+        shiny_elem = item.select_one('.shiny-icon')
+        regional_elem = item.select_one('.regional-icon')
+
         pokemon = {
-            'name': '',
+            'name': name,
             'eggType': egg_type,
             'isAdventureSync': is_adventure_sync,
-            'image': '',
-            'canBeShiny': False,
-            'combatPower': -1,  # Single CP value instead of range
-            'isRegional': False,
+            'image': img_elem.get('src', '') if img_elem else "",
+            'canBeShiny': bool(shiny_elem),
+            'combatPower': -1,
+            'isRegional': bool(regional_elem),
             'isGiftExchange': is_gift_exchange,
             'isRouteGift': is_route_gift,
-            'rarity': 1  # Default rarity
+            'rarity': 1
         }
-
-        # Name
-        name_elem = item.select_one('span.name')
-        pokemon['name'] = name_elem.get_text(strip=True) if name_elem else ""
-
-        # Image
-        img_elem = item.select_one('img')
-        pokemon['image'] = img_elem.get('src', '') if img_elem else ""
-
-        # Shiny
-        pokemon['canBeShiny'] = bool(item.select_one('.shiny-icon'))
-
-        # Regional
-        pokemon['isRegional'] = bool(item.select_one('.regional-icon'))
 
         # Rarity - Count the number of mini-egg icons
         rarity_elem = item.select_one('.rarity')
@@ -112,22 +109,17 @@ def parse_egg_item(item, egg_type: str, is_adventure_sync: bool, is_gift_exchang
             mini_eggs = rarity_elem.select('svg.mini-egg')
             pokemon['rarity'] = len(mini_eggs)
 
-        # Combat Power - Updated to correctly parse single CP values
+        # Combat Power - parse single CP value
         cp_elem = item.select_one('.cp-range')
         if cp_elem:
-            # Get the text content and extract the CP value
             cp_text = cp_elem.get_text(strip=True)
-            # The text is like "CP637", so we need to find where the number starts
             if cp_text.startswith('CP'):
-                cp_value_str = cp_text[2:]  # Remove "CP" prefix
                 try:
-                    cp_value = int(cp_value_str)
-                    # Store as single value
-                    pokemon['combatPower'] = cp_value
+                    pokemon['combatPower'] = int(cp_text[2:])
                 except ValueError:
-                    pass  # Keep default -1 value if parsing fails
+                    pass
 
-        return pokemon if pokemon['name'] else None
+        return pokemon
 
     except Exception as e:
         logger.warning(f"Error parsing egg item: {e}")

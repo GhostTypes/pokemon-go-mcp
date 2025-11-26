@@ -5,6 +5,7 @@ Pokemon Go Raids Scraper Module
 Handles scraping and parsing of raid boss data from leekduck.com
 """
 
+import json
 import logging
 from typing import Dict, List, Optional, Any
 from bs4 import BeautifulSoup
@@ -20,7 +21,6 @@ async def scrape_raids(scraper, base_url: str) -> List[Dict]:
     if not scraper._should_fetch(cache_file):
         logger.info("Using cached raids data")
         with open(cache_file, 'r', encoding='utf-8') as f:
-            import json
             return json.load(f)
 
     try:
@@ -86,43 +86,35 @@ async def scrape_raids(scraper, base_url: str) -> List[Dict]:
 def parse_raid_boss(card, current_tier: str, base_url: str) -> Optional[Dict]:
     """Parse individual raid boss card"""
     try:
+        # Extract all needed elements upfront
+        name_elem = card.select_one('.identity .name')
+        img_elem = card.select_one('.boss-img img')
+        shiny_elem = card.select_one('.boss-img .shiny-icon')
+
         boss = {
-            'name': '',
+            'name': name_elem.get_text(strip=True) if name_elem else "",
             'tier': current_tier,
-            'canBeShiny': False,
+            'canBeShiny': bool(shiny_elem),
             'types': [],
             'combatPower': {
                 'normal': {'min': -1, 'max': -1},
                 'boosted': {'min': -1, 'max': -1}
             },
             'boostedWeather': [],
-            'image': ''
+            'image': img_elem.get('src', '') if img_elem else ""
         }
-
-        # Name
-        name_elem = card.select_one('.identity .name')
-        boss['name'] = name_elem.get_text(strip=True) if name_elem else ""
-
-        # Image
-        img_elem = card.select_one('.boss-img img')
-        boss['image'] = img_elem.get('src', '') if img_elem else ""
-
-        # Shiny
-        boss['canBeShiny'] = bool(card.select_one('.boss-img .shiny-icon'))
 
         # Types
         type_imgs = card.select('.boss-type .type img')
+        types = []
         for img in type_imgs:
             type_name = img.get('title', '').lower()
             if type_name:
-                # Get the image URL and prepend base URL if it's a relative path
                 img_url = img.get('src', '')
-                if img_url.startswith('/'):
-                    img_url = f"{base_url}{img_url}"
-                boss['types'].append({
-                    'name': type_name,
-                    'image': img_url
-                })
+                if img_url and img_url[0] == '/':
+                    img_url = base_url + img_url
+                types.append({'name': type_name, 'image': img_url})
+        boss['types'] = types
 
         # Combat Power (normal)
         cp_elem = card.select_one('.cp-range')
@@ -150,17 +142,15 @@ def parse_raid_boss(card, current_tier: str, base_url: str) -> Optional[Dict]:
 
         # Boosted Weather
         weather_imgs = card.select('.weather-boosted .boss-weather .weather-pill img')
+        boosted_weather = []
         for img in weather_imgs:
             weather_name = img.get('alt', '').lower()
             if weather_name:
-                # Get the image URL and prepend base URL if it's a relative path
                 img_url = img.get('src', '')
-                if img_url.startswith('/'):
-                    img_url = f"{base_url}{img_url}"
-                boss['boostedWeather'].append({
-                    'name': weather_name,
-                    'image': img_url
-                })
+                if img_url and img_url[0] == '/':
+                    img_url = base_url + img_url
+                boosted_weather.append({'name': weather_name, 'image': img_url})
+        boss['boostedWeather'] = boosted_weather
 
         return boss
 

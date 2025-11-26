@@ -24,7 +24,9 @@
       "mcp__code-context-provider-mcp__get_code_context",
       "mcp__cloudscraper-mcp__scrape_url_raw",
       "mcp__pokemon-go-mcp__get_event_bonuses",
-      "mcp__pokemon-go-mcp__get_current_events"
+      "mcp__pokemon-go-mcp__get_current_events",
+      "Bash(done)",
+      "Bash(Select-String \"Starting Pokemon|Scraping completed\")"
     ],
     "deny": [],
     "ask": []

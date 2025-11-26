@@ -5,6 +5,7 @@ Pokemon Go Promo Codes Scraper Module
 Handles scraping and parsing of promo code data from leekduck.com
 """
 
+import json
 import logging
 from typing import Dict, List, Optional, Any
 from bs4 import BeautifulSoup
@@ -21,7 +22,6 @@ async def scrape_promo_codes(scraper, base_url: str) -> List[Dict]:
     if not scraper._should_fetch(cache_file):
         logger.info("Using cached promo codes data")
         with open(cache_file, 'r', encoding='utf-8') as f:
-            import json
             return json.load(f)
 
     try:
