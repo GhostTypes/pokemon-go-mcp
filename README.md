@@ -597,7 +597,7 @@ pyright
     <th>Description</th>
   </tr>
   <tr>
-    <td><code>python run_tests.py</code></td>
+    <td><code>pytest</code></td>
     <td>Run all tests</td>
   </tr>
   <tr>
