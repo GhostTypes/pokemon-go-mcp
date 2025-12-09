@@ -92,7 +92,7 @@ jobs:
       - name: Generate README with statistics
         run: |
           cd data
-          python3 ../generate_data_readme.py
+          python3 ../scripts/generate_data_readme.py
           cd ..
 
       - name: Clean up for data branch
@@ -101,7 +101,7 @@ jobs:
           mv data ../temp_data
 
           # Also move the README generator script
-          mv generate_data_readme.py ../temp_readme_script.py
+          mv scripts/generate_data_readme.py ../temp_readme_script.py
 
           # Clean repository (keep .git)
           find . -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
