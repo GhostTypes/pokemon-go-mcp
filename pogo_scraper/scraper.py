@@ -45,13 +45,6 @@ logger = logging.getLogger(__name__)
 
 async def log_response_hook(_response: httpx.Response) -> None:
     """Event hook to log details of each HTTP response."""
-    # await response.aread()  # Make sure the response body is available
-    # logger.info("--- HTTP Response Debug ---")
-    # logger.info(f"URL: {response.request.url}")
-    # logger.info(f"Status Code: {response.status_code}")
-    # Log the first 500 characters to check for CAPTCHA or error pages
-    # logger.info(f"Response Text (first 500 chars):\n{response.text[:500]}")
-    # logger.info("---------------------------")
     return
 
 

@@ -8,9 +8,7 @@ to point to your FastMCP server instance.
 import pytest
 from fastmcp import Client
 
-# TODO: Update this import to your server module
-# from your_package.server import mcp
-from server import mcp  # Example: assumes server.py in project root
+from server import mcp
 
 
 @pytest.fixture

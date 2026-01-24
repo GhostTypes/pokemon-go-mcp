@@ -54,7 +54,6 @@ class TestExampleTool:
 
         # TODO: Update assertion to match your tool's expected output
         assert result.content[0].text is not None
-        # assert result.content[0].text == "expected_output"
 
     async def test_handles_missing_required_param(self, client: Client):
         """Tool returns error when required parameter is missing."""

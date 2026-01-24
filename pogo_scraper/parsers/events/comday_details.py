@@ -43,14 +43,10 @@ async def parse_community_day_details(soup: BeautifulSoup, event: dict) -> None:
             # Check if this is a section header
             if element_classes and "event-section-header" in element_classes:
                 last_header = element_id
-                # Uncomment for debugging:
-                # print(f"Found section header: {element_id}")
 
             # Parse spawns and shinies sections - check if 'pkmn-list-flex' is in classes like ScrapedDuck
             # (Changed from exact match to inclusion check to be more robust)
             elif element_classes and "pkmn-list-flex" in element_classes:
-                # Uncomment for debugging:
-                # print(f"Found pkmn-list-flex, last_header: {last_header}")
                 if last_header == "spawns":
                     spawns = element.select(":scope > .pkmn-list-item")
                     for spawn in spawns:
