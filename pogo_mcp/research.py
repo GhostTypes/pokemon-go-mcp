@@ -39,8 +39,8 @@ def register_research_tools(mcp: FastMCP) -> None:
                 f"# Current Field Research Tasks (as of {get_current_time_str()})\n\n"
             )
             result += (
-                "**Important:** You get ONE of the possible rewards listed for each task, "
-                "not all of them.\n\n"
+                "**Important:** You get ONE of the possible rewards listed for each "
+                "task, not all of them.\n\n"
             )
 
             # Group by task type if available
@@ -80,7 +80,7 @@ def register_research_tools(mcp: FastMCP) -> None:
             result += f"{total_shiny_tasks} have potential shiny rewards\n"
 
         except Exception as e:
-            logger.exception("Error fetching research tasks: %s", e)
+            logger.exception("Error fetching research tasks")
             return f"Error fetching research tasks: {e!s}"
         else:
             return result
@@ -105,7 +105,10 @@ def register_research_tools(mcp: FastMCP) -> None:
                 return f"No field research tasks found that reward '{pokemon_name}'."
 
             result = f"# Research Tasks Rewarding {pokemon_name.title()}\n\n"
-            result += f"Found {len(matching_tasks)} task(s) that can reward {pokemon_name}:\n\n"
+            result += (
+                f"Found {len(matching_tasks)} task(s) that can reward "
+                f"{pokemon_name}:\n\n"
+            )
 
             for task in matching_tasks:
                 result += format_research_summary(task) + "\n\n"
@@ -121,10 +124,13 @@ def register_research_tools(mcp: FastMCP) -> None:
             ]
 
             if shiny_tasks:
-                result += f"✨ **Shiny Alert:** {len(shiny_tasks)} of these tasks can reward shiny {pokemon_name}!\n"
+                result += (
+                    f"✨ **Shiny Alert:** {len(shiny_tasks)} of these tasks can "
+                    f"reward shiny {pokemon_name}!\n"
+                )
 
         except Exception as e:
-            logger.exception("Error searching research by reward: %s", e)
+            logger.exception("Error searching research by reward")
             return f"Error searching research by reward: {e!s}"
         else:
             return result
@@ -153,7 +159,10 @@ def register_research_tools(mcp: FastMCP) -> None:
             if not matching_tasks:
                 return f"No field research tasks found for task type '{task_type}'."
 
-            result = f"# {task_type.title()} Research Tasks ({len(matching_tasks)} found)\n\n"
+            result = (
+                f"# {task_type.title()} Research Tasks "
+                f"({len(matching_tasks)} found)\n\n"
+            )
 
             for task in matching_tasks:
                 result += format_research_summary(task) + "\n\n"
@@ -169,7 +178,7 @@ def register_research_tools(mcp: FastMCP) -> None:
             )
 
         except Exception as e:
-            logger.exception("Error fetching %s research: %s", task_type, e)
+            logger.exception("Error fetching research by task type")
             return f"Error fetching {task_type} research: {e!s}"
         else:
             return result
@@ -190,7 +199,10 @@ def register_research_tools(mcp: FastMCP) -> None:
             if not shiny_tasks:
                 return "No field research tasks with shiny rewards found."
 
-            result = f"# ✨ Research Tasks with Shiny Rewards (as of {get_current_time_str()})\n\n"
+            result = (
+                f"# ✨ Research Tasks with Shiny Rewards "
+                f"(as of {get_current_time_str()})\n\n"
+            )
             result += (
                 f"Found {len(shiny_tasks)} tasks with potential shiny rewards:\n\n"
             )
@@ -217,7 +229,7 @@ def register_research_tools(mcp: FastMCP) -> None:
                 result += "\n"
 
         except Exception as e:
-            logger.exception("Error fetching shiny research: %s", e)
+            logger.exception("Error fetching shiny research")
             return f"Error fetching shiny research: {e!s}"
         else:
             return result
@@ -276,10 +288,13 @@ def register_research_tools(mcp: FastMCP) -> None:
             ]
 
             if valuable_easy:
-                result += f"⭐ **High Value:** {len(valuable_easy)} of these easy tasks have shiny potential!\n"
+                result += (
+                    f"⭐ **High Value:** {len(valuable_easy)} of these easy tasks "
+                    f"have shiny potential!\n"
+                )
 
         except Exception as e:
-            logger.exception("Error fetching easy research: %s", e)
+            logger.exception("Error fetching easy research")
             return f"Error fetching easy research: {e!s}"
         else:
             return result
@@ -312,7 +327,7 @@ def register_research_tools(mcp: FastMCP) -> None:
                 result += format_research_summary(task) + "\n\n"
 
         except Exception as e:
-            logger.exception("Error searching research tasks: %s", e)
+            logger.exception("Error searching research tasks")
             return f"Error searching research tasks: {e!s}"
         else:
             return result
@@ -322,8 +337,9 @@ def register_research_tools(mcp: FastMCP) -> None:
         """Get research task recommendations based on specified priority.
 
         Args:
-            priority: Priority type - "shiny" for shiny hunters, "easy" for quick completion,
-                     "rare" for uncommon Pokemon, or "balanced" for general recommendations
+            priority: Priority type - "shiny" for shiny hunters, "easy" for quick
+                     completion, "rare" for uncommon Pokemon, or "balanced" for
+                     general recommendations
 
         Returns recommended research tasks to focus on based on the priority.
         """
@@ -410,10 +426,11 @@ def register_research_tools(mcp: FastMCP) -> None:
                 result += f"Rewards: {', '.join(rewards)}\n\n"
 
             if len(tasks) > MAX_RESEARCH_TASKS_TO_DISPLAY:
-                result += f"... and {len(tasks) - MAX_RESEARCH_TASKS_TO_DISPLAY} more tasks match your criteria.\n"
+                remaining = len(tasks) - MAX_RESEARCH_TASKS_TO_DISPLAY
+                result += f"... and {remaining} more tasks match your criteria.\n"
 
         except Exception as e:
-            logger.exception("Error getting research recommendations: %s", e)
+            logger.exception("Error getting research recommendations")
             return f"Error getting research recommendations: {e!s}"
         else:
             return result

@@ -1,17 +1,20 @@
 """Egg-related tools for the Pokemon Go MCP server."""
 
 import logging
+from typing import TYPE_CHECKING
 
 from fastmcp import FastMCP
 
 from .api_client import api_client
-from .types import EggInfo
 from .utils import (
     filter_eggs_by_distance,
     format_egg_summary,
     get_current_time_str,
     validate_pokemon_name,
 )
+
+if TYPE_CHECKING:
+    from .types import EggInfo
 
 logger = logging.getLogger(__name__)
 
@@ -97,7 +100,7 @@ def register_egg_tools(mcp: FastMCP) -> None:
             )
 
         except Exception as e:
-            logger.exception("Error fetching egg hatches: %s", e)
+            logger.exception("Error fetching egg hatches")
             return f"Error fetching egg hatches: {e!s}"
         else:
             return result
@@ -142,7 +145,7 @@ def register_egg_tools(mcp: FastMCP) -> None:
             )
 
         except Exception as e:
-            logger.exception("Error fetching %s egg hatches: %s", distance, e)
+            logger.exception("Error fetching %s egg hatches", distance)
             return f"Error fetching {distance} egg hatches: {e!s}"
         else:
             return result
@@ -200,7 +203,7 @@ def register_egg_tools(mcp: FastMCP) -> None:
             )
 
         except Exception as e:
-            logger.exception("Error fetching shiny egg hatches: %s", e)
+            logger.exception("Error fetching shiny egg hatches")
             return f"Error fetching shiny egg hatches: {e!s}"
         else:
             return result
@@ -237,7 +240,7 @@ def register_egg_tools(mcp: FastMCP) -> None:
                 result += f"**Available from:** {', '.join(distances)}\n"
 
         except Exception as e:
-            logger.exception("Error searching egg Pokemon: %s", e)
+            logger.exception("Error searching egg Pokemon")
             return f"Error searching egg Pokemon: {e!s}"
         else:
             return result
@@ -281,7 +284,7 @@ def register_egg_tools(mcp: FastMCP) -> None:
             result += f"**Regional Pokemon:** {', '.join(regional_names)}\n"
 
         except Exception as e:
-            logger.exception("Error fetching regional egg Pokemon: %s", e)
+            logger.exception("Error fetching regional egg Pokemon")
             return f"Error fetching regional egg Pokemon: {e!s}"
         else:
             return result
@@ -318,7 +321,7 @@ def register_egg_tools(mcp: FastMCP) -> None:
             )
 
         except Exception as e:
-            logger.exception("Error fetching gift exchange Pokemon: %s", e)
+            logger.exception("Error fetching gift exchange Pokemon")
             return f"Error fetching gift exchange Pokemon: {e!s}"
         else:
             return result
@@ -338,7 +341,10 @@ def register_egg_tools(mcp: FastMCP) -> None:
                 return "No route gift Pokemon found in current egg pools."
 
             result = f"# 🎁 Route Gift Pokemon ({len(route_gift_eggs)} found)\n\n"
-            result += "These Pokemon can be hatched from 7km eggs received from route gifts:\n\n"
+            result += (
+                "These Pokemon can be hatched from 7km eggs "
+                "received from route gifts:\n\n"
+            )
 
             for egg in route_gift_eggs:
                 result += format_egg_summary(egg) + "\n\n"
@@ -353,7 +359,7 @@ def register_egg_tools(mcp: FastMCP) -> None:
             )
 
         except Exception as e:
-            logger.exception("Error fetching route gift Pokemon: %s", e)
+            logger.exception("Error fetching route gift Pokemon")
             return f"Error fetching route gift Pokemon: {e!s}"
         else:
             return result
@@ -387,10 +393,13 @@ def register_egg_tools(mcp: FastMCP) -> None:
                 f"**Summary:** {len(as_eggs)} Adventure Sync Pokemon, "
                 f"{shiny_count} can be shiny\n"
             )
-            result += "\n**Tip:** Walk 25km or 50km per week to earn Adventure Sync rewards!\n"
+            result += (
+                "\n**Tip:** Walk 25km or 50km per week to earn "
+                "Adventure Sync rewards!\n"
+            )
 
         except Exception as e:
-            logger.exception("Error fetching Adventure Sync rewards: %s", e)
+            logger.exception("Error fetching Adventure Sync rewards")
             return f"Error fetching Adventure Sync rewards: {e!s}"
         else:
             return result
@@ -465,16 +474,22 @@ def register_egg_tools(mcp: FastMCP) -> None:
 
             # General advice based on priority
             if priority.lower() == "shiny":
-                result += "💡 **Tip:** Use premium incubators on 10km eggs with shiny potential!\n"
+                result += (
+                    "💡 **Tip:** Use premium incubators on "
+                    "10km eggs with shiny potential!\n"
+                )
             elif priority.lower() == "quick":
-                result += "💡 **Tip:** Use infinite incubator on 2km eggs to maximize hatches!\n"
+                result += (
+                    "💡 **Tip:** Use infinite incubator on "
+                    "2km eggs to maximize hatches!\n"
+                )
             elif priority.lower() == "rare":
                 result += (
                     "💡 **Tip:** Save super incubators for rare regional Pokemon!\n"
                 )
 
         except Exception as e:
-            logger.exception("Error getting egg recommendations: %s", e)
+            logger.exception("Error getting egg recommendations")
             return f"Error getting egg recommendations: {e!s}"
         else:
             return result

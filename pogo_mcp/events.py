@@ -1,7 +1,6 @@
 """Event-related tools for the Pokemon Go MCP server."""
 
 import logging
-import traceback
 from datetime import datetime, timezone
 
 from fastmcp import FastMCP
@@ -47,13 +46,12 @@ def register_event_tools(mcp: FastMCP) -> None:
         except Exception as e:
             error_msg = f"Error fetching events: {e!s}"
             logger.exception(error_msg)
-            logger.exception("Exception type: %s", type(e))
-            logger.exception("Traceback: %s", traceback.format_exc())
             return error_msg
         else:
             # Verify data structure
             if not isinstance(events, list):
-                raise TypeError(f"Expected list from get_events(), got {type(events)}")
+                error_message = f"Expected list from get_events(), got {type(events)}"
+                raise TypeError(error_message)
 
             current_time = datetime.now(timezone.utc)
 
@@ -89,7 +87,8 @@ def register_event_tools(mcp: FastMCP) -> None:
         Args:
             event_id: The ID of the event to get details for
 
-        Returns detailed information including spawns, bonuses, and special research if available.
+        Returns detailed information including spawns, bonuses, and special
+        research if available.
         """
         try:
             events = await api_client.get_events()
@@ -108,7 +107,8 @@ def register_event_tools(mcp: FastMCP) -> None:
                 cd_info = extract_community_day_info(event)
                 if cd_info:
                     if cd_info["featured_pokemon"]:
-                        result += f"**Featured Pokemon:** {', '.join(cd_info['featured_pokemon'])}\n\n"
+                        featured = ", ".join(cd_info["featured_pokemon"])
+                        result += f"**Featured Pokemon:** {featured}\n\n"
 
                     if cd_info["bonuses"]:
                         result += "**Event Bonuses:**\n"
@@ -117,7 +117,8 @@ def register_event_tools(mcp: FastMCP) -> None:
                         result += "\n"
 
                     if cd_info["shiny_available"]:
-                        result += f"**Shiny Available:** {', '.join(cd_info['shiny_available'])}\n\n"
+                        shiny = ", ".join(cd_info["shiny_available"])
+                        result += f"**Shiny Available:** {shiny}\n\n"
 
                 # Raid Day specific info
                 rd_info = extract_raid_day_info(event)
@@ -152,14 +153,15 @@ def register_event_tools(mcp: FastMCP) -> None:
                         result += "\n"
 
                     if rd_info["shiny_available"]:
-                        result += f"**Shiny Available:** {', '.join(rd_info['shiny_available'])}\n\n"
+                        shiny = ", ".join(rd_info["shiny_available"])
+                        result += f"**Shiny Available:** {shiny}\n\n"
 
                 # Raw extra data
                 result += "**Raw Event Data:**\n"
                 result += f"```json\n{format_json_output(event.extra_data)}\n```\n"
 
         except Exception as e:
-            logger.exception("Error fetching event details: %s", e)
+            logger.exception("Error fetching event details")
             return f"Error fetching event details: {e!s}"
         else:
             return result
@@ -206,12 +208,13 @@ def register_event_tools(mcp: FastMCP) -> None:
                             result += f"• {bonus}\n"
 
                     if cd_info["shiny_available"]:
-                        result += f"**Shiny Pokemon:** {', '.join(cd_info['shiny_available'])}\n"
+                        shiny = ", ".join(cd_info["shiny_available"])
+                        result += f"**Shiny Pokemon:** {shiny}\n"
 
                 result += "\n---\n\n"
 
         except Exception as e:
-            logger.exception("Error fetching Community Day info: %s", e)
+            logger.exception("Error fetching Community Day info")
             return f"Error fetching Community Day info: {e!s}"
         else:
             return result
@@ -221,9 +224,11 @@ def register_event_tools(mcp: FastMCP) -> None:
         """Get Pokemon spawns from active events.
 
         Args:
-            event_type: Optional filter by event type (e.g., 'community-day', 'spotlight')
+            event_type: Optional filter by event type (e.g., 'community-day',
+                        'spotlight')
 
-        Returns information about Pokemon that are currently spawning more frequently due to events.
+        Returns information about Pokemon that are currently spawning more
+        frequently due to events.
         """
         try:
             events = await api_client.get_events()
@@ -247,8 +252,9 @@ def register_event_tools(mcp: FastMCP) -> None:
                 if event.extra_data and "communityday" in event.extra_data:
                     cd_data = event.extra_data["communityday"]
                     spawns = cd_data.get("spawns", [])
-                    for spawn in spawns:
-                        event_spawns.append(spawn.get("name", "Unknown"))
+                    event_spawns.extend(
+                        spawn.get("name", "Unknown") for spawn in spawns
+                    )
 
                 if event_spawns:
                     spawns_found = True
@@ -264,7 +270,7 @@ def register_event_tools(mcp: FastMCP) -> None:
                     result += "No spawn information found for active events.\n"
 
         except Exception as e:
-            logger.exception("Error fetching event spawns: %s", e)
+            logger.exception("Error fetching event spawns")
             return f"Error fetching event spawns: {e!s}"
         else:
             return result
@@ -291,19 +297,23 @@ def register_event_tools(mcp: FastMCP) -> None:
                 if event.extra_data and "communityday" in event.extra_data:
                     cd_data = event.extra_data["communityday"]
                     bonuses = cd_data.get("bonuses", [])
-                    for bonus in bonuses:
-                        event_bonuses.append(bonus.get("text", "Unknown"))
+                    event_bonuses.extend(
+                        bonus.get("text", "Unknown") for bonus in bonuses
+                    )
 
                 if event.extra_data and "raidday" in event.extra_data:
                     rd_data = event.extra_data["raidday"]
                     # Add free bonuses
                     bonuses = rd_data.get("bonuses", [])
-                    for bonus in bonuses:
-                        event_bonuses.append(bonus.get("text", "Unknown"))
+                    event_bonuses.extend(
+                        bonus.get("text", "Unknown") for bonus in bonuses
+                    )
                     # Add ticket bonuses (marked as premium)
                     ticket_bonuses = rd_data.get("ticketBonuses", [])
-                    for bonus in ticket_bonuses:
-                        event_bonuses.append(f"[TICKET] {bonus.get('text', 'Unknown')}")
+                    event_bonuses.extend(
+                        f"[TICKET] {bonus.get('text', 'Unknown')}"
+                        for bonus in ticket_bonuses
+                    )
 
                 if event_bonuses:
                     bonuses_found = True
@@ -316,7 +326,7 @@ def register_event_tools(mcp: FastMCP) -> None:
                 result += "No bonus information found for active events.\n"
 
         except Exception as e:
-            logger.exception("Error fetching event bonuses: %s", e)
+            logger.exception("Error fetching event bonuses")
             return f"Error fetching event bonuses: {e!s}"
         else:
             return result
@@ -353,7 +363,7 @@ def register_event_tools(mcp: FastMCP) -> None:
                 result += format_event_summary(event) + "\n\n"
 
         except Exception as e:
-            logger.exception("Error searching events: %s", e)
+            logger.exception("Error searching events")
             return f"Error searching events: {e!s}"
         else:
             return result

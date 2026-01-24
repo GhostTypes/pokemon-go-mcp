@@ -19,12 +19,15 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
-async def scrape_eggs(scraper: "LeekDuckScraper", base_url: str) -> list[dict[str, Any]]:
+async def scrape_eggs(
+    scraper: "LeekDuckScraper",
+    base_url: str,
+) -> list[dict[str, Any]]:
     """Scrape egg hatch data from leekduck.com"""
     logger.info("Scraping eggs data...")
 
     cache_file = scraper.output_dir / "eggs.json"
-    if not scraper._should_fetch(cache_file):
+    if not scraper._should_fetch(cache_file):  # noqa: SLF001
         logger.info("Using cached eggs data")
         with cache_file.open(encoding="utf-8") as f:
             return json.load(f)  # type: ignore[return-value]
@@ -35,9 +38,9 @@ async def scrape_eggs(scraper: "LeekDuckScraper", base_url: str) -> list[dict[st
         response.raise_for_status()
 
         soup = BeautifulSoup(response.text, "lxml")
-    except Exception as e:
-        logger.exception("Error scraping eggs: %s", e)
-        return scraper._load_fallback_data("eggs.json", [])  # type: ignore[return-value]
+    except Exception:
+        logger.exception("Error scraping eggs")
+        return scraper._load_fallback_data("eggs.json", [])  # type: ignore[return-value]  # noqa: SLF001
 
     eggs: list[dict[str, Any]] = []
 
@@ -71,30 +74,49 @@ async def scrape_eggs(scraper: "LeekDuckScraper", base_url: str) -> list[dict[st
             # Process pokemon cards in this grid
             pokemon_cards = next_grid.select("li.pokemon-card")
             for card in pokemon_cards:
-                try:
-                    egg = parse_egg_item(
-                        card,
-                        current_type,
-                        current_adventure_sync,
-                        current_gift_exchange,
-                        current_route_gift,
-                    )
-                    if egg:
-                        eggs.append(egg)
-                except (AttributeError, KeyError, ValueError, TypeError) as e:
-                    logger.warning("Error parsing egg item: %s", e)
-                    continue
+                egg = _safe_parse_egg_item(
+                    card,
+                    current_type,
+                    is_adventure_sync=current_adventure_sync,
+                    is_gift_exchange=current_gift_exchange,
+                    is_route_gift=current_route_gift,
+                )
+                if egg:
+                    eggs.append(egg)
 
-    scraper._save_data(eggs, "eggs.json")
+    scraper._save_data(eggs, "eggs.json")  # noqa: SLF001
 
     return eggs
+
+
+def _safe_parse_egg_item(
+    item: Tag,
+    egg_type: str,
+    *,
+    is_adventure_sync: bool = False,
+    is_gift_exchange: bool = False,
+    is_route_gift: bool = False,
+) -> dict[str, Any] | None:
+    """Safely parse individual egg item with error handling"""
+    try:
+        return parse_egg_item(
+            item,
+            egg_type,
+            is_adventure_sync=is_adventure_sync,
+            is_gift_exchange=is_gift_exchange,
+            is_route_gift=is_route_gift,
+        )
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.warning("Error parsing egg item: %s", e)
+        return None
 
 
 def parse_egg_item(
     item: Tag,
     egg_type: str,
-    is_adventure_sync: bool,
-    is_gift_exchange: bool,
+    *,
+    is_adventure_sync: bool = False,
+    is_gift_exchange: bool = False,
     is_route_gift: bool = False,
 ) -> dict[str, Any] | None:
     """Parse individual egg item"""
@@ -137,8 +159,8 @@ def parse_egg_item(
                 with contextlib.suppress(ValueError):
                     pokemon["combatPower"] = int(cp_text[2:])
 
-        return pokemon
-
     except (AttributeError, KeyError, ValueError, TypeError) as e:
         logger.warning("Error parsing egg item: %s", e)
         return None
+    else:
+        return pokemon

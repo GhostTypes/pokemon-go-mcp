@@ -28,7 +28,11 @@ async def parse_raid_battle_details(soup: BeautifulSoup, event: dict[str, Any]) 
 
         for element in all_nodes:
             # Check if this is a Tag element (skip NavigableString nodes)
-            if isinstance(element, PageElement) and hasattr(element, "name") and element.name:
+            if (
+                isinstance(element, PageElement)
+                and hasattr(element, "name")
+                and element.name
+            ):
                 # Get classes safely
                 classes = element.get("class", [])
                 if isinstance(classes, list) and "event-section-header" in classes:

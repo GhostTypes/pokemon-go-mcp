@@ -10,10 +10,18 @@ from bs4 import BeautifulSoup
 logger = logging.getLogger(__name__)
 
 
-async def parse_breakthrough_details(soup: BeautifulSoup, event: dict[str, Any]) -> None:
+async def parse_breakthrough_details(
+    soup: BeautifulSoup,
+    event: dict[str, Any],
+) -> None:
     """Parse Research Breakthrough specific details"""
     try:
-        breakthrough_data: dict[str, Any] = {"name": "", "canBeShiny": False, "image": "", "list": []}
+        breakthrough_data: dict[str, Any] = {
+            "name": "",
+            "canBeShiny": False,
+            "image": "",
+            "list": [],
+        }
 
         # Find the first .pkmn-list-flex container (main breakthrough reward)
         pkmn_list_containers = soup.select(".pkmn-list-flex")

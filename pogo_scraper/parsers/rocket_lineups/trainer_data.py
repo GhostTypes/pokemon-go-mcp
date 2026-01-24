@@ -146,14 +146,20 @@ def parse_shadow_pokemon(pokemon_elem: Tag) -> dict[str, Any] | None:
             if isinstance(weaknesses, dict):
                 double = weaknesses["double"]
                 if isinstance(double, list):
-                    double.extend([w.strip().lower() for w in double_weaknesses.split(",") if w.strip()])
+                    new_weaknesses = [
+                        w.strip().lower() for w in double_weaknesses.split(",")
+                    ]
+                    double.extend(new_weaknesses)
 
         if single_weaknesses:
             weaknesses = pokemon["weaknesses"]
             if isinstance(weaknesses, dict):
                 single = weaknesses["single"]
                 if isinstance(single, list):
-                    single.extend([w.strip().lower() for w in single_weaknesses.split(",") if w.strip()])
+                    new_weaknesses = [
+                        w.strip().lower() for w in single_weaknesses.split(",")
+                    ]
+                    single.extend(new_weaknesses)
 
         # Image
         img_elem = pokemon_elem.select_one(".pokemon-image")

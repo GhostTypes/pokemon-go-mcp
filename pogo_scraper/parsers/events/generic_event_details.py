@@ -11,8 +11,16 @@ from bs4.element import Tag
 
 logger = logging.getLogger(__name__)
 
+# Constants for magic values
+MAX_POKEMON_NAME_LENGTH = 50
+EXPECTED_SPLIT_PARTS = 2
+MIN_TASK_TEXT_LENGTH = 3
 
-async def parse_generic_event_details(soup: BeautifulSoup, event: dict[str, Any]) -> None:
+
+async def parse_generic_event_details(
+    soup: BeautifulSoup,
+    event: dict[str, Any],
+) -> None:
     """Parse generic event details from event pages
 
     This extracts spawns, bonuses, features, and field research tasks
@@ -127,7 +135,8 @@ def _parse_spawns_section(
                     else []
                 )
 
-                # Convert image tags to pseudo pkmn-list-item structure for consistent parsing
+                # Convert image tags to pseudo pkmn-list-item structure for
+                # consistent parsing
                 pokemon_items = [
                     img.find_parent() for img in pokemon_items if img.find_parent()
                 ]
@@ -195,7 +204,8 @@ def _parse_features_section(
             in ["featured-pokémon", "pokémon-debut", "pokemon-debut"]
         ):
             if current:
-                # Look for Pokemon in features first (common in featured Pokemon sections)
+                # Look for Pokemon in features first (common in featured
+                # Pokemon sections)
                 pokemon_items = current.find_all(class_="pkmn-list-item")
 
                 # Also look in flex lists which are common for featured Pokemon
@@ -349,7 +359,7 @@ def _extract_pokemon_data(item: Tag) -> dict[str, Any] | None:
             else:
                 # Use text content as fallback
                 text = item.get_text(strip=True)
-                if text and len(text) < 50:  # Reasonable name length
+                if text and len(text) < MAX_POKEMON_NAME_LENGTH:
                     pokemon_data["name"] = text
         else:
             pokemon_data["name"] = name_elem.get_text(strip=True)
@@ -365,7 +375,9 @@ def _extract_pokemon_data(item: Tag) -> dict[str, Any] | None:
 
         # Check for shiny indicator - look for shiny images or icons
         shiny_elem = (
-            item.find("img", src=lambda x: x and "shiny" in str(x).lower()) if item else None  # type: ignore[misc]
+            item.find("img", src=lambda x: x and "shiny" in str(x).lower())  # type: ignore[misc]
+            if item
+            else None
         )
         shiny_icon = (
             item.find("img", src=lambda x: x and "icon_shiny" in str(x).lower())  # type: ignore[misc]
@@ -373,7 +385,9 @@ def _extract_pokemon_data(item: Tag) -> dict[str, Any] | None:
             else None
         )
         shiny_class = (
-            item.find(class_=lambda x: x and "shiny" in str(x).lower()) if item else None  # type: ignore[misc]
+            item.find(class_=lambda x: x and "shiny" in str(x).lower())  # type: ignore[misc]
+            if item
+            else None
         )
         # Check for LeekDuck's specific shiny-icon class
         shiny_icon_class = item.find("img", class_="shiny-icon") if item else None
@@ -502,7 +516,7 @@ def _extract_research_task_data(item: Tag) -> dict[str, Any] | None:
             if "REWARD" in full_text:
                 # Split on "REWARD" to separate task from reward
                 parts = full_text.split("REWARD", 1)
-                if len(parts) == 2:
+                if len(parts) == EXPECTED_SPLIT_PARTS:
                     task_text = parts[0].replace("???", "").strip()
                     reward_text = parts[1].strip()
 
@@ -514,7 +528,7 @@ def _extract_research_task_data(item: Tag) -> dict[str, Any] | None:
                         task_data["reward"] = reward_text
 
                     # If we have a clean task text, use it, otherwise use a placeholder
-                    if task_text and len(task_text) > 3:
+                    if task_text and len(task_text) > MIN_TASK_TEXT_LENGTH:
                         task_data["text"] = task_text
                     else:
                         task_data["text"] = "Research task (details TBD)"

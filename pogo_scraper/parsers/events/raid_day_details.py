@@ -7,7 +7,6 @@ import logging
 from typing import Any
 
 from bs4 import BeautifulSoup
-from bs4.element import Tag
 
 logger = logging.getLogger(__name__)
 
@@ -59,7 +58,9 @@ async def parse_raid_day_details(soup: BeautifulSoup, event: dict[str, Any]) -> 
         logger.warning("Error parsing Raid Day details: %s", e, exc_info=True)
 
 
-def _parse_bonuses_with_sections(soup: BeautifulSoup) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+def _parse_bonuses_with_sections(
+    soup: BeautifulSoup,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     """Parse bonuses and ticket bonuses separately"""
     free_bonuses: list[dict[str, Any]] = []
     ticket_bonuses: list[dict[str, Any]] = []

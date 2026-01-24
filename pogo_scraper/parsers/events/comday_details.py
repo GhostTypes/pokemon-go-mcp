@@ -12,7 +12,10 @@ from bs4.element import PageElement
 logger = logging.getLogger(__name__)
 
 
-async def parse_community_day_details(soup: BeautifulSoup, event: dict[str, Any]) -> None:
+async def parse_community_day_details(
+    soup: BeautifulSoup,
+    event: dict[str, Any],
+) -> None:
     """Parse Community Day specific details"""
     try:
         commday_data: dict[str, Any] = {
@@ -33,12 +36,18 @@ async def parse_community_day_details(soup: BeautifulSoup, event: dict[str, Any]
         all_nodes = page_content.contents
 
         for element in all_nodes:
-            # Get element classes and id (works for both tag elements and navigable strings)
+            # Get element classes and id (works for both tag elements and
+            # navigable strings)
             element_classes: list[str] = []
             element_id = ""
 
-            # Only try to get class and id attributes from actual HTML elements, not text nodes
-            if isinstance(element, PageElement) and hasattr(element, "name") and element.name:
+            # Only try to get class and id attributes from actual HTML elements,
+            # not text nodes
+            if (
+                isinstance(element, PageElement)
+                and hasattr(element, "name")
+                and element.name
+            ):
                 classes = element.get("class", [])
                 if isinstance(classes, list):
                     element_classes = classes
@@ -48,8 +57,9 @@ async def parse_community_day_details(soup: BeautifulSoup, event: dict[str, Any]
             if element_classes and "event-section-header" in element_classes:
                 last_header = element_id
 
-            # Parse spawns and shinies sections - check if 'pkmn-list-flex' is in classes like ScrapedDuck
-            # (Changed from exact match to inclusion check to be more robust)
+            # Parse spawns and shinies sections - check if 'pkmn-list-flex' is in
+            # classes like ScrapedDuck (Changed from exact match to inclusion check
+            # to be more robust)
             elif element_classes and "pkmn-list-flex" in element_classes:
                 if last_header == "spawns":
                     spawns = element.select(":scope > .pkmn-list-item")
@@ -114,7 +124,9 @@ async def parse_community_day_details(soup: BeautifulSoup, event: dict[str, Any]
                                         disclaimer, "html.parser"
                                     ).get_text(strip=True)
                                     if clean_disclaimer:
-                                        disclaimers_list = commday_data["bonusDisclaimers"]
+                                        disclaimers_list = commday_data[
+                                            "bonusDisclaimers"
+                                        ]
                                         if isinstance(disclaimers_list, list):
                                             disclaimers_list.append(
                                                 clean_disclaimer
@@ -128,7 +140,12 @@ async def parse_community_day_details(soup: BeautifulSoup, event: dict[str, Any]
         # Parse special research
         research_items = soup.select(".special-research-list .step-item")
         for item in research_items:
-            research: dict[str, Any] = {"name": "", "step": 0, "tasks": [], "rewards": []}
+            research: dict[str, Any] = {
+                "name": "",
+                "step": 0,
+                "tasks": [],
+                "rewards": [],
+            }
 
             # Step number and name
             step_num_elem = item.select_one(".step-number")

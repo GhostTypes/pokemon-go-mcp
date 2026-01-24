@@ -19,12 +19,15 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
-async def scrape_promo_codes(scraper: "LeekDuckScraper", base_url: str) -> list[dict[str, Any]]:
+async def scrape_promo_codes(
+    scraper: "LeekDuckScraper",
+    base_url: str,
+) -> list[dict[str, Any]]:
     """Scrape promo codes data from leekduck.com"""
     logger.info("Scraping promo codes data...")
 
     cache_file = scraper.output_dir / "promo-codes.json"
-    if not scraper._should_fetch(cache_file):
+    if not scraper._should_fetch(cache_file):  # noqa: SLF001
         logger.info("Using cached promo codes data")
         with cache_file.open(encoding="utf-8") as f:
             return json.load(f)  # type: ignore[return-value]
@@ -41,21 +44,26 @@ async def scrape_promo_codes(scraper: "LeekDuckScraper", base_url: str) -> list[
         all_promo_codes: list[dict[str, Any]] = []
 
         for card in promo_cards:
-            try:
-                promo_code = parse_promo_card(card, base_url)
-                if promo_code:
-                    all_promo_codes.append(promo_code)
-            except (AttributeError, KeyError, ValueError, TypeError) as e:
-                logger.warning("Error parsing promo card: %s", e)
-                continue
+            promo_code = _safe_parse_promo_card(card, base_url)
+            if promo_code:
+                all_promo_codes.append(promo_code)
 
-        scraper._save_data(all_promo_codes, "promo-codes.json")
+        scraper._save_data(all_promo_codes, "promo-codes.json")  # noqa: SLF001
 
-    except (httpx.HTTPError, OSError, json.JSONDecodeError) as e:
-        logger.exception("Error scraping promo codes: %s", e)
-        return scraper._load_fallback_data("promo-codes.json", [])  # type: ignore[return-value]
+    except (httpx.HTTPError, OSError, json.JSONDecodeError):
+        logger.exception("Error scraping promo codes")
+        return scraper._load_fallback_data("promo-codes.json", [])  # type: ignore[return-value]  # noqa: SLF001
 
     return all_promo_codes
+
+
+def _safe_parse_promo_card(card_element: Tag, base_url: str) -> dict[str, Any] | None:
+    """Safely parse individual promo card with error handling"""
+    try:
+        return parse_promo_card(card_element, base_url)
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.warning("Error parsing promo card: %s", e)
+        return None
 
 
 def parse_promo_card(card_element: Tag, base_url: str) -> dict[str, Any] | None:
@@ -63,7 +71,9 @@ def parse_promo_card(card_element: Tag, base_url: str) -> dict[str, Any] | None:
     try:
         # Check if card is expired
         card_classes = card_element.get("class", [])
-        if isinstance(card_classes, list) and ("expired" in card_classes or "-expired" in card_classes):
+        if isinstance(card_classes, list) and (
+            "expired" in card_classes or "-expired" in card_classes
+        ):
             return None
 
         # Extract promo code
@@ -130,6 +140,10 @@ def parse_promo_card(card_element: Tag, base_url: str) -> dict[str, Any] | None:
         if expiry_elem:
             expiration = expiry_elem.get("data-expires", "")
 
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.warning("Error parsing promo card: %s", e)
+        return None
+    else:
         return {
             "code": promo_code,
             "title": title,
@@ -138,7 +152,3 @@ def parse_promo_card(card_element: Tag, base_url: str) -> dict[str, Any] | None:
             "rewards": rewards,
             "expiration": expiration,
         }
-
-    except (AttributeError, KeyError, ValueError, TypeError) as e:
-        logger.warning("Error parsing promo card: %s", e)
-        return None

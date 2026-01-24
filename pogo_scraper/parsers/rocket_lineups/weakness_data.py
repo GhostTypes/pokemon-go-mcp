@@ -3,16 +3,8 @@ Handles parsing rocket weakness information
 """
 
 
-def calculate_weakness_effectiveness(
-    attacking_type: str, defending_types: list[str]
-) -> float:
-    """
-    Calculate type effectiveness multiplier based on Pokemon type chart
-    Returns: 2.0 for super effective, 1.0 for normal,
-             0.5 for not very effective, 0.0 for no effect
-    """
-    # Pokemon Go type effectiveness chart
-    TYPE_CHART = {
+# Pokemon Go type effectiveness chart
+TYPE_CHART = {
         "normal": {"weak_to": ["fighting"], "resists": [], "immune_to": ["ghost"]},
         "fire": {
             "weak_to": ["water", "ground", "rock"],
@@ -112,11 +104,20 @@ def calculate_weakness_effectiveness(
         },
     }
 
+
+def calculate_weakness_effectiveness(
+    attacking_type: str, defending_types: list[str]
+) -> float:
+    """
+    Calculate type effectiveness multiplier based on Pokemon type chart
+    Returns: 2.0 for super effective, 1.0 for normal,
+             0.5 for not very effective, 0.0 for no effect
+    """
     attacking_type = attacking_type.lower()
     effectiveness = 1.0
 
-    for defending_type in defending_types:
-        defending_type = defending_type.lower()
+    for defending_type_input in defending_types:
+        defending_type = defending_type_input.lower()
 
         if defending_type not in TYPE_CHART:
             continue

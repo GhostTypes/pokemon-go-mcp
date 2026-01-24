@@ -18,13 +18,19 @@ if TYPE_CHECKING:
 
 logger = logging.getLogger(__name__)
 
+# Constants for CP range parsing
+EXPECTED_CP_PARTS = 2
 
-async def scrape_raids(scraper: "LeekDuckScraper", base_url: str) -> list[dict[str, Any]]:
+
+async def scrape_raids(
+    scraper: "LeekDuckScraper",
+    base_url: str,
+) -> list[dict[str, Any]]:
     """Scrape raid bosses data from leekduck.com"""
     logger.info("Scraping raids data...")
 
     cache_file = scraper.output_dir / "raids.json"
-    if not scraper._should_fetch(cache_file):
+    if not scraper._should_fetch(cache_file):  # noqa: SLF001
         logger.info("Using cached raids data")
         with cache_file.open(encoding="utf-8") as f:
             return json.load(f)  # type: ignore[return-value]
@@ -55,13 +61,9 @@ async def scrape_raids(scraper: "LeekDuckScraper", base_url: str) -> list[dict[s
             # Process cards in this tier
             cards = tier_div.select(".grid .card")
             for card in cards:
-                try:
-                    boss = parse_raid_boss(card, current_tier, base_url)
-                    if boss:
-                        bosses.append(boss)
-                except (AttributeError, KeyError, ValueError, TypeError) as e:
-                    logger.warning("Error parsing raid boss: %s", e)
-                    continue
+                boss = _safe_parse_raid_boss(card, current_tier, base_url)
+                if boss:
+                    bosses.append(boss)
 
         # Find shadow raid bosses container
         shadow_raid_bosses = soup.find(class_="shadow-raid-bosses")
@@ -78,21 +80,28 @@ async def scrape_raids(scraper: "LeekDuckScraper", base_url: str) -> list[dict[s
                 # Process cards in this tier
                 cards = tier_div.select(".grid .card")
                 for card in cards:
-                    try:
-                        boss = parse_raid_boss(card, current_tier, base_url)
-                        if boss:
-                            bosses.append(boss)
-                    except (AttributeError, KeyError, ValueError, TypeError) as e:
-                        logger.warning("Error parsing shadow raid boss: %s", e)
-                        continue
+                    boss = _safe_parse_raid_boss(card, current_tier, base_url)
+                    if boss:
+                        bosses.append(boss)
 
-        scraper._save_data(bosses, "raids.json")
+        scraper._save_data(bosses, "raids.json")  # noqa: SLF001
 
-    except (httpx.HTTPError, OSError, json.JSONDecodeError) as e:
-        logger.exception("Error scraping raids: %s", e)
-        return scraper._load_fallback_data("raids.json", [])  # type: ignore[return-value]
+    except (httpx.HTTPError, OSError, json.JSONDecodeError):
+        logger.exception("Error scraping raids")
+        return scraper._load_fallback_data("raids.json", [])  # type: ignore[return-value]  # noqa: SLF001
 
     return bosses
+
+
+def _safe_parse_raid_boss(
+    card: Tag, current_tier: str, base_url: str
+) -> dict[str, Any] | None:
+    """Safely parse individual raid boss card with error handling"""
+    try:
+        return parse_raid_boss(card, current_tier, base_url)
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.warning("Error parsing raid boss: %s", e)
+        return None
 
 
 def parse_raid_boss(
@@ -135,7 +144,7 @@ def parse_raid_boss(
         if cp_elem:
             cp_text = cp_elem.get_text().replace("CP", "").strip()
             cp_parts = cp_text.split("-")
-            if len(cp_parts) == 2:
+            if len(cp_parts) == EXPECTED_CP_PARTS:
                 try:
                     normal_cp = boss["combatPower"]
                     if isinstance(normal_cp, dict):
@@ -151,7 +160,7 @@ def parse_raid_boss(
         if boosted_elem:
             boosted_text = boosted_elem.get_text().replace("CP", "").strip()
             boosted_parts = boosted_text.split("-")
-            if len(boosted_parts) == 2:
+            if len(boosted_parts) == EXPECTED_CP_PARTS:
                 try:
                     boosted_cp = boss["combatPower"]
                     if isinstance(boosted_cp, dict):
@@ -178,8 +187,8 @@ def parse_raid_boss(
                 boosted_weather.append({"name": weather_name, "image": img_url})
         boss["boostedWeather"] = boosted_weather
 
-        return boss
-
     except (AttributeError, KeyError, ValueError, TypeError) as e:
         logger.warning("Error parsing raid boss card: %s", e)
         return None
+    else:
+        return boss

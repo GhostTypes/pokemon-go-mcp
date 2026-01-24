@@ -15,23 +15,27 @@ def infer_event_type(name: str, heading: str) -> str:
     name_lower = name.lower()
     heading_lower = heading.lower()
 
+    # Match specific event patterns
     if "raid day" in name_lower or "raid day" in heading_lower:
-        return "raid-day"
-    if "community day" in name_lower:
-        return "community-day"
-    if "spotlight" in name_lower or "spotlight" in heading_lower:
-        return "pokemon-spotlight-hour"
-    if "breakthrough" in name_lower or "breakthrough" in heading_lower:
-        return "research-breakthrough"
-    if "raid" in heading_lower and "battle" in heading_lower:
-        return "raid-battles"
-    if "showcase" in name_lower or "showcase" in heading_lower:
-        return "pokestop-showcase"
-    if "promo" in name_lower and "research" in name_lower:
-        return "timed-research-promo"
-    if heading_lower == "event":
-        return "event"
-    return "event"
+        event_type = "raid-day"
+    elif "community day" in name_lower:
+        event_type = "community-day"
+    elif "spotlight" in name_lower or "spotlight" in heading_lower:
+        event_type = "pokemon-spotlight-hour"
+    elif "breakthrough" in name_lower or "breakthrough" in heading_lower:
+        event_type = "research-breakthrough"
+    elif "raid" in heading_lower and "battle" in heading_lower:
+        event_type = "raid-battles"
+    elif "showcase" in name_lower or "showcase" in heading_lower:
+        event_type = "pokestop-showcase"
+    elif "promo" in name_lower and "research" in name_lower:
+        event_type = "timed-research-promo"
+    elif heading_lower == "event":
+        event_type = "event"
+    else:
+        event_type = "event"
+
+    return event_type
 
 
 def parse_event_item(

@@ -1,11 +1,11 @@
 """Raid-related tools for the Pokemon Go MCP server."""
 
 import logging
+from typing import TYPE_CHECKING
 
 from fastmcp import FastMCP
 
 from .api_client import api_client
-from .types import RaidInfo
 from .utils import (
     filter_raids_by_tier,
     filter_raids_by_type,
@@ -14,6 +14,9 @@ from .utils import (
     normalize_tier_name,
     validate_pokemon_name,
 )
+
+if TYPE_CHECKING:
+    from .types import RaidInfo
 
 logger = logging.getLogger(__name__)
 
@@ -63,10 +66,13 @@ def register_raid_tools(mcp: FastMCP) -> None:
                     result += format_raid_summary(raid) + "\n\n"
 
             total_shiny = len([r for r in raids if r.can_be_shiny])
-            result += f"**Summary:** {len(raids)} total raid bosses, {total_shiny} can be shiny\n"
+            result += (
+                f"**Summary:** {len(raids)} total raid bosses, "
+                f"{total_shiny} can be shiny\n"
+            )
 
         except Exception as e:
-            logger.exception("Error fetching raids: %s", e)
+            logger.exception("Error fetching raids")
             return f"Error fetching raids: {e!s}"
         else:
             return result
@@ -101,7 +107,7 @@ def register_raid_tools(mcp: FastMCP) -> None:
             )
 
         except Exception as e:
-            logger.exception("Error fetching %s raids: %s", tier, e)
+            logger.exception("Error fetching raids by tier")
             return f"Error fetching {tier} raids: {e!s}"
         else:
             return result
@@ -144,7 +150,7 @@ def register_raid_tools(mcp: FastMCP) -> None:
             )
 
         except Exception as e:
-            logger.exception("Error fetching shiny raids: %s", e)
+            logger.exception("Error fetching shiny raids")
             return f"Error fetching shiny raids: {e!s}"
         else:
             return result
@@ -176,7 +182,7 @@ def register_raid_tools(mcp: FastMCP) -> None:
                 result += format_raid_summary(raid) + "\n\n"
 
         except Exception as e:
-            logger.exception("Error searching for raid boss: %s", e)
+            logger.exception("Error searching for raid boss")
             return f"Error searching for raid boss: {e!s}"
         else:
             return result
@@ -197,7 +203,10 @@ def register_raid_tools(mcp: FastMCP) -> None:
             if not filtered_raids:
                 return f"No {pokemon_type}-type raid bosses found."
 
-            result = f"# {pokemon_type.title()}-Type Raid Bosses ({len(filtered_raids)} found)\n\n"
+            result = (
+                f"# {pokemon_type.title()}-Type Raid Bosses "
+                f"({len(filtered_raids)} found)\n\n"
+            )
 
             for raid in filtered_raids:
                 result += format_raid_summary(raid) + "\n\n"
@@ -209,7 +218,7 @@ def register_raid_tools(mcp: FastMCP) -> None:
             )
 
         except Exception as e:
-            logger.exception("Error fetching %s raids: %s", pokemon_type, e)
+            logger.exception("Error fetching raids by type")
             return f"Error fetching {pokemon_type} raids: {e!s}"
         else:
             return result
@@ -236,7 +245,10 @@ def register_raid_tools(mcp: FastMCP) -> None:
             if not boosted_raids:
                 return f"No raid bosses are boosted by {weather} weather."
 
-            result = f"# {weather.title()}-Boosted Raid Bosses ({len(boosted_raids)} found)\n\n"
+            result = (
+                f"# {weather.title()}-Boosted Raid Bosses "
+                f"({len(boosted_raids)} found)\n\n"
+            )
 
             for raid in boosted_raids:
                 result += format_raid_summary(raid) + "\n\n"
@@ -248,14 +260,14 @@ def register_raid_tools(mcp: FastMCP) -> None:
             )
 
         except Exception as e:
-            logger.exception("Error fetching weather boosted raids: %s", e)
+            logger.exception("Error fetching weather boosted raids")
             return f"Error fetching weather boosted raids: {e!s}"
         else:
             return result
 
     @mcp.tool()
     async def get_raid_recommendations(
-        tier: str | None = None, shiny_only: bool = False
+        *, tier: str | None = None, shiny_only: bool = False
     ) -> str:
         """Get raid recommendations based on specified criteria.
 
@@ -321,7 +333,7 @@ def register_raid_tools(mcp: FastMCP) -> None:
                     result += "\n\n"
 
         except Exception as e:
-            logger.exception("Error getting raid recommendations: %s", e)
+            logger.exception("Error getting raid recommendations")
             return f"Error getting raid recommendations: {e!s}"
         else:
             return result

@@ -18,8 +18,10 @@ if TYPE_CHECKING:
 # Import sub-parsers
 try:
     # Relative imports for when this module is imported as part of the package
-    from .parsers.events.base_event import infer_event_type  # noqa: F401
-    from .parsers.events.base_event import parse_event_item
+    from .parsers.events.base_event import (
+        infer_event_type,  # noqa: F401
+        parse_event_item,
+    )
     from .parsers.events.comday_details import parse_community_day_details
     from .parsers.events.generic_event_details import parse_generic_event_details
     from .parsers.events.raid_battle_details import parse_raid_battle_details
@@ -45,12 +47,15 @@ except ImportError:
 logger = logging.getLogger(__name__)
 
 
-async def scrape_events(scraper: "LeekDuckScraper", base_url: str) -> list[dict[str, Any]]:
+async def scrape_events(
+    scraper: "LeekDuckScraper",
+    base_url: str,
+) -> list[dict[str, Any]]:
     """Scrape events data from leekduck.com"""
     logger.info("Scraping events data...")
 
     cache_file = scraper.output_dir / "events.json"
-    if not scraper._should_fetch(cache_file):
+    if not scraper._should_fetch(cache_file):  # noqa: SLF001
         logger.info("Using cached events data")
         with cache_file.open(encoding="utf-8") as f:
             return json.load(f)  # type: ignore[return-value]
@@ -114,16 +119,19 @@ async def scrape_events(scraper: "LeekDuckScraper", base_url: str) -> list[dict[
         )
         all_events.extend(events_to_fetch)
 
-        scraper._save_data(all_events, "events.json")
+        scraper._save_data(all_events, "events.json")  # noqa: SLF001
 
-    except Exception as e:
-        logger.exception("Error scraping events: %s", e)
-        return scraper._load_fallback_data("events.json", [])  # type: ignore[return-value]
+    except Exception:
+        logger.exception("Error scraping events")
+        return scraper._load_fallback_data("events.json", [])  # type: ignore[return-value]  # noqa: SLF001
 
     return all_events
 
 
-async def fetch_event_details(scraper: "LeekDuckScraper", event: dict[str, Any]) -> None:
+async def fetch_event_details(
+    scraper: "LeekDuckScraper",
+    event: dict[str, Any],
+) -> None:
     """Fetch detailed event data from individual event page"""
     try:
         logger.debug("Fetching details for event: %s", event["name"])
@@ -133,13 +141,17 @@ async def fetch_event_details(scraper: "LeekDuckScraper", event: dict[str, Any])
         soup = BeautifulSoup(response.text, "lxml")
 
         # Initialize extraData with generic flags
-        generic_data: dict[str, Any] = {"hasSpawns": False, "hasFieldResearchTasks": False}
+        generic_data: dict[str, Any] = {
+            "hasSpawns": False,
+            "hasFieldResearchTasks": False,
+        }
 
         # Check for spawns section (ScrapedDuck looks for id='spawns')
         if soup.find(id="spawns"):
             generic_data["hasSpawns"] = True
 
-        # Check for field research section (ScrapedDuck looks for id='field-research-tasks')
+        # Check for field research section
+        # (ScrapedDuck looks for id='field-research-tasks')
         if soup.find(id="field-research-tasks"):
             generic_data["hasFieldResearchTasks"] = True
 

@@ -19,12 +19,15 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
-async def scrape_research(scraper: "LeekDuckScraper", base_url: str) -> list[dict[str, Any]]:
+async def scrape_research(
+    scraper: "LeekDuckScraper",
+    base_url: str,
+) -> list[dict[str, Any]]:
     """Scrape field research data from leekduck.com"""
     logger.info("Scraping research data...")
 
     cache_file = scraper.output_dir / "research.json"
-    if not scraper._should_fetch(cache_file):
+    if not scraper._should_fetch(cache_file):  # noqa: SLF001
         logger.info("Using cached research data")
         with cache_file.open(encoding="utf-8") as f:
             return json.load(f)  # type: ignore[return-value]
@@ -40,21 +43,26 @@ async def scrape_research(scraper: "LeekDuckScraper", base_url: str) -> list[dic
         # Find research items (updated selector)
         research_items = soup.select(".task-item")
         for item in research_items:
-            try:
-                task = parse_research_task(item)
-                if task:
-                    research_tasks.append(task)
-            except (AttributeError, KeyError, ValueError, TypeError) as e:
-                logger.warning("Error parsing research task: %s", e)
-                continue
+            task = _safe_parse_research_task(item)
+            if task:
+                research_tasks.append(task)
 
-        scraper._save_data(research_tasks, "research.json")
+        scraper._save_data(research_tasks, "research.json")  # noqa: SLF001
 
-    except (httpx.HTTPError, OSError, json.JSONDecodeError) as e:
-        logger.exception("Error scraping research: %s", e)
-        return scraper._load_fallback_data("research.json", [])  # type: ignore[return-value]
+    except (httpx.HTTPError, OSError, json.JSONDecodeError):
+        logger.exception("Error scraping research")
+        return scraper._load_fallback_data("research.json", [])  # type: ignore[return-value]  # noqa: SLF001
 
     return research_tasks
+
+
+def _safe_parse_research_task(item: Tag) -> dict[str, Any] | None:
+    """Safely parse individual research task with error handling"""
+    try:
+        return parse_research_task(item)
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.warning("Error parsing research task: %s", e)
+        return None
 
 
 def parse_research_task(item: Tag) -> dict[str, Any] | None:
@@ -71,11 +79,14 @@ def parse_research_task(item: Tag) -> dict[str, Any] | None:
         reward_items = item.select(".reward")
         rewards = [r for r in (parse_research_reward(ri) for ri in reward_items) if r]
 
-        return {"text": task_text, "rewards": rewards} if rewards else None
+        if not rewards:
+            return None
 
     except (AttributeError, KeyError, ValueError, TypeError) as e:
         logger.warning("Error parsing research task: %s", e)
         return None
+    else:
+        return {"text": task_text, "rewards": rewards}
 
 
 def parse_research_reward(reward_item: Tag) -> dict[str, Any] | None:

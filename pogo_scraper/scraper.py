@@ -14,6 +14,7 @@ import types
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
+
 try:
     from typing import Self
 except ImportError:
@@ -24,12 +25,7 @@ import httpx
 # Import page-specific scrapers
 if TYPE_CHECKING:
     # Type checking imports - use absolute imports
-    import pogo_scraper.eggs as eggs
-    import pogo_scraper.events as events
-    import pogo_scraper.promo_codes as promo_codes
-    import pogo_scraper.raids as raids
-    import pogo_scraper.research as research
-    import pogo_scraper.rocket_lineups as rocket_lineups
+    from pogo_scraper import eggs, events, promo_codes, raids, research, rocket_lineups
 else:
     try:
         from . import (  # type: ignore[import-not-found]

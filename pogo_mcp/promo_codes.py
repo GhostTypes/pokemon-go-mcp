@@ -18,8 +18,9 @@ def register_promo_code_tools(mcp: FastMCP) -> None:
     async def get_active_promo_codes() -> str:
         """Get all currently active promo codes with their rewards and expiration dates.
 
-        Returns a formatted list of active promo codes that can be redeemed in Pokemon GO,
-        including their rewards, descriptions, and expiration information.
+        Returns a formatted list of active promo codes that can be redeemed in
+        Pokemon GO, including their rewards, descriptions, and expiration
+        information.
         """
         try:
             logger.info("Fetching active promo codes...")
@@ -52,7 +53,8 @@ def register_promo_code_tools(mcp: FastMCP) -> None:
                         exp_date = datetime.fromisoformat(
                             code.expiration.replace("Z", "+00:00")
                         )
-                        result += f"**Expires:** {exp_date.strftime('%B %d, %Y at %I:%M %p %Z')}\n"
+                        exp_str = exp_date.strftime("%B %d, %Y at %I:%M %p %Z")
+                        result += f"**Expires:** {exp_str}\n"
                     except (ValueError, AttributeError):
                         result += f"**Expires:** {code.expiration}\n"
 
@@ -61,7 +63,7 @@ def register_promo_code_tools(mcp: FastMCP) -> None:
                 result += "---\n\n"
 
         except Exception as e:
-            logger.exception("Error fetching promo codes: %s", e)
+            logger.exception("Error fetching promo codes")
             return f"Error fetching promo codes: {e!s}"
         else:
             return result
