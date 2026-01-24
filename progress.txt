@@ -62,7 +62,7 @@
 - [x] Task 8.3: Improve test coverage (if needed) - Coverage at 76%, adequate for now
 
 ### Phase 9: File-Specific Deep Cleans (P2)
-- [ ] Task 9.1: pogo_mcp/server.py (~200 violations)
+- [x] Task 9.1: pogo_mcp/server.py (~200 violations) - 48 violations fixed
 - [ ] Task 9.2: pogo_mcp/api_client.py (~150 violations)
 - [ ] Task 9.3: pogo_mcp/utils.py (~100 violations)
 - [ ] Task 9.4: pogo_scraper/scraper.py (~180 violations)
@@ -78,9 +78,9 @@
 
 ## Statistics
 
-**Tasks Completed:** 36 / 60+
+**Tasks Completed:** 37 / 60+
 **Mypy Errors:** 1,094 → 0 errors (pogo_mcp/ only)
-**Ruff Errors:** 3,103 → 233 remaining (pogo_scraper/ has most issues)
+**Ruff Errors:** 3,103 → 185 remaining (pogo_scraper/ has most issues)
 **Files Reformatted:** 143 + 6 files (Task 6.1) = 149 total
 **Tests Passing:** 100% (148/148)
 **Test Coverage:** 76%
@@ -100,13 +100,14 @@
 **Commented-Out Code Removed:** 10 violations (Task 7.4)
 **TODO Comments Fixed:** 8 violations in template file (Task 7.5)
 **Line Length Issues Fixed:** ~40 violations in main code (Task 7.6)
+**server.py Violations Fixed:** 48 violations (Task 9.1)
 
 ## Current Status
 
 **Phase:** Phase 9 - File-Specific Deep Cleans
-**Current Task:** Task 8.3 completed
-**Last Commit:** Task 8.3 - Fixed test fixtures
-**Time Elapsed:** ~2h 10m
+**Current Task:** Task 9.1 completed
+**Last Commit:** Task 9.1 - Fixed pogo_mcp/server.py violations
+**Time Elapsed:** ~2h 25m
 
 ## Notes
 
