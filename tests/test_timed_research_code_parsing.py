@@ -28,11 +28,15 @@ def test_timed_research_event_type_inference():
     """Test that timed research event type is correctly inferred"""
     # Test event name with "promo" and "research"
     event_type = infer_event_type("Promo Code for Max Finale Timed Research", "Event")
-    assert event_type == "timed-research-promo", f"Expected 'timed-research-promo', got '{event_type}'"
+    assert event_type == "timed-research-promo", (
+        f"Expected 'timed-research-promo', got '{event_type}'"
+    )
 
     # Test with different variations
     event_type = infer_event_type("Promo Code for Timed Research", "Event")
-    assert event_type == "timed-research-promo", f"Expected 'timed-research-promo', got '{event_type}'"
+    assert event_type == "timed-research-promo", (
+        f"Expected 'timed-research-promo', got '{event_type}'"
+    )
 
 
 def test_timed_research_code_extraction():
@@ -57,7 +61,9 @@ def test_timed_research_code_extraction():
     # Extract code from header text
     header_text = code_header.get_text(strip=True)
     expected_text = "Timed Research Code: GOFESTMAX"
-    assert header_text == expected_text, f"Expected '{expected_text}', got '{header_text}'"
+    assert header_text == expected_text, (
+        f"Expected '{expected_text}', got '{header_text}'"
+    )
 
     # Extract the code (GOFESTMAX)
     code = header_text.split(":")[-1].strip()
@@ -95,8 +101,12 @@ def test_timed_research_expiration_extraction():
     assert research_expires is not None, "Research expiration date not found"
 
     # Check that they contain the expected dates
-    assert "August 3, 2025" in code_expires, f"Code expiration should contain 'August 3, 2025', got '{code_expires}'"
-    assert "Sunday, August 24, 2025" in research_expires, f"Research expiration should contain 'Sunday, August 24, 2025', got '{research_expires}'"
+    assert "August 3, 2025" in code_expires, (
+        f"Code expiration should contain 'August 3, 2025', got '{code_expires}'"
+    )
+    assert "Sunday, August 24, 2025" in research_expires, (
+        f"Research expiration should contain 'Sunday, August 24, 2025', got '{research_expires}'"
+    )
 
 
 def test_timed_research_details_parsing():
@@ -113,28 +123,39 @@ def test_timed_research_details_parsing():
         html_content = f.read()
 
     # Create a mock event dictionary
-    event = {
-        "extraData": {}
-    }
+    event = {"extraData": {}}
 
     # Parse the live HTML with BeautifulSoup
     soup = BeautifulSoup(html_content, "lxml")
 
     # Call the function (it's async, so we need to handle that)
     import asyncio
+
     asyncio.run(parse_timed_research_code_details(soup, event))
 
     # Check that the timed research data was added to extraData
-    assert "timedresearch" in event["extraData"], "Timed research data not found in extraData"
+    assert "timedresearch" in event["extraData"], (
+        "Timed research data not found in extraData"
+    )
 
     timed_research_data = event["extraData"]["timedresearch"]
 
     # Check that all expected fields are present
     assert "code" in timed_research_data, "Code field missing from timed research data"
-    assert "code_expires" in timed_research_data, "Code expires field missing from timed research data"
-    assert "research_expires" in timed_research_data, "Research expires field missing from timed research data"
+    assert "code_expires" in timed_research_data, (
+        "Code expires field missing from timed research data"
+    )
+    assert "research_expires" in timed_research_data, (
+        "Research expires field missing from timed research data"
+    )
 
     # Check the values
-    assert timed_research_data["code"] == "GOFESTMAX", f"Expected code 'GOFESTMAX', got '{timed_research_data['code']}'"
-    assert "August 3, 2025" in timed_research_data["code_expires"], f"Code expires should contain 'August 3, 2025', got '{timed_research_data['code_expires']}'"
-    assert "Sunday, August 24, 2025" in timed_research_data["research_expires"], f"Research expires should contain 'Sunday, August 24, 2025', got '{timed_research_data['research_expires']}'"
+    assert timed_research_data["code"] == "GOFESTMAX", (
+        f"Expected code 'GOFESTMAX', got '{timed_research_data['code']}'"
+    )
+    assert "August 3, 2025" in timed_research_data["code_expires"], (
+        f"Code expires should contain 'August 3, 2025', got '{timed_research_data['code_expires']}'"
+    )
+    assert "Sunday, August 24, 2025" in timed_research_data["research_expires"], (
+        f"Research expires should contain 'Sunday, August 24, 2025', got '{timed_research_data['research_expires']}'"
+    )

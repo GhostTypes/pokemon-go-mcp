@@ -63,7 +63,13 @@ async def scrape_eggs(scraper, base_url: str) -> list[dict]:
                 pokemon_cards = next_grid.select("li.pokemon-card")
                 for card in pokemon_cards:
                     try:
-                        egg = parse_egg_item(card, current_type, current_adventure_sync, current_gift_exchange, current_route_gift)
+                        egg = parse_egg_item(
+                            card,
+                            current_type,
+                            current_adventure_sync,
+                            current_gift_exchange,
+                            current_route_gift,
+                        )
                         if egg:
                             eggs.append(egg)
                     except Exception as e:
@@ -78,7 +84,13 @@ async def scrape_eggs(scraper, base_url: str) -> list[dict]:
         return scraper._load_fallback_data("eggs.json", [])
 
 
-def parse_egg_item(item, egg_type: str, is_adventure_sync: bool, is_gift_exchange: bool, is_route_gift: bool = False) -> dict | None:
+def parse_egg_item(
+    item,
+    egg_type: str,
+    is_adventure_sync: bool,
+    is_gift_exchange: bool,
+    is_route_gift: bool = False,
+) -> dict | None:
     """Parse individual egg item"""
     try:
         # Extract all elements upfront
@@ -102,7 +114,7 @@ def parse_egg_item(item, egg_type: str, is_adventure_sync: bool, is_gift_exchang
             "isRegional": bool(regional_elem),
             "isGiftExchange": is_gift_exchange,
             "isRouteGift": is_route_gift,
-            "rarity": 1
+            "rarity": 1,
         }
 
         # Rarity - Count the number of mini-egg icons

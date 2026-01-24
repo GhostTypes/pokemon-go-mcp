@@ -2,7 +2,9 @@
 
 __version__ = "1.0.0"
 __author__ = "GhostTypes"
-__description__ = "A comprehensive MCP server for Pokemon Go events, raids, research, and eggs"
+__description__ = (
+    "A comprehensive MCP server for Pokemon Go events, raids, research, and eggs"
+)
 
 from .server import main
 from .types import (

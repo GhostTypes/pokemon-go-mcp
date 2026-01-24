@@ -23,6 +23,7 @@ def download_eggs_data():
             f.write(response.text)
     return html_file
 
+
 def test_egg_parsing():
     """Test that egg parsing works correctly"""
     # Download data if needed
@@ -65,11 +66,16 @@ def test_egg_parsing():
 
     # CP value should be a positive integer (not -1)
     assert isinstance(result["combatPower"], int), "CP value should be an integer"
-    assert result["combatPower"] > 0, f"CP value should be positive, got {result['combatPower']}"
+    assert result["combatPower"] > 0, (
+        f"CP value should be positive, got {result['combatPower']}"
+    )
 
     # Rarity should be a positive integer
     assert isinstance(result["rarity"], int), "Rarity value should be an integer"
-    assert result["rarity"] >= 1, f"Rarity value should be at least 1, got {result['rarity']}"
+    assert result["rarity"] >= 1, (
+        f"Rarity value should be at least 1, got {result['rarity']}"
+    )
+
 
 def test_egg_cp_values():
     """Test that multiple egg CP values are correctly parsed"""
@@ -124,7 +130,9 @@ def test_egg_rarity_parsing():
         result = parse_egg_item(card, "2 km", False, False)
         if result and "rarity" in result:
             # Rarity should be at least 1
-            assert result["rarity"] >= 1, f"Rarity should be at least 1, got {result['rarity']}"
+            assert result["rarity"] >= 1, (
+                f"Rarity should be at least 1, got {result['rarity']}"
+            )
             rarity_parsed = True
 
     # At least some should have rarity values
@@ -163,4 +171,6 @@ def test_route_gift_egg_parsing():
     assert result is not None, "Failed to parse route gift egg card"
     assert result["isRouteGift"], "Route gift flag not set correctly"
     assert result["rarity"] == 2, f"Expected rarity 2, got {result['rarity']}"
-    assert result["name"] == "Bulbasaur", f"Expected name 'Bulbasaur', got {result['name']}"
+    assert result["name"] == "Bulbasaur", (
+        f"Expected name 'Bulbasaur', got {result['name']}"
+    )

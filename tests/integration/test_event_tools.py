@@ -20,6 +20,7 @@ class TestEventTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -38,7 +39,9 @@ class TestEventTools:
         assert "Pokemon Go Events" in result or "No active" in result
 
     @pytest.mark.asyncio
-    async def test_get_event_details(self, ensure_test_data, sample_event_id, mcp_server):
+    async def test_get_event_details(
+        self, ensure_test_data, sample_event_id, mcp_server
+    ):
         """Test get_event_details tool."""
         from pogo_mcp.events import register_event_tools
 
@@ -49,6 +52,7 @@ class TestEventTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -75,6 +79,7 @@ class TestEventTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -101,6 +106,7 @@ class TestEventTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -129,6 +135,7 @@ class TestEventTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -156,6 +163,7 @@ class TestEventTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -182,6 +190,7 @@ class TestEventTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -209,6 +218,7 @@ class TestEventTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -235,6 +245,7 @@ class TestEventTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()

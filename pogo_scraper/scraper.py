@@ -29,20 +29,21 @@ except ImportError:
     import rocket_lineups
 
 # Configure logging
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
 logger = logging.getLogger(__name__)
-
 
 
 async def log_response_hook(response) -> None:
     """Event hook to log details of each HTTP response."""
-    #await response.aread()  # Make sure the response body is available
-    #logger.info("--- HTTP Response Debug ---")
-    #logger.info(f"URL: {response.request.url}")
-    #logger.info(f"Status Code: {response.status_code}")
+    # await response.aread()  # Make sure the response body is available
+    # logger.info("--- HTTP Response Debug ---")
+    # logger.info(f"URL: {response.request.url}")
+    # logger.info(f"Status Code: {response.status_code}")
     # Log the first 500 characters to check for CAPTCHA or error pages
-    #logger.info(f"Response Text (first 500 chars):\n{response.text[:500]}")
-    #logger.info("---------------------------")
+    # logger.info(f"Response Text (first 500 chars):\n{response.text[:500]}")
+    # logger.info("---------------------------")
     return
 
 
@@ -70,7 +71,9 @@ class LeekDuckScraper:
                 "Connection": "keep-alive",
                 "Upgrade-Insecure-Requests": "1",
             },
-            event_hooks={"response": [log_response_hook]}  ### <<< MODIFIED: Added event hook >>> ###
+            event_hooks={
+                "response": [log_response_hook]
+            },  ### <<< MODIFIED: Added event hook >>> ###
         )
         return self
 
@@ -99,22 +102,21 @@ class LeekDuckScraper:
         with open(min_output_file, "w", encoding="utf-8") as f:
             json.dump(data, f, separators=(",", ":"), ensure_ascii=False)
 
-        logger.info(f"Saved {len(data) if isinstance(data, list) else 'data'} items to {output_file}")
+        logger.info(
+            f"Saved {len(data) if isinstance(data, list) else 'data'} items to {output_file}"
+        )
 
     async def scrape_events(self) -> list[dict]:
         """Scrape events data from leekduck.com"""
         return await events.scrape_events(self, self.base_url)
 
-
     async def scrape_raids(self) -> list[dict]:
         """Scrape raid bosses data from leekduck.com"""
         return await raids.scrape_raids(self, self.base_url)
 
-
     async def scrape_research(self) -> list[dict]:
         """Scrape field research data from leekduck.com"""
         return await research.scrape_research(self, self.base_url)
-
 
     async def scrape_eggs(self) -> list[dict]:
         """Scrape egg hatch data from leekduck.com"""
@@ -127,7 +129,6 @@ class LeekDuckScraper:
     async def scrape_promo_codes(self) -> list[dict]:
         """Scrape promo codes data from leekduck.com"""
         return await promo_codes.scrape_promo_codes(self, self.base_url)
-
 
     def _load_fallback_data(self, filename: str, default: Any) -> Any:
         """Load fallback data from cache or return default"""
@@ -159,7 +160,7 @@ class LeekDuckScraper:
             "research": self.scrape_research(),
             "eggs": self.scrape_eggs(),
             "rocket_lineups": self.scrape_rocket_lineups(),
-            "promo_codes": self.scrape_promo_codes()
+            "promo_codes": self.scrape_promo_codes(),
         }
 
         for name, task in tasks.items():
@@ -174,7 +175,7 @@ class LeekDuckScraper:
         summary = {
             "scraped_at": datetime.now(timezone.utc).isoformat(),
             "counts": {name: len(data) for name, data in results.items()},
-            "total_items": sum(len(data) for data in results.values())
+            "total_items": sum(len(data) for data in results.values()),
         }
 
         summary_file = self.output_dir / "scrape_summary.json"
@@ -196,7 +197,7 @@ Examples:
   python scraper.py --events --raids         # Scrape only events and raids
   python scraper.py --output-dir ./my_data   # Custom output directory
   python scraper.py --cache-duration 600     # Cache for 10 minutes
-        """
+        """,
     )
 
     # Data source selection
@@ -205,13 +206,23 @@ Examples:
     parser.add_argument("--raids", action="store_true", help="Scrape raids data")
     parser.add_argument("--research", action="store_true", help="Scrape research data")
     parser.add_argument("--eggs", action="store_true", help="Scrape eggs data")
-    parser.add_argument("--rocket-lineups", action="store_true", help="Scrape Team Rocket lineups data")
-    parser.add_argument("--promo-codes", action="store_true", help="Scrape promo codes data")
+    parser.add_argument(
+        "--rocket-lineups", action="store_true", help="Scrape Team Rocket lineups data"
+    )
+    parser.add_argument(
+        "--promo-codes", action="store_true", help="Scrape promo codes data"
+    )
 
     # Configuration
-    parser.add_argument("--output-dir", default="data", help="Output directory for scraped data")
-    parser.add_argument("--cache-duration", type=int, default=300, help="Cache duration in seconds")
-    parser.add_argument("--verbose", "-v", action="store_true", help="Enable verbose logging")
+    parser.add_argument(
+        "--output-dir", default="data", help="Output directory for scraped data"
+    )
+    parser.add_argument(
+        "--cache-duration", type=int, default=300, help="Cache duration in seconds"
+    )
+    parser.add_argument(
+        "--verbose", "-v", action="store_true", help="Enable verbose logging"
+    )
 
     args = parser.parse_args()
 
@@ -221,19 +232,39 @@ Examples:
 
     # Determine what to scrape
     if args.all:
-        scrape_targets = ["events", "raids", "research", "eggs", "rocket_lineups", "promo_codes"]
+        scrape_targets = [
+            "events",
+            "raids",
+            "research",
+            "eggs",
+            "rocket_lineups",
+            "promo_codes",
+        ]
     else:
         scrape_targets = []
-        if args.events: scrape_targets.append("events")
-        if args.raids: scrape_targets.append("raids")
-        if args.research: scrape_targets.append("research")
-        if args.eggs: scrape_targets.append("eggs")
-        if getattr(args, "rocket_lineups", False): scrape_targets.append("rocket_lineups")
-        if getattr(args, "promo_codes", False): scrape_targets.append("promo_codes")
+        if args.events:
+            scrape_targets.append("events")
+        if args.raids:
+            scrape_targets.append("raids")
+        if args.research:
+            scrape_targets.append("research")
+        if args.eggs:
+            scrape_targets.append("eggs")
+        if getattr(args, "rocket_lineups", False):
+            scrape_targets.append("rocket_lineups")
+        if getattr(args, "promo_codes", False):
+            scrape_targets.append("promo_codes")
 
         # Default to all if nothing specified
         if not scrape_targets:
-            scrape_targets = ["events", "raids", "research", "eggs", "rocket_lineups", "promo_codes"]
+            scrape_targets = [
+                "events",
+                "raids",
+                "research",
+                "eggs",
+                "rocket_lineups",
+                "promo_codes",
+            ]
 
     logger.info("Starting Pokemon Go data scraper...")
     logger.info(f"Scraping: {', '.join(scrape_targets)}")

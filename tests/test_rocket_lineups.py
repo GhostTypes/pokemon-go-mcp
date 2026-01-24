@@ -81,11 +81,17 @@ def test_rocket_lineup_slots_parsing():
         if result and "lineups" in result and len(result["lineups"]) > 0:
             # Check the first lineup slot
             first_slot = result["lineups"][0]
-            if "slot" in first_slot and "pokemon" in first_slot and len(first_slot["pokemon"]) > 0:
+            if (
+                "slot" in first_slot
+                and "pokemon" in first_slot
+                and len(first_slot["pokemon"]) > 0
+            ):
                 valid_lineups_count += 1
 
     # At least some should have valid lineups
-    assert valid_lineups_count > 0, "No rocket profiles with valid lineups found in first 2 profiles"
+    assert valid_lineups_count > 0, (
+        "No rocket profiles with valid lineups found in first 2 profiles"
+    )
 
 
 def test_shadow_pokemon_parsing():
@@ -117,4 +123,6 @@ def test_shadow_pokemon_parsing():
     assert "types" in result, "Parsed shadow Pokemon missing 'types' field"
     assert "weaknesses" in result, "Parsed shadow Pokemon missing 'weaknesses' field"
     assert "image" in result, "Parsed shadow Pokemon missing 'image' field"
-    assert "can_be_shiny" in result, "Parsed shadow Pokemon missing 'can_be_shiny' field"
+    assert "can_be_shiny" in result, (
+        "Parsed shadow Pokemon missing 'can_be_shiny' field"
+    )

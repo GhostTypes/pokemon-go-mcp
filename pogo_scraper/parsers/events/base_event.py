@@ -30,6 +30,7 @@ def infer_event_type(name: str, heading: str) -> str:
         return "event"
     return "event"
 
+
 def parse_event_item(link_element, event_dates: dict, base_url: str) -> dict | None:
     """Parse individual event item from the events page"""
     try:
@@ -67,9 +68,10 @@ def parse_event_item(link_element, event_dates: dict, base_url: str) -> dict | N
             "image": image,
             "start": dates.get("start", ""),
             "end": dates.get("end", ""),
-            "extraData": {"generic": {"hasSpawns": False, "hasFieldResearchTasks": False}}
+            "extraData": {
+                "generic": {"hasSpawns": False, "hasFieldResearchTasks": False}
+            },
         }
-
 
     except Exception as e:
         logger.warning(f"Error parsing event item: {e}")

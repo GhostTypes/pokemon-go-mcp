@@ -16,13 +16,9 @@ from bs4 import BeautifulSoup
 def get_scraper():
     """Initialize cloudscraper with proper settings"""
     return cloudscraper.create_scraper(
-        browser={
-            "browser": "chrome",
-            "platform": "windows",
-            "desktop": True
-        },
-        delay=1
+        browser={"browser": "chrome", "platform": "windows", "desktop": True}, delay=1
     )
+
 
 def get_headers():
     """Get headers for requests"""
@@ -31,6 +27,7 @@ def get_headers():
         "Accept-Language": "en-US,en;q=0.9",
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
     }
+
 
 def fetch_page(scraper, url):
     """Fetch and decode a page"""
@@ -43,6 +40,7 @@ def fetch_page(scraper, url):
     except Exception as e:
         print(f"Error fetching {url}: {e}", file=sys.stderr)
         return None
+
 
 def extract_ruff_links(html, base_url):
     """Extract all Ruff documentation links from HTML"""
@@ -72,6 +70,7 @@ def extract_ruff_links(html, base_url):
             links.add(clean_url)
 
     return links
+
 
 def crawl_ruff_docs(start_url="https://docs.astral.sh/ruff/"):
     """
@@ -121,6 +120,7 @@ def crawl_ruff_docs(start_url="https://docs.astral.sh/ruff/"):
 
     return sorted(all_pages)
 
+
 def main():
     """Main entry point"""
     # Get output file from command line or use default
@@ -136,15 +136,14 @@ def main():
 
     print(file=sys.stderr)
     print("=" * 70, file=sys.stderr)
-    print(f"Discovery complete! Found {len(pages)} documentation pages", file=sys.stderr)
+    print(
+        f"Discovery complete! Found {len(pages)} documentation pages", file=sys.stderr
+    )
     print("=" * 70, file=sys.stderr)
     print(file=sys.stderr)
 
     # Output results
-    output = {
-        "total_pages": len(pages),
-        "pages": pages
-    }
+    output = {"total_pages": len(pages), "pages": pages}
 
     # Save to JSON file
     with open(output_file, "w") as f:
@@ -157,6 +156,7 @@ def main():
     print("All discovered pages:", file=sys.stderr)
     for i, page in enumerate(pages, 1):
         print(f"{i:3d}. {page}", file=sys.stderr)
+
 
 if __name__ == "__main__":
     main()

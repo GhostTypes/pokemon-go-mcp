@@ -18,6 +18,7 @@ class TestEggTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -42,6 +43,7 @@ class TestEggTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -65,6 +67,7 @@ class TestEggTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -88,6 +91,7 @@ class TestEggTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -111,6 +115,7 @@ class TestEggTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -124,7 +129,9 @@ class TestEggTools:
         assert "shiny" in result.lower() or "Shiny" in result or "No" in result
 
     @pytest.mark.asyncio
-    async def test_search_egg_pokemon(self, ensure_test_data, sample_pokemon_name, mcp_server):
+    async def test_search_egg_pokemon(
+        self, ensure_test_data, sample_pokemon_name, mcp_server
+    ):
         """Test search_egg_pokemon tool."""
         from pogo_mcp.eggs import register_egg_tools
 
@@ -135,6 +142,7 @@ class TestEggTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -158,6 +166,7 @@ class TestEggTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -181,6 +190,7 @@ class TestEggTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -204,6 +214,7 @@ class TestEggTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -227,6 +238,7 @@ class TestEggTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -250,6 +262,7 @@ class TestEggTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -273,6 +286,7 @@ class TestEggTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -296,6 +310,7 @@ class TestEggTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -319,6 +334,7 @@ class TestEggTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -342,6 +358,7 @@ class TestEggTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()

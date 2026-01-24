@@ -32,7 +32,9 @@ def register_research_tools(mcp: FastMCP) -> None:
             if not research_tasks:
                 return "No field research data available."
 
-            result = f"# Current Field Research Tasks (as of {get_current_time_str()})\n\n"
+            result = (
+                f"# Current Field Research Tasks (as of {get_current_time_str()})\n\n"
+            )
             result += "**Important:** You get ONE of the possible rewards listed for each task, not all of them.\n\n"
 
             # Group by task type if available
@@ -64,10 +66,9 @@ def register_research_tools(mcp: FastMCP) -> None:
                     result += format_research_summary(task) + "\n\n"
 
             # Summary statistics
-            total_shiny_tasks = len([
-                t for t in research_tasks
-                if any(r.can_be_shiny for r in t.rewards)
-            ])
+            total_shiny_tasks = len(
+                [t for t in research_tasks if any(r.can_be_shiny for r in t.rewards)]
+            )
 
             result += f"**Summary:** {len(research_tasks)} research tasks available, "
             result += f"{total_shiny_tasks} have potential shiny rewards\n"
@@ -105,8 +106,12 @@ def register_research_tools(mcp: FastMCP) -> None:
 
             # Check if any can be shiny
             shiny_tasks = [
-                t for t in matching_tasks
-                if any(r.name.lower() == pokemon_name.lower() and r.can_be_shiny for r in t.rewards)
+                t
+                for t in matching_tasks
+                if any(
+                    r.name.lower() == pokemon_name.lower() and r.can_be_shiny
+                    for r in t.rewards
+                )
             ]
 
             if shiny_tasks:
@@ -133,9 +138,10 @@ def register_research_tools(mcp: FastMCP) -> None:
 
             # Filter by task type in the text or explicit type field
             matching_tasks = [
-                t for t in research_tasks
-                if (t.task_type and task_type_lower in t.task_type.lower()) or
-                   task_type_lower in t.text.lower()
+                t
+                for t in research_tasks
+                if (t.task_type and task_type_lower in t.task_type.lower())
+                or task_type_lower in t.text.lower()
             ]
 
             if not matching_tasks:
@@ -147,10 +153,9 @@ def register_research_tools(mcp: FastMCP) -> None:
                 result += format_research_summary(task) + "\n\n"
 
             # Summary
-            shiny_tasks = len([
-                t for t in matching_tasks
-                if any(r.can_be_shiny for r in t.rewards)
-            ])
+            shiny_tasks = len(
+                [t for t in matching_tasks if any(r.can_be_shiny for r in t.rewards)]
+            )
 
             result += f"**Summary:** {len(matching_tasks)} {task_type} tasks, {shiny_tasks} have potential shiny rewards\n"
 
@@ -170,15 +175,16 @@ def register_research_tools(mcp: FastMCP) -> None:
         try:
             research_tasks = await api_client.get_research()
             shiny_tasks = [
-                t for t in research_tasks
-                if any(r.can_be_shiny for r in t.rewards)
+                t for t in research_tasks if any(r.can_be_shiny for r in t.rewards)
             ]
 
             if not shiny_tasks:
                 return "No field research tasks with shiny rewards found."
 
             result = f"# ✨ Research Tasks with Shiny Rewards (as of {get_current_time_str()})\n\n"
-            result += f"Found {len(shiny_tasks)} tasks with potential shiny rewards:\n\n"
+            result += (
+                f"Found {len(shiny_tasks)} tasks with potential shiny rewards:\n\n"
+            )
 
             # Group shiny Pokemon by task
             shiny_pokemon = set()
@@ -187,7 +193,9 @@ def register_research_tools(mcp: FastMCP) -> None:
                     if reward.can_be_shiny:
                         shiny_pokemon.add(reward.name)
 
-            result += f"**Shiny Pokemon Available:** {', '.join(sorted(shiny_pokemon))}\n\n"
+            result += (
+                f"**Shiny Pokemon Available:** {', '.join(sorted(shiny_pokemon))}\n\n"
+            )
 
             for task in shiny_tasks:
                 result += format_research_summary(task)
@@ -217,11 +225,25 @@ def register_research_tools(mcp: FastMCP) -> None:
 
             # Define easy task patterns
             easy_patterns = [
-                "catch 1", "catch 2", "catch 3", "catch 4", "catch 5",
-                "make 1", "make 2", "make 3",
-                "spin 1", "spin 2", "spin 3", "spin 4", "spin 5",
-                "transfer", "favorite", "trade",
-                "snapshot", "buddy", "power up"
+                "catch 1",
+                "catch 2",
+                "catch 3",
+                "catch 4",
+                "catch 5",
+                "make 1",
+                "make 2",
+                "make 3",
+                "spin 1",
+                "spin 2",
+                "spin 3",
+                "spin 4",
+                "spin 5",
+                "transfer",
+                "favorite",
+                "trade",
+                "snapshot",
+                "buddy",
+                "power up",
             ]
 
             easy_tasks = []
@@ -241,8 +263,7 @@ def register_research_tools(mcp: FastMCP) -> None:
 
             # Highlight valuable easy tasks
             valuable_easy = [
-                t for t in easy_tasks
-                if any(r.can_be_shiny for r in t.rewards)
+                t for t in easy_tasks if any(r.can_be_shiny for r in t.rewards)
             ]
 
             if valuable_easy:
@@ -268,14 +289,15 @@ def register_research_tools(mcp: FastMCP) -> None:
             query_lower = query.lower()
 
             matching_tasks = [
-                t for t in research_tasks
-                if query_lower in t.text.lower()
+                t for t in research_tasks if query_lower in t.text.lower()
             ]
 
             if not matching_tasks:
                 return f"No research tasks found matching '{query}'."
 
-            result = f"# Research Tasks matching '{query}' ({len(matching_tasks)} found)\n\n"
+            result = (
+                f"# Research Tasks matching '{query}' ({len(matching_tasks)} found)\n\n"
+            )
 
             for task in matching_tasks:
                 result += format_research_summary(task) + "\n\n"
@@ -299,23 +321,42 @@ def register_research_tools(mcp: FastMCP) -> None:
         try:
             research_tasks = await api_client.get_research()
 
-            result = f"# Research Task Recommendations ({priority.title()} Priority)\n\n"
+            result = (
+                f"# Research Task Recommendations ({priority.title()} Priority)\n\n"
+            )
 
             if priority.lower() == "shiny":
-                tasks = [t for t in research_tasks if any(r.can_be_shiny for r in t.rewards)]
+                tasks = [
+                    t for t in research_tasks if any(r.can_be_shiny for r in t.rewards)
+                ]
                 result += "Focus on these tasks for shiny hunting:\n\n"
 
             elif priority.lower() == "easy":
-                easy_patterns = ["catch 1", "catch 2", "catch 3", "make 1", "make 2", "spin"]
+                easy_patterns = [
+                    "catch 1",
+                    "catch 2",
+                    "catch 3",
+                    "make 1",
+                    "make 2",
+                    "spin",
+                ]
                 tasks = [
-                    t for t in research_tasks
+                    t
+                    for t in research_tasks
                     if any(pattern in t.text.lower() for pattern in easy_patterns)
                 ]
                 result += "These tasks are quick and easy to complete:\n\n"
 
             elif priority.lower() == "rare":
                 # Tasks with uncommon Pokemon (this is a simplified heuristic)
-                rare_pokemon = ["dratini", "larvitar", "beldum", "gible", "deino", "axew"]
+                rare_pokemon = [
+                    "dratini",
+                    "larvitar",
+                    "beldum",
+                    "gible",
+                    "deino",
+                    "axew",
+                ]
                 tasks = []
                 for task in research_tasks:
                     for reward in task.rewards:
@@ -329,7 +370,9 @@ def register_research_tools(mcp: FastMCP) -> None:
                 tasks = []
                 for task in research_tasks:
                     has_shiny = any(r.can_be_shiny for r in task.rewards)
-                    is_moderate = not any(num in task.text for num in ["10", "15", "20", "25", "30"])
+                    is_moderate = not any(
+                        num in task.text for num in ["10", "15", "20", "25", "30"]
+                    )
 
                     if has_shiny or is_moderate:
                         tasks.append(task)
@@ -340,13 +383,19 @@ def register_research_tools(mcp: FastMCP) -> None:
                 return f"No research tasks found matching {priority} priority criteria."
 
             # Sort by potential value (shiny tasks first)
-            tasks.sort(key=lambda t: any(r.can_be_shiny for r in t.rewards), reverse=True)
+            tasks.sort(
+                key=lambda t: any(r.can_be_shiny for r in t.rewards), reverse=True
+            )
 
             for _i, task in enumerate(tasks[:15]):  # Limit to top 15
-                priority_marker = "🌟" if any(r.can_be_shiny for r in task.rewards) else "⭐"
+                priority_marker = (
+                    "🌟" if any(r.can_be_shiny for r in task.rewards) else "⭐"
+                )
                 result += f"{priority_marker} **{task.text}**\n"
 
-                rewards = [f"{r.name}{'✨' if r.can_be_shiny else ''}" for r in task.rewards]
+                rewards = [
+                    f"{r.name}{'✨' if r.can_be_shiny else ''}" for r in task.rewards
+                ]
                 result += f"Rewards: {', '.join(rewards)}\n\n"
 
             if len(tasks) > 15:

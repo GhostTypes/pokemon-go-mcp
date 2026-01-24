@@ -91,12 +91,16 @@ def register_cross_cutting_tools() -> None:
                             if pokemon.name not in sources:
                                 sources[pokemon.name] = []
                             encounter_text = " (Encounter)" if slot.is_encounter else ""
-                            sources[pokemon.name].append(f"Team Rocket: {trainer.name}{encounter_text}")
+                            sources[pokemon.name].append(
+                                f"Team Rocket: {trainer.name}{encounter_text}"
+                            )
 
             if not shiny_pokemon:
                 return "No shiny Pokemon found across all sources."
 
-            result = f"# ✨ All Available Shiny Pokemon (as of {get_current_time_str()})\n\n"
+            result = (
+                f"# ✨ All Available Shiny Pokemon (as of {get_current_time_str()})\n\n"
+            )
             result += f"**Total Shiny Pokemon Available:** {len(shiny_pokemon)}\n\n"
 
             # Sort alphabetically
@@ -157,12 +161,16 @@ def register_cross_cutting_tools() -> None:
                 result += "\n"
 
             # Search in raids
-            raid_matches = [r for r in all_data["raids"] if name_lower in r.name.lower()]
+            raid_matches = [
+                r for r in all_data["raids"] if name_lower in r.name.lower()
+            ]
             if raid_matches:
                 found_anywhere = True
                 result += "## ⚔️ Raids\n\n"
                 for raid in raid_matches:
-                    shiny_status = "✨ Shiny Available" if raid.can_be_shiny else "❌ No Shiny"
+                    shiny_status = (
+                        "✨ Shiny Available" if raid.can_be_shiny else "❌ No Shiny"
+                    )
                     result += f"• **{raid.name}** ({raid.tier}) - {shiny_status}\n"
                 result += "\n"
 
@@ -172,7 +180,9 @@ def register_cross_cutting_tools() -> None:
                 for reward in task.rewards:
                     if name_lower in reward.name.lower():
                         shiny_status = "✨" if reward.can_be_shiny else ""
-                        research_matches.append(f"{task.text} → {reward.name} {shiny_status}")
+                        research_matches.append(
+                            f"{task.text} → {reward.name} {shiny_status}"
+                        )
 
             if research_matches:
                 found_anywhere = True
@@ -205,9 +215,13 @@ def register_cross_cutting_tools() -> None:
                 for slot in trainer.lineups:
                     for pokemon in slot.pokemon:
                         if name_lower in pokemon.name.lower():
-                            encounter_text = " (Encounter Reward)" if slot.is_encounter else ""
+                            encounter_text = (
+                                " (Encounter Reward)" if slot.is_encounter else ""
+                            )
                             shiny_status = " ✨" if pokemon.can_be_shiny else ""
-                            rocket_matches.append(f"{trainer.name} → {pokemon.name}{shiny_status}{encounter_text}")
+                            rocket_matches.append(
+                                f"{trainer.name} → {pokemon.name}{shiny_status}{encounter_text}"
+                            )
 
             if rocket_matches:
                 found_anywhere = True
@@ -243,12 +257,16 @@ def register_cross_cutting_tools() -> None:
 
             # Debug: Check api_client type
             logger.debug(f"api_client type: {type(api_client)}")
-            logger.debug(f"api_client methods: {[m for m in dir(api_client) if not m.startswith('_')]}")
+            logger.debug(
+                f"api_client methods: {[m for m in dir(api_client) if not m.startswith('_')]}"
+            )
 
             # Get all data with explicit error handling
             logger.info("Calling api_client.get_all_data()...")
             all_data = await api_client.get_all_data()
-            logger.info(f"Received all_data with keys: {list(all_data.keys()) if isinstance(all_data, dict) else 'NOT A DICT'}")
+            logger.info(
+                f"Received all_data with keys: {list(all_data.keys()) if isinstance(all_data, dict) else 'NOT A DICT'}"
+            )
 
             # Verify data structure
             if not isinstance(all_data, dict):
@@ -292,7 +310,10 @@ def register_cross_cutting_tools() -> None:
                     result += "## ⚔️ Priority Raids (Shiny Hunting)\n\n"
 
                     # Check if raids were extracted from events (fallback source)
-                    is_from_events = any(r.extra_data and r.extra_data.get("source") == "events_fallback" for r in shiny_raids)
+                    is_from_events = any(
+                        r.extra_data and r.extra_data.get("source") == "events_fallback"
+                        for r in shiny_raids
+                    )
                     if is_from_events:
                         result += "*📅 Raid data extracted from active events*\n\n"
 
@@ -301,7 +322,10 @@ def register_cross_cutting_tools() -> None:
                         event_info = ""
 
                         # Add event context if this raid was extracted from events
-                        if raid.extra_data and raid.extra_data.get("source") == "events_fallback":
+                        if (
+                            raid.extra_data
+                            and raid.extra_data.get("source") == "events_fallback"
+                        ):
                             event_name = raid.extra_data.get("event_name", "")
                             event_info = f" - *{event_name}*"
 
@@ -315,7 +339,10 @@ def register_cross_cutting_tools() -> None:
             research_data = all_data.get("research", [])
             easy_research = []
             for task in research_data:
-                if any(pattern in task.text.lower() for pattern in ["catch 1", "catch 2", "catch 3", "make 1"]):
+                if any(
+                    pattern in task.text.lower()
+                    for pattern in ["catch 1", "catch 2", "catch 3", "make 1"]
+                ):
                     if any(r.can_be_shiny for r in task.rewards):
                         easy_research.append(task)
 
@@ -328,10 +355,14 @@ def register_cross_cutting_tools() -> None:
 
             # Egg recommendations
             eggs_data = all_data.get("eggs", [])
-            shiny_eggs_2km = [e for e in eggs_data if e.can_be_shiny and "2 km" in e.egg_type]
+            shiny_eggs_2km = [
+                e for e in eggs_data if e.can_be_shiny and "2 km" in e.egg_type
+            ]
             if shiny_eggs_2km:
                 result += "## 🥚 Egg Hatching Focus\n\n"
-                result += "**2km eggs with shiny potential (use infinite incubator):**\n"
+                result += (
+                    "**2km eggs with shiny potential (use infinite incubator):**\n"
+                )
                 for egg in shiny_eggs_2km[:3]:
                     result += f"• {egg.name} ✨\n"
                 result += "\n"
@@ -353,7 +384,10 @@ def register_cross_cutting_tools() -> None:
 
             if not all_data.get("raids", []):
                 missing_sources.append("raids")
-            elif any(r.extra_data and r.extra_data.get("source") == "events_fallback" for r in all_data.get("raids", [])):
+            elif any(
+                r.extra_data and r.extra_data.get("source") == "events_fallback"
+                for r in all_data.get("raids", [])
+            ):
                 fallback_used.append("raids (extracted from events)")
 
             if not all_data.get("research", []):
@@ -378,6 +412,7 @@ def register_cross_cutting_tools() -> None:
             logger.exception(error_msg)
             logger.exception(f"Exception type: {type(e)}")
             import traceback
+
             logger.exception(f"Traceback: {traceback.format_exc()}")
             return error_msg
 
@@ -407,9 +442,15 @@ def register_cross_cutting_tools() -> None:
             result += f"• **Active Promo Codes:** {len(all_data.get('promo_codes', []))} total\n\n"
 
             # Active content
-            active_events = [e for e in all_data["events"] if is_event_active(e, current_time)]
+            active_events = [
+                e for e in all_data["events"] if is_event_active(e, current_time)
+            ]
             shiny_raids = [r for r in all_data["raids"] if r.can_be_shiny]
-            shiny_research = [t for t in all_data["research"] if any(r.can_be_shiny for r in t.rewards)]
+            shiny_research = [
+                t
+                for t in all_data["research"]
+                if any(r.can_be_shiny for r in t.rewards)
+            ]
             shiny_eggs = [e for e in all_data["eggs"] if e.can_be_shiny]
 
             # Count shiny Shadow Pokemon
@@ -429,27 +470,42 @@ def register_cross_cutting_tools() -> None:
 
             # Cache status
             cache_info = []
-            for endpoint in ["events", "raids", "research", "eggs", "rocket-lineups", "promo-codes"]:
+            for endpoint in [
+                "events",
+                "raids",
+                "research",
+                "eggs",
+                "rocket-lineups",
+                "promo-codes",
+            ]:
                 if endpoint in api_client._cache_timestamp:
                     last_fetch = api_client._cache_timestamp[endpoint]
                     age_seconds = (current_time - last_fetch).total_seconds()
-                    cache_info.append(f"• **{endpoint.title()}:** {age_seconds:.0f}s ago")
+                    cache_info.append(
+                        f"• **{endpoint.title()}:** {age_seconds:.0f}s ago"
+                    )
                 else:
                     cache_info.append(f"• **{endpoint.title()}:** Not cached")
 
             result += "## 💾 Cache Status\n\n"
             result += "\n".join(cache_info)
-            result += f"\n\n**Cache Duration:** {api_client._cache_duration}s (24 hours)\n"
+            result += (
+                f"\n\n**Cache Duration:** {api_client._cache_duration}s (24 hours)\n"
+            )
 
             # Available tools
             result += "\n## 🛠️ Available Tools\n\n"
             result += "### Event Tools\n"
-            result += "• get_current_events, get_event_details, get_community_day_info\n"
+            result += (
+                "• get_current_events, get_event_details, get_community_day_info\n"
+            )
             result += "• get_event_spawns, get_event_bonuses, search_events\n\n"
 
             result += "### Raid Tools\n"
             result += "• get_current_raids, get_raid_by_tier, get_shiny_raids\n"
-            result += "• search_raid_boss, get_raids_by_type, get_weather_boosted_raids\n\n"
+            result += (
+                "• search_raid_boss, get_raids_by_type, get_weather_boosted_raids\n\n"
+            )
 
             result += "### Research Tools\n"
             result += "• get_current_research, search_research_by_reward, get_shiny_research_rewards\n"

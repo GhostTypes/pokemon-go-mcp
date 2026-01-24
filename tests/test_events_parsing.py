@@ -23,6 +23,7 @@ def download_events_data():
             f.write(response.text)
     return html_file
 
+
 def test_events_parsing():
     """Test that events parsing works correctly"""
     # Download data if needed
@@ -53,6 +54,7 @@ def test_events_parsing():
     assert "link" in result, "Parsed event missing 'link' field"
     assert "image" in result, "Parsed event missing 'image' field"
     assert "eventType" in result, "Parsed event missing 'eventType' field"
+
 
 def test_events_list_parsing():
     """Test that multiple events are correctly parsed"""

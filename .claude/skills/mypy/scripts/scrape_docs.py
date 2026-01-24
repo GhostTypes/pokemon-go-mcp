@@ -19,9 +19,16 @@ DELAY_BETWEEN_REQUESTS = 1.0  # seconds
 
 # Hop-by-hop headers that should be removed
 HOP_BY_HOP_HEADERS = {
-    "connection", "keep-alive", "proxy-authenticate", "proxy-authorization",
-    "te", "trailers", "transfer-encoding", "upgrade",
+    "connection",
+    "keep-alive",
+    "proxy-authenticate",
+    "proxy-authorization",
+    "te",
+    "trailers",
+    "transfer-encoding",
+    "upgrade",
 }
+
 
 def clean_headers(headers):
     """Remove hop-by-hop headers"""
@@ -32,6 +39,7 @@ def clean_headers(headers):
     cleaned.pop("content-encoding", None)
     cleaned.pop("content-length", None)
     return cleaned
+
 
 def get_headers():
     """Get default headers for requests"""
@@ -45,8 +53,9 @@ def get_headers():
         "Sec-Ch-Ua-Platform": '"Windows"',
         "Sec-Fetch-Dest": "empty",
         "Sec-Fetch-Mode": "cors",
-        "Sec-Fetch-Site": "same-origin"
+        "Sec-Fetch-Site": "same-origin",
     }
+
 
 def generate_origin_and_ref(url):
     """Generate origin and referrer from URL"""
@@ -56,6 +65,7 @@ def generate_origin_and_ref(url):
     base_url = f"{protocol}//{domain}/"
     return base_url, base_url
 
+
 def clean_html_to_markdown(html_content):
     """Convert HTML content to clean markdown format"""
     try:
@@ -64,6 +74,7 @@ def clean_html_to_markdown(html_content):
     except Exception as e:
         print(f"Warning: Error converting HTML to markdown: {e!s}", file=sys.stderr)
         return html_content
+
 
 def clean_mypy_markdown(content):
     """
@@ -173,6 +184,7 @@ def scrape_url(url, scraper):
 
     return content
 
+
 def url_to_filename(url):
     """Convert URL to a safe filename"""
     # Extract the page name from the URL
@@ -191,6 +203,7 @@ def url_to_filename(url):
 
     return filename
 
+
 def main():
     print("=" * 70)
     print("MYPY DOCUMENTATION BULK SCRAPER")
@@ -200,7 +213,10 @@ def main():
     # Read the list of URLs
     if not os.path.exists(INPUT_FILE):
         print(f"Error: Input file '{INPUT_FILE}' not found", file=sys.stderr)
-        print("Please run discover_pages.py first to generate the URL list.", file=sys.stderr)
+        print(
+            "Please run discover_pages.py first to generate the URL list.",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
     with open(INPUT_FILE) as f:
@@ -215,13 +231,9 @@ def main():
 
     # Initialize scraper
     scraper = cloudscraper.create_scraper(
-        browser={
-            "browser": "chrome",
-            "platform": "windows",
-            "desktop": True
-        },
+        browser={"browser": "chrome", "platform": "windows", "desktop": True},
         delay=1,
-        allow_brotli=True
+        allow_brotli=True,
     )
 
     # Process each URL
@@ -264,6 +276,7 @@ def main():
     print(f"Errors: {error_count}")
     print(f"Output: {OUTPUT_DIR}/")
     print()
+
 
 if __name__ == "__main__":
     main()

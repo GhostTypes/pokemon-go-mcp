@@ -17,7 +17,7 @@ def parse_rocket_trainer(profile, base_url: str) -> dict | None:
             "quote": "",
             "image": "",
             "type": None,  # For grunt types
-            "lineups": []
+            "lineups": [],
         }
 
         # Get trainer info
@@ -35,7 +35,9 @@ def parse_rocket_trainer(profile, base_url: str) -> dict | None:
 
         # Quote
         quote_text_elem = employee_info.select_one(".quote-text")
-        trainer["quote"] = quote_text_elem.get_text(strip=True) if quote_text_elem else ""
+        trainer["quote"] = (
+            quote_text_elem.get_text(strip=True) if quote_text_elem else ""
+        )
 
         # Image
         photo_img = employee_info.select_one(".photo img")
@@ -74,11 +76,7 @@ def parse_rocket_trainer(profile, base_url: str) -> dict | None:
 def parse_lineup_slot(slot) -> dict | None:
     """Parse individual lineup slot with Pokemon options"""
     try:
-        slot_data = {
-            "slot": 0,
-            "is_encounter": False,
-            "pokemon": []
-        }
+        slot_data = {"slot": 0, "is_encounter": False, "pokemon": []}
 
         # Get slot number
         number_elem = slot.select_one(".number")
@@ -109,12 +107,9 @@ def parse_shadow_pokemon(pokemon_elem) -> dict | None:
         pokemon = {
             "name": "",
             "types": [],
-            "weaknesses": {
-                "double": [],
-                "single": []
-            },
+            "weaknesses": {"double": [], "single": []},
             "image": "",
-            "can_be_shiny": False
+            "can_be_shiny": False,
         }
 
         # Name
@@ -134,10 +129,14 @@ def parse_shadow_pokemon(pokemon_elem) -> dict | None:
         single_weaknesses = pokemon_elem.get("data-single-weaknesses", "").strip()
 
         if double_weaknesses:
-            pokemon["weaknesses"]["double"] = [w.strip().lower() for w in double_weaknesses.split(",") if w.strip()]
+            pokemon["weaknesses"]["double"] = [
+                w.strip().lower() for w in double_weaknesses.split(",") if w.strip()
+            ]
 
         if single_weaknesses:
-            pokemon["weaknesses"]["single"] = [w.strip().lower() for w in single_weaknesses.split(",") if w.strip()]
+            pokemon["weaknesses"]["single"] = [
+                w.strip().lower() for w in single_weaknesses.split(",") if w.strip()
+            ]
 
         # Image
         img_elem = pokemon_elem.select_one(".pokemon-image")

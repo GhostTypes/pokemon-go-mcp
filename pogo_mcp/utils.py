@@ -74,7 +74,9 @@ def is_event_upcoming(event: EventInfo, current_time: datetime | None = None) ->
     return start_time > current_time
 
 
-def search_pokemon_by_name(name: str, pokemon_list: list[PokemonInfo]) -> list[PokemonInfo]:
+def search_pokemon_by_name(
+    name: str, pokemon_list: list[PokemonInfo]
+) -> list[PokemonInfo]:
     """Search for Pokemon by name (case-insensitive, partial match)."""
     name_lower = name.lower()
     return [p for p in pokemon_list if name_lower in p.name.lower()]
@@ -133,10 +135,16 @@ def filter_eggs_by_distance(eggs: list[EggInfo], distance: str) -> list[EggInfo]
     return filtered
 
 
-def filter_research_by_reward(research: list[ResearchTaskInfo], pokemon_name: str) -> list[ResearchTaskInfo]:
+def filter_research_by_reward(
+    research: list[ResearchTaskInfo], pokemon_name: str
+) -> list[ResearchTaskInfo]:
     """Filter research tasks by Pokemon reward name."""
     name_lower = pokemon_name.lower()
-    return [r for r in research if any(name_lower in reward.name.lower() for reward in r.rewards)]
+    return [
+        r
+        for r in research
+        if any(name_lower in reward.name.lower() for reward in r.rewards)
+    ]
 
 
 def format_event_summary(event: EventInfo) -> str:
@@ -162,7 +170,6 @@ End: {end_str}
 Link: {event.link}"""
 
 
-
 def format_raid_summary(raid: RaidInfo) -> str:
     """Format a raid into a readable summary."""
     types_str = ", ".join([t.name.title() for t in raid.types])
@@ -173,11 +180,15 @@ def format_raid_summary(raid: RaidInfo) -> str:
 
     cp_info = ""
     if cp_normal:
-        cp_info += f"Normal CP: {cp_normal.get('min', 'N/A')}-{cp_normal.get('max', 'N/A')}"
+        cp_info += (
+            f"Normal CP: {cp_normal.get('min', 'N/A')}-{cp_normal.get('max', 'N/A')}"
+        )
     if cp_boosted:
         if cp_info:
             cp_info += " | "
-        cp_info += f"Boosted CP: {cp_boosted.get('min', 'N/A')}-{cp_boosted.get('max', 'N/A')}"
+        cp_info += (
+            f"Boosted CP: {cp_boosted.get('min', 'N/A')}-{cp_boosted.get('max', 'N/A')}"
+        )
 
     shiny_status = "✨ Can be Shiny" if raid.can_be_shiny else "❌ Not Shiny"
 
@@ -188,20 +199,17 @@ Weather Boost: {weather_str}
 {shiny_status}"""
 
 
-
 def format_research_summary(task: ResearchTaskInfo) -> str:
     """Format a research task into a readable summary."""
-    rewards_str = ", ".join([
-        f"{r.name}{'✨' if r.can_be_shiny else ''}"
-        for r in task.rewards
-    ])
+    rewards_str = ", ".join(
+        [f"{r.name}{'✨' if r.can_be_shiny else ''}" for r in task.rewards]
+    )
 
     task_type_str = f" ({task.task_type})" if task.task_type else ""
 
     return f"""**{task.text}**{task_type_str}
 Possible Rewards: {rewards_str}
 Note: You get ONE of the rewards listed, not all of them."""
-
 
 
 def format_egg_summary(egg: EggInfo) -> str:
@@ -234,7 +242,6 @@ def format_egg_summary(egg: EggInfo) -> str:
 {features_str}"""
 
 
-
 def format_json_output(data: Any, indent: int = 2) -> str:
     """Format data as pretty-printed JSON."""
     try:
@@ -259,7 +266,9 @@ def validate_pokemon_name(name: str) -> bool:
         return False
 
     # Allow letters, numbers, spaces, hyphens, and some special characters
-    allowed_chars = set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 -'.")
+    allowed_chars = set(
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 -'."
+    )
     return all(c in allowed_chars for c in name)
 
 
@@ -293,7 +302,7 @@ def extract_community_day_info(event: EventInfo) -> dict[str, Any] | None:
         "featured_pokemon": [spawn.get("name") for spawn in cd_data.get("spawns", [])],
         "bonuses": [bonus.get("text") for bonus in cd_data.get("bonuses", [])],
         "shiny_available": [shiny.get("name") for shiny in cd_data.get("shinies", [])],
-        "special_research": cd_data.get("specialresearch", [])
+        "special_research": cd_data.get("specialresearch", []),
     }
 
 
@@ -307,9 +316,11 @@ def extract_raid_day_info(event: EventInfo) -> dict[str, Any] | None:
     return {
         "raid_bosses": [boss.get("name") for boss in rd_data.get("bosses", [])],
         "bonuses": [bonus.get("text") for bonus in rd_data.get("bonuses", [])],
-        "ticket_bonuses": [bonus.get("text") for bonus in rd_data.get("ticketBonuses", [])],
+        "ticket_bonuses": [
+            bonus.get("text") for bonus in rd_data.get("ticketBonuses", [])
+        ],
         "research": rd_data.get("research", []),
-        "shiny_available": [shiny.get("name") for shiny in rd_data.get("shinies", [])]
+        "shiny_available": [shiny.get("name") for shiny in rd_data.get("shinies", [])],
     }
 
 
@@ -330,20 +341,26 @@ def format_rocket_summary(trainer: RocketTrainerInfo) -> str:
     encounter_slots = [slot for slot in trainer.lineups if slot.is_encounter]
     encounter_pokemon = sum(len(slot.pokemon) for slot in encounter_slots)
 
-    summary += f"\n• {total_pokemon} Pokemon options across {len(trainer.lineups)} slots"
+    summary += (
+        f"\n• {total_pokemon} Pokemon options across {len(trainer.lineups)} slots"
+    )
     if encounter_pokemon > 0:
         summary += f"\n• {encounter_pokemon} possible encounter rewards"
 
     return summary
 
 
-def filter_trainers_by_type(trainers: list[RocketTrainerInfo], trainer_type: str) -> list[RocketTrainerInfo]:
+def filter_trainers_by_type(
+    trainers: list[RocketTrainerInfo], trainer_type: str
+) -> list[RocketTrainerInfo]:
     """Filter Team Rocket trainers by type."""
     trainer_type_lower = trainer_type.lower()
     return [t for t in trainers if t.type and t.type.lower() == trainer_type_lower]
 
 
-def search_rocket_trainers_by_pokemon(trainers: list[RocketTrainerInfo], pokemon_name: str) -> list[RocketTrainerInfo]:
+def search_rocket_trainers_by_pokemon(
+    trainers: list[RocketTrainerInfo], pokemon_name: str
+) -> list[RocketTrainerInfo]:
     """Search for Team Rocket trainers that have a specific Pokemon."""
     pokemon_name_lower = pokemon_name.lower()
     matching_trainers = []
@@ -364,7 +381,9 @@ def search_rocket_trainers_by_pokemon(trainers: list[RocketTrainerInfo], pokemon
     return matching_trainers
 
 
-def get_shiny_shadow_pokemon(trainers: list[RocketTrainerInfo]) -> list[ShadowPokemonInfo]:
+def get_shiny_shadow_pokemon(
+    trainers: list[RocketTrainerInfo],
+) -> list[ShadowPokemonInfo]:
     """Get all Shadow Pokemon that can be shiny."""
     shiny_pokemon = []
     seen_names = set()
@@ -379,7 +398,9 @@ def get_shiny_shadow_pokemon(trainers: list[RocketTrainerInfo]) -> list[ShadowPo
     return sorted(shiny_pokemon, key=lambda p: p.name)
 
 
-def get_rocket_encounters(trainers: list[RocketTrainerInfo]) -> list[tuple[str, list[ShadowPokemonInfo]]]:
+def get_rocket_encounters(
+    trainers: list[RocketTrainerInfo],
+) -> list[tuple[str, list[ShadowPokemonInfo]]]:
     """Get all possible Team Rocket encounter rewards organized by trainer."""
     encounters = []
 
@@ -395,28 +416,109 @@ def get_rocket_encounters(trainers: list[RocketTrainerInfo]) -> list[tuple[str, 
     return encounters
 
 
-def calculate_type_effectiveness(attacking_type: str, defending_types: list[str]) -> float:
+def calculate_type_effectiveness(
+    attacking_type: str, defending_types: list[str]
+) -> float:
     """Calculate type effectiveness multiplier for Team Rocket battles."""
     # Simplified type effectiveness chart for common interactions
     TYPE_CHART = {
         "normal": {"weak_to": ["fighting"], "resists": [], "immune_to": ["ghost"]},
-        "fire": {"weak_to": ["water", "ground", "rock"], "resists": ["fire", "grass", "ice", "bug", "steel", "fairy"], "immune_to": []},
-        "water": {"weak_to": ["grass", "electric"], "resists": ["fire", "water", "ice", "steel"], "immune_to": []},
-        "grass": {"weak_to": ["fire", "ice", "poison", "flying", "bug"], "resists": ["water", "electric", "grass", "ground"], "immune_to": []},
-        "electric": {"weak_to": ["ground"], "resists": ["flying", "steel", "electric"], "immune_to": []},
-        "ice": {"weak_to": ["fire", "fighting", "rock", "steel"], "resists": ["ice"], "immune_to": []},
-        "fighting": {"weak_to": ["flying", "psychic", "fairy"], "resists": ["rock", "bug", "dark"], "immune_to": []},
-        "poison": {"weak_to": ["ground", "psychic"], "resists": ["grass", "fighting", "poison", "bug", "fairy"], "immune_to": []},
-        "ground": {"weak_to": ["water", "grass", "ice"], "resists": ["poison", "rock"], "immune_to": ["electric"]},
-        "flying": {"weak_to": ["electric", "ice", "rock"], "resists": ["grass", "fighting", "bug"], "immune_to": ["ground"]},
-        "psychic": {"weak_to": ["bug", "ghost", "dark"], "resists": ["fighting", "psychic"], "immune_to": []},
-        "bug": {"weak_to": ["fire", "flying", "rock"], "resists": ["grass", "fighting", "ground"], "immune_to": []},
-        "rock": {"weak_to": ["water", "grass", "fighting", "ground", "steel"], "resists": ["normal", "fire", "poison", "flying"], "immune_to": []},
-        "ghost": {"weak_to": ["ghost", "dark"], "resists": ["poison", "bug"], "immune_to": ["normal", "fighting"]},
-        "dragon": {"weak_to": ["ice", "dragon", "fairy"], "resists": ["fire", "water", "electric", "grass"], "immune_to": []},
-        "dark": {"weak_to": ["fighting", "bug", "fairy"], "resists": ["ghost", "dark"], "immune_to": ["psychic"]},
-        "steel": {"weak_to": ["fire", "fighting", "ground"], "resists": ["normal", "grass", "ice", "flying", "psychic", "bug", "rock", "dragon", "steel", "fairy"], "immune_to": ["poison"]},
-        "fairy": {"weak_to": ["poison", "steel"], "resists": ["fighting", "bug", "dark"], "immune_to": ["dragon"]}
+        "fire": {
+            "weak_to": ["water", "ground", "rock"],
+            "resists": ["fire", "grass", "ice", "bug", "steel", "fairy"],
+            "immune_to": [],
+        },
+        "water": {
+            "weak_to": ["grass", "electric"],
+            "resists": ["fire", "water", "ice", "steel"],
+            "immune_to": [],
+        },
+        "grass": {
+            "weak_to": ["fire", "ice", "poison", "flying", "bug"],
+            "resists": ["water", "electric", "grass", "ground"],
+            "immune_to": [],
+        },
+        "electric": {
+            "weak_to": ["ground"],
+            "resists": ["flying", "steel", "electric"],
+            "immune_to": [],
+        },
+        "ice": {
+            "weak_to": ["fire", "fighting", "rock", "steel"],
+            "resists": ["ice"],
+            "immune_to": [],
+        },
+        "fighting": {
+            "weak_to": ["flying", "psychic", "fairy"],
+            "resists": ["rock", "bug", "dark"],
+            "immune_to": [],
+        },
+        "poison": {
+            "weak_to": ["ground", "psychic"],
+            "resists": ["grass", "fighting", "poison", "bug", "fairy"],
+            "immune_to": [],
+        },
+        "ground": {
+            "weak_to": ["water", "grass", "ice"],
+            "resists": ["poison", "rock"],
+            "immune_to": ["electric"],
+        },
+        "flying": {
+            "weak_to": ["electric", "ice", "rock"],
+            "resists": ["grass", "fighting", "bug"],
+            "immune_to": ["ground"],
+        },
+        "psychic": {
+            "weak_to": ["bug", "ghost", "dark"],
+            "resists": ["fighting", "psychic"],
+            "immune_to": [],
+        },
+        "bug": {
+            "weak_to": ["fire", "flying", "rock"],
+            "resists": ["grass", "fighting", "ground"],
+            "immune_to": [],
+        },
+        "rock": {
+            "weak_to": ["water", "grass", "fighting", "ground", "steel"],
+            "resists": ["normal", "fire", "poison", "flying"],
+            "immune_to": [],
+        },
+        "ghost": {
+            "weak_to": ["ghost", "dark"],
+            "resists": ["poison", "bug"],
+            "immune_to": ["normal", "fighting"],
+        },
+        "dragon": {
+            "weak_to": ["ice", "dragon", "fairy"],
+            "resists": ["fire", "water", "electric", "grass"],
+            "immune_to": [],
+        },
+        "dark": {
+            "weak_to": ["fighting", "bug", "fairy"],
+            "resists": ["ghost", "dark"],
+            "immune_to": ["psychic"],
+        },
+        "steel": {
+            "weak_to": ["fire", "fighting", "ground"],
+            "resists": [
+                "normal",
+                "grass",
+                "ice",
+                "flying",
+                "psychic",
+                "bug",
+                "rock",
+                "dragon",
+                "steel",
+                "fairy",
+            ],
+            "immune_to": ["poison"],
+        },
+        "fairy": {
+            "weak_to": ["poison", "steel"],
+            "resists": ["fighting", "bug", "dark"],
+            "immune_to": ["dragon"],
+        },
     }
 
     attacking_type = attacking_type.lower()

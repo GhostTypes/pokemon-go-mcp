@@ -18,7 +18,7 @@ async def parse_raid_day_details(soup: BeautifulSoup, event: dict) -> None:
             "bonuses": [],
             "ticketBonuses": [],
             "research": [],
-            "shinies": []
+            "shinies": [],
         }
 
         # Parse all sections
@@ -34,8 +34,12 @@ async def parse_raid_day_details(soup: BeautifulSoup, event: dict) -> None:
         raidday_data["bosses"] = bosses
 
         # Only add raidday data if we found meaningful content
-        if (raidday_data["bosses"] or raidday_data["bonuses"] or
-            raidday_data["research"] or raidday_data["shinies"]):
+        if (
+            raidday_data["bosses"]
+            or raidday_data["bonuses"]
+            or raidday_data["research"]
+            or raidday_data["shinies"]
+        ):
             event["extraData"]["raidday"] = raidday_data
             logger.info(
                 f"Raid Day details: {len(bosses)} bosses, {len(free_bonuses)} bonuses, "
@@ -84,7 +88,7 @@ def _parse_bonuses_with_sections(soup: BeautifulSoup) -> tuple:
                 if text_elem:
                     bonus_data = {
                         "text": text_elem.get_text(strip=True),
-                        "image": img_elem.get("src", "") if img_elem else ""
+                        "image": img_elem.get("src", "") if img_elem else "",
                     }
 
                     if current_section == "free":
@@ -104,12 +108,7 @@ def _parse_research(soup: BeautifulSoup) -> list:
     research_items = soup.select(".special-research-list .step-item")
 
     for item in research_items:
-        research = {
-            "name": "",
-            "step": 0,
-            "tasks": [],
-            "rewards": []
-        }
+        research = {"name": "", "step": 0, "tasks": [], "rewards": []}
 
         # Step number
         step_num_elem = item.select_one(".step-number")
@@ -134,9 +133,13 @@ def _parse_research(soup: BeautifulSoup) -> list:
                 task = {
                     "text": task_text_elem.get_text(strip=True),
                     "reward": {
-                        "text": reward_label_elem.get_text(strip=True) if reward_label_elem else "",
-                        "image": reward_img_elem.get("src", "") if reward_img_elem else ""
-                    }
+                        "text": reward_label_elem.get_text(strip=True)
+                        if reward_label_elem
+                        else "",
+                        "image": reward_img_elem.get("src", "")
+                        if reward_img_elem
+                        else "",
+                    },
                 }
                 research["tasks"].append(task)
 
@@ -148,10 +151,14 @@ def _parse_research(soup: BeautifulSoup) -> list:
             reward_img_elem = reward.select_one(".reward-image")
 
             if reward_img_elem:
-                research["rewards"].append({
-                    "text": reward_label_elem.get_text(strip=True) if reward_label_elem else "",
-                    "image": reward_img_elem.get("src", "")
-                })
+                research["rewards"].append(
+                    {
+                        "text": reward_label_elem.get_text(strip=True)
+                        if reward_label_elem
+                        else "",
+                        "image": reward_img_elem.get("src", ""),
+                    }
+                )
 
         if research["name"] or research["tasks"] or research["rewards"]:
             research_list.append(research)
@@ -180,7 +187,7 @@ def _parse_shinies(soup: BeautifulSoup) -> list:
             if name_elem and img_elem:
                 shiny_data = {
                     "name": name_elem.get_text(strip=True),
-                    "image": img_elem.get("src", "")
+                    "image": img_elem.get("src", ""),
                 }
                 shinies.append(shiny_data)
 
@@ -216,7 +223,7 @@ def _parse_raid_bosses(soup: BeautifulSoup) -> list:
                     boss_data = {
                         "name": name_elem.get_text(strip=True),
                         "image": img_elem.get("src", ""),
-                        "canBeShiny": shiny_icon is not None
+                        "canBeShiny": shiny_icon is not None,
                     }
                     bosses.append(boss_data)
 

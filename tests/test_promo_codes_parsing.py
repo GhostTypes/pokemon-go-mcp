@@ -53,7 +53,9 @@ def test_promo_codes_parsing():
     assert "code" in result, "Parsed promo card missing 'code' field"
     assert "title" in result, "Parsed promo card missing 'title' field"
     assert "description" in result, "Parsed promo card missing 'description' field"
-    assert "redemption_url" in result, "Parsed promo card missing 'redemption_url' field"
+    assert "redemption_url" in result, (
+        "Parsed promo card missing 'redemption_url' field"
+    )
     assert "rewards" in result, "Parsed promo card missing 'rewards' field"
     assert "expiration" in result, "Parsed promo card missing 'expiration' field"
 
@@ -128,7 +130,9 @@ def test_promo_code_rewards_parsing():
         result = parse_promo_card(card, "https://leekduck.com")
         if result and result.get("rewards"):
             # Should have at least one reward
-            assert len(result["rewards"]) > 0, "Promo card has rewards field but no rewards"
+            assert len(result["rewards"]) > 0, (
+                "Promo card has rewards field but no rewards"
+            )
 
             # Each reward should have name and url
             for reward in result["rewards"]:

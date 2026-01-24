@@ -18,6 +18,7 @@ class TestResearchTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -31,7 +32,9 @@ class TestResearchTools:
         assert "Research" in result or "research" in result or "No" in result
 
     @pytest.mark.asyncio
-    async def test_search_research_by_reward(self, ensure_test_data, sample_pokemon_name, mcp_server):
+    async def test_search_research_by_reward(
+        self, ensure_test_data, sample_pokemon_name, mcp_server
+    ):
         """Test search_research_by_reward tool."""
         from pogo_mcp.research import register_research_tools
 
@@ -42,6 +45,7 @@ class TestResearchTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -54,7 +58,9 @@ class TestResearchTools:
         assert len(result) > 0
 
     @pytest.mark.asyncio
-    async def test_search_research_by_reward_not_found(self, ensure_test_data, mcp_server):
+    async def test_search_research_by_reward_not_found(
+        self, ensure_test_data, mcp_server
+    ):
         """Test search_research_by_reward with Pokemon not in research."""
         from pogo_mcp.research import register_research_tools
 
@@ -65,6 +71,7 @@ class TestResearchTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -88,6 +95,7 @@ class TestResearchTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -111,6 +119,7 @@ class TestResearchTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -135,6 +144,7 @@ class TestResearchTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -158,6 +168,7 @@ class TestResearchTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -181,6 +192,7 @@ class TestResearchTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -193,7 +205,9 @@ class TestResearchTools:
         assert "No research" in result or "not found" in result.lower()
 
     @pytest.mark.asyncio
-    async def test_get_research_recommendations_balanced(self, ensure_test_data, mcp_server):
+    async def test_get_research_recommendations_balanced(
+        self, ensure_test_data, mcp_server
+    ):
         """Test get_research_recommendations with balanced priority."""
         from pogo_mcp.research import register_research_tools
 
@@ -204,6 +218,7 @@ class TestResearchTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -216,7 +231,9 @@ class TestResearchTools:
         assert len(result) > 0
 
     @pytest.mark.asyncio
-    async def test_get_research_recommendations_shiny(self, ensure_test_data, mcp_server):
+    async def test_get_research_recommendations_shiny(
+        self, ensure_test_data, mcp_server
+    ):
         """Test get_research_recommendations with shiny priority."""
         from pogo_mcp.research import register_research_tools
 
@@ -227,6 +244,7 @@ class TestResearchTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -239,7 +257,9 @@ class TestResearchTools:
         assert len(result) > 0
 
     @pytest.mark.asyncio
-    async def test_get_research_recommendations_easy(self, ensure_test_data, mcp_server):
+    async def test_get_research_recommendations_easy(
+        self, ensure_test_data, mcp_server
+    ):
         """Test get_research_recommendations with easy priority."""
         from pogo_mcp.research import register_research_tools
 
@@ -250,6 +270,7 @@ class TestResearchTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -262,7 +283,9 @@ class TestResearchTools:
         assert len(result) > 0
 
     @pytest.mark.asyncio
-    async def test_get_research_recommendations_rare(self, ensure_test_data, mcp_server):
+    async def test_get_research_recommendations_rare(
+        self, ensure_test_data, mcp_server
+    ):
         """Test get_research_recommendations with rare priority."""
         from pogo_mcp.research import register_research_tools
 
@@ -273,6 +296,7 @@ class TestResearchTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()

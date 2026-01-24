@@ -42,7 +42,9 @@ class LeekDuckAPIClient:
         local_file = self._local_data_dir / f"{endpoint}.json"
 
         if not local_file.exists():
-            logger.error(f"Local file {local_file} does not exist. Run the scraper first.")
+            logger.error(
+                f"Local file {local_file} does not exist. Run the scraper first."
+            )
             return []
 
         try:
@@ -59,9 +61,11 @@ class LeekDuckAPIClient:
         now = datetime.now(timezone.utc)
 
         # Check if we have fresh cached data
-        if (endpoint in self._cache and
-            endpoint in self._cache_timestamp and
-            (now - self._cache_timestamp[endpoint]).seconds < self._cache_duration):
+        if (
+            endpoint in self._cache
+            and endpoint in self._cache_timestamp
+            and (now - self._cache_timestamp[endpoint]).seconds < self._cache_duration
+        ):
             logger.info(f"Using cached data for {endpoint}")
             return self._cache[endpoint]
 
@@ -94,7 +98,7 @@ class LeekDuckAPIClient:
                 image=item.get("image", ""),
                 start=item.get("start", ""),
                 end=item.get("end", ""),
-                extra_data=extra_data
+                extra_data=extra_data,
             )
             events.append(event)
 
@@ -109,18 +113,21 @@ class LeekDuckAPIClient:
             # Parse types
             types = []
             for type_data in item.get("types", []):
-                types.append(TypeInfo(
-                    name=type_data.get("name", ""),
-                    image=type_data.get("image", "")
-                ))
+                types.append(
+                    TypeInfo(
+                        name=type_data.get("name", ""), image=type_data.get("image", "")
+                    )
+                )
 
             # Parse boosted weather
             weather = []
             for weather_data in item.get("boostedWeather", []):
-                weather.append(WeatherInfo(
-                    name=weather_data.get("name", ""),
-                    image=weather_data.get("image", "")
-                ))
+                weather.append(
+                    WeatherInfo(
+                        name=weather_data.get("name", ""),
+                        image=weather_data.get("image", ""),
+                    )
+                )
 
             raid = RaidInfo(
                 name=item.get("name", ""),
@@ -130,7 +137,7 @@ class LeekDuckAPIClient:
                 combat_power=item.get("combatPower", {}),
                 boosted_weather=weather,
                 image=item.get("image", ""),
-                extra_data=item.get("extra_data")
+                extra_data=item.get("extra_data"),
             )
             raids.append(raid)
 
@@ -149,14 +156,12 @@ class LeekDuckAPIClient:
                     name=reward_data.get("name", ""),
                     image=reward_data.get("image", ""),
                     can_be_shiny=reward_data.get("can_be_shiny", False),
-                    combat_power=reward_data.get("combatPower")
+                    combat_power=reward_data.get("combatPower"),
                 )
                 rewards.append(pokemon)
 
             task = ResearchTaskInfo(
-                text=item.get("text", ""),
-                rewards=rewards,
-                task_type=item.get("type")
+                text=item.get("text", ""), rewards=rewards, task_type=item.get("type")
             )
             research_tasks.append(task)
 
@@ -178,7 +183,7 @@ class LeekDuckAPIClient:
                 is_regional=item.get("isRegional", False),
                 is_gift_exchange=item.get("isGiftExchange", False),
                 is_route_gift=item.get("isRouteGift", False),
-                rarity=item.get("rarity", 1)
+                rarity=item.get("rarity", 1),
             )
             eggs.append(egg)
 
@@ -199,16 +204,18 @@ class LeekDuckAPIClient:
                     shadow_pokemon = ShadowPokemonInfo(
                         name=pokemon_data.get("name", ""),
                         types=pokemon_data.get("types", []),
-                        weaknesses=pokemon_data.get("weaknesses", {"double": [], "single": []}),
+                        weaknesses=pokemon_data.get(
+                            "weaknesses", {"double": [], "single": []}
+                        ),
                         image=pokemon_data.get("image", ""),
-                        can_be_shiny=pokemon_data.get("can_be_shiny", False)
+                        can_be_shiny=pokemon_data.get("can_be_shiny", False),
                     )
                     pokemon_list.append(shadow_pokemon)
 
                 lineup_slot = RocketLineupSlot(
                     slot=lineup_data.get("slot", 0),
                     is_encounter=lineup_data.get("is_encounter", False),
-                    pokemon=pokemon_list
+                    pokemon=pokemon_list,
                 )
                 lineups.append(lineup_slot)
 
@@ -218,7 +225,7 @@ class LeekDuckAPIClient:
                 quote=item.get("quote", ""),
                 image=item.get("image", ""),
                 type=item.get("type"),
-                lineups=lineups
+                lineups=lineups,
             )
             trainers.append(trainer)
 
@@ -236,7 +243,7 @@ class LeekDuckAPIClient:
                 reward = PromoCodeReward(
                     name=reward_data.get("name", ""),
                     url=reward_data.get("url", ""),
-                    type=reward_data.get("type", "")
+                    type=reward_data.get("type", ""),
                 )
                 rewards.append(reward)
 
@@ -246,7 +253,7 @@ class LeekDuckAPIClient:
                 description=item.get("description", ""),
                 redemption_url=item.get("redemption_url", ""),
                 rewards=rewards,
-                expiration=item.get("expiration", "")
+                expiration=item.get("expiration", ""),
             )
             promo_codes.append(promo_code)
 
@@ -262,18 +269,36 @@ class LeekDuckAPIClient:
             name_lower = name.lower()
             if name_lower.startswith("mega "):
                 return "Mega"
-            if any(legendary in name_lower for legendary in [
-                "palkia", "dialga", "giratina", "rayquaza", "kyogre", "groudon",
-                "lugia", "ho-oh", "mewtwo", "mew", "celebi", "jirachi", "deoxys",
-                "reshiram", "zekrom", "kyurem", "xerneas", "yveltal", "zygarde"
-            ]):
+            if any(
+                legendary in name_lower
+                for legendary in [
+                    "palkia",
+                    "dialga",
+                    "giratina",
+                    "rayquaza",
+                    "kyogre",
+                    "groudon",
+                    "lugia",
+                    "ho-oh",
+                    "mewtwo",
+                    "mew",
+                    "celebi",
+                    "jirachi",
+                    "deoxys",
+                    "reshiram",
+                    "zekrom",
+                    "kyurem",
+                    "xerneas",
+                    "yveltal",
+                    "zygarde",
+                ]
+            ):
                 return "5*"
             return "Unknown"
 
         for event in events_data:
             # Check if event contains raid data (skip time check for now - let server handle filtering)
-            if (event.extra_data and "raidbattles" in event.extra_data):
-
+            if event.extra_data and "raidbattles" in event.extra_data:
                 raid_data = event.extra_data["raidbattles"]
                 bosses = raid_data.get("bosses", [])
 
@@ -285,21 +310,36 @@ class LeekDuckAPIClient:
                         tier=infer_tier(boss_name),
                         can_be_shiny=boss.get("canBeShiny", False),
                         types=[],  # Would need to lookup types elsewhere
-                        combat_power={"normal": {"min": -1, "max": -1}, "boosted": {"min": -1, "max": -1}},
+                        combat_power={
+                            "normal": {"min": -1, "max": -1},
+                            "boosted": {"min": -1, "max": -1},
+                        },
                         boosted_weather=[],
                         image=boss.get("image", ""),
                         extra_data={
                             "source": "events_fallback",
                             "event_name": event.name,
-                            "event_end": event.end
-                        }
+                            "event_end": event.end,
+                        },
                     )
                     extracted_raids.append(raid)
 
-        logger.info(f"Extracted {len(extracted_raids)} raid bosses from {len(events_data)} events")
+        logger.info(
+            f"Extracted {len(extracted_raids)} raid bosses from {len(events_data)} events"
+        )
         return extracted_raids
 
-    async def get_all_data(self) -> dict[str, list[EventInfo] | list[RaidInfo] | list[ResearchTaskInfo] | list[EggInfo] | list[RocketTrainerInfo] | list[PromoCodeInfo]]:
+    async def get_all_data(
+        self,
+    ) -> dict[
+        str,
+        list[EventInfo]
+        | list[RaidInfo]
+        | list[ResearchTaskInfo]
+        | list[EggInfo]
+        | list[RocketTrainerInfo]
+        | list[PromoCodeInfo],
+    ]:
         """Get all data from all endpoints with individual error handling."""
         logger.info("Fetching all Pokemon Go data...")
 
@@ -324,7 +364,9 @@ class LeekDuckAPIClient:
             if len(raids) > 0:
                 logger.info(f"Successfully fetched {len(raids)} raids from raids.json")
             else:
-                logger.warning("No raids data found in raids.json - attempting fallback...")
+                logger.warning(
+                    "No raids data found in raids.json - attempting fallback..."
+                )
                 msg = "Empty raids data"
                 raise Exception(msg)
         except Exception as e:
@@ -333,11 +375,15 @@ class LeekDuckAPIClient:
             try:
                 raids = self.extract_raids_from_events(events)
                 if raids:
-                    logger.info(f"Successfully extracted {len(raids)} raid bosses from events data")
+                    logger.info(
+                        f"Successfully extracted {len(raids)} raid bosses from events data"
+                    )
                 else:
                     logger.warning("No raid data found in events either")
             except Exception as extract_error:
-                logger.exception(f"Failed to extract raids from events: {extract_error}")
+                logger.exception(
+                    f"Failed to extract raids from events: {extract_error}"
+                )
                 raids = []
 
         try:
@@ -356,7 +402,9 @@ class LeekDuckAPIClient:
 
         try:
             rocket_lineups = await self.get_rocket_lineups()
-            logger.info(f"Successfully fetched {len(rocket_lineups)} Team Rocket trainers")
+            logger.info(
+                f"Successfully fetched {len(rocket_lineups)} Team Rocket trainers"
+            )
         except Exception as e:
             logger.warning(f"Failed to fetch rocket lineups data: {e}")
             rocket_lineups = []
@@ -376,7 +424,7 @@ class LeekDuckAPIClient:
             "research": research,
             "eggs": eggs,
             "rocket_lineups": rocket_lineups,
-            "promo_codes": promo_codes
+            "promo_codes": promo_codes,
         }
 
     def clear_cache(self) -> None:
@@ -393,6 +441,7 @@ def get_api_client() -> "LeekDuckAPIClient":
     if _api_client_instance is None:
         _api_client_instance = LeekDuckAPIClient()
     return _api_client_instance
+
 
 # Initialize the global instance
 _api_client_instance: Optional["LeekDuckAPIClient"] = None

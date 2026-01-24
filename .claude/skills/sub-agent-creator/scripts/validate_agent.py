@@ -32,7 +32,7 @@ def parse_frontmatter(content):
         return None, "No closing frontmatter delimiter (---) found"
 
     frontmatter_text = content[4:end_delimiter]
-    body = content[end_delimiter + 4:]  # Skip past the closing ---
+    body = content[end_delimiter + 4 :]  # Skip past the closing ---
 
     # Parse simple YAML key-value pairs
     frontmatter = {}
@@ -42,7 +42,9 @@ def parse_frontmatter(content):
             key = key.strip()
             value = value.strip()
             # Remove quotes if present
-            if (value.startswith('"') and value.endswith('"')) or (value.startswith("'") and value.endswith("'")):
+            if (value.startswith('"') and value.endswith('"')) or (
+                value.startswith("'") and value.endswith("'")
+            ):
                 value = value[1:-1]
             frontmatter[key] = value
 
@@ -65,7 +67,9 @@ def check_literal_newlines(text, context=""):
             if "\\n" in line and not line.strip().startswith("#"):
                 # Check if this looks like an escaped newline rather than normal text
                 if re.search(r"[^\\]\\n[^\\]|[^\\]\\n$", line):
-                    errors.append(f"Line {i}: Found literal \\n escape sequence. Use actual newlines instead.")
+                    errors.append(
+                        f"Line {i}: Found literal \\n escape sequence. Use actual newlines instead."
+                    )
     return errors
 
 
@@ -95,39 +99,53 @@ def validate_agent_file(filepath):
     if "name" in frontmatter:
         name = frontmatter["name"]
         if not re.match(r"^[a-z0-9-]+$", name):
-            errors.append(f"Invalid name '{name}': Must use only lowercase letters, numbers, and hyphens")
+            errors.append(
+                f"Invalid name '{name}': Must use only lowercase letters, numbers, and hyphens"
+            )
 
     # Check description is single line
     if "description" in frontmatter:
         desc = frontmatter["description"]
         if "\n" in desc:
-            errors.append("Description field must be ONE continuous line with NO line breaks. Do not use | or > multi-line YAML syntax.")
+            errors.append(
+                "Description field must be ONE continuous line with NO line breaks. Do not use | or > multi-line YAML syntax."
+            )
 
     # Check for literal \n in frontmatter values
     for key, value in frontmatter.items():
         if isinstance(value, str):
-            if "\\n" in value and key not in ["description"]:  # description already checked above
+            if "\\n" in value and key not in [
+                "description"
+            ]:  # description already checked above
                 if not value.strip().endswith("\\n") or value.count("\\n") > 1:
-                    errors.append(f"Field '{key}' contains literal \\n. Use actual line breaks")
+                    errors.append(
+                        f"Field '{key}' contains literal \\n. Use actual line breaks"
+                    )
 
     # Check color if present
     if "color" in frontmatter:
         color = frontmatter["color"].lower()
         if color not in VALID_COLORS:
-            errors.append(f"Invalid color '{frontmatter['color']}'. Must be one of: {', '.join(sorted(VALID_COLORS))}")
+            errors.append(
+                f"Invalid color '{frontmatter['color']}'. Must be one of: {', '.join(sorted(VALID_COLORS))}"
+            )
 
     # Check model if present
     if "model" in frontmatter:
         model = frontmatter["model"].lower()
         if model not in VALID_MODELS:
-            errors.append(f"Invalid model '{frontmatter['model']}'. Must be one of: {', '.join(sorted(VALID_MODELS))}")
+            errors.append(
+                f"Invalid model '{frontmatter['model']}'. Must be one of: {', '.join(sorted(VALID_MODELS))}"
+            )
 
     # Check for common multi-line frontmatter issues
     frontmatter_section = content.split("\n---\n", 1)[0]
     if "description:" in frontmatter_section:
         desc_match = re.search(r"description:\s*[|>]", frontmatter_section)
         if desc_match:
-            errors.append("Description field must be ONE continuous line with NO line breaks. Do not use | or > multi-line YAML syntax.")
+            errors.append(
+                "Description field must be ONE continuous line with NO line breaks. Do not use | or > multi-line YAML syntax."
+            )
 
     # Check body for literal \n
     if body:
@@ -142,7 +160,9 @@ def validate_agent_file(filepath):
 
     # Check for whenToUse field (should be in body, not frontmatter for agent creation architect)
     if "whenToUse" in frontmatter or "whentouse" in frontmatter:
-        warnings.append("whenToUse in frontmatter may not be standard for subagent files")
+        warnings.append(
+            "whenToUse in frontmatter may not be standard for subagent files"
+        )
 
     return frontmatter, errors, warnings
 

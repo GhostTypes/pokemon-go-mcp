@@ -23,6 +23,7 @@ def download_raids_data():
             f.write(response.text)
     return html_file
 
+
 def test_raids_parsing():
     """Test that raids parsing works correctly"""
     # Download data if needed
@@ -57,6 +58,7 @@ def test_raids_parsing():
     assert "combatPower" in result, "Parsed raid card missing 'combatPower' field"
     assert "boostedWeather" in result, "Parsed raid card missing 'boostedWeather' field"
 
+
 def test_raids_cp_values():
     """Test that raid CP values are correctly parsed"""
     # Download data if needed
@@ -78,9 +80,12 @@ def test_raids_cp_values():
         if result and "combatPower" in result:
             cp_data = result["combatPower"]
             # Check if either normal or boosted CP has valid values
-            if ("normal" in cp_data and cp_data["normal"]["min"] > 0) or \
-               ("boosted" in cp_data and cp_data["boosted"]["min"] > 0):
+            if ("normal" in cp_data and cp_data["normal"]["min"] > 0) or (
+                "boosted" in cp_data and cp_data["boosted"]["min"] > 0
+            ):
                 valid_cp_count += 1
 
     # At least some should have valid CP values
-    assert valid_cp_count > 0, "No raid cards with valid CP values found in first 3 cards"
+    assert valid_cp_count > 0, (
+        "No raid cards with valid CP values found in first 3 cards"
+    )

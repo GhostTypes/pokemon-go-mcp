@@ -18,6 +18,7 @@ class TestRaidTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -31,7 +32,9 @@ class TestRaidTools:
         assert "Raid" in result or "No raid" in result
 
     @pytest.mark.asyncio
-    async def test_get_raid_by_tier(self, ensure_test_data, sample_raid_tier, mcp_server):
+    async def test_get_raid_by_tier(
+        self, ensure_test_data, sample_raid_tier, mcp_server
+    ):
         """Test get_raid_by_tier tool."""
         from pogo_mcp.raids import register_raid_tools
 
@@ -42,6 +45,7 @@ class TestRaidTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -65,6 +69,7 @@ class TestRaidTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -88,6 +93,7 @@ class TestRaidTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -101,7 +107,9 @@ class TestRaidTools:
         assert "Shiny" in result or "shiny" in result or "No" in result
 
     @pytest.mark.asyncio
-    async def test_search_raid_boss(self, ensure_test_data, sample_pokemon_name, mcp_server):
+    async def test_search_raid_boss(
+        self, ensure_test_data, sample_pokemon_name, mcp_server
+    ):
         """Test search_raid_boss tool."""
         from pogo_mcp.raids import register_raid_tools
 
@@ -112,6 +120,7 @@ class TestRaidTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -135,6 +144,7 @@ class TestRaidTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -158,6 +168,7 @@ class TestRaidTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -181,6 +192,7 @@ class TestRaidTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -204,6 +216,7 @@ class TestRaidTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -217,7 +230,9 @@ class TestRaidTools:
         assert "Raid" in result or "raid" in result
 
     @pytest.mark.asyncio
-    async def test_get_raid_recommendations_shiny_only(self, ensure_test_data, mcp_server):
+    async def test_get_raid_recommendations_shiny_only(
+        self, ensure_test_data, mcp_server
+    ):
         """Test get_raid_recommendations with shiny_only filter."""
         from pogo_mcp.raids import register_raid_tools
 
@@ -228,6 +243,7 @@ class TestRaidTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -240,7 +256,9 @@ class TestRaidTools:
         assert len(result) > 0
 
     @pytest.mark.asyncio
-    async def test_get_raid_recommendations_with_tier(self, ensure_test_data, mcp_server):
+    async def test_get_raid_recommendations_with_tier(
+        self, ensure_test_data, mcp_server
+    ):
         """Test get_raid_recommendations with tier filter."""
         from pogo_mcp.raids import register_raid_tools
 
@@ -251,6 +269,7 @@ class TestRaidTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()

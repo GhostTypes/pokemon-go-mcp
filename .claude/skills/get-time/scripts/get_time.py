@@ -23,6 +23,7 @@ def get_user_timezone():
         # Fallback to UTC if detection fails
         return "UTC"
 
+
 def get_current_time(format_type="full", timezone=None):
     """
     Get current local time in specified format.
@@ -57,7 +58,7 @@ def get_current_time(format_type="full", timezone=None):
                 "date": now.strftime("%Y-%m-%d"),
                 "datetime": now.strftime("%Y-%m-%d %I:%M:%S %p"),
                 "iso": now.isoformat(),
-                "unix": str(int(now.timestamp()))
+                "unix": str(int(now.timestamp())),
             }
             return formats.get(format_type, formats["full"])
 
@@ -78,10 +79,11 @@ def get_current_time(format_type="full", timezone=None):
         "date": now.strftime("%Y-%m-%d"),
         "datetime": now.strftime(f"%Y-%m-%d %I:%M:%S %p {tz_abbr}"),
         "iso": now.isoformat(),
-        "unix": str(int(now.timestamp()))
+        "unix": str(int(now.timestamp())),
     }
 
     return formats.get(format_type, formats["full"])
+
 
 if __name__ == "__main__":
     # Get format from command line argument, default to "full"

@@ -59,7 +59,14 @@ def register_egg_tools(mcp: FastMCP) -> None:
             result = f"# Current Egg Hatches (as of {get_current_time_str()})\n\n"
 
             # Sort egg types by distance
-            distance_order = ["2 km", "5 km", "7 km", "10 km", "12 km", "Adventure Sync"]
+            distance_order = [
+                "2 km",
+                "5 km",
+                "7 km",
+                "10 km",
+                "12 km",
+                "Adventure Sync",
+            ]
             sorted_types = []
 
             for distance in distance_order:
@@ -152,13 +159,22 @@ def register_egg_tools(mcp: FastMCP) -> None:
                     egg_types[egg_type] = []
                 egg_types[egg_type].append(egg)
 
-            result = f"# ✨ Shiny-Eligible Egg Hatches (as of {get_current_time_str()})\n\n"
+            result = (
+                f"# ✨ Shiny-Eligible Egg Hatches (as of {get_current_time_str()})\n\n"
+            )
 
             shiny_pokemon = sorted({e.name for e in shiny_eggs})
             result += f"**Shiny Pokemon Available:** {', '.join(shiny_pokemon)}\n\n"
 
             # Sort by distance
-            distance_order = ["2 km", "5 km", "7 km", "10 km", "12 km", "Adventure Sync"]
+            distance_order = [
+                "2 km",
+                "5 km",
+                "7 km",
+                "10 km",
+                "12 km",
+                "Adventure Sync",
+            ]
 
             for distance in distance_order:
                 if distance in egg_types:
@@ -228,7 +244,9 @@ def register_egg_tools(mcp: FastMCP) -> None:
                 return "No regional Pokemon found in current egg pools."
 
             result = f"# 🌍 Regional Pokemon in Eggs ({len(regional_eggs)} found)\n\n"
-            result += "These Pokemon are region-locked and may require trading to obtain:\n\n"
+            result += (
+                "These Pokemon are region-locked and may require trading to obtain:\n\n"
+            )
 
             # Group by egg type
             egg_types = {}
@@ -270,7 +288,9 @@ def register_egg_tools(mcp: FastMCP) -> None:
                 return "No gift exchange Pokemon found in current egg pools."
 
             result = f"# 🎁 Gift Exchange Pokemon ({len(gift_eggs)} found)\n\n"
-            result += "These Pokemon can be hatched from 7km eggs received from friends:\n\n"
+            result += (
+                "These Pokemon can be hatched from 7km eggs received from friends:\n\n"
+            )
 
             for egg in gift_eggs:
                 result += format_egg_summary(egg) + "\n\n"
@@ -336,7 +356,9 @@ def register_egg_tools(mcp: FastMCP) -> None:
                 return "No Adventure Sync reward Pokemon found."
 
             result = f"# 🏃 Adventure Sync Rewards ({len(as_eggs)} found)\n\n"
-            result += "These Pokemon can be obtained from Adventure Sync reward eggs:\n\n"
+            result += (
+                "These Pokemon can be obtained from Adventure Sync reward eggs:\n\n"
+            )
 
             for egg in as_eggs:
                 result += format_egg_summary(egg) + "\n\n"
@@ -366,7 +388,9 @@ def register_egg_tools(mcp: FastMCP) -> None:
         try:
             eggs = await api_client.get_eggs()
 
-            result = f"# Egg Incubation Recommendations ({priority.title()} Priority)\n\n"
+            result = (
+                f"# Egg Incubation Recommendations ({priority.title()} Priority)\n\n"
+            )
 
             if priority.lower() == "shiny":
                 recommended = [e for e in eggs if e.can_be_shiny]
@@ -425,7 +449,9 @@ def register_egg_tools(mcp: FastMCP) -> None:
             elif priority.lower() == "quick":
                 result += "💡 **Tip:** Use infinite incubator on 2km eggs to maximize hatches!\n"
             elif priority.lower() == "rare":
-                result += "💡 **Tip:** Save super incubators for rare regional Pokemon!\n"
+                result += (
+                    "💡 **Tip:** Save super incubators for rare regional Pokemon!\n"
+                )
 
             return result
 

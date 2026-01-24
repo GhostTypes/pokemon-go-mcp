@@ -5,6 +5,7 @@ from typing import Any, TypedDict
 @dataclass
 class TypeInfo:
     """Pokemon type information"""
+
     name: str
     image: str
 
@@ -12,6 +13,7 @@ class TypeInfo:
 @dataclass
 class WeatherInfo:
     """Weather boost information"""
+
     name: str
     image: str
 
@@ -19,6 +21,7 @@ class WeatherInfo:
 @dataclass
 class PokemonInfo:
     """Basic Pokemon information"""
+
     name: str
     image: str
     can_be_shiny: bool = False
@@ -28,12 +31,14 @@ class PokemonInfo:
 @dataclass
 class BonusInfo:
     """Community day bonus information"""
+
     text: str
     image: str
 
 
 class EventExtraData(TypedDict, total=False):
     """Additional event-specific data"""
+
     generic: dict[str, Any]
     communityday: dict[str, Any]
     raidbattles: dict[str, Any]
@@ -45,6 +50,7 @@ class EventExtraData(TypedDict, total=False):
 @dataclass
 class EventInfo:
     """Event information"""
+
     event_id: str
     name: str
     event_type: str
@@ -59,6 +65,7 @@ class EventInfo:
 @dataclass
 class RaidInfo:
     """Raid boss information"""
+
     name: str
     tier: str
     can_be_shiny: bool
@@ -72,6 +79,7 @@ class RaidInfo:
 @dataclass
 class ResearchTaskInfo:
     """Field research task information"""
+
     text: str
     rewards: list[PokemonInfo]
     task_type: str | None = None
@@ -80,6 +88,7 @@ class ResearchTaskInfo:
 @dataclass
 class EggInfo:
     """Egg hatch information"""
+
     name: str
     egg_type: str
     is_adventure_sync: bool
@@ -95,6 +104,7 @@ class EggInfo:
 @dataclass
 class ShadowPokemonInfo:
     """Shadow Pokemon information for Team Rocket encounters"""
+
     name: str
     types: list[str]
     weaknesses: dict[str, list[str]]
@@ -105,6 +115,7 @@ class ShadowPokemonInfo:
 @dataclass
 class RocketLineupSlot:
     """Individual slot in a Rocket trainer's lineup"""
+
     slot: int
     is_encounter: bool
     pokemon: list[ShadowPokemonInfo]
@@ -113,6 +124,7 @@ class RocketLineupSlot:
 @dataclass
 class RocketTrainerInfo:
     """Team Rocket trainer information"""
+
     name: str
     title: str
     quote: str
@@ -124,6 +136,7 @@ class RocketTrainerInfo:
 @dataclass
 class PromoCodeReward:
     """Reward information for a promo code"""
+
     name: str
     url: str
     type: str
@@ -132,6 +145,7 @@ class PromoCodeReward:
 @dataclass
 class PromoCodeInfo:
     """Promo code information"""
+
     code: str
     title: str
     description: str
@@ -143,6 +157,7 @@ class PromoCodeInfo:
 @dataclass
 class ApiData:
     """Complete API data structure"""
+
     events: list[EventInfo]
     raids: list[RaidInfo]
     research: list[ResearchTaskInfo]

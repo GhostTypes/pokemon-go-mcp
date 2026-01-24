@@ -18,13 +18,9 @@ from markdownify import markdownify as md
 def get_scraper():
     """Initialize cloudscraper with proper settings"""
     return cloudscraper.create_scraper(
-        browser={
-            "browser": "chrome",
-            "platform": "windows",
-            "desktop": True
-        },
-        delay=1
+        browser={"browser": "chrome", "platform": "windows", "desktop": True}, delay=1
     )
+
 
 def get_headers():
     """Get headers for requests"""
@@ -33,6 +29,7 @@ def get_headers():
         "Accept-Language": "en-US,en;q=0.9",
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
     }
+
 
 def extract_main_content(html):
     """Extract the main documentation content from the HTML"""
@@ -50,6 +47,7 @@ def extract_main_content(html):
         main_content = soup.find("body")
 
     return main_content
+
 
 def clean_content(content_element):
     """Remove navigation, headers, footers, and other UI elements"""
@@ -82,6 +80,7 @@ def clean_content(content_element):
 
     return content
 
+
 def scrape_ruff_page(scraper, url):
     """
     Scrape a Ruff documentation page and return clean markdown.
@@ -100,7 +99,10 @@ def scrape_ruff_page(scraper, url):
         response = scraper.get(url, headers=headers, timeout=30)
 
         if response.status_code != 200:
-            print(f"  [WARNING] Failed to fetch (status {response.status_code})", file=sys.stderr)
+            print(
+                f"  [WARNING] Failed to fetch (status {response.status_code})",
+                file=sys.stderr,
+            )
             return None
 
         # Extract main content
@@ -116,10 +118,10 @@ def scrape_ruff_page(scraper, url):
         # Convert to markdown
         return md(str(cleaned_content), heading_style="ATX")
 
-
     except Exception as e:
         print(f"  [ERROR] {e!s}", file=sys.stderr)
         return None
+
 
 def url_to_filename(url):
     """
@@ -147,6 +149,7 @@ def load_page_list(json_file):
     with open(json_file) as f:
         data = json.load(f)
     return data["pages"]
+
 
 def bulk_scrape(json_file, output_dir, delay=0.5, resume_from=0):
     """
@@ -193,7 +196,7 @@ def bulk_scrape(json_file, output_dir, delay=0.5, resume_from=0):
         filepath = os.path.join(output_dir, filename)
 
         # Progress indicator
-        progress = f"[{i+1}/{total}]"
+        progress = f"[{i + 1}/{total}]"
         short_url = url.replace("https://docs.astral.sh/ruff/", "")
         print(f"{progress} {short_url}", file=sys.stderr, end=" ... ")
         sys.stderr.flush()
@@ -231,13 +234,22 @@ def bulk_scrape(json_file, output_dir, delay=0.5, resume_from=0):
     print(f"  Total:   {total}", file=sys.stderr)
     print("=" * 70, file=sys.stderr)
 
+
 def main():
     if len(sys.argv) < 3:
-        print("Usage: bulk_scrape_ruff.py <pages_json> <output_dir> [delay] [resume_from]", file=sys.stderr)
+        print(
+            "Usage: bulk_scrape_ruff.py <pages_json> <output_dir> [delay] [resume_from]",
+            file=sys.stderr,
+        )
         print("\nArguments:", file=sys.stderr)
-        print("  pages_json   - JSON file containing list of page URLs", file=sys.stderr)
+        print(
+            "  pages_json   - JSON file containing list of page URLs", file=sys.stderr
+        )
         print("  output_dir   - Directory to save markdown files", file=sys.stderr)
-        print("  delay        - Delay between requests in seconds (default: 0.5)", file=sys.stderr)
+        print(
+            "  delay        - Delay between requests in seconds (default: 0.5)",
+            file=sys.stderr,
+        )
         print("  resume_from  - Index to resume from (default: 0)", file=sys.stderr)
         print("\nExample:", file=sys.stderr)
         print("  bulk_scrape_ruff.py pages.json ./output 0.5 0", file=sys.stderr)
@@ -252,13 +264,18 @@ def main():
         bulk_scrape(json_file, output_dir, delay, resume_from)
     except KeyboardInterrupt:
         print("\n\nInterrupted by user. You can resume by running:", file=sys.stderr)
-        print(f"  {sys.argv[0]} {json_file} {output_dir} {delay} <last_index>", file=sys.stderr)
+        print(
+            f"  {sys.argv[0]} {json_file} {output_dir} {delay} <last_index>",
+            file=sys.stderr,
+        )
         sys.exit(1)
     except Exception as e:
         print(f"\nError: {e!s}", file=sys.stderr)
         import traceback
+
         traceback.print_exc()
         sys.exit(1)
+
 
 if __name__ == "__main__":
     main()

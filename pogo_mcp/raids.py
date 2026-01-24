@@ -124,7 +124,9 @@ def register_raid_tools(mcp: FastMCP) -> None:
                     tiers[tier] = []
                 tiers[tier].append(raid)
 
-            result = f"# ✨ Shiny-Eligible Raid Bosses (as of {get_current_time_str()})\n\n"
+            result = (
+                f"# ✨ Shiny-Eligible Raid Bosses (as of {get_current_time_str()})\n\n"
+            )
 
             for tier in sorted(tiers.keys()):
                 raid_list = tiers[tier]
@@ -216,7 +218,8 @@ def register_raid_tools(mcp: FastMCP) -> None:
             weather_lower = weather.lower()
 
             boosted_raids = [
-                r for r in raids
+                r
+                for r in raids
                 if any(weather_lower in w.name.lower() for w in r.boosted_weather)
             ]
 
@@ -238,7 +241,9 @@ def register_raid_tools(mcp: FastMCP) -> None:
             return f"Error fetching weather boosted raids: {e!s}"
 
     @mcp.tool()
-    async def get_raid_recommendations(tier: str | None = None, shiny_only: bool = False) -> str:
+    async def get_raid_recommendations(
+        tier: str | None = None, shiny_only: bool = False
+    ) -> str:
         """Get raid recommendations based on specified criteria.
 
         Args:
@@ -286,7 +291,11 @@ def register_raid_tools(mcp: FastMCP) -> None:
                 result += f"### {tier_name}\n\n"
 
                 for raid in raid_list:
-                    priority = "🌟 High Priority" if raid.can_be_shiny else "⭐ Standard Priority"
+                    priority = (
+                        "🌟 High Priority"
+                        if raid.can_be_shiny
+                        else "⭐ Standard Priority"
+                    )
                     result += f"**{raid.name}** - {priority}\n"
 
                     # Quick summary

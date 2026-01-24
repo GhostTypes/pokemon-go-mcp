@@ -26,6 +26,7 @@ except ImportError:
         parse_rocket_trainer,
     )
 
+
 async def scrape_rocket_lineups(scraper, base_url: str) -> list[dict]:
     """Scrape Team Rocket lineups data from leekduck.com"""
     logger.info("Scraping Team Rocket lineups data...")

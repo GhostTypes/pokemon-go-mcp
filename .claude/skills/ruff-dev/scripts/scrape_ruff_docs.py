@@ -14,13 +14,9 @@ from markdownify import markdownify as md
 def get_scraper():
     """Initialize cloudscraper with proper settings"""
     return cloudscraper.create_scraper(
-        browser={
-            "browser": "chrome",
-            "platform": "windows",
-            "desktop": True
-        },
-        delay=1
+        browser={"browser": "chrome", "platform": "windows", "desktop": True}, delay=1
     )
+
 
 def get_headers():
     """Get headers for requests"""
@@ -29,6 +25,7 @@ def get_headers():
         "Accept-Language": "en-US,en;q=0.9",
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
     }
+
 
 def extract_main_content(html):
     """Extract the main documentation content from the HTML"""
@@ -49,6 +46,7 @@ def extract_main_content(html):
         return None
 
     return main_content
+
 
 def clean_content(content_element):
     """Remove navigation, headers, footers, and other UI elements"""
@@ -80,6 +78,7 @@ def clean_content(content_element):
             element.decompose()
 
     return content
+
 
 def scrape_ruff_page(url):
     """
@@ -119,8 +118,13 @@ def main():
     if len(sys.argv) < 2:
         print("Usage: scrape_ruff_docs.py <url> [output_file]", file=sys.stderr)
         print("\nExamples:", file=sys.stderr)
-        print("  scrape_ruff_docs.py https://docs.astral.sh/ruff/linter/", file=sys.stderr)
-        print("  scrape_ruff_docs.py https://docs.astral.sh/ruff/linter/ output.md", file=sys.stderr)
+        print(
+            "  scrape_ruff_docs.py https://docs.astral.sh/ruff/linter/", file=sys.stderr
+        )
+        print(
+            "  scrape_ruff_docs.py https://docs.astral.sh/ruff/linter/ output.md",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
     url = sys.argv[1]
@@ -140,8 +144,10 @@ def main():
     except Exception as e:
         print(f"Error: {e!s}", file=sys.stderr)
         import traceback
+
         traceback.print_exc()
         sys.exit(1)
+
 
 if __name__ == "__main__":
     main()

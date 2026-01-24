@@ -26,7 +26,9 @@ def register_promo_code_tools(mcp) -> None:
             if not promo_codes:
                 return "No active promo codes found."
 
-            result = f"# 🎁 Active Pokemon GO Promo Codes ({get_current_time_str()})\n\n"
+            result = (
+                f"# 🎁 Active Pokemon GO Promo Codes ({get_current_time_str()})\n\n"
+            )
             result += f"**Total Active Codes:** {len(promo_codes)}\n\n"
 
             for code in promo_codes:
@@ -45,7 +47,9 @@ def register_promo_code_tools(mcp) -> None:
                 if code.expiration:
                     try:
                         # Parse expiration date
-                        exp_date = datetime.fromisoformat(code.expiration.replace("Z", "+00:00"))
+                        exp_date = datetime.fromisoformat(
+                            code.expiration.replace("Z", "+00:00")
+                        )
                         result += f"**Expires:** {exp_date.strftime('%B %d, %Y at %I:%M %p %Z')}\n"
                     except Exception:
                         result += f"**Expires:** {code.expiration}\n"

@@ -71,7 +71,9 @@ def parse_promo_card(card_element, base_url: str) -> dict | None:
             return None
 
         # Build redemption URL
-        redemption_url = f"https://store.pokemongo.com/offer-redemption?passcode={promo_code}"
+        redemption_url = (
+            f"https://store.pokemongo.com/offer-redemption?passcode={promo_code}"
+        )
 
         # Extract title
         title_elem = card_element.select_one(".title")
@@ -99,7 +101,9 @@ def parse_promo_card(card_element, base_url: str) -> dict | None:
             reward_type = reward_elem.get("data-reward-type", "")
 
             reward_label_elem = reward_elem.select_one(".reward-label")
-            reward_label = reward_label_elem.get_text(strip=True) if reward_label_elem else ""
+            reward_label = (
+                reward_label_elem.get_text(strip=True) if reward_label_elem else ""
+            )
 
             reward_img_elem = reward_elem.select_one(".reward-image")
             reward_img_url = ""
@@ -109,11 +113,9 @@ def parse_promo_card(card_element, base_url: str) -> dict | None:
                 if reward_img_url.startswith("/"):
                     reward_img_url = f"{base_url}{reward_img_url}"
 
-            rewards.append({
-                "name": reward_label,
-                "url": reward_img_url,
-                "type": reward_type
-            })
+            rewards.append(
+                {"name": reward_label, "url": reward_img_url, "type": reward_type}
+            )
 
         # Extract expiration date
         expiry_elem = card_element.select_one(".expiry")
@@ -127,9 +129,8 @@ def parse_promo_card(card_element, base_url: str) -> dict | None:
             "description": description,
             "redemption_url": redemption_url,
             "rewards": rewards,
-            "expiration": expiration
+            "expiration": expiration,
         }
-
 
     except Exception as e:
         logger.warning(f"Error parsing promo card: {e}")

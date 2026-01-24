@@ -60,7 +60,7 @@ def ensure_test_data(data_dir):
         "research.json",
         "eggs.json",
         "rocket-lineups.json",
-        "promo-codes.json"
+        "promo-codes.json",
     ]
 
     missing_files = []
@@ -84,6 +84,7 @@ def sample_event_id(ensure_test_data):
     # Load events synchronously for session-scoped fixture
     import json
     from pathlib import Path
+
     data_file = Path(__file__).parent.parent.parent / "data" / "events.json"
     with open(data_file) as f:
         events = json.load(f)
@@ -120,6 +121,7 @@ def sample_raid_tier(ensure_test_data):
     """Get a sample raid tier for testing tier-specific functions."""
     import json
     from pathlib import Path
+
     data_file = Path(__file__).parent.parent.parent / "data" / "raids.json"
     with open(data_file) as f:
         raids = json.load(f)
@@ -133,6 +135,7 @@ def sample_trainer_name(ensure_test_data):
     """Get a sample Team Rocket trainer name for testing."""
     import json
     from pathlib import Path
+
     data_file = Path(__file__).parent.parent.parent / "data" / "rocket-lineups.json"
     with open(data_file) as f:
         trainers = json.load(f)

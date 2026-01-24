@@ -13,6 +13,7 @@ from bs4 import BeautifulSoup
 
 BASE_URL = "https://mypy.readthedocs.io/en/stable/"
 
+
 def is_valid_doc_url(url, base_domain):
     """Check if URL is a valid documentation page"""
     parsed = urlparse(url)
@@ -22,11 +23,26 @@ def is_valid_doc_url(url, base_domain):
         return False
 
     # Skip anchors, external links, and special pages
-    if any(skip in url for skip in ["#", "javascript:", "mailto:", "_static/", "_sources/", "genindex.html", "search.html", "py-modindex.html"]):
+    if any(
+        skip in url
+        for skip in [
+            "#",
+            "javascript:",
+            "mailto:",
+            "_static/",
+            "_sources/",
+            "genindex.html",
+            "search.html",
+            "py-modindex.html",
+        ]
+    ):
         return False
 
     # Must be HTML page
-    return not (parsed.path and not (parsed.path.endswith(".html") or parsed.path.endswith("/")))
+    return not (
+        parsed.path and not (parsed.path.endswith(".html") or parsed.path.endswith("/"))
+    )
+
 
 def get_all_links(html_content, base_url):
     """Extract all links from HTML content"""
@@ -43,6 +59,7 @@ def get_all_links(html_content, base_url):
 
     return links
 
+
 def crawl_docs(start_url):
     """Crawl the documentation and discover all pages"""
     visited = set()
@@ -51,12 +68,7 @@ def crawl_docs(start_url):
 
     # Initialize scraper
     scraper = cloudscraper.create_scraper(
-        browser={
-            "browser": "chrome",
-            "platform": "windows",
-            "desktop": True
-        },
-        delay=1
+        browser={"browser": "chrome", "platform": "windows", "desktop": True}, delay=1
     )
 
     base_domain = urlparse(start_url).netloc
@@ -119,6 +131,7 @@ def crawl_docs(start_url):
 
     return sorted(all_pages)
 
+
 def main():
     print("=" * 70, file=sys.stderr)
     print("MYPY DOCUMENTATION PAGE DISCOVERY", file=sys.stderr)
@@ -143,6 +156,7 @@ def main():
             f.write(page + "\n")
 
     print(f"\nPage list saved to: {output_file}", file=sys.stderr)
+
 
 if __name__ == "__main__":
     main()

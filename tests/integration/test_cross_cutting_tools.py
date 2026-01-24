@@ -21,10 +21,12 @@ class TestCrossCuttingTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         # Save the original mcp
         from pogo_mcp import server
+
         original_mcp = server.mcp
 
         # Replace with our mock
@@ -44,7 +46,9 @@ class TestCrossCuttingTools:
             server.mcp = original_mcp
 
     @pytest.mark.asyncio
-    async def test_search_pokemon_everywhere(self, ensure_test_data, sample_pokemon_name, mcp_server):
+    async def test_search_pokemon_everywhere(
+        self, ensure_test_data, sample_pokemon_name, mcp_server
+    ):
         """Test search_pokemon_everywhere tool."""
         from pogo_mcp.server import register_cross_cutting_tools
 
@@ -58,10 +62,12 @@ class TestCrossCuttingTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         # Save the original mcp
         from pogo_mcp import server
+
         original_mcp = server.mcp
 
         # Replace with our mock
@@ -81,7 +87,9 @@ class TestCrossCuttingTools:
             server.mcp = original_mcp
 
     @pytest.mark.asyncio
-    async def test_search_pokemon_everywhere_not_found(self, ensure_test_data, mcp_server):
+    async def test_search_pokemon_everywhere_not_found(
+        self, ensure_test_data, mcp_server
+    ):
         """Test search_pokemon_everywhere with Pokemon not found."""
         from pogo_mcp.server import register_cross_cutting_tools
 
@@ -95,10 +103,12 @@ class TestCrossCuttingTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         # Save the original mcp
         from pogo_mcp import server
+
         original_mcp = server.mcp
 
         # Replace with our mock
@@ -132,10 +142,12 @@ class TestCrossCuttingTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         # Save the original mcp
         from pogo_mcp import server
+
         original_mcp = server.mcp
 
         # Replace with our mock
@@ -169,10 +181,12 @@ class TestCrossCuttingTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         # Save the original mcp
         from pogo_mcp import server
+
         original_mcp = server.mcp
 
         # Replace with our mock
@@ -208,10 +222,12 @@ class TestCrossCuttingTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         # Save the original mcp
         from pogo_mcp import server
+
         original_mcp = server.mcp
 
         # Replace with our mock

@@ -9,21 +9,17 @@ from bs4 import BeautifulSoup
 logger = logging.getLogger(__name__)
 
 
-
 async def parse_breakthrough_details(soup: BeautifulSoup, event: dict) -> None:
     """Parse Research Breakthrough specific details"""
     try:
-        breakthrough_data = {
-            "name": "",
-            "canBeShiny": False,
-            "image": "",
-            "list": []
-        }
+        breakthrough_data = {"name": "", "canBeShiny": False, "image": "", "list": []}
 
         # Find the first .pkmn-list-flex container (main breakthrough reward)
         pkmn_list_containers = soup.select(".pkmn-list-flex")
         if not pkmn_list_containers:
-            logger.warning("No .pkmn-list-flex containers found for breakthrough parsing")
+            logger.warning(
+                "No .pkmn-list-flex containers found for breakthrough parsing"
+            )
             return
 
         first_container = pkmn_list_containers[0]
@@ -32,10 +28,14 @@ async def parse_breakthrough_details(soup: BeautifulSoup, event: dict) -> None:
         if main_pokemon_item:
             # Main breakthrough reward Pokemon
             name_elem = main_pokemon_item.select_one(":scope > .pkmn-name")
-            breakthrough_data["name"] = name_elem.get_text(strip=True) if name_elem else ""
+            breakthrough_data["name"] = (
+                name_elem.get_text(strip=True) if name_elem else ""
+            )
 
             # Check for shiny icon
-            breakthrough_data["canBeShiny"] = bool(main_pokemon_item.select_one(":scope > .shiny-icon"))
+            breakthrough_data["canBeShiny"] = bool(
+                main_pokemon_item.select_one(":scope > .shiny-icon")
+            )
 
             # Image
             img_elem = main_pokemon_item.select_one(":scope > .pkmn-list-img > img")
@@ -49,7 +49,7 @@ async def parse_breakthrough_details(soup: BeautifulSoup, event: dict) -> None:
                 pokemon_data = {
                     "name": name_elem.get_text(strip=True),
                     "canBeShiny": bool(pokemon_item.select_one(":scope > .shiny-icon")),
-                    "image": ""
+                    "image": "",
                 }
 
                 img_elem = pokemon_item.select_one(":scope > .pkmn-list-img > img")

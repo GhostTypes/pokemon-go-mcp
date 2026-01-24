@@ -12,10 +12,7 @@ logger = logging.getLogger(__name__)
 async def parse_raid_battle_details(soup: BeautifulSoup, event: dict) -> None:
     """Parse Raid Battle specific details"""
     try:
-        raidbattle_data = {
-            "bosses": [],
-            "shinies": []
-        }
+        raidbattle_data = {"bosses": [], "shinies": []}
 
         page_content = soup.select_one(".page-content")
         if not page_content:
@@ -29,11 +26,19 @@ async def parse_raid_battle_details(soup: BeautifulSoup, event: dict) -> None:
 
         for element in all_nodes:
             # Check if this is a section header
-            if element.name and element.get("class") and "event-section-header" in element.get("class", []):
+            if (
+                element.name
+                and element.get("class")
+                and "event-section-header" in element.get("class", [])
+            ):
                 last_header = element.get("id", "")
 
             # Parse raid bosses section
-            elif element.name and element.get("class") and "pkmn-list-flex" in element.get("class", []):
+            elif (
+                element.name
+                and element.get("class")
+                and "pkmn-list-flex" in element.get("class", [])
+            ):
                 if last_header == "raids":
                     bosses = element.select(".pkmn-list-item")
                     for boss in bosses:
@@ -42,11 +47,13 @@ async def parse_raid_battle_details(soup: BeautifulSoup, event: dict) -> None:
                         shiny_elem = boss.select_one(".shiny-icon")
 
                         if name_elem and img_elem:
-                            raidbattle_data["bosses"].append({
-                                "name": name_elem.get_text(strip=True),
-                                "image": img_elem.get("src", ""),
-                                "canBeShiny": shiny_elem is not None
-                            })
+                            raidbattle_data["bosses"].append(
+                                {
+                                    "name": name_elem.get_text(strip=True),
+                                    "image": img_elem.get("src", ""),
+                                    "canBeShiny": shiny_elem is not None,
+                                }
+                            )
 
                 # Parse shinies section
                 elif last_header == "shiny":
@@ -56,10 +63,12 @@ async def parse_raid_battle_details(soup: BeautifulSoup, event: dict) -> None:
                         img_elem = shiny.select_one(".pkmn-list-img img")
 
                         if name_elem and img_elem:
-                            raidbattle_data["shinies"].append({
-                                "name": name_elem.get_text(strip=True),
-                                "image": img_elem.get("src", "")
-                            })
+                            raidbattle_data["shinies"].append(
+                                {
+                                    "name": name_elem.get_text(strip=True),
+                                    "image": img_elem.get("src", ""),
+                                }
+                            )
 
         # Only add raidbattles data if we found meaningful content
         if raidbattle_data["bosses"] or raidbattle_data["shinies"]:

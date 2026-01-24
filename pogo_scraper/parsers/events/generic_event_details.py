@@ -30,14 +30,16 @@ async def parse_generic_event_details(soup: BeautifulSoup, event: dict) -> None:
             "bonuses": [],
             "features": [],
             "fieldResearch": [],
-            "raids": []
+            "raids": [],
         }
 
         # Update existing generic data with new structure
         if "generic" in event["extraData"]:
             existing_generic = event["extraData"]["generic"]
             generic_data["hasSpawns"] = existing_generic.get("hasSpawns", False)
-            generic_data["hasFieldResearchTasks"] = existing_generic.get("hasFieldResearchTasks", False)
+            generic_data["hasFieldResearchTasks"] = existing_generic.get(
+                "hasFieldResearchTasks", False
+            )
 
         # Parse spawns section
         spawns_section = soup.find("h2", id="spawns")
@@ -60,7 +62,10 @@ async def parse_generic_event_details(soup: BeautifulSoup, event: dict) -> None:
             # Look for "Featured Pokémon" or similar headings
             for heading in soup.find_all(["h2", "h3"]):
                 heading_text = heading.get_text(strip=True).lower()
-                if any(keyword in heading_text for keyword in ["featured", "feature", "spotlight"]):
+                if any(
+                    keyword in heading_text
+                    for keyword in ["featured", "feature", "spotlight"]
+                ):
                     features_section = heading
                     break
 
@@ -109,10 +114,16 @@ def _parse_spawns_section(soup: BeautifulSoup, spawns_section) -> list[dict]:
             # Also check for simpler list structures
             if not pokemon_items:
                 # Look for lists with Pokemon images
-                pokemon_items = current.find_all("img", src=lambda x: x and "pokemon_icons" in x) if current else []
+                pokemon_items = (
+                    current.find_all("img", src=lambda x: x and "pokemon_icons" in x)
+                    if current
+                    else []
+                )
 
                 # Convert image tags to pseudo pkmn-list-item structure for consistent parsing
-                pokemon_items = [img.find_parent() for img in pokemon_items if img.find_parent()]
+                pokemon_items = [
+                    img.find_parent() for img in pokemon_items if img.find_parent()
+                ]
 
             for item in pokemon_items:
                 spawn = _extract_pokemon_data(item)
@@ -167,7 +178,11 @@ def _parse_features_section(soup: BeautifulSoup, features_section) -> list[dict]
     try:
         current = features_section.find_next_sibling()
 
-        while current and (current.name != "h2" or current.get("id") in ["featured-pokémon", "pokémon-debut", "pokemon-debut"]):
+        while current and (
+            current.name != "h2"
+            or current.get("id")
+            in ["featured-pokémon", "pokémon-debut", "pokemon-debut"]
+        ):
             if current:
                 # Look for Pokemon in features first (common in featured Pokemon sections)
                 pokemon_items = current.find_all(class_="pkmn-list-item")
@@ -178,7 +193,9 @@ def _parse_features_section(soup: BeautifulSoup, features_section) -> list[dict]
                 if not pokemon_items:
                     flex_lists = current.find_all("ul", class_="pkmn-list-flex")
                     for flex_list in flex_lists:
-                        pokemon_items.extend(flex_list.find_all("li", class_="pkmn-list-item"))
+                        pokemon_items.extend(
+                            flex_list.find_all("li", class_="pkmn-list-item")
+                        )
 
                 if pokemon_items:
                     # This is likely a featured Pokemon section
@@ -265,7 +282,9 @@ def _parse_raids_section(soup: BeautifulSoup, raids_section) -> list[dict]:
         while current and current.name != "h2":
             if current:
                 # Look for raid Pokemon
-                raid_items = current.find_all(class_="pkmn-list-item") if current else []
+                raid_items = (
+                    current.find_all(class_="pkmn-list-item") if current else []
+                )
 
                 # Also check for tier-specific sections
                 tier_sections = current.find_all(["h3", "h4"]) if current else []
@@ -274,7 +293,11 @@ def _parse_raids_section(soup: BeautifulSoup, raids_section) -> list[dict]:
                     # Find Pokemon in this tier
                     tier_current = tier_section.find_next_sibling()
                     while tier_current and tier_current.name not in ["h2", "h3", "h4"]:
-                        tier_pokemon = tier_current.find_all(class_="pkmn-list-item") if tier_current else []
+                        tier_pokemon = (
+                            tier_current.find_all(class_="pkmn-list-item")
+                            if tier_current
+                            else []
+                        )
                         for pokemon in tier_pokemon:
                             raid_data = _extract_pokemon_data(pokemon)
                             if raid_data:
@@ -326,13 +349,27 @@ def _extract_pokemon_data(item) -> dict | None:
             pokemon_data["image"] = image_src
 
         # Check for shiny indicator - look for shiny images or icons
-        shiny_elem = item.find("img", src=lambda x: x and "shiny" in x.lower()) if item else None
-        shiny_icon = item.find("img", src=lambda x: x and "icon_shiny" in x.lower()) if item else None
-        shiny_class = item.find(class_=lambda x: x and "shiny" in x.lower()) if item else None
+        shiny_elem = (
+            item.find("img", src=lambda x: x and "shiny" in x.lower()) if item else None
+        )
+        shiny_icon = (
+            item.find("img", src=lambda x: x and "icon_shiny" in x.lower())
+            if item
+            else None
+        )
+        shiny_class = (
+            item.find(class_=lambda x: x and "shiny" in x.lower()) if item else None
+        )
         # Check for LeekDuck's specific shiny-icon class
         shiny_icon_class = item.find("img", class_="shiny-icon") if item else None
 
-        if shiny_elem or shiny_icon or shiny_class or shiny_icon_class or (item and "shiny" in item.get_text().lower()):
+        if (
+            shiny_elem
+            or shiny_icon
+            or shiny_class
+            or shiny_icon_class
+            or (item and "shiny" in item.get_text().lower())
+        ):
             pokemon_data["can_be_shiny"] = True
         else:
             pokemon_data["can_be_shiny"] = False
@@ -471,6 +508,7 @@ def _extract_research_task_data(item) -> dict | None:
                     task_data["text"] = "Research task (details TBD)"
                     # Look for Pokemon name pattern
                     import re
+
                     # Match Pokemon name followed by CP info
                     match = re.search(r"([A-Za-z]+)(?:Max CP|Min CP)", full_text)
                     if match:

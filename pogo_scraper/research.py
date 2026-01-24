@@ -87,7 +87,7 @@ def parse_research_reward(reward_item) -> dict | None:
         return {
             "name": name,
             "image": img_elem.get("src", "") if img_elem else "",
-            "can_be_shiny": bool(shiny_elem)
+            "can_be_shiny": bool(shiny_elem),
         }
 
     except Exception as e:

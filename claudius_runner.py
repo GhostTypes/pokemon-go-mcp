@@ -131,9 +131,10 @@ def build_claude_command(agents_json=None):
     """Build the Claude CLI command with optional agents."""
     cmd = [
         "claude",
-        "-p", SYSTEM_PROMPT,
+        "-p",
+        SYSTEM_PROMPT,
         "--dangerously-skip-permissions",
-        "--no-session-persistence"
+        "--no-session-persistence",
     ]
 
     # Add agents if provided
@@ -141,7 +142,6 @@ def build_claude_command(agents_json=None):
         cmd.extend(["--agents", agents_json])
 
     return cmd
-
 
 
 def run_claudius_loop(max_loops, agents_json=None) -> None:
@@ -180,7 +180,7 @@ def run_claudius_loop(max_loops, agents_json=None) -> None:
                 text=True,
                 bufsize=1,  # Line buffered
                 encoding="utf-8",
-                creationflags=creation_flags
+                creationflags=creation_flags,
             )
         except FileNotFoundError:
             sys.exit(1)
@@ -239,7 +239,7 @@ def kill_process(process) -> None:
                 subprocess.run(
                     ["taskkill", "/F", "/T", "/PID", str(process.pid)],
                     stdout=subprocess.DEVNULL,
-                    stderr=subprocess.DEVNULL
+                    stderr=subprocess.DEVNULL,
                 )
             else:
                 # Unix: terminate then kill
@@ -255,24 +255,23 @@ def kill_process(process) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Run Claude Code in a Claudius (Ralph Wiggum) loop for code quality remediation.",
-        epilog="Example: python claudius_runner.py 200"
+        epilog="Example: python claudius_runner.py 200",
     )
     parser.add_argument(
         "max_loops",
         type=int,
-        help="Maximum number of iterations allowed (recommended: 200 for overnight runs)."
+        help="Maximum number of iterations allowed (recommended: 200 for overnight runs).",
     )
     parser.add_argument(
         "--agents",
         type=str,
         default=None,
-        help="JSON string of sub-agents to pass to Claude (optional)."
+        help="JSON string of sub-agents to pass to Claude (optional).",
     )
     args = parser.parse_args()
 
     if args.max_loops < 1:
         sys.exit(1)
-
 
     run_claudius_loop(args.max_loops, args.agents)
 

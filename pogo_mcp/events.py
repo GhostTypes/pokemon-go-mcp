@@ -38,7 +38,9 @@ def register_event_tools(mcp: FastMCP) -> None:
             # Get events with explicit error handling
             logger.info("Calling api_client.get_events()...")
             events = await api_client.get_events()
-            logger.info(f"Received events: {type(events)} with {len(events) if isinstance(events, list) else 'NOT A LIST'} items")
+            logger.info(
+                f"Received events: {type(events)} with {len(events) if isinstance(events, list) else 'NOT A LIST'} items"
+            )
 
             # Verify data structure
             if not isinstance(events, list):
@@ -74,6 +76,7 @@ def register_event_tools(mcp: FastMCP) -> None:
             logger.exception(error_msg)
             logger.exception(f"Exception type: {type(e)}")
             import traceback
+
             logger.exception(f"Traceback: {traceback.format_exc()}")
             return error_msg
 
@@ -118,7 +121,9 @@ def register_event_tools(mcp: FastMCP) -> None:
                 rd_info = extract_raid_day_info(event)
                 if rd_info:
                     if rd_info["raid_bosses"]:
-                        result += f"**Raid Bosses:** {', '.join(rd_info['raid_bosses'])}\n\n"
+                        result += (
+                            f"**Raid Bosses:** {', '.join(rd_info['raid_bosses'])}\n\n"
+                        )
 
                     if rd_info["bonuses"]:
                         result += "**Free Bonuses:**\n"
@@ -139,7 +144,9 @@ def register_event_tools(mcp: FastMCP) -> None:
                             tasks = research_step.get("tasks", [])
                             if tasks:
                                 for task in tasks:
-                                    result += f"  - {task.get('text', 'Unknown task')}\n"
+                                    result += (
+                                        f"  - {task.get('text', 'Unknown task')}\n"
+                                    )
                         result += "\n"
 
                     if rd_info["shiny_available"]:
@@ -167,9 +174,13 @@ def register_event_tools(mcp: FastMCP) -> None:
             current_time = datetime.now(timezone.utc)
 
             cd_events = [
-                e for e in events
-                if "community" in e.event_type.lower() and
-                (is_event_active(e, current_time) or is_event_upcoming(e, current_time))
+                e
+                for e in events
+                if "community" in e.event_type.lower()
+                and (
+                    is_event_active(e, current_time)
+                    or is_event_upcoming(e, current_time)
+                )
             ]
 
             if not cd_events:
@@ -183,7 +194,9 @@ def register_event_tools(mcp: FastMCP) -> None:
                 cd_info = extract_community_day_info(event)
                 if cd_info:
                     if cd_info["featured_pokemon"]:
-                        result += f"**Featured:** {', '.join(cd_info['featured_pokemon'])}\n"
+                        result += (
+                            f"**Featured:** {', '.join(cd_info['featured_pokemon'])}\n"
+                        )
 
                     if cd_info["bonuses"]:
                         result += "**Bonuses:**\n"
@@ -217,7 +230,11 @@ def register_event_tools(mcp: FastMCP) -> None:
             active_events = [e for e in events if is_event_active(e, current_time)]
 
             if event_type:
-                active_events = [e for e in active_events if event_type.lower() in e.event_type.lower()]
+                active_events = [
+                    e
+                    for e in active_events
+                    if event_type.lower() in e.event_type.lower()
+                ]
 
             result = f"# Event Spawns (as of {get_current_time_str()})\n\n"
 
@@ -238,7 +255,9 @@ def register_event_tools(mcp: FastMCP) -> None:
 
             if not spawns_found:
                 if event_type:
-                    result += f"No spawn information found for active {event_type} events.\n"
+                    result += (
+                        f"No spawn information found for active {event_type} events.\n"
+                    )
                 else:
                     result += "No spawn information found for active events.\n"
 
@@ -314,10 +333,13 @@ def register_event_tools(mcp: FastMCP) -> None:
             query_lower = query.lower()
 
             matching_events = [
-                e for e in events
-                if (query_lower in e.name.lower() or
-                    query_lower in e.event_type.lower() or
-                    query_lower in e.heading.lower())
+                e
+                for e in events
+                if (
+                    query_lower in e.name.lower()
+                    or query_lower in e.event_type.lower()
+                    or query_lower in e.heading.lower()
+                )
             ]
 
             if not matching_events:

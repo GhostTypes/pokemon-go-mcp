@@ -23,6 +23,7 @@ def download_research_data():
             f.write(response.text)
     return html_file
 
+
 def test_research_parsing():
     """Test that research parsing works correctly"""
     # Download data if needed
@@ -55,6 +56,7 @@ def test_research_parsing():
     # Should have at least one reward
     assert len(result["rewards"]) > 0, "Parsed research item has no rewards"
 
+
 def test_research_rewards_parsing():
     """Test that research rewards are correctly parsed"""
     # Download data if needed
@@ -80,4 +82,6 @@ def test_research_rewards_parsing():
                 valid_rewards_count += 1
 
     # At least some should have valid rewards
-    assert valid_rewards_count > 0, "No research items with valid rewards found in first 3 items"
+    assert valid_rewards_count > 0, (
+        "No research items with valid rewards found in first 3 items"
+    )

@@ -18,6 +18,7 @@ class TestPromoCodeTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()

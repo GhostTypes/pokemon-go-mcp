@@ -18,7 +18,7 @@ async def parse_community_day_details(soup: BeautifulSoup, event: dict) -> None:
             "bonuses": [],
             "bonusDisclaimers": [],
             "shinies": [],
-            "specialresearch": []
+            "specialresearch": [],
         }
 
         page_content = soup.select_one(".page-content")
@@ -59,7 +59,7 @@ async def parse_community_day_details(soup: BeautifulSoup, event: dict) -> None:
                         if name_elem and img_elem:
                             spawn_data = {
                                 "name": name_elem.get_text(strip=True),
-                                "image": img_elem.get("src", "")
+                                "image": img_elem.get("src", ""),
                             }
                             commday_data["spawns"].append(spawn_data)
 
@@ -71,7 +71,7 @@ async def parse_community_day_details(soup: BeautifulSoup, event: dict) -> None:
                         if name_elem and img_elem:
                             shiny_data = {
                                 "name": name_elem.get_text(strip=True),
-                                "image": img_elem.get("src", "")
+                                "image": img_elem.get("src", ""),
                             }
                             commday_data["shinies"].append(shiny_data)
 
@@ -84,10 +84,9 @@ async def parse_community_day_details(soup: BeautifulSoup, event: dict) -> None:
             img_elem = bonus.select_one(".item-circle img")
             if text_elem and img_elem:
                 bonus_text = text_elem.get_text(strip=True)
-                commday_data["bonuses"].append({
-                    "text": bonus_text,
-                    "image": img_elem.get("src", "")
-                })
+                commday_data["bonuses"].append(
+                    {"text": bonus_text, "image": img_elem.get("src", "")}
+                )
 
                 if "*" in bonus_text:
                     bonus_has_disclaimer = True
@@ -105,9 +104,13 @@ async def parse_community_day_details(soup: BeautifulSoup, event: dict) -> None:
                             if "<br>" in str(next_elem):
                                 disclaimers = str(next_elem).split("<br>")
                                 for disclaimer in disclaimers:
-                                    clean_disclaimer = BeautifulSoup(disclaimer, "html.parser").get_text(strip=True)
+                                    clean_disclaimer = BeautifulSoup(
+                                        disclaimer, "html.parser"
+                                    ).get_text(strip=True)
                                     if clean_disclaimer:
-                                        commday_data["bonusDisclaimers"].append(clean_disclaimer)
+                                        commday_data["bonusDisclaimers"].append(
+                                            clean_disclaimer
+                                        )
                             else:
                                 commday_data["bonusDisclaimers"].append(disclaimer_text)
                     next_elem = next_elem.next_sibling
@@ -115,12 +118,7 @@ async def parse_community_day_details(soup: BeautifulSoup, event: dict) -> None:
         # Parse special research
         research_items = soup.select(".special-research-list .step-item")
         for item in research_items:
-            research = {
-                "name": "",
-                "step": 0,
-                "tasks": [],
-                "rewards": []
-            }
+            research = {"name": "", "step": 0, "tasks": [], "rewards": []}
 
             # Step number and name
             step_num_elem = item.select_one(".step-number")
@@ -144,9 +142,13 @@ async def parse_community_day_details(soup: BeautifulSoup, event: dict) -> None:
                     task = {
                         "text": task_text_elem.get_text(strip=True),
                         "reward": {
-                            "text": reward_label_elem.get_text(strip=True) if reward_label_elem else "",
-                            "image": reward_img_elem.get("src", "") if reward_img_elem else ""
-                        }
+                            "text": reward_label_elem.get_text(strip=True)
+                            if reward_label_elem
+                            else "",
+                            "image": reward_img_elem.get("src", "")
+                            if reward_img_elem
+                            else "",
+                        },
                     }
                     research["tasks"].append(task)
 
@@ -157,17 +159,23 @@ async def parse_community_day_details(soup: BeautifulSoup, event: dict) -> None:
                 reward_img_elem = reward.select_one(".reward-image")
 
                 if reward_label_elem and reward_img_elem:
-                    research["rewards"].append({
-                        "text": reward_label_elem.get_text(strip=True),
-                        "image": reward_img_elem.get("src", "")
-                    })
+                    research["rewards"].append(
+                        {
+                            "text": reward_label_elem.get_text(strip=True),
+                            "image": reward_img_elem.get("src", ""),
+                        }
+                    )
 
             if research["name"] or research["tasks"] or research["rewards"]:
                 commday_data["specialresearch"].append(research)
 
         # Only add communityday data if we found meaningful content
-        if (commday_data["spawns"] or commday_data["bonuses"] or
-            commday_data["shinies"] or commday_data["specialresearch"]):
+        if (
+            commday_data["spawns"]
+            or commday_data["bonuses"]
+            or commday_data["shinies"]
+            or commday_data["specialresearch"]
+        ):
             event["extraData"]["communityday"] = commday_data
 
     except Exception as e:

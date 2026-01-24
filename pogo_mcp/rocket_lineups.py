@@ -39,7 +39,11 @@ def register_rocket_tools(mcp: FastMCP) -> None:
             result += f"**Total Trainers:** {len(trainers)}\n\n"
 
             # Organize trainers by type
-            leaders = [t for t in trainers if "leader" in t.title.lower() or "boss" in t.title.lower()]
+            leaders = [
+                t
+                for t in trainers
+                if "leader" in t.title.lower() or "boss" in t.title.lower()
+            ]
             grunts_by_type = {}
             other_trainers = []
 
@@ -73,8 +77,14 @@ def register_rocket_tools(mcp: FastMCP) -> None:
                     result += format_rocket_summary(trainer) + "\n\n"
 
             # Summary statistics
-            total_pokemon = sum(sum(len(slot.pokemon) for slot in trainer.lineups) for trainer in trainers)
-            total_encounters = sum(sum(len(slot.pokemon) for slot in trainer.lineups if slot.is_encounter) for trainer in trainers)
+            total_pokemon = sum(
+                sum(len(slot.pokemon) for slot in trainer.lineups)
+                for trainer in trainers
+            )
+            total_encounters = sum(
+                sum(len(slot.pokemon) for slot in trainer.lineups if slot.is_encounter)
+                for trainer in trainers
+            )
             shiny_count = len(get_shiny_shadow_pokemon_util(trainers))
 
             result += "## 📊 Summary\n\n"
@@ -103,7 +113,9 @@ def register_rocket_tools(mcp: FastMCP) -> None:
                 return f"Invalid Pokemon name: '{pokemon_name}'"
 
             trainers = await api_client.get_rocket_lineups()
-            matching_trainers = search_rocket_trainers_by_pokemon(trainers, pokemon_name)
+            matching_trainers = search_rocket_trainers_by_pokemon(
+                trainers, pokemon_name
+            )
 
             if not matching_trainers:
                 return f"No Team Rocket trainers found using {pokemon_name.title()}."
@@ -117,12 +129,22 @@ def register_rocket_tools(mcp: FastMCP) -> None:
                 # Show which slots have this Pokemon
                 matching_slots = []
                 for slot in trainer.lineups:
-                    slot_pokemon = [p for p in slot.pokemon if pokemon_name.lower() in p.name.lower()]
+                    slot_pokemon = [
+                        p
+                        for p in slot.pokemon
+                        if pokemon_name.lower() in p.name.lower()
+                    ]
                     if slot_pokemon:
                         encounter_text = " (Encounter)" if slot.is_encounter else ""
                         shiny_pokemon = [p for p in slot_pokemon if p.can_be_shiny]
-                        shiny_text = f" - {len(shiny_pokemon)} can be shiny" if shiny_pokemon else ""
-                        matching_slots.append(f"Slot {slot.slot}{encounter_text}: {len(slot_pokemon)} options{shiny_text}")
+                        shiny_text = (
+                            f" - {len(shiny_pokemon)} can be shiny"
+                            if shiny_pokemon
+                            else ""
+                        )
+                        matching_slots.append(
+                            f"Slot {slot.slot}{encounter_text}: {len(slot_pokemon)} options{shiny_text}"
+                        )
 
                 if matching_slots:
                     result += "\n  " + "\n  ".join(matching_slots)
@@ -166,12 +188,16 @@ def register_rocket_tools(mcp: FastMCP) -> None:
                     single_weak = pokemon.weaknesses.get("single", [])
 
                     if double_weak:
-                        result += f"**Double Weakness:** {', '.join(double_weak).title()}\n"
+                        result += (
+                            f"**Double Weakness:** {', '.join(double_weak).title()}\n"
+                        )
                     if single_weak:
                         result += f"**Weakness:** {', '.join(single_weak).title()}\n"
 
                 # Find which trainers have this Pokemon
-                using_trainers = search_rocket_trainers_by_pokemon(trainers, pokemon.name)
+                using_trainers = search_rocket_trainers_by_pokemon(
+                    trainers, pokemon.name
+                )
                 if using_trainers:
                     trainer_names = [t.name for t in using_trainers]
                     result += f"**Available from:** {', '.join(trainer_names)}\n"
@@ -310,12 +336,16 @@ def register_rocket_tools(mcp: FastMCP) -> None:
                     break
 
             if not target_pokemon:
-                return f"{pokemon_name.title()} not found in current Team Rocket lineups."
+                return (
+                    f"{pokemon_name.title()} not found in current Team Rocket lineups."
+                )
 
             if not target_pokemon.types:
                 return f"No type information available for {target_pokemon.name}."
 
-            effectiveness = calculate_type_effectiveness(attacking_type, target_pokemon.types)
+            effectiveness = calculate_type_effectiveness(
+                attacking_type, target_pokemon.types
+            )
 
             result = f"# Type Effectiveness: {attacking_type.title()} vs {target_pokemon.name}\n\n"
             result += f"**Target Pokemon:** {target_pokemon.name}\n"
@@ -352,7 +382,9 @@ def register_rocket_tools(mcp: FastMCP) -> None:
                 if double_weak or single_weak:
                     result += "\n**Known Weaknesses:**\n"
                     if double_weak:
-                        result += f"• **Double weakness:** {', '.join(double_weak).title()}\n"
+                        result += (
+                            f"• **Double weakness:** {', '.join(double_weak).title()}\n"
+                        )
                     if single_weak:
                         result += f"• **Weak to:** {', '.join(single_weak).title()}\n"
 
@@ -375,7 +407,9 @@ def register_rocket_tools(mcp: FastMCP) -> None:
             trainers = await api_client.get_rocket_lineups()
 
             # Find matching trainers
-            matching_trainers = [t for t in trainers if trainer_name.lower() in t.name.lower()]
+            matching_trainers = [
+                t for t in trainers if trainer_name.lower() in t.name.lower()
+            ]
 
             if not matching_trainers:
                 return f"No Team Rocket trainer found matching '{trainer_name}'."
@@ -425,7 +459,9 @@ def register_rocket_tools(mcp: FastMCP) -> None:
                         if double_weak:
                             result += f"• **Double weakness:** {', '.join(double_weak).title()}\n"
                         if single_weak:
-                            result += f"• **Weak to:** {', '.join(single_weak).title()}\n"
+                            result += (
+                                f"• **Weak to:** {', '.join(single_weak).title()}\n"
+                            )
 
                     result += "\n"
 
@@ -433,8 +469,13 @@ def register_rocket_tools(mcp: FastMCP) -> None:
 
             # Summary stats
             total_pokemon = sum(len(slot.pokemon) for slot in trainer.lineups)
-            shiny_pokemon = sum(sum(1 for p in slot.pokemon if p.can_be_shiny) for slot in trainer.lineups)
-            encounter_pokemon = sum(len(slot.pokemon) for slot in trainer.lineups if slot.is_encounter)
+            shiny_pokemon = sum(
+                sum(1 for p in slot.pokemon if p.can_be_shiny)
+                for slot in trainer.lineups
+            )
+            encounter_pokemon = sum(
+                len(slot.pokemon) for slot in trainer.lineups if slot.is_encounter
+            )
 
             result += "## 📊 Summary\n\n"
             result += f"• **Total Pokemon Options:** {total_pokemon}\n"

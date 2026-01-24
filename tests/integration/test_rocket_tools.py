@@ -18,6 +18,7 @@ class TestRocketTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -31,7 +32,9 @@ class TestRocketTools:
         assert "Rocket" in result or "rocket" in result or "No" in result
 
     @pytest.mark.asyncio
-    async def test_search_rocket_by_pokemon(self, ensure_test_data, sample_pokemon_name, mcp_server):
+    async def test_search_rocket_by_pokemon(
+        self, ensure_test_data, sample_pokemon_name, mcp_server
+    ):
         """Test search_rocket_by_pokemon tool."""
         from pogo_mcp.rocket_lineups import register_rocket_tools
 
@@ -42,6 +45,7 @@ class TestRocketTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -54,7 +58,9 @@ class TestRocketTools:
         assert len(result) > 0
 
     @pytest.mark.asyncio
-    async def test_search_rocket_by_pokemon_not_found(self, ensure_test_data, mcp_server):
+    async def test_search_rocket_by_pokemon_not_found(
+        self, ensure_test_data, mcp_server
+    ):
         """Test search_rocket_by_pokemon with Pokemon not in lineups."""
         from pogo_mcp.rocket_lineups import register_rocket_tools
 
@@ -65,6 +71,7 @@ class TestRocketTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -88,6 +95,7 @@ class TestRocketTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -112,6 +120,7 @@ class TestRocketTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -136,6 +145,7 @@ class TestRocketTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -159,6 +169,7 @@ class TestRocketTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -171,7 +182,9 @@ class TestRocketTools:
         assert len(result) > 0
 
     @pytest.mark.asyncio
-    async def test_calculate_pokemon_weakness(self, ensure_test_data, sample_pokemon_name, mcp_server):
+    async def test_calculate_pokemon_weakness(
+        self, ensure_test_data, sample_pokemon_name, mcp_server
+    ):
         """Test calculate_pokemon_weakness tool."""
         from pogo_mcp.rocket_lineups import register_rocket_tools
 
@@ -182,6 +195,7 @@ class TestRocketTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -189,15 +203,16 @@ class TestRocketTools:
 
         calculate_pokemon_weakness = captured_tools["calculate_pokemon_weakness"]
         result = await calculate_pokemon_weakness(
-            pokemon_name=sample_pokemon_name,
-            attacking_type="fire"
+            pokemon_name=sample_pokemon_name, attacking_type="fire"
         )
 
         assert isinstance(result, str)
         assert len(result) > 0
 
     @pytest.mark.asyncio
-    async def test_calculate_pokemon_weakness_water_vs_fire(self, ensure_test_data, mcp_server):
+    async def test_calculate_pokemon_weakness_water_vs_fire(
+        self, ensure_test_data, mcp_server
+    ):
         """Test calculate_pokemon_weakness with water vs fire."""
         from pogo_mcp.rocket_lineups import register_rocket_tools
 
@@ -208,6 +223,7 @@ class TestRocketTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -215,21 +231,23 @@ class TestRocketTools:
 
         # Get a pokemon name from the data
         from pogo_mcp.api_client import api_client
+
         trainers = await api_client.get_rocket_lineups()
         if trainers and trainers[0].lineups and trainers[0].lineups[0].pokemon:
             pokemon_name = trainers[0].lineups[0].pokemon[0].name
 
             calculate_pokemon_weakness = captured_tools["calculate_pokemon_weakness"]
             result = await calculate_pokemon_weakness(
-                pokemon_name=pokemon_name,
-                attacking_type="water"
+                pokemon_name=pokemon_name, attacking_type="water"
             )
 
             assert isinstance(result, str)
             assert len(result) > 0
 
     @pytest.mark.asyncio
-    async def test_get_rocket_trainer_details(self, ensure_test_data, sample_trainer_name, mcp_server):
+    async def test_get_rocket_trainer_details(
+        self, ensure_test_data, sample_trainer_name, mcp_server
+    ):
         """Test get_rocket_trainer_details tool."""
         from pogo_mcp.rocket_lineups import register_rocket_tools
 
@@ -240,6 +258,7 @@ class TestRocketTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()
@@ -253,7 +272,9 @@ class TestRocketTools:
         assert sample_trainer_name in result or "Trainer Details" in result
 
     @pytest.mark.asyncio
-    async def test_get_rocket_trainer_details_not_found(self, ensure_test_data, mcp_server):
+    async def test_get_rocket_trainer_details_not_found(
+        self, ensure_test_data, mcp_server
+    ):
         """Test get_rocket_trainer_details with invalid trainer name."""
         from pogo_mcp.rocket_lineups import register_rocket_tools
 
@@ -264,6 +285,7 @@ class TestRocketTools:
                 def decorator(func):
                     captured_tools[func.__name__] = func
                     return func
+
                 return decorator
 
         mock_mcp = MockMCP()

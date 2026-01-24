@@ -42,7 +42,9 @@ async def scrape_raids(scraper, base_url: str) -> list[dict]:
         for tier_div in tiers:
             # Get tier name
             tier_header = tier_div.find("h2", class_="header")
-            current_tier = tier_header.get_text(strip=True) if tier_header else "Unknown"
+            current_tier = (
+                tier_header.get_text(strip=True) if tier_header else "Unknown"
+            )
 
             # Process cards in this tier
             cards = tier_div.select(".grid .card")
@@ -63,7 +65,9 @@ async def scrape_raids(scraper, base_url: str) -> list[dict]:
             for tier_div in shadow_tiers:
                 # Get tier name
                 tier_header = tier_div.find("h2", class_="header")
-                current_tier = tier_header.get_text(strip=True) if tier_header else "Unknown"
+                current_tier = (
+                    tier_header.get_text(strip=True) if tier_header else "Unknown"
+                )
 
                 # Process cards in this tier
                 cards = tier_div.select(".grid .card")
@@ -99,10 +103,10 @@ def parse_raid_boss(card, current_tier: str, base_url: str) -> dict | None:
             "types": [],
             "combatPower": {
                 "normal": {"min": -1, "max": -1},
-                "boosted": {"min": -1, "max": -1}
+                "boosted": {"min": -1, "max": -1},
             },
             "boostedWeather": [],
-            "image": img_elem.get("src", "") if img_elem else ""
+            "image": img_elem.get("src", "") if img_elem else "",
         }
 
         # Types
@@ -136,8 +140,12 @@ def parse_raid_boss(card, current_tier: str, base_url: str) -> dict | None:
             boosted_parts = boosted_text.split("-")
             if len(boosted_parts) == 2:
                 try:
-                    boss["combatPower"]["boosted"]["min"] = int(boosted_parts[0].strip())
-                    boss["combatPower"]["boosted"]["max"] = int(boosted_parts[1].strip())
+                    boss["combatPower"]["boosted"]["min"] = int(
+                        boosted_parts[0].strip()
+                    )
+                    boss["combatPower"]["boosted"]["max"] = int(
+                        boosted_parts[1].strip()
+                    )
                 except ValueError:
                     pass
 

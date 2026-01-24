@@ -31,17 +31,25 @@ def analyze_events(events: list[dict]) -> dict[str, Any]:
     headings = Counter(event.get("heading", "unknown") for event in events)
 
     # Count events with spawns and field research
-    has_spawns = sum(1 for event in events
-                     if event.get("extraData", {}).get("generic", {}).get("hasSpawns", False))
-    has_research = sum(1 for event in events
-                       if event.get("extraData", {}).get("generic", {}).get("hasFieldResearchTasks", False))
+    has_spawns = sum(
+        1
+        for event in events
+        if event.get("extraData", {}).get("generic", {}).get("hasSpawns", False)
+    )
+    has_research = sum(
+        1
+        for event in events
+        if event.get("extraData", {})
+        .get("generic", {})
+        .get("hasFieldResearchTasks", False)
+    )
 
     return {
         "total": len(events),
         "by_type": dict(event_types.most_common()),
         "by_heading": dict(headings.most_common()),
         "with_spawns": has_spawns,
-        "with_field_research": has_research
+        "with_field_research": has_research,
     }
 
 
@@ -63,7 +71,7 @@ def analyze_raids(raids: list[dict]) -> dict[str, Any]:
         "total": len(raids),
         "by_tier": dict(tiers.most_common()),
         "shiny_available": shiny_available,
-        "top_types": dict(type_counter.most_common(10))
+        "top_types": dict(type_counter.most_common(10)),
     }
 
 
@@ -74,7 +82,8 @@ def analyze_research(research_tasks: list[dict]) -> dict[str, Any]:
 
     total_rewards = sum(len(task.get("rewards", [])) for task in research_tasks)
     shiny_rewards = sum(
-        1 for task in research_tasks
+        1
+        for task in research_tasks
         for reward in task.get("rewards", [])
         if reward.get("can_be_shiny", False)
     )
@@ -82,7 +91,7 @@ def analyze_research(research_tasks: list[dict]) -> dict[str, Any]:
     return {
         "total": len(research_tasks),
         "total_possible_rewards": total_rewards,
-        "shiny_possible_rewards": shiny_rewards
+        "shiny_possible_rewards": shiny_rewards,
     }
 
 
@@ -97,7 +106,9 @@ def analyze_eggs(eggs: list[dict]) -> dict[str, Any]:
 
     for egg in eggs:
         # Try to extract distance info if available
-        distance = egg.get("eggType", egg.get("distance", egg.get("eggDistance", "unknown")))
+        distance = egg.get(
+            "eggType", egg.get("distance", egg.get("eggDistance", "unknown"))
+        )
         egg_distances[distance] += 1
         if egg.get("canBeShiny", False):
             shiny_available += 1
@@ -105,7 +116,7 @@ def analyze_eggs(eggs: list[dict]) -> dict[str, Any]:
     return {
         "total": len(eggs),
         "by_distance": dict(egg_distances.most_common()),
-        "shiny_available": shiny_available
+        "shiny_available": shiny_available,
     }
 
 
@@ -114,9 +125,7 @@ def analyze_rocket(rocket_lineups: list[dict]) -> dict[str, Any]:
     if not rocket_lineups:
         return {}
 
-    return {
-        "total": len(rocket_lineups)
-    }
+    return {"total": len(rocket_lineups)}
 
 
 def analyze_promo_codes(promo_codes: list[dict]) -> dict[str, Any]:
@@ -124,9 +133,7 @@ def analyze_promo_codes(promo_codes: list[dict]) -> dict[str, Any]:
     if not promo_codes:
         return {}
 
-    return {
-        "total": len(promo_codes)
-    }
+    return {"total": len(promo_codes)}
 
 
 def generate_readme(stats: dict[str, Any]) -> str:
@@ -176,7 +183,9 @@ This branch contains automatically scraped Pokemon GO data from LeekDuck.com, up
             readme += "### By Event Type\n\n"
             readme += "| Event Type | Count |\n"
             readme += "|:-----------|------:|\n"
-            for event_type, count in sorted(stats["events"]["by_type"].items(), key=lambda x: x[1], reverse=True):
+            for event_type, count in sorted(
+                stats["events"]["by_type"].items(), key=lambda x: x[1], reverse=True
+            ):
                 readme += f"| {event_type} | {count} |\n"
             readme += "\n"
 
@@ -184,7 +193,9 @@ This branch contains automatically scraped Pokemon GO data from LeekDuck.com, up
             readme += "### By Category\n\n"
             readme += "| Category | Count |\n"
             readme += "|:---------|------:|\n"
-            for heading, count in sorted(stats["events"]["by_heading"].items(), key=lambda x: x[1], reverse=True):
+            for heading, count in sorted(
+                stats["events"]["by_heading"].items(), key=lambda x: x[1], reverse=True
+            ):
                 readme += f"| {heading} | {count} |\n"
             readme += "\n"
 
@@ -202,7 +213,14 @@ This branch contains automatically scraped Pokemon GO data from LeekDuck.com, up
             readme += "### By Tier\n\n"
             readme += "| Tier | Count |\n"
             readme += "|:-----|------:|\n"
-            tier_order = ["Tier 1", "Tier 3", "Tier 5", "Mega", "Mega Legendary", "Elite"]
+            tier_order = [
+                "Tier 1",
+                "Tier 3",
+                "Tier 5",
+                "Mega",
+                "Mega Legendary",
+                "Elite",
+            ]
             for tier in tier_order:
                 if tier in stats["raids"]["by_tier"]:
                     readme += f"| {tier} | {stats['raids']['by_tier'][tier]} |\n"
@@ -239,8 +257,12 @@ This branch contains automatically scraped Pokemon GO data from LeekDuck.com, up
             readme += "| Distance | Count |\n"
             readme += "|:---------|------:|\n"
             # Sort by extracting the numeric value from distance strings like "2 km"
-            sorted_distances = sorted(stats["eggs"]["by_distance"].items(),
-                                     key=lambda x: int(x[0].split()[0]) if x[0].split()[0].isdigit() else 999)
+            sorted_distances = sorted(
+                stats["eggs"]["by_distance"].items(),
+                key=lambda x: int(x[0].split()[0])
+                if x[0].split()[0].isdigit()
+                else 999,
+            )
             for distance, count in sorted_distances:
                 readme += f"| {distance} | {count} |\n"
             readme += "\n"
@@ -303,7 +325,7 @@ def main() -> None:
         "research": analyze_research(research),
         "eggs": analyze_eggs(eggs),
         "rocket": analyze_rocket(rocket_lineups),
-        "promo_codes": analyze_promo_codes(promo_codes)
+        "promo_codes": analyze_promo_codes(promo_codes),
     }
 
     # Generate README
@@ -312,7 +334,6 @@ def main() -> None:
     # Write README
     with open("README.md", "w", encoding="utf-8") as f:
         f.write(readme_content)
-
 
 
 if __name__ == "__main__":

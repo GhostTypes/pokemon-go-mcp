@@ -63,7 +63,9 @@ class TestMCPServerDataAccess:
         assert eggs is not None
 
     @pytest.mark.asyncio
-    async def test_can_fetch_rocket_lineups(self, ensure_test_data, api_client_instance):
+    async def test_can_fetch_rocket_lineups(
+        self, ensure_test_data, api_client_instance
+    ):
         """Test that server can fetch Team Rocket lineups."""
         trainers = await api_client_instance.get_rocket_lineups()
         assert isinstance(trainers, list)

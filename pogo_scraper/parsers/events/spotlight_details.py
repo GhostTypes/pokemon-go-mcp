@@ -17,7 +17,7 @@ async def parse_spotlight_details(soup: BeautifulSoup, event: dict) -> None:
             "canBeShiny": False,
             "image": "",
             "bonus": "",
-            "list": []
+            "list": [],
         }
 
         # Find the first .pkmn-list-flex container (main spotlight Pokemon)
@@ -35,7 +35,9 @@ async def parse_spotlight_details(soup: BeautifulSoup, event: dict) -> None:
             spotlight_data["name"] = name_elem.get_text(strip=True) if name_elem else ""
 
             # Check for shiny icon
-            spotlight_data["canBeShiny"] = bool(main_pokemon_item.select_one(":scope > .shiny-icon"))
+            spotlight_data["canBeShiny"] = bool(
+                main_pokemon_item.select_one(":scope > .shiny-icon")
+            )
 
             # Image
             img_elem = main_pokemon_item.select_one(":scope > .pkmn-list-img > img")
@@ -51,7 +53,9 @@ async def parse_spotlight_details(soup: BeautifulSoup, event: dict) -> None:
                 last_strong = strong_parts[-1].split("</strong>")
                 if last_strong:
                     # Clean up HTML tags and get plain text
-                    bonus_text = BeautifulSoup(last_strong[0], "html.parser").get_text(strip=True)
+                    bonus_text = BeautifulSoup(last_strong[0], "html.parser").get_text(
+                        strip=True
+                    )
                     spotlight_data["bonus"] = bonus_text
 
         # Get all Pokemon items (spotlight rotation list)
@@ -62,7 +66,7 @@ async def parse_spotlight_details(soup: BeautifulSoup, event: dict) -> None:
                 pokemon_data = {
                     "name": name_elem.get_text(strip=True),
                     "canBeShiny": bool(pokemon_item.select_one(":scope > .shiny-icon")),
-                    "image": ""
+                    "image": "",
                 }
 
                 img_elem = pokemon_item.select_one(":scope > .pkmn-list-img > img")

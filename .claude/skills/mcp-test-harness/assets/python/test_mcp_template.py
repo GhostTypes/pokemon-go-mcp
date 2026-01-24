@@ -14,7 +14,9 @@ from fastmcp import Client
 class TestToolDiscovery:
     """Verify all expected tools are registered and discoverable."""
 
-    async def test_lists_all_expected_tools(self, client: Client, expected_tools: list[str]):
+    async def test_lists_all_expected_tools(
+        self, client: Client, expected_tools: list[str]
+    ):
         """All expected tools should appear in tools/list."""
         tools = await client.list_tools()
         tool_names = [t.name for t in tools]
@@ -28,7 +30,9 @@ class TestToolDiscovery:
 
         for tool in tools:
             assert tool.description, f"Tool '{tool.name}' has no description"
-            assert len(tool.description) > 10, f"Tool '{tool.name}' description too short"
+            assert len(tool.description) > 10, (
+                f"Tool '{tool.name}' description too short"
+            )
 
 
 class TestExampleTool:
@@ -45,7 +49,7 @@ class TestExampleTool:
             arguments={
                 # TODO: Add your tool's expected arguments
                 "param1": "value1",
-            }
+            },
         )
 
         # TODO: Update assertion to match your tool's expected output
@@ -56,22 +60,26 @@ class TestExampleTool:
         """Tool returns error when required parameter is missing."""
         result = await client.call_tool(
             name="example_tool_1",
-            arguments={}  # Missing required params
+            arguments={},  # Missing required params
         )
 
         # Should indicate an error
         assert result.is_error or "error" in result.content[0].text.lower()
 
-    @pytest.mark.parametrize(("input_val", "expected_output"), [
-        # TODO: Add test cases with (input, expected_output) pairs
-        ("input1", "output1"),
-        ("input2", "output2"),
-    ])
-    async def test_various_inputs(self, client: Client, input_val: str, expected_output: str):
+    @pytest.mark.parametrize(
+        ("input_val", "expected_output"),
+        [
+            # TODO: Add test cases with (input, expected_output) pairs
+            ("input1", "output1"),
+            ("input2", "output2"),
+        ],
+    )
+    async def test_various_inputs(
+        self, client: Client, input_val: str, expected_output: str
+    ):
         """Tool handles various inputs correctly."""
         result = await client.call_tool(
-            name="example_tool_1",
-            arguments={"param1": input_val}
+            name="example_tool_1", arguments={"param1": input_val}
         )
 
         assert result.content[0].text == expected_output
@@ -82,10 +90,7 @@ class TestErrorHandling:
 
     async def test_invalid_tool_name(self, client: Client):
         """Calling non-existent tool returns appropriate error."""
-        result = await client.call_tool(
-            name="nonexistent_tool_xyz",
-            arguments={}
-        )
+        result = await client.call_tool(name="nonexistent_tool_xyz", arguments={})
 
         assert result.is_error
 
@@ -97,7 +102,7 @@ class TestErrorHandling:
         # TODO: Trigger an error in one of your tools
         result = await client.call_tool(
             name="example_tool_1",
-            arguments={"param1": "invalid_value_that_causes_error"}
+            arguments={"param1": "invalid_value_that_causes_error"},
         )
 
         if result.is_error:

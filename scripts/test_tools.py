@@ -2,6 +2,7 @@
 """
 Testing utilities for comparing scraper outputs
 """
+
 import argparse
 import json
 import shutil
@@ -11,7 +12,9 @@ from pathlib import Path
 from typing import Any
 
 
-def backup_data(source_dir: str = "pogo_scraper/data", backup_dir: str = "test_backups") -> str:
+def backup_data(
+    source_dir: str = "pogo_scraper/data", backup_dir: str = "test_backups"
+) -> str:
     """Backup current data files to timestamped directory"""
     source = Path(source_dir)
     backup = Path(backup_dir)
@@ -42,7 +45,10 @@ def normalize_json(obj: Any) -> Any:
             for key in ["id", "name", "title", "pokemon"]:
                 if key in obj[0]:
                     try:
-                        return [normalize_json(item) for item in sorted(obj, key=lambda x: x.get(key, ""))]
+                        return [
+                            normalize_json(item)
+                            for item in sorted(obj, key=lambda x: x.get(key, ""))
+                        ]
                     except:
                         pass
         return [normalize_json(item) for item in obj]
@@ -82,7 +88,9 @@ def compare_files(file1_path: Path, file2_path: Path) -> tuple[bool, list[str]]:
     # Find differences
     if isinstance(data1, list) and isinstance(data2, list):
         if len(data1) != len(data2):
-            differences.append(f"  Item count: {len(data1)} → {len(data2)} (diff: {len(data2) - len(data1):+d})")
+            differences.append(
+                f"  Item count: {len(data1)} → {len(data2)} (diff: {len(data2) - len(data1):+d})"
+            )
 
         # Check for data quality differences
         if len(data1) > 0 and len(data2) > 0:
@@ -109,7 +117,6 @@ def compare_runs(dir1: str, dir2: str = "pogo_scraper/data") -> dict[str, Any]:
     path1 = Path(dir1)
     path2 = Path(dir2)
 
-
     # Get all JSON files (exclude minified versions)
     files1 = {f.name for f in path1.glob("*.json") if not f.name.endswith(".min.json")}
     files2 = {f.name for f in path2.glob("*.json") if not f.name.endswith(".min.json")}
@@ -121,7 +128,7 @@ def compare_runs(dir1: str, dir2: str = "pogo_scraper/data") -> dict[str, Any]:
         "identical": 0,
         "different": 0,
         "missing": 0,
-        "details": {}
+        "details": {},
     }
 
     for filename in all_files:
@@ -144,7 +151,6 @@ def compare_runs(dir1: str, dir2: str = "pogo_scraper/data") -> dict[str, Any]:
                 pass
             results["details"][filename] = "missing"
 
-
     return results
 
 
@@ -153,7 +159,6 @@ def benchmark_scraper(runs: int = 3) -> None:
     import subprocess
     import time
 
-
     times = []
     for _i in range(runs):
         # Clear cache
@@ -161,13 +166,12 @@ def benchmark_scraper(runs: int = 3) -> None:
         for f in data_dir.glob("*.json"):
             f.unlink()
 
-
         start = time.time()
         result = subprocess.run(
             ["python", "scraper.py", "--all"],
             cwd="pogo_scraper",
             capture_output=True,
-            text=True
+            text=True,
         )
         elapsed = time.time() - start
         times.append(elapsed)
@@ -178,24 +182,37 @@ def benchmark_scraper(runs: int = 3) -> None:
             pass
 
 
-
 def main() -> None:
     parser = argparse.ArgumentParser(description="Scraper testing utilities")
     subparsers = parser.add_subparsers(dest="command", help="Command to run")
 
     # Backup command
     backup_parser = subparsers.add_parser("backup", help="Backup current data files")
-    backup_parser.add_argument("--source", default="pogo_scraper/data", help="Source directory")
-    backup_parser.add_argument("--dest", default="test_backups", help="Backup directory")
+    backup_parser.add_argument(
+        "--source", default="pogo_scraper/data", help="Source directory"
+    )
+    backup_parser.add_argument(
+        "--dest", default="test_backups", help="Backup directory"
+    )
 
     # Compare command
-    compare_parser = subparsers.add_parser("compare", help="Compare two data directories")
-    compare_parser.add_argument("baseline", help='Baseline directory (or "latest" for most recent backup)')
-    compare_parser.add_argument("--current", default="pogo_scraper/data", help="Current directory")
+    compare_parser = subparsers.add_parser(
+        "compare", help="Compare two data directories"
+    )
+    compare_parser.add_argument(
+        "baseline", help='Baseline directory (or "latest" for most recent backup)'
+    )
+    compare_parser.add_argument(
+        "--current", default="pogo_scraper/data", help="Current directory"
+    )
 
     # Benchmark command
-    benchmark_parser = subparsers.add_parser("benchmark", help="Run scraper multiple times for timing")
-    benchmark_parser.add_argument("--runs", type=int, default=3, help="Number of runs (default: 3)")
+    benchmark_parser = subparsers.add_parser(
+        "benchmark", help="Run scraper multiple times for timing"
+    )
+    benchmark_parser.add_argument(
+        "--runs", type=int, default=3, help="Number of runs (default: 3)"
+    )
 
     args = parser.parse_args()
 

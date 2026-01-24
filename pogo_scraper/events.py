@@ -64,7 +64,7 @@ async def scrape_events(scraper, base_url: str) -> list[dict]:
             if event_id:
                 event_dates[event_id] = {
                     "start": event.get("start"),
-                    "end": event.get("end")
+                    "end": event.get("end"),
                 }
 
         # Now scrape events page for detailed info
@@ -79,7 +79,9 @@ async def scrape_events(scraper, base_url: str) -> list[dict]:
         # Process both current and upcoming events - collect first, fetch later
         events_to_fetch = []
         for category in ["current", "upcoming"]:
-            event_links = soup.select(f"div.events-list.{category}-events a.event-item-link")
+            event_links = soup.select(
+                f"div.events-list.{category}-events a.event-item-link"
+            )
 
             for link in event_links:
                 try:
@@ -101,7 +103,10 @@ async def scrape_events(scraper, base_url: str) -> list[dict]:
                     continue
 
         # Batch fetch event details concurrently
-        await asyncio.gather(*[fetch_event_details(scraper, event) for event in events_to_fetch], return_exceptions=True)
+        await asyncio.gather(
+            *[fetch_event_details(scraper, event) for event in events_to_fetch],
+            return_exceptions=True,
+        )
         all_events.extend(events_to_fetch)
 
         scraper._save_data(all_events, "events.json")
@@ -110,9 +115,6 @@ async def scrape_events(scraper, base_url: str) -> list[dict]:
     except Exception as e:
         logger.exception(f"Error scraping events: {e}")
         return scraper._load_fallback_data("events.json", [])
-
-
-
 
 
 async def fetch_event_details(scraper, event: dict) -> None:
@@ -125,10 +127,7 @@ async def fetch_event_details(scraper, event: dict) -> None:
         soup = BeautifulSoup(response.text, "lxml")
 
         # Initialize extraData with generic flags
-        generic_data = {
-            "hasSpawns": False,
-            "hasFieldResearchTasks": False
-        }
+        generic_data = {"hasSpawns": False, "hasFieldResearchTasks": False}
 
         # Check for spawns section (ScrapedDuck looks for id='spawns')
         if soup.find(id="spawns"):

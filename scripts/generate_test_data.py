@@ -27,7 +27,6 @@ def main() -> None:
     data_dir.mkdir(exist_ok=True)
     base_url = "https://leekduck.com"
 
-
     # Parse Events
     with open(fixtures_dir / "current_events.html", encoding="utf-8") as f:
         soup = BeautifulSoup(f.read(), "lxml")
@@ -56,7 +55,9 @@ def main() -> None:
         for tier_div in tiers:
             # Get tier name
             tier_header = tier_div.find("h2", class_="header")
-            current_tier = tier_header.get_text(strip=True) if tier_header else "Unknown"
+            current_tier = (
+                tier_header.get_text(strip=True) if tier_header else "Unknown"
+            )
 
             # Process cards in this tier
             cards = tier_div.select(".grid .card")
@@ -76,7 +77,9 @@ def main() -> None:
         for tier_div in shadow_tiers:
             # Get tier name
             tier_header = tier_div.find("h2", class_="header")
-            current_tier = tier_header.get_text(strip=True) if tier_header else "Unknown"
+            current_tier = (
+                tier_header.get_text(strip=True) if tier_header else "Unknown"
+            )
 
             # Process cards in this tier
             cards = tier_div.select(".grid .card")
@@ -135,7 +138,13 @@ def main() -> None:
                 pokemon_cards = next_grid.select("li.pokemon-card")
                 for card in pokemon_cards:
                     try:
-                        egg = parse_egg_item(card, current_type, current_adventure_sync, current_gift_exchange, current_route_gift)
+                        egg = parse_egg_item(
+                            card,
+                            current_type,
+                            current_adventure_sync,
+                            current_gift_exchange,
+                            current_route_gift,
+                        )
                         if egg:
                             eggs.append(egg)
                     except Exception:
