@@ -15,17 +15,12 @@ logger = logging.getLogger(__name__)
 
 try:
     # Relative imports for when this module is imported as part of the package
-    from .parsers.rocket_lineups.trainer_data import (
-        parse_lineup_slot,
-        parse_rocket_trainer,
-        parse_shadow_pokemon,
-    )
-    from .parsers.rocket_lineups.weakness_data import calculate_weakness_effectiveness
+    from .parsers.rocket_lineups.trainer_data import parse_rocket_trainer
+    from .parsers.rocket_lineups.trainer_data import parse_shadow_pokemon  # noqa: F401
 except ImportError:
     # Absolute imports for when running as a standalone script
-    from parsers.rocket_lineups.trainer_data import (
-        parse_rocket_trainer,
-    )
+    from parsers.rocket_lineups.trainer_data import parse_rocket_trainer
+    from parsers.rocket_lineups.trainer_data import parse_shadow_pokemon  # noqa: F401
 
 
 async def scrape_rocket_lineups(

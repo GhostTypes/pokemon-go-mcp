@@ -322,9 +322,9 @@ Examples:
 if __name__ == "__main__":
     # Check required dependencies
     try:
-        import bs4
-        import httpx
-        import lxml
+        import bs4  # noqa: F401
+        import httpx  # noqa: F401
+        import lxml  # noqa: F401
     except ImportError:
         sys.exit(1)
 

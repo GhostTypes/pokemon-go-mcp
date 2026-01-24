@@ -14,7 +14,8 @@ from bs4 import BeautifulSoup
 # Import sub-parsers
 try:
     # Relative imports for when this module is imported as part of the package
-    from .parsers.events.base_event import infer_event_type, parse_event_item
+    from .parsers.events.base_event import infer_event_type  # noqa: F401
+    from .parsers.events.base_event import parse_event_item
     from .parsers.events.comday_details import parse_community_day_details
     from .parsers.events.generic_event_details import parse_generic_event_details
     from .parsers.events.raid_battle_details import parse_raid_battle_details
