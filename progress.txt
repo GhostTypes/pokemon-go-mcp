@@ -1,0 +1,99 @@
+# Progress Log
+
+## Session Start
+**Branch:** code-quality-remediation
+**Base:** fastmcp-v3-migration
+**Date:** 2026-01-24
+**Max Iterations:** 200
+
+## Completed Tasks
+
+### Phase 1: Foundation & Configuration (P0 - Critical)
+- [ ] Task 1.1: Update ruff configuration in pyproject.toml
+- [ ] Task 1.2: Install missing type stubs
+- [ ] Task 1.3: Fix bare `Dict` type parameters in pogo_mcp/types.py
+- [ ] Task 1.4: Convert EventExtraData from dataclass to TypedDict
+- [ ] Task 1.5: Apply ruff auto-fixes (safe)
+- [ ] Task 1.6: Apply ruff auto-fixes (unsafe)
+- [ ] Task 1.7: Format all files with ruff
+
+### Phase 2: Type Safety (P1 - High Priority)
+- [ ] Task 2.1: Fix union type attribute access in pogo_mcp/server.py (225+ errors)
+- [ ] Task 2.2: Fix pogo_mcp/api_client.py type annotations
+- [ ] Task 2.3: Fix pogo_mcp/utils.py type issues
+- [ ] Task 2.4: Add variable type annotations
+- [ ] Task 2.5: Add missing return type annotations
+- [ ] Task 2.6: Fix untyped decorators
+
+### Phase 3: Code Quality - Type Annotations (P1)
+- [ ] Task 3.1: Add missing function argument type annotations (298 violations)
+- [ ] Task 3.2: Add missing return type annotations - public functions (181 violations)
+- [ ] Task 3.3: Add missing return type annotations - private functions (130 violations)
+- [ ] Task 3.4: Replace Any with specific types (6 violations)
+
+### Phase 4: Code Quality - Exception Handling (P1)
+- [ ] Task 4.1: Fix blind except clauses (112 violations)
+- [ ] Task 4.2: Fix Exception instance misuse (57 violations)
+- [ ] Task 4.3: Add else clauses to try blocks (55 violations)
+- [ ] Task 4.4: Fix raise within try blocks (7 violations)
+
+### Phase 5: Code Quality - Logging & Security (P1)
+- [ ] Task 5.1: Replace print() with logging in pogo_mcp/ (226 violations)
+- [ ] Task 5.2: Fix logging f-strings (137 violations)
+- [ ] Task 5.3: Add timeouts to HTTP requests (7 violations)
+
+### Phase 6: Code Quality - Paths & Imports (P2)
+- [ ] Task 6.1: Replace os.path with pathlib (138 violations)
+- [ ] Task 6.2: Remove unused imports (87 violations)
+- [ ] Task 6.3: Fix deprecated imports (46 violations)
+- [ ] Task 6.4: Move imports to top level (91 violations)
+
+### Phase 7: Code Quality - Style & Cleanup (P2)
+- [ ] Task 7.1: Remove unused arguments (149 violations)
+- [ ] Task 7.2: Extract magic values to constants (29 violations)
+- [ ] Task 7.3: Simplify conditional logic (10+ violations)
+- [ ] Task 7.4: Remove commented-out code (10 violations)
+- [ ] Task 7.5: Fix TODO comments (15 violations)
+- [ ] Task 7.6: Fix line length issues (351 violations)
+
+### Phase 8: Test File Remediation (P2)
+- [ ] Task 8.1: Add type annotations to test functions
+- [ ] Task 8.2: Fix test-specific code quality issues
+- [ ] Task 8.3: Improve test coverage (if needed)
+
+### Phase 9: File-Specific Deep Cleans (P2)
+- [ ] Task 9.1: pogo_mcp/server.py (~200 violations)
+- [ ] Task 9.2: pogo_mcp/api_client.py (~150 violations)
+- [ ] Task 9.3: pogo_mcp/utils.py (~100 violations)
+- [ ] Task 9.4: pogo_scraper/scraper.py (~180 violations)
+- [ ] Task 9.5: pogo_mcp/types.py (~50 violations)
+
+### Phase 10: Final Validation (P0)
+- [ ] Task 10.1: Complete mypy validation
+- [ ] Task 10.2: Complete ruff lint validation
+- [ ] Task 10.3: Complete ruff format validation
+- [ ] Task 10.4: Complete test suite validation
+- [ ] Task 10.5: Integration testing
+- [ ] Task 10.6: Final code quality review
+
+## Statistics
+
+**Tasks Completed:** 0 / 60+
+**Mypy Errors:** 1,094 → TBD
+**Ruff Errors:** 3,103 → TBD
+**Files Reformatted:** 28 → TBD
+**Tests Passing:** TBD % → 100%
+
+## Current Status
+
+**Phase:** Ready to start
+**Current Task:** None
+**Last Commit:** None
+**Time Elapsed:** 0h 0m
+
+## Notes
+
+- All commits must include timestamp from get-time skill
+- Push after every commit
+- Run verification commands after each task
+- Do not cut corners - production-ready quality only
