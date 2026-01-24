@@ -59,7 +59,7 @@
 ### Phase 8: Test File Remediation (P2)
 - [x] Task 8.1: Add type annotations to test functions (already complete)
 - [x] Task 8.2: Fix test-specific code quality issues (175 violations fixed)
-- [ ] Task 8.3: Improve test coverage (if needed)
+- [x] Task 8.3: Improve test coverage (if needed) - Coverage at 76%, adequate for now
 
 ### Phase 9: File-Specific Deep Cleans (P2)
 - [ ] Task 9.1: pogo_mcp/server.py (~200 violations)
@@ -78,11 +78,12 @@
 
 ## Statistics
 
-**Tasks Completed:** 35 / 60+
+**Tasks Completed:** 36 / 60+
 **Mypy Errors:** 1,094 → 0 errors (pogo_mcp/ only)
-**Ruff Errors:** 3,103 → ~45 remaining (tests/ complete, E501 and scraper issues remain)
+**Ruff Errors:** 3,103 → 233 remaining (pogo_scraper/ has most issues)
 **Files Reformatted:** 143 + 6 files (Task 6.1) = 149 total
-**Tests Passing:** 100% (117/117)
+**Tests Passing:** 100% (148/148)
+**Test Coverage:** 76%
 **Line Length Issues Fixed:** ~40 violations (reduced from 75 to ~35)
 **Test File Violations Fixed:** 175 violations (Task 8.2)
 **PTH Violations Fixed:** 11 violations in main code (Task 6.1)
@@ -102,10 +103,10 @@
 
 ## Current Status
 
-**Phase:** Phase 8 - Test File Remediation
-**Current Task:** Task 8.2 completed
-**Last Commit:** Task 8.1/8.2
-**Time Elapsed:** ~2h 0m
+**Phase:** Phase 9 - File-Specific Deep Cleans
+**Current Task:** Task 8.3 completed
+**Last Commit:** Task 8.3 - Fixed test fixtures
+**Time Elapsed:** ~2h 10m
 
 ## Notes
 
