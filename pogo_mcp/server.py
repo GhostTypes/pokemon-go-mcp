@@ -1,57 +1,61 @@
 """Main MCP server for Pokemon Go events, raids, research, and eggs."""
 
 import logging
-import asyncio
-from typing import Dict, List, Any, Optional
+import os
 from datetime import datetime, timezone
+from typing import TYPE_CHECKING, cast
 
 from fastmcp import FastMCP
 
 from .api_client import api_client
+from .eggs import register_egg_tools
 from .events import register_event_tools
+from .promo_codes import register_promo_code_tools
 from .raids import register_raid_tools
 from .research import register_research_tools
-from .eggs import register_egg_tools
 from .rocket_lineups import register_rocket_tools
-from .promo_codes import register_promo_code_tools
 from .utils import (
-    get_current_time_str, format_json_output, search_pokemon_by_name,
-    filter_shiny_pokemon, validate_pokemon_name, is_event_active
+    get_current_time_str,
+    is_event_active,
+    validate_pokemon_name,
 )
-from .types import PokemonInfo
+
+if TYPE_CHECKING:
+    from .types import (
+        EggInfo,
+        EventInfo,
+        RaidInfo,
+        ResearchTaskInfo,
+        RocketTrainerInfo,
+    )
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Create the FastMCP server with host and port configuration
-import os
-mcp = FastMCP(
-    "Pokemon Go MCP Server",
-    host="0.0.0.0",
-    port=int(os.environ.get('MCP_PORT', '8000'))
-)
+mcp = FastMCP("Pokemon Go MCP Server")
 
 
-def register_cross_cutting_tools():
+def register_cross_cutting_tools() -> None:
     """Register tools that work across all data sources."""
-    
+
     @mcp.tool()
     async def get_all_shiny_pokemon() -> str:
         """Get all Pokemon currently available as shiny across all sources.
-        
-        Returns a comprehensive list of all shiny-eligible Pokemon from events, 
+
+        Returns a comprehensive list of all shiny-eligible Pokemon from events,
         raids, research rewards, and egg hatches. Perfect for shiny hunters!
         """
         try:
             logger.info("Fetching all data for shiny Pokemon search...")
             all_data = await api_client.get_all_data()
-            
-            shiny_pokemon = set()
-            sources = {}
-            
+
+            shiny_pokemon: set[str] = set()
+            sources: dict[str, list[str]] = {}
+
             # From events (spawns and shinies)
-            for event in all_data["events"]:
+            events = cast("list[EventInfo]", all_data["events"])
+            for event in events:
                 if event.extra_data and "communityday" in event.extra_data:
                     cd_data = event.extra_data["communityday"]
                     for shiny in cd_data.get("shinies", []):
@@ -61,26 +65,29 @@ def register_cross_cutting_tools():
                             if name not in sources:
                                 sources[name] = []
                             sources[name].append(f"Event: {event.name}")
-            
+
             # From raids
-            for raid in all_data["raids"]:
+            raids = cast("list[RaidInfo]", all_data["raids"])
+            for raid in raids:
                 if raid.can_be_shiny:
                     shiny_pokemon.add(raid.name)
                     if raid.name not in sources:
                         sources[raid.name] = []
                     sources[raid.name].append(f"Raid: {raid.tier}")
-            
+
             # From research
-            for task in all_data["research"]:
+            research = cast("list[ResearchTaskInfo]", all_data["research"])
+            for task in research:
                 for reward in task.rewards:
                     if reward.can_be_shiny:
                         shiny_pokemon.add(reward.name)
                         if reward.name not in sources:
                             sources[reward.name] = []
                         sources[reward.name].append("Research Task")
-            
+
             # From eggs
-            for egg in all_data["eggs"]:
+            eggs = cast("list[EggInfo]", all_data["eggs"])
+            for egg in eggs:
                 if egg.can_be_shiny:
                     shiny_pokemon.add(egg.name)
                     if egg.name not in sources:
@@ -88,106 +95,126 @@ def register_cross_cutting_tools():
                     sources[egg.name].append(f"Egg: {egg.egg_type}")
 
             # From Team Rocket lineups
-            for trainer in all_data.get("rocket_lineups", []):
+            rocket_lineups = cast(
+                "list[RocketTrainerInfo]", all_data.get("rocket_lineups", [])
+            )
+            for trainer in rocket_lineups:
                 for slot in trainer.lineups:
-                    for pokemon in slot.pokemon:
-                        if pokemon.can_be_shiny:
-                            shiny_pokemon.add(pokemon.name)
-                            if pokemon.name not in sources:
-                                sources[pokemon.name] = []
+                    for shadow_pokemon in slot.pokemon:
+                        if shadow_pokemon.can_be_shiny:
+                            shiny_pokemon.add(shadow_pokemon.name)
+                            if shadow_pokemon.name not in sources:
+                                sources[shadow_pokemon.name] = []
                             encounter_text = " (Encounter)" if slot.is_encounter else ""
-                            sources[pokemon.name].append(f"Team Rocket: {trainer.name}{encounter_text}")
-            
+                            sources[shadow_pokemon.name].append(
+                                f"Team Rocket: {trainer.name}{encounter_text}"
+                            )
+
             if not shiny_pokemon:
                 return "No shiny Pokemon found across all sources."
-            
-            result = f"# ✨ All Available Shiny Pokemon (as of {get_current_time_str()})\n\n"
+
+            result = (
+                f"# ✨ All Available Shiny Pokemon (as of {get_current_time_str()})\n\n"
+            )
             result += f"**Total Shiny Pokemon Available:** {len(shiny_pokemon)}\n\n"
-            
+
             # Sort alphabetically
             sorted_shinies = sorted(shiny_pokemon)
-            
+
             for pokemon in sorted_shinies:
                 pokemon_sources = sources.get(pokemon, ["Unknown"])
                 result += f"**{pokemon}**\n"
                 result += f"Sources: {', '.join(pokemon_sources)}\n\n"
-            
+
+        except Exception:
+            logger.exception("Error fetching all shiny Pokemon")
+            return "Error fetching all shiny Pokemon"
+        else:
             return result
-            
-        except Exception as e:
-            logger.error(f"Error fetching all shiny Pokemon: {e}")
-            return f"Error fetching all shiny Pokemon: {str(e)}"
-    
+
     @mcp.tool()
     async def search_pokemon_everywhere(pokemon_name: str) -> str:
         """Search for a Pokemon across all data sources (events, raids, research, eggs).
-        
+
         Args:
             pokemon_name: Name of the Pokemon to search for
-            
-        Returns comprehensive information about where and how the Pokemon can be obtained.
+
+        Returns:
+            Comprehensive information about where and how the Pokemon can be obtained.
         """
         try:
             if not validate_pokemon_name(pokemon_name):
                 return f"Invalid Pokemon name: '{pokemon_name}'"
-            
-            logger.info(f"Searching for {pokemon_name} across all sources...")
+
+            logger.info("Searching for %s across all sources...", pokemon_name)
             all_data = await api_client.get_all_data()
-            
+
             result = f"# Search Results: {pokemon_name.title()}\n\n"
             found_anywhere = False
             name_lower = pokemon_name.lower()
-            
+
             # Search in events
-            event_matches = []
-            for event in all_data["events"]:
+            events = cast("list[EventInfo]", all_data["events"])
+            event_matches: list[str] = []
+            for event in events:
                 if event.extra_data and "communityday" in event.extra_data:
                     cd_data = event.extra_data["communityday"]
-                    
+
                     # Check spawns
-                    for spawn in cd_data.get("spawns", []):
-                        if name_lower in spawn.get("name", "").lower():
-                            event_matches.append(f"Featured in {event.name}")
-                    
+                    event_matches.extend(
+                        f"Featured in {event.name}"
+                        for spawn in cd_data.get("spawns", [])
+                        if name_lower in spawn.get("name", "").lower()
+                    )
+
                     # Check shinies
-                    for shiny in cd_data.get("shinies", []):
-                        if name_lower in shiny.get("name", "").lower():
-                            event_matches.append(f"Shiny available in {event.name}")
-            
+                    event_matches.extend(
+                        f"Shiny available in {event.name}"
+                        for shiny in cd_data.get("shinies", [])
+                        if name_lower in shiny.get("name", "").lower()
+                    )
+
             if event_matches:
                 found_anywhere = True
                 result += "## 🎉 Events\n\n"
                 for match in event_matches:
                     result += f"• {match}\n"
                 result += "\n"
-            
+
             # Search in raids
-            raid_matches = [r for r in all_data["raids"] if name_lower in r.name.lower()]
+            raids = cast("list[RaidInfo]", all_data["raids"])
+            raid_matches = [r for r in raids if name_lower in r.name.lower()]
             if raid_matches:
                 found_anywhere = True
                 result += "## ⚔️ Raids\n\n"
                 for raid in raid_matches:
-                    shiny_status = "✨ Shiny Available" if raid.can_be_shiny else "❌ No Shiny"
+                    shiny_status = (
+                        "✨ Shiny Available" if raid.can_be_shiny else "❌ No Shiny"
+                    )
                     result += f"• **{raid.name}** ({raid.tier}) - {shiny_status}\n"
                 result += "\n"
-            
+
             # Search in research
-            research_matches = []
-            for task in all_data["research"]:
+            research = cast("list[ResearchTaskInfo]", all_data["research"])
+            research_matches: list[str] = []
+            for task in research:
                 for reward in task.rewards:
                     if name_lower in reward.name.lower():
                         shiny_status = "✨" if reward.can_be_shiny else ""
-                        research_matches.append(f"{task.text} → {reward.name} {shiny_status}")
-            
+                        research_matches.append(
+                            f"{task.text} → {reward.name} {shiny_status}"
+                        )
+
             if research_matches:
                 found_anywhere = True
                 result += "## 🔬 Research Tasks\n\n"
                 for match in research_matches:
                     result += f"• {match}\n"
                 result += "\n"
-            
+
             # Search in eggs
-            egg_matches = [e for e in all_data["eggs"] if name_lower in e.name.lower()]
+            eggs = cast("list[EggInfo]", all_data["eggs"])
+            egg_matches = [e for e in eggs if name_lower in e.name.lower()]
             if egg_matches:
                 found_anywhere = True
                 result += "## 🥚 Egg Hatches\n\n"
@@ -205,14 +232,22 @@ def register_cross_cutting_tools():
                 result += "\n"
 
             # Search in Team Rocket lineups
-            rocket_matches = []
-            for trainer in all_data.get("rocket_lineups", []):
+            rocket_lineups = cast(
+                "list[RocketTrainerInfo]", all_data.get("rocket_lineups", [])
+            )
+            rocket_matches: list[str] = []
+            for trainer in rocket_lineups:
                 for slot in trainer.lineups:
-                    for pokemon in slot.pokemon:
-                        if name_lower in pokemon.name.lower():
-                            encounter_text = " (Encounter Reward)" if slot.is_encounter else ""
-                            shiny_status = " ✨" if pokemon.can_be_shiny else ""
-                            rocket_matches.append(f"{trainer.name} → {pokemon.name}{shiny_status}{encounter_text}")
+                    for shadow_pokemon in slot.pokemon:
+                        if name_lower in shadow_pokemon.name.lower():
+                            encounter_text = (
+                                " (Encounter Reward)" if slot.is_encounter else ""
+                            )
+                            shiny_status = " ✨" if shadow_pokemon.can_be_shiny else ""
+                            rocket_matches.append(
+                                f"{trainer.name} → {shadow_pokemon.name}"
+                                f"{shiny_status}{encounter_text}"
+                            )
 
             if rocket_matches:
                 found_anywhere = True
@@ -220,173 +255,201 @@ def register_cross_cutting_tools():
                 for match in rocket_matches:
                     result += f"• {match}\n"
                 result += "\n"
-            
+
             if not found_anywhere:
-                result += f"❌ **{pokemon_name.title()}** was not found in any current Pokemon Go data sources.\n\n"
+                result += (
+                    f"❌ **{pokemon_name.title()}** was not found in any "
+                    "current Pokemon Go data sources.\n\n"
+                )
                 result += "This could mean:\n"
                 result += "• The Pokemon is not currently available\n"
                 result += "• The name might be misspelled\n"
                 result += "• The Pokemon might be in a different form or region\n"
             else:
-                result += f"✅ **{pokemon_name.title()}** found in Pokemon Go! Check the sources above for details.\n"
-            
+                result += (
+                    f"✅ **{pokemon_name.title()}** found in Pokemon Go! "
+                    f"Check the sources above for details.\n"
+                )
+
+        except Exception:
+            logger.exception("Error searching for Pokemon")
+            return "Error searching for Pokemon"
+        else:
             return result
-            
-        except Exception as e:
-            logger.error(f"Error searching for Pokemon: {e}")
-            return f"Error searching for Pokemon: {str(e)}"
-    
+
     @mcp.tool()
     async def get_daily_priorities() -> str:
         """Get daily priorities and recommendations for Pokemon Go activities.
-        
+
         Returns a curated list of what to focus on today based on active events,
         valuable raids, research tasks, and egg hatching recommendations.
         """
         try:
             logger.info("Generating daily priorities...")
-            
+
             # Debug: Check api_client type
-            logger.debug(f"api_client type: {type(api_client)}")
-            logger.debug(f"api_client methods: {[m for m in dir(api_client) if not m.startswith('_')]}")
-            
+            logger.debug("api_client type: %s", type(api_client))
+            logger.debug(
+                "api_client methods: %s",
+                [m for m in dir(api_client) if not m.startswith("_")],
+            )
+
             # Get all data with explicit error handling
             logger.info("Calling api_client.get_all_data()...")
             all_data = await api_client.get_all_data()
-            logger.info(f"Received all_data with keys: {list(all_data.keys()) if isinstance(all_data, dict) else 'NOT A DICT'}")
-            
-            # Verify data structure
-            if not isinstance(all_data, dict):
-                raise TypeError(f"Expected dict from get_all_data(), got {type(all_data)}")
-            
-            if "events" not in all_data:
-                raise KeyError("Missing 'events' key in all_data")
-                
-            events_data = all_data["events"]
-            if not isinstance(events_data, list):
-                raise TypeError(f"Expected list for events, got {type(events_data)}")
-                
-            logger.info(f"Processing {len(events_data)} events...")
-            
-            current_time = datetime.now(timezone.utc)
-            
-            result = f"# 🎯 Daily Pokemon Go Priorities ({get_current_time_str()})\n\n"
-            
-            # Active events
-            active_events = [e for e in events_data if is_event_active(e, current_time)]
-            
-            if active_events:
-                result += "## 🔥 Active Events (Top Priority!)\n\n"
-                for event in active_events[:3]:  # Top 3 events
-                    result += f"**{event.name}**\n"
-                    if event.extra_data and "communityday" in event.extra_data:
-                        cd_data = event.extra_data["communityday"]
-                        spawns = [s.get("name") for s in cd_data.get("spawns", [])]
-                        if spawns:
-                            result += f"Focus: {', '.join(spawns)}\n"
-                    result += f"Link: {event.link}\n\n"
-            
-            # Priority raids (with fallback for missing data)
-            raids_data = all_data.get("raids", [])
-            if raids_data:
-                shiny_raids = [r for r in raids_data if r.can_be_shiny]
-                if shiny_raids:
-                    result += "## ⚔️ Priority Raids (Shiny Hunting)\n\n"
-                    
-                    # Check if raids were extracted from events (fallback source)
-                    is_from_events = any(r.extra_data and r.extra_data.get("source") == "events_fallback" for r in shiny_raids)
-                    if is_from_events:
-                        result += "*📅 Raid data extracted from active events*\n\n"
-                    
-                    for raid in shiny_raids[:5]:  # Top 5 shiny raids
-                        tier_info = f" ({raid.tier})" if raid.tier != "Unknown" else ""
-                        event_info = ""
-                        
-                        # Add event context if this raid was extracted from events
-                        if raid.extra_data and raid.extra_data.get("source") == "events_fallback":
-                            event_name = raid.extra_data.get("event_name", "")
-                            event_info = f" - *{event_name}*"
-                        
-                        result += f"• **{raid.name}**{tier_info} ✨{event_info}\n"
-                    result += "\n"
-            else:
-                result += "## ⚔️ Raids Status\n\n"
-                result += "⚠️ No raid data available from either raids.json or active events.\n\n"
-            
-            # Quick research tasks
-            research_data = all_data.get("research", [])
-            easy_research = []
-            for task in research_data:
-                if any(pattern in task.text.lower() for pattern in ["catch 1", "catch 2", "catch 3", "make 1"]):
-                    if any(r.can_be_shiny for r in task.rewards):
-                        easy_research.append(task)
-            
-            if easy_research:
-                result += "## 🔬 Quick Shiny Research (Easy Completions)\n\n"
-                for task in easy_research[:3]:  # Top 3 easy tasks
-                    shiny_rewards = [r.name for r in task.rewards if r.can_be_shiny]
-                    result += f"• {task.text} → {', '.join(shiny_rewards)} ✨\n"
-                result += "\n"
-            
-            # Egg recommendations
-            eggs_data = all_data.get("eggs", [])
-            shiny_eggs_2km = [e for e in eggs_data if e.can_be_shiny and "2 km" in e.egg_type]
-            if shiny_eggs_2km:
-                result += "## 🥚 Egg Hatching Focus\n\n"
-                result += "**2km eggs with shiny potential (use infinite incubator):**\n"
-                for egg in shiny_eggs_2km[:3]:
-                    result += f"• {egg.name} ✨\n"
-                result += "\n"
-            
-            # Summary recommendations (adaptive based on available data)
-            result += "## 📋 Today's Action Plan\n\n"
-            result += "1. **Events:** Participate in any active events first\n"
-            if raids_data:
-                result += "2. **Raids:** Focus on shiny-eligible raid bosses\n"
-            else:
-                result += "2. **Raids:** Check local raid apps for current bosses\n"
-            result += "3. **Research:** Complete easy tasks with shiny rewards\n"
-            result += "4. **Eggs:** Incubate 2km eggs for quick shiny chances\n"
-            result += "5. **Walking:** Remember Adventure Sync rewards at 25km/50km\n"
-            
-            # Add data source status with improved messaging
-            missing_sources = []
-            fallback_used = []
-            
-            if not all_data.get("raids", []):
-                missing_sources.append("raids")
-            elif any(r.extra_data and r.extra_data.get("source") == "events_fallback" for r in all_data.get("raids", [])):
-                fallback_used.append("raids (extracted from events)")
-                
-            if not all_data.get("research", []):
-                missing_sources.append("research") 
-            if not all_data.get("eggs", []):
-                missing_sources.append("eggs")
-            if not all_data.get("events", []):
-                missing_sources.append("events")
-            
-            if missing_sources or fallback_used:
-                result += "\n---\n"
-                if fallback_used:
-                    result += f"ℹ️ **Fallback data sources used:** {', '.join(fallback_used)}\n"
-                if missing_sources:
-                    result += f"⚠️ **Unavailable data sources:** {', '.join(missing_sources)}\n"
-                result += "Recommendations are based on currently available data.\n"
-            
-            return result
-            
+            logger.info(
+                "Received all_data with keys: %s",
+                list(all_data.keys()) if isinstance(all_data, dict) else "NOT A DICT",
+            )
         except Exception as e:
-            error_msg = f"Error generating daily priorities: {str(e)}"
-            logger.error(error_msg)
-            logger.error(f"Exception type: {type(e)}")
-            import traceback
-            logger.error(f"Traceback: {traceback.format_exc()}")
+            error_msg = f"Error generating daily priorities: {e!s}"
+            logger.exception(error_msg)
             return error_msg
-    
+
+        # Verify data structure
+        if "events" not in all_data:
+            error_message = "Missing 'events' key in all_data"
+            raise KeyError(error_message)
+
+        events_data = cast("list[EventInfo]", all_data["events"])
+        logger.info("Processing %d events...", len(events_data))
+
+        current_time = datetime.now(timezone.utc)
+
+        result = f"# 🎯 Daily Pokemon Go Priorities ({get_current_time_str()})\n\n"
+
+        # Active events
+        active_events: list[EventInfo] = [
+            e for e in events_data if is_event_active(e, current_time)
+        ]
+
+        if active_events:
+            result += "## 🔥 Active Events (Top Priority!)\n\n"
+            for event in active_events[:3]:  # Top 3 events
+                result += f"**{event.name}**\n"
+                if event.extra_data and "communityday" in event.extra_data:
+                    cd_data = event.extra_data["communityday"]
+                    spawns = [s.get("name") for s in cd_data.get("spawns", [])]
+                    if spawns:
+                        result += f"Focus: {', '.join(spawns)}\n"
+                result += f"Link: {event.link}\n\n"
+
+        # Priority raids (with fallback for missing data)
+        raids_data: list[RaidInfo] = cast("list[RaidInfo]", all_data.get("raids", []))
+        if raids_data:
+            shiny_raids = [r for r in raids_data if r.can_be_shiny]
+            if shiny_raids:
+                result += "## ⚔️ Priority Raids (Shiny Hunting)\n\n"
+
+                # Check if raids were extracted from events (fallback source)
+                is_from_events = any(
+                    r.extra_data and r.extra_data.get("source") == "events_fallback"
+                    for r in shiny_raids
+                )
+                if is_from_events:
+                    result += "*📅 Raid data extracted from active events*\n\n"
+
+                for raid in shiny_raids[:5]:  # Top 5 shiny raids
+                    tier_info = f" ({raid.tier})" if raid.tier != "Unknown" else ""
+                    event_info = ""
+
+                    # Add event context if this raid was extracted from events
+                    if (
+                        raid.extra_data
+                        and raid.extra_data.get("source") == "events_fallback"
+                    ):
+                        event_name = raid.extra_data.get("event_name", "")
+                        event_info = f" - *{event_name}*"
+
+                    result += f"• **{raid.name}**{tier_info} ✨{event_info}\n"
+                result += "\n"
+        else:
+            result += "## ⚔️ Raids Status\n\n"
+            result += (
+                "⚠️ No raid data available from either raids.json or active events.\n\n"
+            )
+
+        # Quick research tasks
+        research_data: list[ResearchTaskInfo] = cast(
+            "list[ResearchTaskInfo]", all_data.get("research", [])
+        )
+        easy_research: list[ResearchTaskInfo] = [
+            task
+            for task in research_data
+            if any(
+                pattern in task.text.lower()
+                for pattern in ["catch 1", "catch 2", "catch 3", "make 1"]
+            )
+            and any(r.can_be_shiny for r in task.rewards)
+        ]
+
+        if easy_research:
+            result += "## 🔬 Quick Shiny Research (Easy Completions)\n\n"
+            for task in easy_research[:3]:  # Top 3 easy tasks
+                shiny_rewards = [r.name for r in task.rewards if r.can_be_shiny]
+                result += f"• {task.text} → {', '.join(shiny_rewards)} ✨\n"
+            result += "\n"
+
+        # Egg recommendations
+        eggs_data: list[EggInfo] = cast("list[EggInfo]", all_data.get("eggs", []))
+        shiny_eggs_2km = [
+            e for e in eggs_data if e.can_be_shiny and "2 km" in e.egg_type
+        ]
+        if shiny_eggs_2km:
+            result += "## 🥚 Egg Hatching Focus\n\n"
+            result += "**2km eggs with shiny potential (use infinite incubator):**\n"
+            for egg in shiny_eggs_2km[:3]:
+                result += f"• {egg.name} ✨\n"
+            result += "\n"
+
+        # Summary recommendations (adaptive based on available data)
+        result += "## 📋 Today's Action Plan\n\n"
+        result += "1. **Events:** Participate in any active events first\n"
+        if raids_data:
+            result += "2. **Raids:** Focus on shiny-eligible raid bosses\n"
+        else:
+            result += "2. **Raids:** Check local raid apps for current bosses\n"
+        result += "3. **Research:** Complete easy tasks with shiny rewards\n"
+        result += "4. **Eggs:** Incubate 2km eggs for quick shiny chances\n"
+        result += "5. **Walking:** Remember Adventure Sync rewards at 25km/50km\n"
+
+        # Add data source status with improved messaging
+        missing_sources: list[str] = []
+        fallback_used: list[str] = []
+
+        if not all_data.get("raids", []):
+            missing_sources.append("raids")
+        elif any(
+            r.extra_data and r.extra_data.get("source") == "events_fallback"
+            for r in raids_data
+        ):
+            fallback_used.append("raids (extracted from events)")
+
+        if not all_data.get("research", []):
+            missing_sources.append("research")
+        if not all_data.get("eggs", []):
+            missing_sources.append("eggs")
+        if not all_data.get("events", []):
+            missing_sources.append("events")
+
+        if missing_sources or fallback_used:
+            result += "\n---\n"
+            if fallback_used:
+                result += (
+                    f"[i] **Fallback data sources used:** {', '.join(fallback_used)}\n"
+                )
+            if missing_sources:
+                result += (
+                    f"[!] **Unavailable data sources:** {', '.join(missing_sources)}\n"
+                )
+            result += "Recommendations are based on currently available data.\n"
+
+        return result
+
     @mcp.tool()
     async def get_server_status() -> str:
         """Get the current status and statistics of the Pokemon Go MCP server.
-        
+
         Returns information about data freshness, cache status, and summary statistics
         across all Pokemon Go data sources.
         """
@@ -394,32 +457,48 @@ def register_cross_cutting_tools():
             logger.info("Checking server status...")
             all_data = await api_client.get_all_data()
             current_time = datetime.now(timezone.utc)
-            
-            result = f"# 📊 Pokemon Go MCP Server Status\n\n"
+
+            result = "# 📊 Pokemon Go MCP Server Status\n\n"
             result += f"**Last Updated:** {get_current_time_str()}\n"
-            result += f"**Data Source:** LeekDuck API (ScrapedDuck)\n\n"
-            
+            result += "**Data Source:** LeekDuck API (ScrapedDuck)\n\n"
+
             # Data statistics
             result += "## 📈 Data Statistics\n\n"
             result += f"• **Events:** {len(all_data['events'])} total\n"
             result += f"• **Raid Bosses:** {len(all_data['raids'])} total\n"
             result += f"• **Research Tasks:** {len(all_data['research'])} total\n"
             result += f"• **Egg Pokemon:** {len(all_data['eggs'])} total\n"
-            result += f"• **Team Rocket Trainers:** {len(all_data.get('rocket_lineups', []))} total\n"
-            result += f"• **Active Promo Codes:** {len(all_data.get('promo_codes', []))} total\n\n"
-            
+            result += (
+                f"• **Team Rocket Trainers:** "
+                f"{len(all_data.get('rocket_lineups', []))} total\n"
+            )
+            result += (
+                f"• **Active Promo Codes:** "
+                f"{len(all_data.get('promo_codes', []))} total\n\n"
+            )
+
             # Active content
-            active_events = [e for e in all_data["events"] if is_event_active(e, current_time)]
-            shiny_raids = [r for r in all_data["raids"] if r.can_be_shiny]
-            shiny_research = [t for t in all_data["research"] if any(r.can_be_shiny for r in t.rewards)]
-            shiny_eggs = [e for e in all_data["eggs"] if e.can_be_shiny]
+            events = cast("list[EventInfo]", all_data["events"])
+            raids = cast("list[RaidInfo]", all_data["raids"])
+            research = cast("list[ResearchTaskInfo]", all_data["research"])
+            eggs = cast("list[EggInfo]", all_data["eggs"])
+
+            active_events = [e for e in events if is_event_active(e, current_time)]
+            shiny_raids = [r for r in raids if r.can_be_shiny]
+            shiny_research = [
+                t for t in research if any(r.can_be_shiny for r in t.rewards)
+            ]
+            shiny_eggs = [e for e in eggs if e.can_be_shiny]
 
             # Count shiny Shadow Pokemon
             shiny_shadows = 0
-            for trainer in all_data.get('rocket_lineups', []):
+            rocket_lineups = cast(
+                "list[RocketTrainerInfo]", all_data.get("rocket_lineups", [])
+            )
+            for trainer in rocket_lineups:
                 for slot in trainer.lineups:
-                    for pokemon in slot.pokemon:
-                        if pokemon.can_be_shiny:
+                    for shadow_pokemon in slot.pokemon:
+                        if shadow_pokemon.can_be_shiny:
                             shiny_shadows += 1
 
             result += "## 🎮 Active Content\n\n"
@@ -428,69 +507,101 @@ def register_cross_cutting_tools():
             result += f"• **Shiny Research:** {len(shiny_research)}\n"
             result += f"• **Shiny Eggs:** {len(shiny_eggs)}\n"
             result += f"• **Shiny Shadow Pokemon:** {shiny_shadows}\n\n"
-            
+
             # Cache status
-            cache_info = []
-            for endpoint in ["events", "raids", "research", "eggs", "rocket-lineups", "promo-codes"]:
-                if endpoint in api_client._cache_timestamp:
-                    last_fetch = api_client._cache_timestamp[endpoint]
+            cache_info: list[str] = []
+            for endpoint in [
+                "events",
+                "raids",
+                "research",
+                "eggs",
+                "rocket-lineups",
+                "promo-codes",
+            ]:
+                if endpoint in api_client._cache_timestamp:  # noqa: SLF001
+                    last_fetch = api_client._cache_timestamp[  # noqa: SLF001
+                        endpoint
+                    ]
                     age_seconds = (current_time - last_fetch).total_seconds()
-                    cache_info.append(f"• **{endpoint.title()}:** {age_seconds:.0f}s ago")
+                    cache_info.append(
+                        f"• **{endpoint.title()}:** {age_seconds:.0f}s ago"
+                    )
                 else:
                     cache_info.append(f"• **{endpoint.title()}:** Not cached")
-            
+
             result += "## 💾 Cache Status\n\n"
             result += "\n".join(cache_info)
-            result += f"\n\n**Cache Duration:** {api_client._cache_duration}s (24 hours)\n"
-            
+            result += (
+                f"\n\n**Cache Duration:** {api_client._cache_duration}s (24 hours)\n"  # noqa: SLF001
+            )
+
             # Available tools
             result += "\n## 🛠️ Available Tools\n\n"
             result += "### Event Tools\n"
-            result += "• get_current_events, get_event_details, get_community_day_info\n"
+            result += (
+                "• get_current_events, get_event_details, get_community_day_info\n"
+            )
             result += "• get_event_spawns, get_event_bonuses, search_events\n\n"
-            
+
             result += "### Raid Tools\n"
             result += "• get_current_raids, get_raid_by_tier, get_shiny_raids\n"
-            result += "• search_raid_boss, get_raids_by_type, get_weather_boosted_raids\n\n"
-            
+            result += (
+                "• search_raid_boss, get_raids_by_type, get_weather_boosted_raids\n\n"
+            )
+
             result += "### Research Tools\n"
-            result += "• get_current_research, search_research_by_reward, get_shiny_research_rewards\n"
+            result += (
+                "• get_current_research, search_research_by_reward, "
+                "get_shiny_research_rewards\n"
+            )
             result += "• get_easy_research_tasks, get_research_recommendations\n\n"
-            
+
             result += "### Egg Tools\n"
-            result += "• get_egg_hatches, get_egg_hatches_by_distance, get_shiny_egg_hatches\n"
-            result += "• search_egg_pokemon, get_regional_egg_pokemon, get_gift_exchange_pokemon\n\n"
+            result += (
+                "• get_egg_hatches, get_egg_hatches_by_distance, "
+                "get_shiny_egg_hatches\n"
+            )
+            result += (
+                "• search_egg_pokemon, get_regional_egg_pokemon, "
+                "get_gift_exchange_pokemon\n\n"
+            )
 
             result += "### Promo Code Tools\n"
             result += "• get_active_promo_codes\n\n"
 
             result += "### Cross-Platform Tools\n"
-            result += "• get_all_shiny_pokemon, search_pokemon_everywhere, get_daily_priorities\n"
-            
+            result += (
+                "• get_all_shiny_pokemon, search_pokemon_everywhere, "
+                "get_daily_priorities\n"
+            )
+
+        except Exception:
+            logger.exception("Error getting server status")
+            return "Error getting server status"
+        else:
             return result
-            
-        except Exception as e:
-            logger.error(f"Error getting server status: {e}")
-            return f"Error getting server status: {str(e)}"
-    
+
     @mcp.tool()
     async def clear_cache() -> str:
         """Clear the API data cache to force fresh data retrieval.
-        
+
         Forces the server to fetch fresh data from the LeekDuck API on the next request.
         Use this if you suspect the data is stale or after major game updates.
         """
         try:
             api_client.clear_cache()
             logger.info("Cache cleared successfully")
-            return f"✅ Cache cleared successfully at {get_current_time_str()}\n\nFresh data will be fetched on the next request."
-            
-        except Exception as e:
-            logger.error(f"Error clearing cache: {e}")
-            return f"Error clearing cache: {str(e)}"
+            return (
+                f"✅ Cache cleared successfully at {get_current_time_str()}\n\n"
+                f"Fresh data will be fetched on the next request."
+            )
+
+        except Exception:
+            logger.exception("Error clearing cache")
+            return "Error clearing cache"
 
 
-def main():
+def main() -> None:
     """Main entry point for the MCP server."""
     logger.info("Starting Pokemon Go MCP Server...")
 
@@ -506,17 +617,17 @@ def main():
     logger.info("All tools registered successfully")
 
     # Run the server - check for HTTP/SSE mode via environment variable
-    transport = os.environ.get('MCP_TRANSPORT', 'stdio')
+    transport = os.environ.get("MCP_TRANSPORT", "stdio")
 
-    if transport == 'http':
-        host = os.environ.get('MCP_HOST', '0.0.0.0')
-        port = int(os.environ.get('MCP_PORT', '8000'))
-        logger.info(f"Starting HTTP Streamable Transport server on {host}:{port}")
-        mcp.run(transport="http")
-    elif transport == 'sse':
-        port = int(os.environ.get('MCP_PORT', '8000'))
-        logger.info(f"Starting SSE server on port {port}")
-        mcp.run(transport="sse")
+    if transport == "http":
+        host = os.environ.get("MCP_HOST", "0.0.0.0")  # noqa: S104
+        port = int(os.environ.get("MCP_PORT", "8000"))
+        logger.info("Starting HTTP Streamable Transport server on %s:%s", host, port)
+        mcp.run(transport="http", host=host, port=port)
+    elif transport == "sse":
+        port = int(os.environ.get("MCP_PORT", "8000"))
+        logger.info("Starting SSE server on port %s", port)
+        mcp.run(transport="sse", port=port)
     else:
         logger.info("Starting stdio server")
         mcp.run()

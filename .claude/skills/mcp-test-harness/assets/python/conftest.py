@@ -8,20 +8,18 @@ to point to your FastMCP server instance.
 import pytest
 from fastmcp import Client
 
-# TODO: Update this import to your server module
-# from your_package.server import mcp
-from server import mcp  # Example: assumes server.py in project root
+from server import mcp
 
 
 @pytest.fixture
 async def client():
     """
     Provide a connected MCP client for tests.
-    
+
     Uses FastMCP's in-memory transport for fast, reliable testing.
     The client is automatically connected before each test
     and disconnected after, even if the test fails.
-    
+
     Usage:
         async def test_something(client: Client):
             result = await client.call_tool("tool_name", {"arg": "value"})
@@ -35,7 +33,7 @@ async def client():
 def expected_tools():
     """
     List of tools your server should expose.
-    
+
     TODO: Update this list to match your server's tools.
     """
     return [
@@ -48,7 +46,7 @@ def expected_tools():
 def expected_resources():
     """
     List of resource URIs your server should expose.
-    
+
     TODO: Update this list if your server exposes resources.
     """
     return []
@@ -58,7 +56,7 @@ def expected_resources():
 def expected_prompts():
     """
     List of prompt names your server should expose.
-    
+
     TODO: Update this list if your server exposes prompts.
     """
     return []

@@ -3,13 +3,24 @@ Handles parsing generic event details for events that don't have specific parser
 """
 
 import logging
+import re
+from typing import Any
+
 from bs4 import BeautifulSoup
-from typing import Dict, List, Optional
+from bs4.element import Tag
 
 logger = logging.getLogger(__name__)
 
+# Constants for magic values
+MAX_POKEMON_NAME_LENGTH = 50
+EXPECTED_SPLIT_PARTS = 2
+MIN_TASK_TEXT_LENGTH = 3
 
-async def parse_generic_event_details(soup: BeautifulSoup, event: Dict) -> None:
+
+async def parse_generic_event_details(
+    soup: BeautifulSoup,
+    event: dict[str, Any],
+) -> None:
     """Parse generic event details from event pages
 
     This extracts spawns, bonuses, features, and field research tasks
@@ -20,100 +31,115 @@ async def parse_generic_event_details(soup: BeautifulSoup, event: Dict) -> None:
         event: Event dictionary to update with extracted data
     """
     try:
-        logger.debug(f"Parsing generic event details for: {event['name']}")
+        logger.debug("Parsing generic event details for: %s", event["name"])
 
         # Initialize generic data structure
-        generic_data = {
-            'hasSpawns': False,
-            'hasFieldResearchTasks': False,
-            'spawns': [],
-            'bonuses': [],
-            'features': [],
-            'fieldResearch': [],
-            'raids': []
+        generic_data: dict[str, Any] = {
+            "hasSpawns": False,
+            "hasFieldResearchTasks": False,
+            "spawns": [],
+            "bonuses": [],
+            "features": [],
+            "fieldResearch": [],
+            "raids": [],
         }
 
         # Update existing generic data with new structure
-        if 'generic' in event['extraData']:
-            existing_generic = event['extraData']['generic']
-            generic_data['hasSpawns'] = existing_generic.get('hasSpawns', False)
-            generic_data['hasFieldResearchTasks'] = existing_generic.get('hasFieldResearchTasks', False)
+        if "generic" in event["extraData"]:
+            existing_generic = event["extraData"]["generic"]
+            generic_data["hasSpawns"] = existing_generic.get("hasSpawns", False)
+            generic_data["hasFieldResearchTasks"] = existing_generic.get(
+                "hasFieldResearchTasks", False
+            )
 
         # Parse spawns section
-        spawns_section = soup.find('h2', id='spawns')
-        if spawns_section:
-            generic_data['hasSpawns'] = True
+        spawns_section = soup.find("h2", id="spawns")
+        if spawns_section and isinstance(spawns_section, Tag):
+            generic_data["hasSpawns"] = True
             spawns_data = _parse_spawns_section(soup, spawns_section)
-            generic_data['spawns'] = spawns_data
-            logger.debug(f"Found {len(spawns_data)} spawn entries")
+            generic_data["spawns"] = spawns_data
+            logger.debug("Found %s spawn entries", len(spawns_data))
 
         # Parse bonuses section
-        bonuses_section = soup.find('h2', id='bonuses')
-        if bonuses_section:
+        bonuses_section = soup.find("h2", id="bonuses")
+        if bonuses_section and isinstance(bonuses_section, Tag):
             bonuses_data = _parse_bonuses_section(soup, bonuses_section)
-            generic_data['bonuses'] = bonuses_data
-            logger.debug(f"Found {len(bonuses_data)} bonus entries")
+            generic_data["bonuses"] = bonuses_data
+            logger.debug("Found %s bonus entries", len(bonuses_data))
 
         # Parse features section - look for various possible feature sections
-        features_section = soup.find('h2', id='features')
+        features_section = soup.find("h2", id="features")
         if not features_section:
             # Look for "Featured Pokémon" or similar headings
-            for heading in soup.find_all(['h2', 'h3']):
+            for heading in soup.find_all(["h2", "h3"]):
                 heading_text = heading.get_text(strip=True).lower()
-                if any(keyword in heading_text for keyword in ['featured', 'feature', 'spotlight']):
+                if any(
+                    keyword in heading_text
+                    for keyword in ["featured", "feature", "spotlight"]
+                ):
                     features_section = heading
                     break
 
-        if features_section:
+        if features_section and isinstance(features_section, Tag):
             features_data = _parse_features_section(soup, features_section)
-            generic_data['features'] = features_data
-            logger.debug(f"Found {len(features_data)} feature entries")
+            generic_data["features"] = features_data
+            logger.debug("Found %s feature entries", len(features_data))
 
         # Parse field research section
-        research_section = soup.find('h2', id='field-research-tasks')
-        if research_section:
-            generic_data['hasFieldResearchTasks'] = True
+        research_section = soup.find("h2", id="field-research-tasks")
+        if research_section and isinstance(research_section, Tag):
+            generic_data["hasFieldResearchTasks"] = True
             research_data = _parse_field_research_section(soup, research_section)
-            generic_data['fieldResearch'] = research_data
-            logger.debug(f"Found {len(research_data)} field research entries")
+            generic_data["fieldResearch"] = research_data
+            logger.debug("Found %s field research entries", len(research_data))
 
         # Parse raids section (if present)
-        raids_section = soup.find('h2', id='raids')
-        if raids_section:
+        raids_section = soup.find("h2", id="raids")
+        if raids_section and isinstance(raids_section, Tag):
             raids_data = _parse_raids_section(soup, raids_section)
-            generic_data['raids'] = raids_data
-            logger.debug(f"Found {len(raids_data)} raid entries")
+            generic_data["raids"] = raids_data
+            logger.debug("Found %s raid entries", len(raids_data))
 
         # Update event with generic data
-        event['extraData']['generic'] = generic_data
+        event["extraData"]["generic"] = generic_data  # type: ignore[dict-item]
 
-        logger.debug(f"Successfully parsed generic event data for: {event['name']}")
+        logger.debug("Successfully parsed generic event data for: %s", event["name"])
 
-    except Exception as e:
-        logger.warning(f"Error parsing generic event details for {event['name']}: {e}")
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.warning(
+            "Error parsing generic event details for %s: %s", event["name"], e
+        )
         # Keep the existing structure on error
-        pass
 
 
-def _parse_spawns_section(soup: BeautifulSoup, spawns_section) -> List[Dict]:
+def _parse_spawns_section(
+    _soup: BeautifulSoup, spawns_section: Tag
+) -> list[dict[str, Any]]:
     """Parse the spawns section and extract Pokemon spawn data"""
-    spawns = []
+    spawns: list[dict[str, Any]] = []
 
     try:
         # Find the container after the spawns header
         current = spawns_section.find_next_sibling()
 
-        while current and current.name != 'h2':
+        while current and current.name != "h2":
             # Look for Pokemon lists - they can be in various container types
-            pokemon_items = current.find_all(class_='pkmn-list-item') if current else []
+            pokemon_items = current.find_all(class_="pkmn-list-item") if current else []
 
             # Also check for simpler list structures
             if not pokemon_items:
                 # Look for lists with Pokemon images
-                pokemon_items = current.find_all('img', src=lambda x: x and 'pokemon_icons' in x) if current else []
+                pokemon_items = (
+                    current.find_all("img", src=lambda x: x and "pokemon_icons" in x)  # type: ignore[misc]
+                    if current
+                    else []
+                )
 
-                # Convert image tags to pseudo pkmn-list-item structure for consistent parsing
-                pokemon_items = [img.find_parent() for img in pokemon_items if img.find_parent()]
+                # Convert image tags to pseudo pkmn-list-item structure for
+                # consistent parsing
+                pokemon_items = [
+                    img.find_parent() for img in pokemon_items if img.find_parent()
+                ]
 
             for item in pokemon_items:
                 spawn = _extract_pokemon_data(item)
@@ -122,31 +148,33 @@ def _parse_spawns_section(soup: BeautifulSoup, spawns_section) -> List[Dict]:
 
             current = current.find_next_sibling()
 
-    except Exception as e:
-        logger.warning(f"Error parsing spawns section: {e}")
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.warning("Error parsing spawns section: %s", e)
 
     return spawns
 
 
-def _parse_bonuses_section(soup: BeautifulSoup, bonuses_section) -> List[Dict]:
+def _parse_bonuses_section(
+    _soup: BeautifulSoup, bonuses_section: Tag
+) -> list[dict[str, Any]]:
     """Parse the bonuses section and extract bonus data"""
-    bonuses = []
+    bonuses: list[dict[str, Any]] = []
 
     try:
         # Find bonus items in the section
         current = bonuses_section.find_next_sibling()
 
-        while current and current.name != 'h2':
+        while current and current.name != "h2":
             # Look for bonus items
-            bonus_items = current.find_all(class_='bonus-item') if current else []
+            bonus_items = current.find_all(class_="bonus-item") if current else []
 
             # Also look for simpler list structures
             if not bonus_items and current:
                 # Check for lists or divs containing bonus information
-                if current.find_all('li'):
-                    bonus_items = current.find_all('li')
-                elif current.find_all('p'):
-                    bonus_items = current.find_all('p')
+                if current.find_all("li"):
+                    bonus_items = current.find_all("li")
+                elif current.find_all("p"):
+                    bonus_items = current.find_all("p")
 
             for item in bonus_items:
                 bonus = _extract_bonus_data(item)
@@ -155,31 +183,40 @@ def _parse_bonuses_section(soup: BeautifulSoup, bonuses_section) -> List[Dict]:
 
             current = current.find_next_sibling()
 
-    except Exception as e:
-        logger.warning(f"Error parsing bonuses section: {e}")
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.warning("Error parsing bonuses section: %s", e)
 
     return bonuses
 
 
-def _parse_features_section(soup: BeautifulSoup, features_section) -> List[Dict]:
+def _parse_features_section(
+    _soup: BeautifulSoup, features_section: Tag
+) -> list[dict[str, Any]]:
     """Parse the features section and extract feature data"""
-    features = []
+    features: list[dict[str, Any]] = []
 
     try:
         current = features_section.find_next_sibling()
 
-        while current and (current.name != 'h2' or current.get('id') in ['featured-pokémon', 'pokémon-debut', 'pokemon-debut']):
+        while current and (
+            current.name != "h2"
+            or current.get("id")
+            in ["featured-pokémon", "pokémon-debut", "pokemon-debut"]
+        ):
             if current:
-                # Look for Pokemon in features first (common in featured Pokemon sections)
-                pokemon_items = current.find_all(class_='pkmn-list-item')
+                # Look for Pokemon in features first (common in featured
+                # Pokemon sections)
+                pokemon_items = current.find_all(class_="pkmn-list-item")
 
                 # Also look in flex lists which are common for featured Pokemon
                 if not pokemon_items:
-                    pokemon_items = current.find_all('li', class_='pkmn-list-item')
+                    pokemon_items = current.find_all("li", class_="pkmn-list-item")
                 if not pokemon_items:
-                    flex_lists = current.find_all('ul', class_='pkmn-list-flex')
+                    flex_lists = current.find_all("ul", class_="pkmn-list-flex")
                     for flex_list in flex_lists:
-                        pokemon_items.extend(flex_list.find_all('li', class_='pkmn-list-item'))
+                        pokemon_items.extend(
+                            flex_list.find_all("li", class_="pkmn-list-item")
+                        )
 
                 if pokemon_items:
                     # This is likely a featured Pokemon section
@@ -187,21 +224,21 @@ def _parse_features_section(soup: BeautifulSoup, features_section) -> List[Dict]
                         pokemon_data = _extract_pokemon_data(item)
                         if pokemon_data:
                             # Mark as featured Pokemon
-                            pokemon_data['type'] = 'featured_pokemon'
+                            pokemon_data["type"] = "featured_pokemon"
                             features.append(pokemon_data)
                 else:
                     # Look for general feature items
-                    feature_items = []
+                    feature_items: list[Tag] = []
 
                     # Check for list items
-                    if current.find_all('li'):
-                        feature_items = current.find_all('li')
+                    if current.find_all("li"):
+                        feature_items = current.find_all("li")
                     # Check for paragraph items
-                    elif current.find_all('p'):
-                        feature_items = current.find_all('p')
+                    elif current.find_all("p"):
+                        feature_items = current.find_all("p")
                     # Check for divs with content
-                    elif current.find_all('div', class_=True):
-                        feature_items = current.find_all('div', class_=True)
+                    elif current.find_all("div", class_=True):
+                        feature_items = current.find_all("div", class_=True)
 
                     for item in feature_items:
                         feature = _extract_feature_data(item)
@@ -210,38 +247,40 @@ def _parse_features_section(soup: BeautifulSoup, features_section) -> List[Dict]
 
             current = current.find_next_sibling()
 
-    except Exception as e:
-        logger.warning(f"Error parsing features section: {e}")
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.warning("Error parsing features section: %s", e)
 
     return features
 
 
-def _parse_field_research_section(soup: BeautifulSoup, research_section) -> List[Dict]:
+def _parse_field_research_section(
+    _soup: BeautifulSoup, research_section: Tag
+) -> list[dict[str, Any]]:
     """Parse the field research section and extract research task data"""
-    research_tasks = []
+    research_tasks: list[dict[str, Any]] = []
 
     try:
         current = research_section.find_next_sibling()
 
-        while current and current.name != 'h2':
+        while current and current.name != "h2":
             if current:
                 # Research tasks might be in various formats
-                task_items = []
+                task_items: list[Tag] = []
 
                 # Look for LeekDuck's specific event field research list
-                if current.find_all(class_='event-field-research-list'):
-                    research_list = current.find(class_='event-field-research-list')
+                if current.find_all(class_="event-field-research-list"):
+                    research_list = current.find(class_="event-field-research-list")
                     if research_list:
-                        task_items = research_list.find_all('li')
+                        task_items = research_list.find_all("li")
                 # Look for general research task items
-                elif current.find_all(class_='research-task'):
-                    task_items = current.find_all(class_='research-task')
+                elif current.find_all(class_="research-task"):
+                    task_items = current.find_all(class_="research-task")
                 # Look for list items
-                elif current.find_all('li'):
-                    task_items = current.find_all('li')
+                elif current.find_all("li"):
+                    task_items = current.find_all("li")
                 # Look for paragraphs
-                elif current.find_all('p'):
-                    task_items = current.find_all('p')
+                elif current.find_all("p"):
+                    task_items = current.find_all("p")
 
                 for item in task_items:
                     task = _extract_research_task_data(item)
@@ -250,36 +289,44 @@ def _parse_field_research_section(soup: BeautifulSoup, research_section) -> List
 
             current = current.find_next_sibling()
 
-    except Exception as e:
-        logger.warning(f"Error parsing field research section: {e}")
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.warning("Error parsing field research section: %s", e)
 
     return research_tasks
 
 
-def _parse_raids_section(soup: BeautifulSoup, raids_section) -> List[Dict]:
+def _parse_raids_section(
+    _soup: BeautifulSoup, raids_section: Tag
+) -> list[dict[str, Any]]:
     """Parse the raids section and extract raid data"""
-    raids = []
+    raids: list[dict[str, Any]] = []
 
     try:
         current = raids_section.find_next_sibling()
 
-        while current and current.name != 'h2':
+        while current and current.name != "h2":
             if current:
                 # Look for raid Pokemon
-                raid_items = current.find_all(class_='pkmn-list-item') if current else []
+                raid_items = (
+                    current.find_all(class_="pkmn-list-item") if current else []
+                )
 
                 # Also check for tier-specific sections
-                tier_sections = current.find_all(['h3', 'h4']) if current else []
+                tier_sections = current.find_all(["h3", "h4"]) if current else []
                 for tier_section in tier_sections:
                     tier_name = tier_section.get_text(strip=True)
                     # Find Pokemon in this tier
                     tier_current = tier_section.find_next_sibling()
-                    while tier_current and tier_current.name not in ['h2', 'h3', 'h4']:
-                        tier_pokemon = tier_current.find_all(class_='pkmn-list-item') if tier_current else []
+                    while tier_current and tier_current.name not in ["h2", "h3", "h4"]:
+                        tier_pokemon = (
+                            tier_current.find_all(class_="pkmn-list-item")
+                            if tier_current
+                            else []
+                        )
                         for pokemon in tier_pokemon:
                             raid_data = _extract_pokemon_data(pokemon)
                             if raid_data:
-                                raid_data['tier'] = tier_name
+                                raid_data["tier"] = tier_name
                                 raids.append(raid_data)
                         tier_current = tier_current.find_next_sibling()
 
@@ -291,154 +338,172 @@ def _parse_raids_section(soup: BeautifulSoup, raids_section) -> List[Dict]:
 
             current = current.find_next_sibling()
 
-    except Exception as e:
-        logger.warning(f"Error parsing raids section: {e}")
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.warning("Error parsing raids section: %s", e)
 
     return raids
 
 
-def _extract_pokemon_data(item) -> Optional[Dict]:
+def _extract_pokemon_data(item: Tag) -> dict[str, Any] | None:
     """Extract Pokemon data from a list item or container"""
     try:
-        pokemon_data = {}
+        pokemon_data: dict[str, Any] = {}
 
         # Try to find Pokemon name
-        name_elem = item.find(class_='pkmn-name')
+        name_elem = item.find(class_="pkmn-name")
         if not name_elem:
             # Fallback: look for text content or alt text
-            img_elem = item.find('img')
-            if img_elem and img_elem.get('alt'):
-                pokemon_data['name'] = img_elem.get('alt').strip()
+            img_elem = item.find("img")
+            if img_elem and img_elem.get("alt"):
+                pokemon_data["name"] = img_elem.get("alt", "").strip()
             else:
                 # Use text content as fallback
                 text = item.get_text(strip=True)
-                if text and len(text) < 50:  # Reasonable name length
-                    pokemon_data['name'] = text
+                if text and len(text) < MAX_POKEMON_NAME_LENGTH:
+                    pokemon_data["name"] = text
         else:
-            pokemon_data['name'] = name_elem.get_text(strip=True)
+            pokemon_data["name"] = name_elem.get_text(strip=True)
 
         # Try to find Pokemon image
-        img_elem = item.find('img')
-        if img_elem and img_elem.get('src'):
-            image_src = img_elem.get('src')
+        img_elem = item.find("img")
+        if img_elem and img_elem.get("src"):
+            image_src = img_elem.get("src", "")
             # Clean up image URL
-            if 'cdn-cgi' in image_src:
-                image_src = image_src.split('/cdn-cgi')[0]
-            pokemon_data['image'] = image_src
+            if "cdn-cgi" in image_src:
+                image_src = image_src.split("/cdn-cgi")[0]
+            pokemon_data["image"] = image_src
 
         # Check for shiny indicator - look for shiny images or icons
-        shiny_elem = item.find('img', src=lambda x: x and 'shiny' in x.lower()) if item else None
-        shiny_icon = item.find('img', src=lambda x: x and 'icon_shiny' in x.lower()) if item else None
-        shiny_class = item.find(class_=lambda x: x and 'shiny' in x.lower()) if item else None
+        shiny_elem = (
+            item.find("img", src=lambda x: x and "shiny" in str(x).lower())  # type: ignore[misc]
+            if item
+            else None
+        )
+        shiny_icon = (
+            item.find("img", src=lambda x: x and "icon_shiny" in str(x).lower())  # type: ignore[misc]
+            if item
+            else None
+        )
+        shiny_class = (
+            item.find(class_=lambda x: x and "shiny" in str(x).lower())  # type: ignore[misc]
+            if item
+            else None
+        )
         # Check for LeekDuck's specific shiny-icon class
-        shiny_icon_class = item.find('img', class_='shiny-icon') if item else None
+        shiny_icon_class = item.find("img", class_="shiny-icon") if item else None
 
-        if shiny_elem or shiny_icon or shiny_class or shiny_icon_class or (item and 'shiny' in item.get_text().lower()):
-            pokemon_data['can_be_shiny'] = True
+        if (
+            shiny_elem
+            or shiny_icon
+            or shiny_class
+            or shiny_icon_class
+            or (item and "shiny" in item.get_text().lower())
+        ):
+            pokemon_data["can_be_shiny"] = True
         else:
-            pokemon_data['can_be_shiny'] = False
+            pokemon_data["can_be_shiny"] = False
 
         # Only return if we have at least a name
-        if pokemon_data.get('name'):
+        if pokemon_data.get("name"):
             return pokemon_data
 
-    except Exception as e:
-        logger.debug(f"Error extracting Pokemon data: {e}")
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.debug("Error extracting Pokemon data: %s", e)
 
     return None
 
 
-def _extract_bonus_data(item) -> Optional[Dict]:
+def _extract_bonus_data(item: Tag) -> dict[str, Any] | None:
     """Extract bonus data from a list item or container"""
     try:
-        bonus_data = {}
+        bonus_data: dict[str, Any] = {}
 
         # Try to find bonus text
-        text_elem = item.find(class_='bonus-text')
+        text_elem = item.find(class_="bonus-text")
         if not text_elem:
             # Fallback to item text content
             text = item.get_text(strip=True)
             if text:
-                bonus_data['text'] = text
+                bonus_data["text"] = text
         else:
-            bonus_data['text'] = text_elem.get_text(strip=True)
+            bonus_data["text"] = text_elem.get_text(strip=True)
 
         # Try to find bonus image
-        img_elem = item.find('img')
-        if img_elem and img_elem.get('src'):
-            image_src = img_elem.get('src')
-            if 'cdn-cgi' in image_src:
-                image_src = image_src.split('/cdn-cgi')[0]
-            bonus_data['image'] = image_src
+        img_elem = item.find("img")
+        if img_elem and img_elem.get("src"):
+            image_src = img_elem.get("src", "")
+            if "cdn-cgi" in image_src:
+                image_src = image_src.split("/cdn-cgi")[0]
+            bonus_data["image"] = image_src
 
         # Only return if we have text
-        if bonus_data.get('text'):
+        if bonus_data.get("text"):
             return bonus_data
 
-    except Exception as e:
-        logger.debug(f"Error extracting bonus data: {e}")
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.debug("Error extracting bonus data: %s", e)
 
     return None
 
 
-def _extract_feature_data(item) -> Optional[Dict]:
+def _extract_feature_data(item: Tag) -> dict[str, Any] | None:
     """Extract feature data from a list item or container"""
     try:
-        feature_data = {}
+        feature_data: dict[str, Any] = {}
 
         # Extract text content
         text = item.get_text(strip=True)
         if text:
-            feature_data['text'] = text
+            feature_data["text"] = text
 
         # Try to find associated image
-        img_elem = item.find('img')
-        if img_elem and img_elem.get('src'):
-            image_src = img_elem.get('src')
-            if 'cdn-cgi' in image_src:
-                image_src = image_src.split('/cdn-cgi')[0]
-            feature_data['image'] = image_src
+        img_elem = item.find("img")
+        if img_elem and img_elem.get("src"):
+            image_src = img_elem.get("src", "")
+            if "cdn-cgi" in image_src:
+                image_src = image_src.split("/cdn-cgi")[0]
+            feature_data["image"] = image_src
 
         # Only return if we have text
-        if feature_data.get('text'):
+        if feature_data.get("text"):
             return feature_data
 
-    except Exception as e:
-        logger.debug(f"Error extracting feature data: {e}")
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.debug("Error extracting feature data: %s", e)
 
     return None
 
 
-def _extract_research_task_data(item) -> Optional[Dict]:
+def _extract_research_task_data(item: Tag) -> dict[str, Any] | None:
     """Extract research task data from a list item or container"""
     try:
-        task_data = {}
+        task_data: dict[str, Any] = {}
 
         # Check if this is LeekDuck's event field research structure
-        task_elem = item.find(class_='task')
-        reward_list = item.find(class_='reward-list')
+        task_elem = item.find(class_="task")
+        reward_list = item.find(class_="reward-list")
 
         if task_elem and reward_list:
             # This is LeekDuck's structured format
-            task_text = task_elem.get_text(strip=True).replace('???', '').strip()
+            task_text = task_elem.get_text(strip=True).replace("???", "").strip()
             if not task_text:
-                task_data['text'] = "Research task (details TBD)"
+                task_data["text"] = "Research task (details TBD)"
             else:
-                task_data['text'] = task_text
+                task_data["text"] = task_text
 
             # Extract reward Pokemon name
-            reward_label = reward_list.find(class_='reward-label')
+            reward_label = reward_list.find(class_="reward-label")
             if reward_label:
                 reward_name = reward_label.get_text(strip=True)
-                task_data['reward'] = reward_name
+                task_data["reward"] = reward_name
 
             # Get reward image
-            reward_image = reward_list.find('img', class_='reward-image')
-            if reward_image and reward_image.get('src'):
-                image_src = reward_image.get('src')
-                if 'cdn-cgi' in image_src:
-                    image_src = image_src.split('/cdn-cgi')[0]
-                task_data['image'] = image_src
+            reward_image = reward_list.find("img", class_="reward-image")
+            if reward_image and reward_image.get("src"):
+                image_src = reward_image.get("src", "")
+                if "cdn-cgi" in image_src:
+                    image_src = image_src.split("/cdn-cgi")[0]
+                task_data["image"] = image_src
 
         else:
             # Fallback to original parsing for other formats
@@ -451,56 +516,54 @@ def _extract_research_task_data(item) -> Optional[Dict]:
             if "REWARD" in full_text:
                 # Split on "REWARD" to separate task from reward
                 parts = full_text.split("REWARD", 1)
-                if len(parts) == 2:
+                if len(parts) == EXPECTED_SPLIT_PARTS:
                     task_text = parts[0].replace("???", "").strip()
                     reward_text = parts[1].strip()
 
                     # Extract Pokemon name from reward (before Max CP)
                     if "Max CP" in reward_text:
                         pokemon_name = reward_text.split("Max CP")[0].strip()
-                        task_data['reward'] = pokemon_name
+                        task_data["reward"] = pokemon_name
                     else:
-                        task_data['reward'] = reward_text
+                        task_data["reward"] = reward_text
 
                     # If we have a clean task text, use it, otherwise use a placeholder
-                    if task_text and len(task_text) > 3:
-                        task_data['text'] = task_text
+                    if task_text and len(task_text) > MIN_TASK_TEXT_LENGTH:
+                        task_data["text"] = task_text
                     else:
-                        task_data['text'] = "Research task (details TBD)"
+                        task_data["text"] = "Research task (details TBD)"
                 else:
                     # If split failed, try to extract Pokemon name differently
-                    task_data['text'] = "Research task (details TBD)"
-                    # Look for Pokemon name pattern
-                    import re
+                    task_data["text"] = "Research task (details TBD)"
                     # Match Pokemon name followed by CP info
-                    match = re.search(r'([A-Za-z]+)(?:Max CP|Min CP)', full_text)
+                    match = re.search(r"([A-Za-z]+)(?:Max CP|Min CP)", full_text)
                     if match:
-                        task_data['reward'] = match.group(1)
+                        task_data["reward"] = match.group(1)
                     else:
-                        task_data['reward'] = full_text
+                        task_data["reward"] = full_text
             else:
                 # No clear REWARD separator, use full text as task
-                task_data['text'] = full_text
+                task_data["text"] = full_text
 
             # Try to find associated image
-            img_elem = item.find('img')
-            if img_elem and img_elem.get('src'):
-                image_src = img_elem.get('src')
-                if 'cdn-cgi' in image_src:
-                    image_src = image_src.split('/cdn-cgi')[0]
-                task_data['image'] = image_src
+            img_elem = item.find("img")
+            if img_elem and img_elem.get("src"):
+                image_src = img_elem.get("src", "")
+                if "cdn-cgi" in image_src:
+                    image_src = image_src.split("/cdn-cgi")[0]
+                task_data["image"] = image_src
 
             # Try to find reward element separately
-            if not task_data.get('reward'):
-                reward_elem = item.find(class_='reward')
+            if not task_data.get("reward"):
+                reward_elem = item.find(class_="reward")
                 if reward_elem:
-                    task_data['reward'] = reward_elem.get_text(strip=True)
+                    task_data["reward"] = reward_elem.get_text(strip=True)
 
         # Only return if we have meaningful content
-        if task_data.get('text') or task_data.get('reward'):
+        if task_data.get("text") or task_data.get("reward"):
             return task_data
 
-    except Exception as e:
-        logger.debug(f"Error extracting research task data: {e}")
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.debug("Error extracting research task data: %s", e)
 
     return None
