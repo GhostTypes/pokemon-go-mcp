@@ -290,12 +290,12 @@ def register_cross_cutting_tools() -> None:
 
             # Verify data structure
             if not isinstance(all_data, dict):
-                msg = f"Expected dict from get_all_data(), got {type(all_data)}"
-                raise TypeError(msg)
+                raise TypeError(
+                    f"Expected dict from get_all_data(), got {type(all_data)}"
+                )
 
             if "events" not in all_data:
-                msg = "Missing 'events' key in all_data"
-                raise KeyError(msg)
+                raise KeyError("Missing 'events' key in all_data")
 
             events_data = cast(list[EventInfo], all_data["events"])
             logger.info(f"Processing {len(events_data)} events...")

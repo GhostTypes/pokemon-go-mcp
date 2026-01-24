@@ -44,8 +44,7 @@ def register_event_tools(mcp: FastMCP) -> None:
 
             # Verify data structure
             if not isinstance(events, list):
-                msg = f"Expected list from get_events(), got {type(events)}"
-                raise TypeError(msg)
+                raise TypeError(f"Expected list from get_events(), got {type(events)}")
 
             current_time = datetime.now(timezone.utc)
 

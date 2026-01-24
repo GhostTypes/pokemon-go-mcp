@@ -3,13 +3,15 @@
 import logging
 from datetime import datetime
 
+from fastmcp import FastMCP
+
 from .api_client import api_client
 from .utils import get_current_time_str
 
 logger = logging.getLogger(__name__)
 
 
-def register_promo_code_tools(mcp) -> None:
+def register_promo_code_tools(mcp: FastMCP) -> None:
     """Register promo code related tools with the MCP server."""
 
     @mcp.tool()

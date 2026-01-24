@@ -27,7 +27,7 @@ def parse_datetime(date_string: str) -> datetime | None:
 
     try:
         # Try parsing with dateutil first
-        return cast(datetime, parser.parse(date_string))
+        return parser.parse(date_string)
     except Exception as e:
         logger.warning(f"Failed to parse date '{date_string}': {e}")
         return None
