@@ -3,7 +3,7 @@
 import logging
 from typing import List, Optional
 
-from mcp.server.fastmcp import FastMCP
+from fastmcp import FastMCP
 
 from .api_client import api_client
 from .types import ResearchTaskInfo

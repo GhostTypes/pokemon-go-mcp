@@ -24,13 +24,9 @@ from .types import PokemonInfo
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Create the FastMCP server with host and port configuration
+# Create the FastMCP server
 import os
-mcp = FastMCP(
-    "Pokemon Go MCP Server",
-    host="0.0.0.0",
-    port=int(os.environ.get('MCP_PORT', '8000'))
-)
+mcp = FastMCP("Pokemon Go MCP Server")
 
 
 def register_cross_cutting_tools():
@@ -512,11 +508,11 @@ def main():
         host = os.environ.get('MCP_HOST', '0.0.0.0')
         port = int(os.environ.get('MCP_PORT', '8000'))
         logger.info(f"Starting HTTP Streamable Transport server on {host}:{port}")
-        mcp.run(transport="http")
+        mcp.run(transport="http", host=host, port=port)
     elif transport == 'sse':
         port = int(os.environ.get('MCP_PORT', '8000'))
         logger.info(f"Starting SSE server on port {port}")
-        mcp.run(transport="sse")
+        mcp.run(transport="sse", port=port)
     else:
         logger.info("Starting stdio server")
         mcp.run()
