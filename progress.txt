@@ -23,7 +23,7 @@
 - [x] Task 2.3: Fix pogo_mcp/utils.py type issues
 - [x] Task 2.4: Add variable type annotations
 - [x] Task 2.5: Add missing return type annotations
-- [ ] Task 2.6: Fix untyped decorators
+- [x] Task 2.6: Fix untyped decorators
 
 ### Phase 3: Code Quality - Type Annotations (P1)
 - [ ] Task 3.1: Add missing function argument type annotations (298 violations)
@@ -78,7 +78,7 @@
 
 ## Statistics
 
-**Tasks Completed:** 12 / 60+
+**Tasks Completed:** 13 / 60+
 **Mypy Errors:** 1,094 → 0 errors
 **Ruff Errors:** 3,103 → ~500 remaining (non-critical)
 **Files Reformatted:** 65 files (Task 1.7) + 1 file (Task 2.2) + 59 files (previous) + 1 file (Task 2.5) = 126 total
@@ -86,10 +86,10 @@
 
 ## Current Status
 
-**Phase:** Phase 2 - Type Safety (IN PROGRESS)
-**Current Task:** Task 2.5 completed
-**Last Commit:** Task 2.5
-**Time Elapsed:** 0h 27m
+**Phase:** Phase 2 - Type Safety (COMPLETE)
+**Current Task:** Task 2.6 completed
+**Last Commit:** Task 2.6
+**Time Elapsed:** 0h 30m
 
 ## Notes
 

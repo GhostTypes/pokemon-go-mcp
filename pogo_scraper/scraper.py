@@ -18,7 +18,14 @@ import httpx
 
 # Import page-specific scrapers
 try:
-    from . import eggs, events, promo_codes, raids, research, rocket_lineups
+    from . import (  # type: ignore
+        eggs,
+        events,
+        promo_codes,
+        raids,
+        research,
+        rocket_lineups,
+    )
 except ImportError:
     # Fallback for when running as main script
     import eggs
