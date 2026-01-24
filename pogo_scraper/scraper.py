@@ -13,13 +13,13 @@ import sys
 import types
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Self
 
 import httpx
 
 # Import page-specific scrapers
 try:
-    from . import (  # type: ignore # noqa: PLC0415
+    from . import (  # type: ignore[import-not-found]
         eggs,
         events,
         promo_codes,
@@ -60,7 +60,7 @@ class LeekDuckScraper:
         # Ensure output directory exists
         self.output_dir.mkdir(exist_ok=True)
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> Self:
         """Async context manager entry"""
         self.session = httpx.AsyncClient(
             timeout=30.0,
@@ -85,7 +85,7 @@ class LeekDuckScraper:
 
     async def __aexit__(
         self,
-        exc_type: type,
+        exc_type: type[BaseException] | None,
         exc_val: BaseException | None,
         exc_tb: types.TracebackType | None,
     ) -> None:
@@ -98,7 +98,7 @@ class LeekDuckScraper:
         if not cache_file.exists():
             return True
 
-        cache_age = datetime.now().timestamp() - cache_file.stat().st_mtime
+        cache_age = datetime.now(timezone.utc).timestamp() - cache_file.stat().st_mtime
         return cache_age > self.cache_duration
 
     def _save_data(self, data: object, filename: str) -> None:
@@ -182,7 +182,7 @@ class LeekDuckScraper:
                 logger.info(
                     "Successfully scraped %s: %s items", name, len(results[name])
                 )
-            except Exception as e:
+            except Exception:  # noqa: PERF203
                 logger.exception("Failed to scrape %s", name)
                 results[name] = []
 
@@ -307,7 +307,7 @@ Examples:
 
                 logger.info("✅ %s: %s items", target, len(results[target]))
 
-            except Exception as e:
+            except Exception:  # noqa: PERF203
                 logger.exception("❌ Failed to scrape %s", target)
                 results[target] = []
 
@@ -320,9 +320,14 @@ Examples:
 if __name__ == "__main__":
     # Check required dependencies
     try:
-        import bs4  # noqa: F401
-        import httpx  # noqa: F401
-        import lxml  # noqa: F401
+        import importlib.util
+
+        if not (
+            importlib.util.find_spec("bs4")
+            and importlib.util.find_spec("httpx")
+            and importlib.util.find_spec("lxml")
+        ):
+            sys.exit(1)
     except ImportError:
         sys.exit(1)
 
