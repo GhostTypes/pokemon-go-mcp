@@ -66,12 +66,14 @@ RULES:
 
 def build_claude_command(agents_json=None):
     """Build the claude-glm CLI command with optional agents."""
+    # Build the prompt with flags
+    # Note: -p takes the prompt as an argument, flag order matters
     cmd = [
         "claude-glm",
+        "--no-session-persistence",
+        "--dangerously-skip-permissions",
         "-p",
         SYSTEM_PROMPT,
-        "--dangerously-skip-permissions",
-        "--no-session-persistence",
     ]
 
     # Add agents if provided
