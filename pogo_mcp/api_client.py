@@ -52,8 +52,8 @@ class LeekDuckAPIClient:
                 data: list[dict[str, Any]] = json.load(f)
                 logger.info("Loaded %d items from local %s data", len(data), endpoint)
                 return data
-        except (OSError, json.JSONDecodeError) as e:
-            logger.exception("Error loading local %s data: %s", endpoint, e)
+        except (OSError, json.JSONDecodeError):
+            logger.exception("Error loading local %s data", endpoint)
             return []
 
     async def _fetch_data(self, endpoint: str) -> list[dict[str, Any]]:
@@ -111,23 +111,21 @@ class LeekDuckAPIClient:
 
         for item in data:
             # Parse types
-            types = []
-            for type_data in item.get("types", []):
-                types.append(
-                    TypeInfo(
-                        name=type_data.get("name", ""), image=type_data.get("image", "")
-                    )
+            types = [
+                TypeInfo(
+                    name=type_data.get("name", ""), image=type_data.get("image", "")
                 )
+                for type_data in item.get("types", [])
+            ]
 
             # Parse boosted weather
-            weather = []
-            for weather_data in item.get("boostedWeather", []):
-                weather.append(
-                    WeatherInfo(
-                        name=weather_data.get("name", ""),
-                        image=weather_data.get("image", ""),
-                    )
+            weather = [
+                WeatherInfo(
+                    name=weather_data.get("name", ""),
+                    image=weather_data.get("image", ""),
                 )
+                for weather_data in item.get("boostedWeather", [])
+            ]
 
             raid = RaidInfo(
                 name=item.get("name", ""),
@@ -259,8 +257,13 @@ class LeekDuckAPIClient:
 
         return promo_codes
 
-    def extract_raids_from_events(self, events_data: list[EventInfo]) -> list[RaidInfo]:
-        """Extract raid boss data from events as fallback when raids.json unavailable."""
+    def extract_raids_from_events(
+        self, events_data: list[EventInfo]
+    ) -> list[RaidInfo]:
+        """Extract raid boss data from events as fallback when raids.json unavailable.
+
+        This method provides a fallback when raids.json is not available.
+        """
         extracted_raids = []
         datetime.now(timezone.utc)
 
@@ -297,7 +300,8 @@ class LeekDuckAPIClient:
             return "Unknown"
 
         for event in events_data:
-            # Check if event contains raid data (skip time check - let server handle filtering)
+            # Check if event contains raid data
+            # (skip time check - let server handle filtering)
             if event.extra_data and "raidbattles" in event.extra_data:
                 raid_data = event.extra_data["raidbattles"]
                 bosses = raid_data.get("bosses", [])
@@ -425,15 +429,16 @@ class LeekDuckAPIClient:
         logger.info("Cache cleared")
 
 
-# Global API client instance - using a function to ensure proper initialization
+# Global API client instance
+_api_client_instance: Optional["LeekDuckAPIClient"] = None
+
+
 def get_api_client() -> "LeekDuckAPIClient":
     """Get the global API client instance."""
-    global _api_client_instance
+    global _api_client_instance  # noqa: PLW0603
     if _api_client_instance is None:
         _api_client_instance = LeekDuckAPIClient()
     return _api_client_instance
 
 
-# Initialize the global instance
-_api_client_instance: Optional["LeekDuckAPIClient"] = None
 api_client = get_api_client()
