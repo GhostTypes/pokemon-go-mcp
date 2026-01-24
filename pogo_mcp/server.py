@@ -368,9 +368,8 @@ def register_cross_cutting_tools() -> None:
                 if any(
                     pattern in task.text.lower()
                     for pattern in ["catch 1", "catch 2", "catch 3", "make 1"]
-                ):
-                    if any(r.can_be_shiny for r in task.rewards):
-                        easy_research.append(task)
+                ) and any(r.can_be_shiny for r in task.rewards):
+                    easy_research.append(task)
 
             if easy_research:
                 result += "## 🔬 Quick Shiny Research (Easy Completions)\n\n"

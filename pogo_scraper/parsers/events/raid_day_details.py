@@ -210,10 +210,12 @@ def _parse_raid_bosses(soup: BeautifulSoup) -> list:
     current = raids_section.find_next_sibling()
 
     while current:
-        if current.name == "h2":
-            # Check if we've hit another major section
-            if current.get("id") not in ["featured-pokémon", "featured-pokemon", ""]:
-                break
+        if current.name == "h2" and current.get("id") not in [
+            "featured-pokémon",
+            "featured-pokemon",
+            "",
+        ]:
+            break
 
         if current.name == "ul" and "pkmn-list-flex" in current.get("class", []):
             boss_items = current.select(".pkmn-list-item")
