@@ -116,6 +116,10 @@ def run_claudius_loop(max_loops, agents_json=None):
             creation_flags = subprocess.CREATE_NEW_PROCESS_GROUP
 
         try:
+            # Add ANTHROPIC_LOG=debug for debugging slow API requests
+            env = os.environ.copy()
+            env["ANTHROPIC_LOG"] = "debug"
+
             process = subprocess.Popen(
                 claude_command,
                 stdout=subprocess.PIPE,
@@ -124,6 +128,7 @@ def run_claudius_loop(max_loops, agents_json=None):
                 bufsize=1,  # Line buffered
                 encoding="utf-8",
                 creationflags=creation_flags,
+                env=env,
             )
         except FileNotFoundError:
             print("[Error] Claude Code not found. Install it with:")
