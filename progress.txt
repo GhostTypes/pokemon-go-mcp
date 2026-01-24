@@ -64,7 +64,7 @@
 ### Phase 9: File-Specific Deep Cleans (P2)
 - [x] Task 9.1: pogo_mcp/server.py (~200 violations) - 48 violations fixed
 - [x] Task 9.2: pogo_mcp/api_client.py (~150 violations) - 6 violations fixed
-- [ ] Task 9.3: pogo_mcp/utils.py (~100 violations)
+- [x] Task 9.3: pogo_mcp/utils.py (~100 violations) - 4 violations fixed
 - [ ] Task 9.4: pogo_scraper/scraper.py (~180 violations)
 - [ ] Task 9.5: pogo_mcp/types.py (~50 violations)
 
@@ -78,9 +78,9 @@
 
 ## Statistics
 
-**Tasks Completed:** 38 / 60+
+**Tasks Completed:** 39 / 60+
 **Mypy Errors:** 1,094 → 0 errors (pogo_mcp/ only)
-**Ruff Errors:** 3,103 → 185 remaining (pogo_scraper/ has most issues)
+**Ruff Errors:** 3,103 → 181 remaining (pogo_scraper/ has most issues)
 **Files Reformatted:** 143 + 6 files (Task 6.1) = 149 total
 **Tests Passing:** 100% (148/148)
 **Test Coverage:** 76%
@@ -102,11 +102,12 @@
 **Line Length Issues Fixed:** ~40 violations in main code (Task 7.6)
 **server.py Violations Fixed:** 48 violations (Task 9.1)
 **api_client.py Violations Fixed:** 6 violations (Task 9.2)
+**utils.py Violations Fixed:** 4 violations (Task 9.3)
 
 ## Current Status
 
 **Phase:** Phase 9 - File-Specific Deep Cleans
-**Current Task:** Task 9.2 completed
+**Current Task:** Task 9.3 completed
 **Last Commit:** Task 9.2 - Fixed pogo_mcp/api_client.py violations
 **Time Elapsed:** ~2h 30m
 

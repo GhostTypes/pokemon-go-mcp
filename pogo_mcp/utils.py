@@ -123,9 +123,9 @@ def filter_eggs_by_distance(eggs: list[EggInfo], distance: str) -> list[EggInfo]
     # Filter eggs by exact egg_type match
     filtered = []
     for egg in eggs:
-        # Extract just the distance from egg_type (e.g., "2 km" from "2 km Adventure Sync")
+        # Extract distance from egg_type (e.g., "2 km" from "2 km Adventure Sync")
         egg_distance = egg.egg_type.lower()
-        # Handle cases like "2 km adventure sync" - extract just the "X km" part
+        # Handle "2 km adventure sync" - extract just the "X km" part
         if " km" in egg_distance:
             parts = egg_distance.split()
             if len(parts) >= MIN_PARTS_FOR_DISTANCE and parts[1] == "km":
@@ -250,8 +250,8 @@ def format_json_output(data: object, indent: int = 2) -> str:
     """Format data as pretty-printed JSON."""
     try:
         return json.dumps(data, indent=indent, default=str, ensure_ascii=False)
-    except Exception as e:
-        logger.exception("Failed to format JSON: %s", e)
+    except Exception:
+        logger.exception("Failed to format JSON")
         return str(data)
 
 
@@ -425,7 +425,7 @@ def calculate_type_effectiveness(
 ) -> float:
     """Calculate type effectiveness multiplier for Team Rocket battles."""
     # Simplified type effectiveness chart for common interactions
-    TYPE_CHART = {
+    type_chart = {
         "normal": {"weak_to": ["fighting"], "resists": [], "immune_to": ["ghost"]},
         "fire": {
             "weak_to": ["water", "ground", "rock"],
@@ -529,12 +529,12 @@ def calculate_type_effectiveness(
     effectiveness = 1.0
 
     for defending_type in defending_types:
-        defending_type = defending_type.lower()
+        defending_type_lower = defending_type.lower()
 
-        if defending_type not in TYPE_CHART:
+        if defending_type_lower not in type_chart:
             continue
 
-        type_data = TYPE_CHART[defending_type]
+        type_data = type_chart[defending_type_lower]
 
         # Check immunities (0x damage)
         if attacking_type in type_data["immune_to"]:
