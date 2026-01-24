@@ -3,16 +3,17 @@ Handles parsing extra event information for research breakthrough
 """
 
 import logging
+from typing import Any
 
 from bs4 import BeautifulSoup
 
 logger = logging.getLogger(__name__)
 
 
-async def parse_breakthrough_details(soup: BeautifulSoup, event: dict) -> None:
+async def parse_breakthrough_details(soup: BeautifulSoup, event: dict[str, Any]) -> None:
     """Parse Research Breakthrough specific details"""
     try:
-        breakthrough_data = {"name": "", "canBeShiny": False, "image": "", "list": []}
+        breakthrough_data: dict[str, Any] = {"name": "", "canBeShiny": False, "image": "", "list": []}
 
         # Find the first .pkmn-list-flex container (main breakthrough reward)
         pkmn_list_containers = soup.select(".pkmn-list-flex")
@@ -56,7 +57,9 @@ async def parse_breakthrough_details(soup: BeautifulSoup, event: dict) -> None:
                 if img_elem:
                     pokemon_data["image"] = img_elem.get("src", "")
 
-                breakthrough_data["list"].append(pokemon_data)
+                breakthrough_list = breakthrough_data["list"]
+                if isinstance(breakthrough_list, list):
+                    breakthrough_list.append(pokemon_data)
 
         # Only add breakthrough data if we found meaningful content
         if breakthrough_data["name"] or breakthrough_data["list"]:

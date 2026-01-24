@@ -4,16 +4,18 @@ Handles parsing extra event information for raid days
 
 import contextlib
 import logging
+from typing import Any
 
 from bs4 import BeautifulSoup
+from bs4.element import Tag
 
 logger = logging.getLogger(__name__)
 
 
-async def parse_raid_day_details(soup: BeautifulSoup, event: dict) -> None:
+async def parse_raid_day_details(soup: BeautifulSoup, event: dict[str, Any]) -> None:
     """Parse Raid Day specific details"""
     try:
-        raidday_data = {
+        raidday_data: dict[str, Any] = {
             "bosses": [],
             "bonuses": [],
             "ticketBonuses": [],
@@ -40,7 +42,7 @@ async def parse_raid_day_details(soup: BeautifulSoup, event: dict) -> None:
             or raidday_data["research"]
             or raidday_data["shinies"]
         ):
-            event["extraData"]["raidday"] = raidday_data
+            event["extraData"]["raidday"] = raidday_data  # type: ignore[dict-item]
             logger.info(
                 "Raid Day details: %s bosses, %s bonuses, %s ticket bonuses, "
                 "%s research, %s shinies",
@@ -57,10 +59,10 @@ async def parse_raid_day_details(soup: BeautifulSoup, event: dict) -> None:
         logger.warning("Error parsing Raid Day details: %s", e, exc_info=True)
 
 
-def _parse_bonuses_with_sections(soup: BeautifulSoup) -> tuple:
+def _parse_bonuses_with_sections(soup: BeautifulSoup) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     """Parse bonuses and ticket bonuses separately"""
-    free_bonuses = []
-    ticket_bonuses = []
+    free_bonuses: list[dict[str, Any]] = []
+    ticket_bonuses: list[dict[str, Any]] = []
 
     # Find the bonuses section
     bonuses_section = soup.find("h2", id="bonuses")
@@ -83,37 +85,39 @@ def _parse_bonuses_with_sections(soup: BeautifulSoup) -> tuple:
                 break
 
         # Look for bonus lists
-        if current.name == "div" and "bonus-list" in current.get("class", []):
-            bonus_items = current.select(".bonus-item")
+        if current.name == "div":
+            classes = current.get("class", [])
+            if isinstance(classes, list) and "bonus-list" in classes:
+                bonus_items = current.select(".bonus-item")
 
-            for bonus in bonus_items:
-                text_elem = bonus.select_one(".bonus-text")
-                img_elem = bonus.select_one(".item-circle img")
+                for bonus in bonus_items:
+                    text_elem = bonus.select_one(".bonus-text")
+                    img_elem = bonus.select_one(".item-circle img")
 
-                if text_elem:
-                    bonus_data = {
-                        "text": text_elem.get_text(strip=True),
-                        "image": img_elem.get("src", "") if img_elem else "",
-                    }
+                    if text_elem:
+                        bonus_data: dict[str, Any] = {
+                            "text": text_elem.get_text(strip=True),
+                            "image": img_elem.get("src", "") if img_elem else "",
+                        }
 
-                    if current_section == "free":
-                        free_bonuses.append(bonus_data)
-                    else:
-                        ticket_bonuses.append(bonus_data)
+                        if current_section == "free":
+                            free_bonuses.append(bonus_data)
+                        else:
+                            ticket_bonuses.append(bonus_data)
 
         current = current.find_next_sibling()
 
     return free_bonuses, ticket_bonuses
 
 
-def _parse_research(soup: BeautifulSoup) -> list:
+def _parse_research(soup: BeautifulSoup) -> list[dict[str, Any]]:
     """Parse timed research tasks and rewards"""
-    research_list = []
+    research_list: list[dict[str, Any]] = []
 
     research_items = soup.select(".special-research-list .step-item")
 
     for item in research_items:
-        research = {"name": "", "step": 0, "tasks": [], "rewards": []}
+        research: dict[str, Any] = {"name": "", "step": 0, "tasks": [], "rewards": []}
 
         # Step number
         step_num_elem = item.select_one(".step-number")
@@ -135,7 +139,7 @@ def _parse_research(soup: BeautifulSoup) -> list:
             reward_img_elem = task_reward.select_one(".reward-image")
 
             if task_text_elem:
-                task = {
+                task: dict[str, Any] = {
                     "text": task_text_elem.get_text(strip=True),
                     "reward": {
                         "text": reward_label_elem.get_text(strip=True)
@@ -146,7 +150,9 @@ def _parse_research(soup: BeautifulSoup) -> list:
                         else "",
                     },
                 }
-                research["tasks"].append(task)
+                tasks = research["tasks"]
+                if isinstance(tasks, list):
+                    tasks.append(task)
 
         # Page-level rewards
         page_rewards = item.select(".page-reward")
@@ -156,14 +162,16 @@ def _parse_research(soup: BeautifulSoup) -> list:
             reward_img_elem = reward.select_one(".reward-image")
 
             if reward_img_elem:
-                research["rewards"].append(
-                    {
-                        "text": reward_label_elem.get_text(strip=True)
-                        if reward_label_elem
-                        else "",
-                        "image": reward_img_elem.get("src", ""),
-                    }
-                )
+                rewards = research["rewards"]
+                if isinstance(rewards, list):
+                    rewards.append(
+                        {
+                            "text": reward_label_elem.get_text(strip=True)
+                            if reward_label_elem
+                            else "",
+                            "image": reward_img_elem.get("src", ""),
+                        }
+                    )
 
         if research["name"] or research["tasks"] or research["rewards"]:
             research_list.append(research)
@@ -171,9 +179,9 @@ def _parse_research(soup: BeautifulSoup) -> list:
     return research_list
 
 
-def _parse_shinies(soup: BeautifulSoup) -> list:
+def _parse_shinies(soup: BeautifulSoup) -> list[dict[str, Any]]:
     """Parse shiny Pokemon from dedicated #shiny section"""
-    shinies = []
+    shinies: list[dict[str, Any]] = []
 
     shiny_section = soup.find("h2", id="shiny")
     if not shiny_section:
@@ -190,7 +198,7 @@ def _parse_shinies(soup: BeautifulSoup) -> list:
             img_elem = shiny.select_one(".pkmn-list-img img")
 
             if name_elem and img_elem:
-                shiny_data = {
+                shiny_data: dict[str, Any] = {
                     "name": name_elem.get_text(strip=True),
                     "image": img_elem.get("src", ""),
                 }
@@ -199,9 +207,9 @@ def _parse_shinies(soup: BeautifulSoup) -> list:
     return shinies
 
 
-def _parse_raid_bosses(soup: BeautifulSoup) -> list:
+def _parse_raid_bosses(soup: BeautifulSoup) -> list[dict[str, Any]]:
     """Parse raid bosses from #raids section"""
-    bosses = []
+    bosses: list[dict[str, Any]] = []
 
     raids_section = soup.find("h2", id="raids")
     if not raids_section:
@@ -211,28 +219,33 @@ def _parse_raid_bosses(soup: BeautifulSoup) -> list:
     current = raids_section.find_next_sibling()
 
     while current:
-        if current.name == "h2" and current.get("id") not in [
-            "featured-pokémon",
-            "featured-pokemon",
-            "",
-        ]:
-            break
+        if current.name == "h2":
+            current_id = current.get("id")
+            if current_id not in [
+                "featured-pokémon",
+                "featured-pokemon",
+                "",
+                None,
+            ]:
+                break
 
-        if current.name == "ul" and "pkmn-list-flex" in current.get("class", []):
-            boss_items = current.select(".pkmn-list-item")
+        if current.name == "ul":
+            classes = current.get("class", [])
+            if isinstance(classes, list) and "pkmn-list-flex" in classes:
+                boss_items = current.select(".pkmn-list-item")
 
-            for boss in boss_items:
-                name_elem = boss.select_one(".pkmn-name")
-                img_elem = boss.select_one(".pkmn-list-img img")
-                shiny_icon = boss.select_one(".shiny-icon")
+                for boss in boss_items:
+                    name_elem = boss.select_one(".pkmn-name")
+                    img_elem = boss.select_one(".pkmn-list-img img")
+                    shiny_icon = boss.select_one(".shiny-icon")
 
-                if name_elem and img_elem:
-                    boss_data = {
-                        "name": name_elem.get_text(strip=True),
-                        "image": img_elem.get("src", ""),
-                        "canBeShiny": shiny_icon is not None,
-                    }
-                    bosses.append(boss_data)
+                    if name_elem and img_elem:
+                        boss_data: dict[str, Any] = {
+                            "name": name_elem.get_text(strip=True),
+                            "image": img_elem.get("src", ""),
+                            "canBeShiny": shiny_icon is not None,
+                        }
+                        bosses.append(boss_data)
 
         current = current.find_next_sibling()
 

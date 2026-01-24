@@ -3,16 +3,17 @@ Handles parsing extra event information for spotlight hours
 """
 
 import logging
+from typing import Any
 
 from bs4 import BeautifulSoup
 
 logger = logging.getLogger(__name__)
 
 
-async def parse_spotlight_details(soup: BeautifulSoup, event: dict) -> None:
+async def parse_spotlight_details(soup: BeautifulSoup, event: dict[str, Any]) -> None:
     """Parse Pokemon Spotlight Hour specific details"""
     try:
-        spotlight_data = {
+        spotlight_data: dict[str, Any] = {
             "name": "",
             "canBeShiny": False,
             "image": "",
@@ -73,7 +74,9 @@ async def parse_spotlight_details(soup: BeautifulSoup, event: dict) -> None:
                 if img_elem:
                     pokemon_data["image"] = img_elem.get("src", "")
 
-                spotlight_data["list"].append(pokemon_data)
+                spotlight_list = spotlight_data["list"]
+                if isinstance(spotlight_list, list):
+                    spotlight_list.append(pokemon_data)
 
         # Only add spotlight data if we found meaningful content
         if spotlight_data["name"] or spotlight_data["list"]:

@@ -7,14 +7,19 @@ Handles scraping and parsing of raid boss data from leekduck.com
 
 import json
 import logging
+from typing import TYPE_CHECKING, Any
 
 import httpx
 from bs4 import BeautifulSoup
+from bs4.element import Tag
+
+if TYPE_CHECKING:
+    from scraper import LeekDuckScraper
 
 logger = logging.getLogger(__name__)
 
 
-async def scrape_raids(scraper: "LeekDuckScraper", base_url: str) -> list[dict]:
+async def scrape_raids(scraper: "LeekDuckScraper", base_url: str) -> list[dict[str, Any]]:
     """Scrape raid bosses data from leekduck.com"""
     logger.info("Scraping raids data...")
 
@@ -22,7 +27,7 @@ async def scrape_raids(scraper: "LeekDuckScraper", base_url: str) -> list[dict]:
     if not scraper._should_fetch(cache_file):
         logger.info("Using cached raids data")
         with cache_file.open(encoding="utf-8") as f:
-            return json.load(f)
+            return json.load(f)  # type: ignore[return-value]
 
     try:
         raids_url = f"{base_url}/boss/"
@@ -30,7 +35,7 @@ async def scrape_raids(scraper: "LeekDuckScraper", base_url: str) -> list[dict]:
         response.raise_for_status()
 
         soup = BeautifulSoup(response.text, "lxml")
-        bosses = []
+        bosses: list[dict[str, Any]] = []
 
         # Find raid bosses container
         raid_bosses = soup.find(class_="raid-bosses")
@@ -85,14 +90,14 @@ async def scrape_raids(scraper: "LeekDuckScraper", base_url: str) -> list[dict]:
 
     except (httpx.HTTPError, OSError, json.JSONDecodeError) as e:
         logger.exception("Error scraping raids: %s", e)
-        return scraper._load_fallback_data("raids.json", [])
-    else:
-        return bosses
+        return scraper._load_fallback_data("raids.json", [])  # type: ignore[return-value]
+
+    return bosses
 
 
 def parse_raid_boss(
-    card: "bs4.element.Tag", current_tier: str, base_url: str
-) -> dict | None:
+    card: Tag, current_tier: str, base_url: str
+) -> dict[str, Any] | None:
     """Parse individual raid boss card"""
     try:
         # Extract all needed elements upfront
@@ -100,7 +105,7 @@ def parse_raid_boss(
         img_elem = card.select_one(".boss-img img")
         shiny_elem = card.select_one(".boss-img .shiny-icon")
 
-        boss = {
+        boss: dict[str, Any] = {
             "name": name_elem.get_text(strip=True) if name_elem else "",
             "tier": current_tier,
             "canBeShiny": bool(shiny_elem),
@@ -115,7 +120,7 @@ def parse_raid_boss(
 
         # Types
         type_imgs = card.select(".boss-type .type img")
-        types = []
+        types: list[dict[str, str]] = []
         for img in type_imgs:
             type_name = img.get("title", "").lower()
             if type_name:
@@ -132,8 +137,12 @@ def parse_raid_boss(
             cp_parts = cp_text.split("-")
             if len(cp_parts) == 2:
                 try:
-                    boss["combatPower"]["normal"]["min"] = int(cp_parts[0].strip())
-                    boss["combatPower"]["normal"]["max"] = int(cp_parts[1].strip())
+                    normal_cp = boss["combatPower"]
+                    if isinstance(normal_cp, dict):
+                        normal = normal_cp.get("normal")
+                        if isinstance(normal, dict):
+                            normal["min"] = int(cp_parts[0].strip())  # type: ignore[index]
+                            normal["max"] = int(cp_parts[1].strip())  # type: ignore[index]
                 except ValueError:
                     pass
 
@@ -144,18 +153,22 @@ def parse_raid_boss(
             boosted_parts = boosted_text.split("-")
             if len(boosted_parts) == 2:
                 try:
-                    boss["combatPower"]["boosted"]["min"] = int(
-                        boosted_parts[0].strip()
-                    )
-                    boss["combatPower"]["boosted"]["max"] = int(
-                        boosted_parts[1].strip()
-                    )
+                    boosted_cp = boss["combatPower"]
+                    if isinstance(boosted_cp, dict):
+                        boosted = boosted_cp.get("boosted")
+                        if isinstance(boosted, dict):
+                            boosted["min"] = int(
+                                boosted_parts[0].strip()
+                            )  # type: ignore[index]
+                            boosted["max"] = int(
+                                boosted_parts[1].strip()
+                            )  # type: ignore[index]
                 except ValueError:
                     pass
 
         # Boosted Weather
         weather_imgs = card.select(".weather-boosted .boss-weather .weather-pill img")
-        boosted_weather = []
+        boosted_weather: list[dict[str, str]] = []
         for img in weather_imgs:
             weather_name = img.get("alt", "").lower()
             if weather_name:
@@ -165,7 +178,8 @@ def parse_raid_boss(
                 boosted_weather.append({"name": weather_name, "image": img_url})
         boss["boostedWeather"] = boosted_weather
 
+        return boss
+
     except (AttributeError, KeyError, ValueError, TypeError) as e:
         logger.warning("Error parsing raid boss card: %s", e)
-    else:
-        return boss
+        return None

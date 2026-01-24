@@ -3,16 +3,17 @@ Handles parsing extra event information for timed reseach (with a code)
 """
 
 import logging
+from typing import Any
 
 from bs4 import BeautifulSoup
 
 logger = logging.getLogger(__name__)
 
 
-async def parse_timed_research_code_details(soup: BeautifulSoup, event: dict) -> None:
+async def parse_timed_research_code_details(soup: BeautifulSoup, event: dict[str, Any]) -> None:
     """Parse Timed Research Code specific details"""
     try:
-        timed_research_data = {"code": "", "code_expires": "", "research_expires": ""}
+        timed_research_data: dict[str, Any] = {"code": "", "code_expires": "", "research_expires": ""}
 
         # Look for the specific timed research code element
         # <h2 id="timed-research-code-gofestmax">Timed Research Code: GOFESTMAX</h2>

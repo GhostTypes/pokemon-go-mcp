@@ -13,28 +13,41 @@ import sys
 import types
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Self
+from typing import TYPE_CHECKING, Any
+try:
+    from typing import Self
+except ImportError:
+    from typing_extensions import Self
 
 import httpx
 
 # Import page-specific scrapers
-try:
-    from . import (  # type: ignore[import-not-found]
-        eggs,
-        events,
-        promo_codes,
-        raids,
-        research,
-        rocket_lineups,
-    )
-except ImportError:
-    # Fallback for when running as main script
-    import eggs
-    import events
-    import promo_codes
-    import raids
-    import research
-    import rocket_lineups
+if TYPE_CHECKING:
+    # Type checking imports - use absolute imports
+    import pogo_scraper.eggs as eggs
+    import pogo_scraper.events as events
+    import pogo_scraper.promo_codes as promo_codes
+    import pogo_scraper.raids as raids
+    import pogo_scraper.research as research
+    import pogo_scraper.rocket_lineups as rocket_lineups
+else:
+    try:
+        from . import (  # type: ignore[import-not-found]
+            eggs,
+            events,
+            promo_codes,
+            raids,
+            research,
+            rocket_lineups,
+        )
+    except ImportError:
+        # Fallback for when running as main script
+        import eggs
+        import events
+        import promo_codes
+        import raids
+        import research
+        import rocket_lineups
 
 # Configure logging
 logging.basicConfig(

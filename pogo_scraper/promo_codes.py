@@ -7,14 +7,19 @@ Handles scraping and parsing of promo code data from leekduck.com
 
 import json
 import logging
+from typing import TYPE_CHECKING, Any
 
 import httpx
 from bs4 import BeautifulSoup
+from bs4.element import Tag
+
+if TYPE_CHECKING:
+    from scraper import LeekDuckScraper
 
 logger = logging.getLogger(__name__)
 
 
-async def scrape_promo_codes(scraper: "LeekDuckScraper", base_url: str) -> list[dict]:
+async def scrape_promo_codes(scraper: "LeekDuckScraper", base_url: str) -> list[dict[str, Any]]:
     """Scrape promo codes data from leekduck.com"""
     logger.info("Scraping promo codes data...")
 
@@ -22,7 +27,7 @@ async def scrape_promo_codes(scraper: "LeekDuckScraper", base_url: str) -> list[
     if not scraper._should_fetch(cache_file):
         logger.info("Using cached promo codes data")
         with cache_file.open(encoding="utf-8") as f:
-            return json.load(f)
+            return json.load(f)  # type: ignore[return-value]
 
     try:
         # Scrape promo codes page
@@ -33,7 +38,7 @@ async def scrape_promo_codes(scraper: "LeekDuckScraper", base_url: str) -> list[
         soup = BeautifulSoup(response.text, "lxml")
         promo_cards = soup.select("div.promo-card:not(.expired):not(.-expired)")
 
-        all_promo_codes = []
+        all_promo_codes: list[dict[str, Any]] = []
 
         for card in promo_cards:
             try:
@@ -48,17 +53,17 @@ async def scrape_promo_codes(scraper: "LeekDuckScraper", base_url: str) -> list[
 
     except (httpx.HTTPError, OSError, json.JSONDecodeError) as e:
         logger.exception("Error scraping promo codes: %s", e)
-        return scraper._load_fallback_data("promo-codes.json", [])
-    else:
-        return all_promo_codes
+        return scraper._load_fallback_data("promo-codes.json", [])  # type: ignore[return-value]
+
+    return all_promo_codes
 
 
-def parse_promo_card(card_element: "bs4.element.Tag", base_url: str) -> dict | None:
+def parse_promo_card(card_element: Tag, base_url: str) -> dict[str, Any] | None:
     """Parse individual promo card element"""
     try:
         # Check if card is expired
         card_classes = card_element.get("class", [])
-        if "expired" in card_classes or "-expired" in card_classes:
+        if isinstance(card_classes, list) and ("expired" in card_classes or "-expired" in card_classes):
             return None
 
         # Extract promo code
@@ -97,7 +102,7 @@ def parse_promo_card(card_element: "bs4.element.Tag", base_url: str) -> dict | N
             description = description_elem.get_text(strip=True)
 
         # Extract rewards
-        rewards = []
+        rewards: list[dict[str, Any]] = []
         reward_list = card_element.select(".reward-list .reward")
         for reward_elem in reward_list:
             reward_type = reward_elem.get("data-reward-type", "")
@@ -125,10 +130,6 @@ def parse_promo_card(card_element: "bs4.element.Tag", base_url: str) -> dict | N
         if expiry_elem:
             expiration = expiry_elem.get("data-expires", "")
 
-    except (AttributeError, KeyError, ValueError, TypeError) as e:
-        logger.warning("Error parsing promo card: %s", e)
-        return None
-    else:
         return {
             "code": promo_code,
             "title": title,
@@ -137,3 +138,7 @@ def parse_promo_card(card_element: "bs4.element.Tag", base_url: str) -> dict | N
             "rewards": rewards,
             "expiration": expiration,
         }
+
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.warning("Error parsing promo card: %s", e)
+        return None

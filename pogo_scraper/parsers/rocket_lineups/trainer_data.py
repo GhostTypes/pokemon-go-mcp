@@ -4,14 +4,17 @@ Handles parsing rocket lineup information
 
 import contextlib
 import logging
+from typing import Any
+
+from bs4.element import Tag
 
 logger = logging.getLogger(__name__)
 
 
-def parse_rocket_trainer(profile: "bs4.element.Tag", base_url: str) -> dict | None:
+def parse_rocket_trainer(profile: Tag, base_url: str) -> dict[str, Any] | None:
     """Parse individual rocket trainer profile"""
     try:
-        trainer = {
+        trainer: dict[str, Any] = {
             "name": "",
             "title": "",
             "quote": "",
@@ -44,8 +47,9 @@ def parse_rocket_trainer(profile: "bs4.element.Tag", base_url: str) -> dict | No
         if photo_img:
             trainer["image"] = photo_img.get("src", "")
             # Convert relative URLs to absolute
-            if trainer["image"].startswith("/"):
-                trainer["image"] = f"{base_url}{trainer['image']}"
+            image = trainer["image"]
+            if isinstance(image, str) and image.startswith("/"):
+                trainer["image"] = f"{base_url}{image}"
 
         # Type (for grunts) - search in the entire profile, not just employee_info
         # because .type is a sibling of .employee-info
@@ -65,7 +69,9 @@ def parse_rocket_trainer(profile: "bs4.element.Tag", base_url: str) -> dict | No
             for slot in slots:
                 slot_data = parse_lineup_slot(slot)
                 if slot_data:
-                    trainer["lineups"].append(slot_data)
+                    lineups = trainer["lineups"]
+                    if isinstance(lineups, list):
+                        lineups.append(slot_data)
 
         return trainer if trainer["name"] else None
 
@@ -74,10 +80,10 @@ def parse_rocket_trainer(profile: "bs4.element.Tag", base_url: str) -> dict | No
         return None
 
 
-def parse_lineup_slot(slot: "bs4.element.Tag") -> dict | None:
+def parse_lineup_slot(slot: Tag) -> dict[str, Any] | None:
     """Parse individual lineup slot with Pokemon options"""
     try:
-        slot_data = {"slot": 0, "is_encounter": False, "pokemon": []}
+        slot_data: dict[str, Any] = {"slot": 0, "is_encounter": False, "pokemon": []}
 
         # Get slot number
         number_elem = slot.select_one(".number")
@@ -93,7 +99,9 @@ def parse_lineup_slot(slot: "bs4.element.Tag") -> dict | None:
         for pokemon_elem in shadow_pokemon:
             pokemon = parse_shadow_pokemon(pokemon_elem)
             if pokemon:
-                slot_data["pokemon"].append(pokemon)
+                pokemon_list = slot_data["pokemon"]
+                if isinstance(pokemon_list, list):
+                    pokemon_list.append(pokemon)
 
         return slot_data if slot_data["pokemon"] else None
 
@@ -102,10 +110,10 @@ def parse_lineup_slot(slot: "bs4.element.Tag") -> dict | None:
         return None
 
 
-def parse_shadow_pokemon(pokemon_elem: "bs4.element.Tag") -> dict | None:
+def parse_shadow_pokemon(pokemon_elem: Tag) -> dict[str, Any] | None:
     """Parse individual shadow Pokemon with weakness data"""
     try:
-        pokemon = {
+        pokemon: dict[str, Any] = {
             "name": "",
             "types": [],
             "weaknesses": {"double": [], "single": []},
@@ -121,23 +129,31 @@ def parse_shadow_pokemon(pokemon_elem: "bs4.element.Tag") -> dict | None:
         type2 = pokemon_elem.get("data-type2", "").strip().lower()
 
         if type1 and type1 != "none":
-            pokemon["types"].append(type1)
+            types = pokemon["types"]
+            if isinstance(types, list):
+                types.append(type1)
         if type2 and type2 != "none":
-            pokemon["types"].append(type2)
+            types = pokemon["types"]
+            if isinstance(types, list):
+                types.append(type2)
 
         # Weaknesses
         double_weaknesses = pokemon_elem.get("data-double-weaknesses", "").strip()
         single_weaknesses = pokemon_elem.get("data-single-weaknesses", "").strip()
 
         if double_weaknesses:
-            pokemon["weaknesses"]["double"] = [
-                w.strip().lower() for w in double_weaknesses.split(",") if w.strip()
-            ]
+            weaknesses = pokemon["weaknesses"]
+            if isinstance(weaknesses, dict):
+                double = weaknesses["double"]
+                if isinstance(double, list):
+                    double.extend([w.strip().lower() for w in double_weaknesses.split(",") if w.strip()])
 
         if single_weaknesses:
-            pokemon["weaknesses"]["single"] = [
-                w.strip().lower() for w in single_weaknesses.split(",") if w.strip()
-            ]
+            weaknesses = pokemon["weaknesses"]
+            if isinstance(weaknesses, dict):
+                single = weaknesses["single"]
+                if isinstance(single, list):
+                    single.extend([w.strip().lower() for w in single_weaknesses.split(",") if w.strip()])
 
         # Image
         img_elem = pokemon_elem.select_one(".pokemon-image")

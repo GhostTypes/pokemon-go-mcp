@@ -7,14 +7,19 @@ Handles scraping and parsing of field research data from leekduck.com
 
 import json
 import logging
+from typing import TYPE_CHECKING, Any
 
 import httpx
 from bs4 import BeautifulSoup
+from bs4.element import Tag
+
+if TYPE_CHECKING:
+    from scraper import LeekDuckScraper
 
 logger = logging.getLogger(__name__)
 
 
-async def scrape_research(scraper: "LeekDuckScraper", base_url: str) -> list[dict]:
+async def scrape_research(scraper: "LeekDuckScraper", base_url: str) -> list[dict[str, Any]]:
     """Scrape field research data from leekduck.com"""
     logger.info("Scraping research data...")
 
@@ -22,7 +27,7 @@ async def scrape_research(scraper: "LeekDuckScraper", base_url: str) -> list[dic
     if not scraper._should_fetch(cache_file):
         logger.info("Using cached research data")
         with cache_file.open(encoding="utf-8") as f:
-            return json.load(f)
+            return json.load(f)  # type: ignore[return-value]
 
     try:
         research_url = f"{base_url}/research/"
@@ -30,7 +35,7 @@ async def scrape_research(scraper: "LeekDuckScraper", base_url: str) -> list[dic
         response.raise_for_status()
 
         soup = BeautifulSoup(response.text, "lxml")
-        research_tasks = []
+        research_tasks: list[dict[str, Any]] = []
 
         # Find research items (updated selector)
         research_items = soup.select(".task-item")
@@ -47,12 +52,12 @@ async def scrape_research(scraper: "LeekDuckScraper", base_url: str) -> list[dic
 
     except (httpx.HTTPError, OSError, json.JSONDecodeError) as e:
         logger.exception("Error scraping research: %s", e)
-        return scraper._load_fallback_data("research.json", [])
-    else:
-        return research_tasks
+        return scraper._load_fallback_data("research.json", [])  # type: ignore[return-value]
+
+    return research_tasks
 
 
-def parse_research_task(item: "bs4.element.Tag") -> dict | None:
+def parse_research_task(item: Tag) -> dict[str, Any] | None:
     """Parse individual research task"""
     try:
         # Task text (updated selector)
@@ -66,13 +71,14 @@ def parse_research_task(item: "bs4.element.Tag") -> dict | None:
         reward_items = item.select(".reward")
         rewards = [r for r in (parse_research_reward(ri) for ri in reward_items) if r]
 
-    except (AttributeError, KeyError, ValueError, TypeError) as e:
-        logger.warning("Error parsing research task: %s", e)
-    else:
         return {"text": task_text, "rewards": rewards} if rewards else None
 
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.warning("Error parsing research task: %s", e)
+        return None
 
-def parse_research_reward(reward_item: "bs4.element.Tag") -> dict | None:
+
+def parse_research_reward(reward_item: Tag) -> dict[str, Any] | None:
     """Parse individual research reward"""
     try:
         # Extract all elements upfront

@@ -3,6 +3,9 @@ Handles parsing base events
 """
 
 import logging
+from typing import Any
+
+from bs4.element import Tag
 
 logger = logging.getLogger(__name__)
 
@@ -32,8 +35,8 @@ def infer_event_type(name: str, heading: str) -> str:
 
 
 def parse_event_item(
-    link_element: "bs4.element.Tag", event_dates: dict, base_url: str
-) -> dict | None:
+    link_element: Tag, event_dates: dict[str, Any], base_url: str
+) -> dict[str, Any] | None:
     """Parse individual event item from the events page"""
     try:
         wrapper = link_element.find("div", class_="event-item-wrapper")
@@ -59,7 +62,7 @@ def parse_event_item(
         event_id = href.rstrip("/").split("/")[-1] if href else ""
 
         # Get dates from feed data
-        dates = event_dates.get(event_id, {})
+        dates: dict[str, Any] = event_dates.get(event_id, {})  # type: ignore[assignment]
 
         return {
             "eventID": event_id,
@@ -71,7 +74,7 @@ def parse_event_item(
             "start": dates.get("start", ""),
             "end": dates.get("end", ""),
             "extraData": {
-                "generic": {"hasSpawns": False, "hasFieldResearchTasks": False}
+                "generic": {"hasSpawns": False, "hasFieldResearchTasks": False}  # type: ignore[dict-item]
             },
         }
 

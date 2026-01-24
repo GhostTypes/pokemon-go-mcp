@@ -4,13 +4,15 @@ Handles parsing generic event details for events that don't have specific parser
 
 import logging
 import re
+from typing import Any
 
 from bs4 import BeautifulSoup
+from bs4.element import Tag
 
 logger = logging.getLogger(__name__)
 
 
-async def parse_generic_event_details(soup: BeautifulSoup, event: dict) -> None:
+async def parse_generic_event_details(soup: BeautifulSoup, event: dict[str, Any]) -> None:
     """Parse generic event details from event pages
 
     This extracts spawns, bonuses, features, and field research tasks
@@ -24,7 +26,7 @@ async def parse_generic_event_details(soup: BeautifulSoup, event: dict) -> None:
         logger.debug("Parsing generic event details for: %s", event["name"])
 
         # Initialize generic data structure
-        generic_data = {
+        generic_data: dict[str, Any] = {
             "hasSpawns": False,
             "hasFieldResearchTasks": False,
             "spawns": [],
@@ -44,7 +46,7 @@ async def parse_generic_event_details(soup: BeautifulSoup, event: dict) -> None:
 
         # Parse spawns section
         spawns_section = soup.find("h2", id="spawns")
-        if spawns_section:
+        if spawns_section and isinstance(spawns_section, Tag):
             generic_data["hasSpawns"] = True
             spawns_data = _parse_spawns_section(soup, spawns_section)
             generic_data["spawns"] = spawns_data
@@ -52,7 +54,7 @@ async def parse_generic_event_details(soup: BeautifulSoup, event: dict) -> None:
 
         # Parse bonuses section
         bonuses_section = soup.find("h2", id="bonuses")
-        if bonuses_section:
+        if bonuses_section and isinstance(bonuses_section, Tag):
             bonuses_data = _parse_bonuses_section(soup, bonuses_section)
             generic_data["bonuses"] = bonuses_data
             logger.debug("Found %s bonus entries", len(bonuses_data))
@@ -70,14 +72,14 @@ async def parse_generic_event_details(soup: BeautifulSoup, event: dict) -> None:
                     features_section = heading
                     break
 
-        if features_section:
+        if features_section and isinstance(features_section, Tag):
             features_data = _parse_features_section(soup, features_section)
             generic_data["features"] = features_data
             logger.debug("Found %s feature entries", len(features_data))
 
         # Parse field research section
         research_section = soup.find("h2", id="field-research-tasks")
-        if research_section:
+        if research_section and isinstance(research_section, Tag):
             generic_data["hasFieldResearchTasks"] = True
             research_data = _parse_field_research_section(soup, research_section)
             generic_data["fieldResearch"] = research_data
@@ -85,13 +87,13 @@ async def parse_generic_event_details(soup: BeautifulSoup, event: dict) -> None:
 
         # Parse raids section (if present)
         raids_section = soup.find("h2", id="raids")
-        if raids_section:
+        if raids_section and isinstance(raids_section, Tag):
             raids_data = _parse_raids_section(soup, raids_section)
             generic_data["raids"] = raids_data
             logger.debug("Found %s raid entries", len(raids_data))
 
         # Update event with generic data
-        event["extraData"]["generic"] = generic_data
+        event["extraData"]["generic"] = generic_data  # type: ignore[dict-item]
 
         logger.debug("Successfully parsed generic event data for: %s", event["name"])
 
@@ -103,10 +105,10 @@ async def parse_generic_event_details(soup: BeautifulSoup, event: dict) -> None:
 
 
 def _parse_spawns_section(
-    _soup: BeautifulSoup, spawns_section: "bs4.element.Tag"
-) -> list[dict]:
+    _soup: BeautifulSoup, spawns_section: Tag
+) -> list[dict[str, Any]]:
     """Parse the spawns section and extract Pokemon spawn data"""
-    spawns = []
+    spawns: list[dict[str, Any]] = []
 
     try:
         # Find the container after the spawns header
@@ -120,7 +122,7 @@ def _parse_spawns_section(
             if not pokemon_items:
                 # Look for lists with Pokemon images
                 pokemon_items = (
-                    current.find_all("img", src=lambda x: x and "pokemon_icons" in x)
+                    current.find_all("img", src=lambda x: x and "pokemon_icons" in x)  # type: ignore[misc]
                     if current
                     else []
                 )
@@ -144,10 +146,10 @@ def _parse_spawns_section(
 
 
 def _parse_bonuses_section(
-    _soup: BeautifulSoup, bonuses_section: "bs4.element.Tag"
-) -> list[dict]:
+    _soup: BeautifulSoup, bonuses_section: Tag
+) -> list[dict[str, Any]]:
     """Parse the bonuses section and extract bonus data"""
-    bonuses = []
+    bonuses: list[dict[str, Any]] = []
 
     try:
         # Find bonus items in the section
@@ -179,10 +181,10 @@ def _parse_bonuses_section(
 
 
 def _parse_features_section(
-    _soup: BeautifulSoup, features_section: "bs4.element.Tag"
-) -> list[dict]:
+    _soup: BeautifulSoup, features_section: Tag
+) -> list[dict[str, Any]]:
     """Parse the features section and extract feature data"""
-    features = []
+    features: list[dict[str, Any]] = []
 
     try:
         current = features_section.find_next_sibling()
@@ -216,7 +218,7 @@ def _parse_features_section(
                             features.append(pokemon_data)
                 else:
                     # Look for general feature items
-                    feature_items = []
+                    feature_items: list[Tag] = []
 
                     # Check for list items
                     if current.find_all("li"):
@@ -242,10 +244,10 @@ def _parse_features_section(
 
 
 def _parse_field_research_section(
-    _soup: BeautifulSoup, research_section: "bs4.element.Tag"
-) -> list[dict]:
+    _soup: BeautifulSoup, research_section: Tag
+) -> list[dict[str, Any]]:
     """Parse the field research section and extract research task data"""
-    research_tasks = []
+    research_tasks: list[dict[str, Any]] = []
 
     try:
         current = research_section.find_next_sibling()
@@ -253,7 +255,7 @@ def _parse_field_research_section(
         while current and current.name != "h2":
             if current:
                 # Research tasks might be in various formats
-                task_items = []
+                task_items: list[Tag] = []
 
                 # Look for LeekDuck's specific event field research list
                 if current.find_all(class_="event-field-research-list"):
@@ -284,10 +286,10 @@ def _parse_field_research_section(
 
 
 def _parse_raids_section(
-    _soup: BeautifulSoup, raids_section: "bs4.element.Tag"
-) -> list[dict]:
+    _soup: BeautifulSoup, raids_section: Tag
+) -> list[dict[str, Any]]:
     """Parse the raids section and extract raid data"""
-    raids = []
+    raids: list[dict[str, Any]] = []
 
     try:
         current = raids_section.find_next_sibling()
@@ -332,10 +334,10 @@ def _parse_raids_section(
     return raids
 
 
-def _extract_pokemon_data(item: "bs4.element.Tag") -> dict | None:
+def _extract_pokemon_data(item: Tag) -> dict[str, Any] | None:
     """Extract Pokemon data from a list item or container"""
     try:
-        pokemon_data = {}
+        pokemon_data: dict[str, Any] = {}
 
         # Try to find Pokemon name
         name_elem = item.find(class_="pkmn-name")
@@ -343,7 +345,7 @@ def _extract_pokemon_data(item: "bs4.element.Tag") -> dict | None:
             # Fallback: look for text content or alt text
             img_elem = item.find("img")
             if img_elem and img_elem.get("alt"):
-                pokemon_data["name"] = img_elem.get("alt").strip()
+                pokemon_data["name"] = img_elem.get("alt", "").strip()
             else:
                 # Use text content as fallback
                 text = item.get_text(strip=True)
@@ -355,7 +357,7 @@ def _extract_pokemon_data(item: "bs4.element.Tag") -> dict | None:
         # Try to find Pokemon image
         img_elem = item.find("img")
         if img_elem and img_elem.get("src"):
-            image_src = img_elem.get("src")
+            image_src = img_elem.get("src", "")
             # Clean up image URL
             if "cdn-cgi" in image_src:
                 image_src = image_src.split("/cdn-cgi")[0]
@@ -363,15 +365,15 @@ def _extract_pokemon_data(item: "bs4.element.Tag") -> dict | None:
 
         # Check for shiny indicator - look for shiny images or icons
         shiny_elem = (
-            item.find("img", src=lambda x: x and "shiny" in x.lower()) if item else None
+            item.find("img", src=lambda x: x and "shiny" in str(x).lower()) if item else None  # type: ignore[misc]
         )
         shiny_icon = (
-            item.find("img", src=lambda x: x and "icon_shiny" in x.lower())
+            item.find("img", src=lambda x: x and "icon_shiny" in str(x).lower())  # type: ignore[misc]
             if item
             else None
         )
         shiny_class = (
-            item.find(class_=lambda x: x and "shiny" in x.lower()) if item else None
+            item.find(class_=lambda x: x and "shiny" in str(x).lower()) if item else None  # type: ignore[misc]
         )
         # Check for LeekDuck's specific shiny-icon class
         shiny_icon_class = item.find("img", class_="shiny-icon") if item else None
@@ -397,10 +399,10 @@ def _extract_pokemon_data(item: "bs4.element.Tag") -> dict | None:
     return None
 
 
-def _extract_bonus_data(item: "bs4.element.Tag") -> dict | None:
+def _extract_bonus_data(item: Tag) -> dict[str, Any] | None:
     """Extract bonus data from a list item or container"""
     try:
-        bonus_data = {}
+        bonus_data: dict[str, Any] = {}
 
         # Try to find bonus text
         text_elem = item.find(class_="bonus-text")
@@ -415,7 +417,7 @@ def _extract_bonus_data(item: "bs4.element.Tag") -> dict | None:
         # Try to find bonus image
         img_elem = item.find("img")
         if img_elem and img_elem.get("src"):
-            image_src = img_elem.get("src")
+            image_src = img_elem.get("src", "")
             if "cdn-cgi" in image_src:
                 image_src = image_src.split("/cdn-cgi")[0]
             bonus_data["image"] = image_src
@@ -430,10 +432,10 @@ def _extract_bonus_data(item: "bs4.element.Tag") -> dict | None:
     return None
 
 
-def _extract_feature_data(item: "bs4.element.Tag") -> dict | None:
+def _extract_feature_data(item: Tag) -> dict[str, Any] | None:
     """Extract feature data from a list item or container"""
     try:
-        feature_data = {}
+        feature_data: dict[str, Any] = {}
 
         # Extract text content
         text = item.get_text(strip=True)
@@ -443,7 +445,7 @@ def _extract_feature_data(item: "bs4.element.Tag") -> dict | None:
         # Try to find associated image
         img_elem = item.find("img")
         if img_elem and img_elem.get("src"):
-            image_src = img_elem.get("src")
+            image_src = img_elem.get("src", "")
             if "cdn-cgi" in image_src:
                 image_src = image_src.split("/cdn-cgi")[0]
             feature_data["image"] = image_src
@@ -458,10 +460,10 @@ def _extract_feature_data(item: "bs4.element.Tag") -> dict | None:
     return None
 
 
-def _extract_research_task_data(item: "bs4.element.Tag") -> dict | None:
+def _extract_research_task_data(item: Tag) -> dict[str, Any] | None:
     """Extract research task data from a list item or container"""
     try:
-        task_data = {}
+        task_data: dict[str, Any] = {}
 
         # Check if this is LeekDuck's event field research structure
         task_elem = item.find(class_="task")
@@ -484,7 +486,7 @@ def _extract_research_task_data(item: "bs4.element.Tag") -> dict | None:
             # Get reward image
             reward_image = reward_list.find("img", class_="reward-image")
             if reward_image and reward_image.get("src"):
-                image_src = reward_image.get("src")
+                image_src = reward_image.get("src", "")
                 if "cdn-cgi" in image_src:
                     image_src = image_src.split("/cdn-cgi")[0]
                 task_data["image"] = image_src
@@ -532,7 +534,7 @@ def _extract_research_task_data(item: "bs4.element.Tag") -> dict | None:
             # Try to find associated image
             img_elem = item.find("img")
             if img_elem and img_elem.get("src"):
-                image_src = img_elem.get("src")
+                image_src = img_elem.get("src", "")
                 if "cdn-cgi" in image_src:
                     image_src = image_src.split("/cdn-cgi")[0]
                 task_data["image"] = image_src

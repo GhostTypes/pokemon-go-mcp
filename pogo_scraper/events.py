@@ -8,8 +8,12 @@ Handles scraping and parsing of event data from leekduck.com
 import asyncio
 import json
 import logging
+from typing import TYPE_CHECKING, Any
 
 from bs4 import BeautifulSoup
+
+if TYPE_CHECKING:
+    from scraper import LeekDuckScraper
 
 # Import sub-parsers
 try:
@@ -41,7 +45,7 @@ except ImportError:
 logger = logging.getLogger(__name__)
 
 
-async def scrape_events(scraper: "LeekDuckScraper", base_url: str) -> list[dict]:
+async def scrape_events(scraper: "LeekDuckScraper", base_url: str) -> list[dict[str, Any]]:
     """Scrape events data from leekduck.com"""
     logger.info("Scraping events data...")
 
@@ -49,7 +53,7 @@ async def scrape_events(scraper: "LeekDuckScraper", base_url: str) -> list[dict]
     if not scraper._should_fetch(cache_file):
         logger.info("Using cached events data")
         with cache_file.open(encoding="utf-8") as f:
-            return json.load(f)
+            return json.load(f)  # type: ignore[return-value]
 
     try:
         # First get events feed for dates
@@ -59,7 +63,7 @@ async def scrape_events(scraper: "LeekDuckScraper", base_url: str) -> list[dict]
         events_feed = response.json()
 
         # Create date lookup
-        event_dates = {}
+        event_dates: dict[str, dict[str, Any]] = {}
         for event in events_feed:
             event_id = event.get("eventID")
             if event_id:
@@ -114,12 +118,12 @@ async def scrape_events(scraper: "LeekDuckScraper", base_url: str) -> list[dict]
 
     except Exception as e:
         logger.exception("Error scraping events: %s", e)
-        return scraper._load_fallback_data("events.json", [])
-    else:
-        return all_events
+        return scraper._load_fallback_data("events.json", [])  # type: ignore[return-value]
+
+    return all_events
 
 
-async def fetch_event_details(scraper: "LeekDuckScraper", event: dict) -> None:
+async def fetch_event_details(scraper: "LeekDuckScraper", event: dict[str, Any]) -> None:
     """Fetch detailed event data from individual event page"""
     try:
         logger.debug("Fetching details for event: %s", event["name"])
@@ -129,7 +133,7 @@ async def fetch_event_details(scraper: "LeekDuckScraper", event: dict) -> None:
         soup = BeautifulSoup(response.text, "lxml")
 
         # Initialize extraData with generic flags
-        generic_data = {"hasSpawns": False, "hasFieldResearchTasks": False}
+        generic_data: dict[str, Any] = {"hasSpawns": False, "hasFieldResearchTasks": False}
 
         # Check for spawns section (ScrapedDuck looks for id='spawns')
         if soup.find(id="spawns"):
