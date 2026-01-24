@@ -95,7 +95,10 @@ def register_raid_tools(mcp: FastMCP) -> None:
                 result += format_raid_summary(raid) + "\n\n"
 
             shiny_count = len([r for r in filtered_raids if r.can_be_shiny])
-            result += f"**Summary:** {len(filtered_raids)} {tier} raids, {shiny_count} can be shiny\n"
+            result += (
+                f"**Summary:** {len(filtered_raids)} {tier} raids, "
+                f"{shiny_count} can be shiny\n"
+            )
 
         except Exception as e:
             logger.exception("Error fetching %s raids: %s", tier, e)
@@ -135,7 +138,10 @@ def register_raid_tools(mcp: FastMCP) -> None:
                 for raid in raid_list:
                     result += format_raid_summary(raid) + "\n\n"
 
-            result += f"**Total:** {len(shiny_raids)} shiny-eligible raid bosses out of {len(raids)} total\n"
+            result += (
+                f"**Total:** {len(shiny_raids)} shiny-eligible raid bosses out of "
+                f"{len(raids)} total\n"
+            )
 
         except Exception as e:
             logger.exception("Error fetching shiny raids: %s", e)
@@ -197,7 +203,10 @@ def register_raid_tools(mcp: FastMCP) -> None:
                 result += format_raid_summary(raid) + "\n\n"
 
             shiny_count = len([r for r in filtered_raids if r.can_be_shiny])
-            result += f"**Summary:** {len(filtered_raids)} {pokemon_type}-type raids, {shiny_count} can be shiny\n"
+            result += (
+                f"**Summary:** {len(filtered_raids)} {pokemon_type}-type raids, "
+                f"{shiny_count} can be shiny\n"
+            )
 
         except Exception as e:
             logger.exception("Error fetching %s raids: %s", pokemon_type, e)
@@ -233,7 +242,10 @@ def register_raid_tools(mcp: FastMCP) -> None:
                 result += format_raid_summary(raid) + "\n\n"
 
             shiny_count = len([r for r in boosted_raids if r.can_be_shiny])
-            result += f"**Summary:** {len(boosted_raids)} raids boosted by {weather}, {shiny_count} can be shiny\n"
+            result += (
+                f"**Summary:** {len(boosted_raids)} raids boosted by {weather}, "
+                f"{shiny_count} can be shiny\n"
+            )
 
         except Exception as e:
             logger.exception("Error fetching weather boosted raids: %s", e)

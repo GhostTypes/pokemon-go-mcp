@@ -75,7 +75,10 @@ def register_event_tools(mcp: FastMCP) -> None:
             if not active_events and not upcoming_events:
                 result += "No active or upcoming events found.\n"
 
-            result += f"\nTotal events found: {len(events)} (Active: {len(active_events)}, Upcoming: {len(upcoming_events)})"
+            result += (
+                f"\nTotal events found: {len(events)} "
+                f"(Active: {len(active_events)}, Upcoming: {len(upcoming_events)})"
+            )
 
             return result
 

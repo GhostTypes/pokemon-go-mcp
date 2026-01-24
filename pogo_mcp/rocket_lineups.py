@@ -152,7 +152,8 @@ def register_rocket_tools(mcp: FastMCP) -> None:
                             else ""
                         )
                         matching_slots.append(
-                            f"Slot {slot.slot}{encounter_text}: {len(slot_pokemon)} options{shiny_text}"
+                            f"Slot {slot.slot}{encounter_text}: "
+                            f"{len(slot_pokemon)} options{shiny_text}"
                         )
 
                 if matching_slots:
@@ -366,7 +367,10 @@ def register_rocket_tools(mcp: FastMCP) -> None:
             # Effectiveness description
             if effectiveness == EFFECTIVENESS_NO_EFFECT:
                 result += "**Result:** No Effect (0× damage) 🚫\n"
-                result += f"{attacking_type.title()} attacks have no effect on {' / '.join(target_pokemon.types).title()} types."
+                result += (
+                    f"{attacking_type.title()} attacks have no effect on "
+                    f"{' / '.join(target_pokemon.types).title()} types."
+                )
             elif effectiveness == EFFECTIVENESS_QUARTER:
                 result += "**Result:** Not Very Effective (0.25× damage) 🔴\n"
                 result += "This is a very poor matchup."

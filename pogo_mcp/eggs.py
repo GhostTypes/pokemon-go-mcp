@@ -41,7 +41,8 @@ def register_egg_tools(mcp: FastMCP) -> None:
         """Get all Pokemon currently available from eggs in Pokemon Go.
 
         Returns a comprehensive list of all Pokemon that can hatch from eggs,
-        organized by egg distance with CP ranges, shiny availability, and special features.
+        organized by egg distance with CP ranges, shiny availability, and
+        special features.
         """
         try:
             eggs = await api_client.get_eggs()
@@ -90,7 +91,10 @@ def register_egg_tools(mcp: FastMCP) -> None:
             shiny_eggs = len([e for e in eggs if e.can_be_shiny])
             regional_eggs = len([e for e in eggs if e.is_regional])
 
-            result += f"**Summary:** {total_eggs} Pokemon in eggs, {shiny_eggs} can be shiny, {regional_eggs} are regional\n"
+            result += (
+                f"**Summary:** {total_eggs} Pokemon in eggs, {shiny_eggs} can be "
+                f"shiny, {regional_eggs} are regional\n"
+            )
 
         except Exception as e:
             logger.exception("Error fetching egg hatches: %s", e)
@@ -120,7 +124,10 @@ def register_egg_tools(mcp: FastMCP) -> None:
             if not filtered_eggs:
                 return f"No Pokemon found in {normalized_distance} eggs."
 
-            result = f"# {normalized_distance} Egg Hatches ({len(filtered_eggs)} Pokemon)\n\n"
+            result = (
+                f"# {normalized_distance} Egg Hatches "
+                f"({len(filtered_eggs)} Pokemon)\n\n"
+            )
 
             for egg in filtered_eggs:
                 result += format_egg_summary(egg) + "\n\n"
@@ -129,8 +136,10 @@ def register_egg_tools(mcp: FastMCP) -> None:
             shiny_count = len([e for e in filtered_eggs if e.can_be_shiny])
             regional_count = len([e for e in filtered_eggs if e.is_regional])
 
-            result += f"**Summary:** {len(filtered_eggs)} Pokemon in {distance} eggs, "
-            result += f"{shiny_count} can be shiny, {regional_count} are regional\n"
+            result += (
+                f"**Summary:** {len(filtered_eggs)} Pokemon in {distance} eggs, "
+                f"{shiny_count} can be shiny, {regional_count} are regional\n"
+            )
 
         except Exception as e:
             logger.exception("Error fetching %s egg hatches: %s", distance, e)
@@ -185,7 +194,10 @@ def register_egg_tools(mcp: FastMCP) -> None:
                     for egg in egg_list:
                         result += format_egg_summary(egg) + "\n\n"
 
-            result += f"**Total:** {len(shiny_eggs)} shiny-eligible Pokemon out of {len(eggs)} total in eggs\n"
+            result += (
+                f"**Total:** {len(shiny_eggs)} shiny-eligible Pokemon out of "
+                f"{len(eggs)} total in eggs\n"
+            )
 
         except Exception as e:
             logger.exception("Error fetching shiny egg hatches: %s", e)
@@ -234,8 +246,8 @@ def register_egg_tools(mcp: FastMCP) -> None:
     async def get_regional_egg_pokemon() -> str:
         """Get Pokemon from eggs that are region-locked.
 
-        Returns regional Pokemon that can only be obtained from eggs in specific regions,
-        useful for planning trades or travel.
+        Returns regional Pokemon that can only be obtained from eggs in specific
+        regions, useful for planning trades or travel.
         """
         try:
             eggs = await api_client.get_eggs()
@@ -300,8 +312,10 @@ def register_egg_tools(mcp: FastMCP) -> None:
             shiny_count = len([e for e in gift_eggs if e.can_be_shiny])
             regional_count = len([e for e in gift_eggs if e.is_regional])
 
-            result += f"**Summary:** {len(gift_eggs)} Pokemon from gifts, "
-            result += f"{shiny_count} can be shiny, {regional_count} are regional\n"
+            result += (
+                f"**Summary:** {len(gift_eggs)} Pokemon from gifts, "
+                f"{shiny_count} can be shiny, {regional_count} are regional\n"
+            )
 
         except Exception as e:
             logger.exception("Error fetching gift exchange Pokemon: %s", e)
@@ -311,10 +325,10 @@ def register_egg_tools(mcp: FastMCP) -> None:
 
     @mcp.tool()
     async def get_route_gift_pokemon() -> str:
-        """Get Pokemon that are available from route gift eggs (7km eggs from route gifts).
+        """Get Pokemon that are available from route gift eggs.
 
-        Returns Pokemon that can be hatched from 7km eggs received from route gifts,
-        which often contain special variants.
+        Returns Pokemon that can be hatched from 7km eggs received from route
+        gifts, which often contain special variants.
         """
         try:
             eggs = await api_client.get_eggs()
@@ -333,8 +347,10 @@ def register_egg_tools(mcp: FastMCP) -> None:
             shiny_count = len([e for e in route_gift_eggs if e.can_be_shiny])
             regional_count = len([e for e in route_gift_eggs if e.is_regional])
 
-            result += f"**Summary:** {len(route_gift_eggs)} Pokemon from route gifts, "
-            result += f"{shiny_count} can be shiny, {regional_count} are regional\n"
+            result += (
+                f"**Summary:** {len(route_gift_eggs)} Pokemon from route gifts, "
+                f"{shiny_count} can be shiny, {regional_count} are regional\n"
+            )
 
         except Exception as e:
             logger.exception("Error fetching route gift Pokemon: %s", e)
@@ -367,7 +383,10 @@ def register_egg_tools(mcp: FastMCP) -> None:
             # Statistics
             shiny_count = len([e for e in as_eggs if e.can_be_shiny])
 
-            result += f"**Summary:** {len(as_eggs)} Adventure Sync Pokemon, {shiny_count} can be shiny\n"
+            result += (
+                f"**Summary:** {len(as_eggs)} Adventure Sync Pokemon, "
+                f"{shiny_count} can be shiny\n"
+            )
             result += "\n**Tip:** Walk 25km or 50km per week to earn Adventure Sync rewards!\n"
 
         except Exception as e:
@@ -381,7 +400,7 @@ def register_egg_tools(mcp: FastMCP) -> None:
         """Get egg incubation recommendations based on specified priority.
 
         Args:
-            priority: Priority type - "shiny" for shiny hunting, "rare" for uncommon Pokemon,
+            priority: Priority type - "shiny" for shiny hunting, "rare" for uncommon,
                      "quick" for fast hatches, or "distance" for specific distances
 
         Returns recommended eggs to prioritize based on the criteria.

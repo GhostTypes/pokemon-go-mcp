@@ -38,7 +38,10 @@ def register_research_tools(mcp: FastMCP) -> None:
             result = (
                 f"# Current Field Research Tasks (as of {get_current_time_str()})\n\n"
             )
-            result += "**Important:** You get ONE of the possible rewards listed for each task, not all of them.\n\n"
+            result += (
+                "**Important:** You get ONE of the possible rewards listed for each task, "
+                "not all of them.\n\n"
+            )
 
             # Group by task type if available
             catch_tasks = []
@@ -160,7 +163,10 @@ def register_research_tools(mcp: FastMCP) -> None:
                 [t for t in matching_tasks if any(r.can_be_shiny for r in t.rewards)]
             )
 
-            result += f"**Summary:** {len(matching_tasks)} {task_type} tasks, {shiny_tasks} have potential shiny rewards\n"
+            result += (
+                f"**Summary:** {len(matching_tasks)} {task_type} tasks, "
+                f"{shiny_tasks} have potential shiny rewards\n"
+            )
 
         except Exception as e:
             logger.exception("Error fetching %s research: %s", task_type, e)
@@ -366,7 +372,7 @@ def register_research_tools(mcp: FastMCP) -> None:
                         if any(rare in reward.name.lower() for rare in rare_pokemon):
                             tasks.append(task)
                             break
-                result += "These tasks reward rare or pseudo-legendary Pokemon:\n\n"
+                    result += "These tasks reward rare or pseudo-legendary Pokemon:\n\n"
 
             else:  # balanced
                 # Mix of shiny potential and reasonable difficulty
@@ -380,7 +386,9 @@ def register_research_tools(mcp: FastMCP) -> None:
                     if has_shiny or is_moderate:
                         tasks.append(task)
 
-                result += "Balanced recommendations considering effort vs. reward:\n\n"
+                    result += (
+                        "Balanced recommendations considering effort vs. reward:\n\n"
+                    )
 
             if not tasks:
                 return f"No research tasks found matching {priority} priority criteria."

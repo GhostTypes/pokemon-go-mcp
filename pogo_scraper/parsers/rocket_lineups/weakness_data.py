@@ -8,7 +8,8 @@ def calculate_weakness_effectiveness(
 ) -> float:
     """
     Calculate type effectiveness multiplier based on Pokemon type chart
-    Returns: 2.0 for super effective, 1.0 for normal, 0.5 for not very effective, 0.0 for no effect
+    Returns: 2.0 for super effective, 1.0 for normal,
+             0.5 for not very effective, 0.0 for no effect
     """
     # Pokemon Go type effectiveness chart
     TYPE_CHART = {

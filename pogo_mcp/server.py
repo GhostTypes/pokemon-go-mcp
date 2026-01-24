@@ -257,7 +257,10 @@ def register_cross_cutting_tools() -> None:
                 result += "• The name might be misspelled\n"
                 result += "• The Pokemon might be in a different form or region\n"
             else:
-                result += f"✅ **{pokemon_name.title()}** found in Pokemon Go! Check the sources above for details.\n"
+                result += (
+                    f"✅ **{pokemon_name.title()}** found in Pokemon Go! "
+                    f"Check the sources above for details.\n"
+                )
 
         except Exception as e:
             logger.exception("Error searching for Pokemon: %s", e)
@@ -557,7 +560,10 @@ def register_cross_cutting_tools() -> None:
         try:
             api_client.clear_cache()
             logger.info("Cache cleared successfully")
-            return f"✅ Cache cleared successfully at {get_current_time_str()}\n\nFresh data will be fetched on the next request."
+            return (
+                f"✅ Cache cleared successfully at {get_current_time_str()}\n\n"
+                f"Fresh data will be fetched on the next request."
+            )
 
         except Exception as e:
             logger.exception("Error clearing cache: %s", e)

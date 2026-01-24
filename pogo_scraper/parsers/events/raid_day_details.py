@@ -42,7 +42,8 @@ async def parse_raid_day_details(soup: BeautifulSoup, event: dict) -> None:
         ):
             event["extraData"]["raidday"] = raidday_data
             logger.info(
-                "Raid Day details: %s bosses, %s bonuses, %s ticket bonuses, %s research, %s shinies",
+                "Raid Day details: %s bosses, %s bonuses, %s ticket bonuses, "
+                "%s research, %s shinies",
                 len(bosses),
                 len(free_bonuses),
                 len(ticket_bonuses),

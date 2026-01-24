@@ -260,7 +260,7 @@ class LeekDuckAPIClient:
         return promo_codes
 
     def extract_raids_from_events(self, events_data: list[EventInfo]) -> list[RaidInfo]:
-        """Extract raid boss data from events as fallback when raids.json is unavailable."""
+        """Extract raid boss data from events as fallback when raids.json unavailable."""
         extracted_raids = []
         datetime.now(timezone.utc)
 
@@ -297,7 +297,7 @@ class LeekDuckAPIClient:
             return "Unknown"
 
         for event in events_data:
-            # Check if event contains raid data (skip time check for now - let server handle filtering)
+            # Check if event contains raid data (skip time check - let server handle filtering)
             if event.extra_data and "raidbattles" in event.extra_data:
                 raid_data = event.extra_data["raidbattles"]
                 bosses = raid_data.get("bosses", [])

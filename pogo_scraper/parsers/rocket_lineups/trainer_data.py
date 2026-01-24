@@ -52,7 +52,8 @@ def parse_rocket_trainer(profile: "bs4.element.Tag", base_url: str) -> dict | No
         type_img = profile.select_one(".type img")
         if type_img:
             type_src = type_img.get("src", "")
-            # Extract type name from image path (e.g., "/assets/img/type_symbols/normal.png" -> "normal")
+            # Extract type name from image path
+            # (e.g., "/assets/img/type_symbols/normal.png" -> "normal")
             if type_src:
                 type_name = type_src.split("/")[-1].split(".")[0]
                 trainer["type"] = type_name
