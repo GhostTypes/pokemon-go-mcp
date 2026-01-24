@@ -1,0 +1,61 @@
+# ============================================================
+# pytest Configuration for MCP Server Integration Tests
+# ============================================================
+# Add this section to your pyproject.toml
+# ============================================================
+
+[tool.pytest.ini_options]
+# Enable automatic async test handling (no @pytest.mark.asyncio needed)
+asyncio_mode = "auto"
+
+# Set fixture scope for event loop
+asyncio_default_fixture_loop_scope = "function"
+
+# Test discovery paths
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+
+# Useful pytest options
+addopts = [
+    "-v",              # Verbose output
+    "--tb=short",      # Shorter tracebacks
+    "-ra",             # Show summary of all test results
+]
+
+# Markers for organizing tests
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests that require external services",
+]
+
+
+# ============================================================
+# Project Dependencies
+# ============================================================
+# Add these to your [project.optional-dependencies] or dev group
+
+# [project.optional-dependencies]
+# test = [
+#     "pytest>=8.0.0",
+#     "pytest-asyncio>=0.24.0",
+#     "inline-snapshot>=0.10.0",  # Optional: for snapshot testing
+#     "dirty-equals>=0.7.0",       # Optional: for flexible assertions
+# ]
+
+# Or if using poetry/pdm:
+# [tool.poetry.group.dev.dependencies]
+# pytest = "^8.0"
+# pytest-asyncio = "^0.24"
+
+
+# ============================================================
+# Alternative: pytest.ini
+# ============================================================
+# If you prefer a separate pytest.ini file:
+#
+# [pytest]
+# asyncio_mode = auto
+# asyncio_default_fixture_loop_scope = function
+# testpaths = tests
+# addopts = -v --tb=short

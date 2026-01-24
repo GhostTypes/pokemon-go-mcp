@@ -17,7 +17,8 @@ dependencies = [
     "httpx>=0.27.0",
     "python-dateutil>=2.8.2",
     "typing-extensions>=4.0.0",
-	"emoji>=2.14.1",
+    "emoji>=2.14.1",
+    "pywin32"
 ]
 
 [project.optional-dependencies]

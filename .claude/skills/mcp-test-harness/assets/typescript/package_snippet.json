@@ -1,0 +1,26 @@
+{
+  "// INSTRUCTIONS": "Merge these sections into your existing package.json",
+  
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage"
+  },
+  
+  "devDependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "@types/node": "^20.0.0",
+    "@vitest/coverage-v8": "^2.0.0",
+    "@vitest/ui": "^2.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^2.0.0"
+  },
+  
+  "// NOTES": [
+    "1. Run 'npm install' after updating package.json",
+    "2. Copy vitest.config.ts to your project root",
+    "3. Create tests/ directory and add test files",
+    "4. Run 'npm test' to execute tests"
+  ]
+}
