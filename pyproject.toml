@@ -47,6 +47,7 @@ dev = [
     "types-requests",
     "mypy>=1.0.0",
     "ruff>=0.1.0",
+    "pytest-cov>=7.0.0",
 ]
 
 [tool.black]
