@@ -4,7 +4,7 @@ import json
 import logging
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Optional
+from typing import Any, Optional
 
 from .types import (
     EggInfo,
@@ -30,14 +30,14 @@ class LeekDuckAPIClient:
     def __init__(self, timeout: int = 30) -> None:
         """Initialize the API client."""
         self.timeout = timeout
-        self._cache: dict[str, list[dict]] = {}
+        self._cache: dict[str, list[dict[str, Any]]] = {}
         self._cache_timestamp: dict[str, datetime] = {}
         self._cache_duration = 86400  # 24 hours cache
 
         # Path to local scraped data directory
         self._local_data_dir = Path(__file__).parent.parent / "data"
 
-    def _load_local_data(self, endpoint: str) -> list[dict]:
+    def _load_local_data(self, endpoint: str) -> list[dict[str, Any]]:
         """Load data from local JSON files."""
         local_file = self._local_data_dir / f"{endpoint}.json"
 
@@ -49,14 +49,14 @@ class LeekDuckAPIClient:
 
         try:
             with open(local_file, encoding="utf-8") as f:
-                data = json.load(f)
+                data: list[dict[str, Any]] = json.load(f)
                 logger.info(f"Loaded {len(data)} items from local {endpoint} data")
                 return data
         except Exception as e:
             logger.exception(f"Error loading local {endpoint} data: {e}")
             return []
 
-    async def _fetch_data(self, endpoint: str) -> list[dict]:
+    async def _fetch_data(self, endpoint: str) -> list[dict[str, Any]]:
         """Fetch data from local files with simple caching."""
         now = datetime.now(timezone.utc)
 
@@ -224,7 +224,7 @@ class LeekDuckAPIClient:
                 title=item.get("title", ""),
                 quote=item.get("quote", ""),
                 image=item.get("image", ""),
-                type=item.get("type"),
+                type=item.get("type", ""),
                 lineups=lineups,
             )
             trainers.append(trainer)

@@ -95,7 +95,9 @@ def register_cross_cutting_tools() -> None:
                     sources[egg.name].append(f"Egg: {egg.egg_type}")
 
             # From Team Rocket lineups
-            rocket_lineups = cast(list[RocketTrainerInfo], all_data.get("rocket_lineups", []))
+            rocket_lineups = cast(
+                list[RocketTrainerInfo], all_data.get("rocket_lineups", [])
+            )
             for trainer in rocket_lineups:
                 for slot in trainer.lineups:
                     for shadow_pokemon in slot.pokemon:
@@ -176,9 +178,7 @@ def register_cross_cutting_tools() -> None:
 
             # Search in raids
             raids = cast(list[RaidInfo], all_data["raids"])
-            raid_matches = [
-                r for r in raids if name_lower in r.name.lower()
-            ]
+            raid_matches = [r for r in raids if name_lower in r.name.lower()]
             if raid_matches:
                 found_anywhere = True
                 result += "## ⚔️ Raids\n\n"
@@ -227,7 +227,9 @@ def register_cross_cutting_tools() -> None:
                 result += "\n"
 
             # Search in Team Rocket lineups
-            rocket_lineups = cast(list[RocketTrainerInfo], all_data.get("rocket_lineups", []))
+            rocket_lineups = cast(
+                list[RocketTrainerInfo], all_data.get("rocket_lineups", [])
+            )
             rocket_matches: list[str] = []
             for trainer in rocket_lineups:
                 for slot in trainer.lineups:
@@ -303,7 +305,9 @@ def register_cross_cutting_tools() -> None:
             result = f"# 🎯 Daily Pokemon Go Priorities ({get_current_time_str()})\n\n"
 
             # Active events
-            active_events: list[EventInfo] = [e for e in events_data if is_event_active(e, current_time)]
+            active_events: list[EventInfo] = [
+                e for e in events_data if is_event_active(e, current_time)
+            ]
 
             if active_events:
                 result += "## 🔥 Active Events (Top Priority!)\n\n"
@@ -350,7 +354,9 @@ def register_cross_cutting_tools() -> None:
                 result += "⚠️ No raid data available from either raids.json or active events.\n\n"
 
             # Quick research tasks
-            research_data: list[ResearchTaskInfo] = cast(list[ResearchTaskInfo], all_data.get("research", []))
+            research_data: list[ResearchTaskInfo] = cast(
+                list[ResearchTaskInfo], all_data.get("research", [])
+            )
             easy_research: list[ResearchTaskInfo] = []
             for task in research_data:
                 if any(
@@ -461,20 +467,18 @@ def register_cross_cutting_tools() -> None:
             research = cast(list[ResearchTaskInfo], all_data["research"])
             eggs = cast(list[EggInfo], all_data["eggs"])
 
-            active_events = [
-                e for e in events if is_event_active(e, current_time)
-            ]
+            active_events = [e for e in events if is_event_active(e, current_time)]
             shiny_raids = [r for r in raids if r.can_be_shiny]
             shiny_research = [
-                t
-                for t in research
-                if any(r.can_be_shiny for r in t.rewards)
+                t for t in research if any(r.can_be_shiny for r in t.rewards)
             ]
             shiny_eggs = [e for e in eggs if e.can_be_shiny]
 
             # Count shiny Shadow Pokemon
             shiny_shadows = 0
-            rocket_lineups = cast(list[RocketTrainerInfo], all_data.get("rocket_lineups", []))
+            rocket_lineups = cast(
+                list[RocketTrainerInfo], all_data.get("rocket_lineups", [])
+            )
             for trainer in rocket_lineups:
                 for slot in trainer.lineups:
                     for shadow_pokemon in slot.pokemon:
