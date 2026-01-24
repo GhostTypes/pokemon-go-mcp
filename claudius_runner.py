@@ -123,6 +123,7 @@ def run_claudius_loop(max_loops, agents_json=None):
                 text=True,
                 bufsize=1,  # Line buffered
                 encoding="utf-8",
+                shell=True,  # Required on Windows for PATH resolution
                 creationflags=creation_flags,
             )
         except FileNotFoundError:
