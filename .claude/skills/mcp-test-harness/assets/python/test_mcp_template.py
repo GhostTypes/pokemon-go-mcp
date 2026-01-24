@@ -18,14 +18,14 @@ class TestToolDiscovery:
         """All expected tools should appear in tools/list."""
         tools = await client.list_tools()
         tool_names = [t.name for t in tools]
-        
+
         for expected in expected_tools:
             assert expected in tool_names, f"Expected tool '{expected}' not found"
 
     async def test_tools_have_descriptions(self, client: Client):
         """Each tool should have a non-empty description."""
         tools = await client.list_tools()
-        
+
         for tool in tools:
             assert tool.description, f"Tool '{tool.name}' has no description"
             assert len(tool.description) > 10, f"Tool '{tool.name}' description too short"
@@ -47,7 +47,7 @@ class TestExampleTool:
                 "param1": "value1",
             }
         )
-        
+
         # TODO: Update assertion to match your tool's expected output
         assert result.content[0].text is not None
         # assert result.content[0].text == "expected_output"
@@ -58,7 +58,7 @@ class TestExampleTool:
             name="example_tool_1",
             arguments={}  # Missing required params
         )
-        
+
         # Should indicate an error
         assert result.is_error or "error" in result.content[0].text.lower()
 
@@ -73,7 +73,7 @@ class TestExampleTool:
             name="example_tool_1",
             arguments={"param1": input_val}
         )
-        
+
         assert result.content[0].text == expected_output
 
 
@@ -86,7 +86,7 @@ class TestErrorHandling:
             name="nonexistent_tool_xyz",
             arguments={}
         )
-        
+
         assert result.is_error
 
     async def test_error_messages_are_actionable(self, client: Client):
@@ -99,7 +99,7 @@ class TestErrorHandling:
             name="example_tool_1",
             arguments={"param1": "invalid_value_that_causes_error"}
         )
-        
+
         if result.is_error:
             error_text = result.content[0].text.lower()
             # Error should be descriptive, not just "error"
@@ -114,10 +114,10 @@ class TestResources:
         """All expected resources should be listed."""
         if not expected_resources:
             pytest.skip("No resources expected")
-        
+
         resources = await client.list_resources()
         resource_uris = [r.uri for r in resources]
-        
+
         for expected in expected_resources:
             assert expected in resource_uris
 
@@ -130,9 +130,9 @@ class TestPrompts:
         """All expected prompts should be listed."""
         if not expected_prompts:
             pytest.skip("No prompts expected")
-        
+
         prompts = await client.list_prompts()
         prompt_names = [p.name for p in prompts]
-        
+
         for expected in expected_prompts:
             assert expected in prompt_names

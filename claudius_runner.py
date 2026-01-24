@@ -13,10 +13,10 @@ Requirements:
     - Claude Code must be installed and authenticated
 """
 
-import subprocess
-import os
-import sys
 import argparse
+import os
+import subprocess
+import sys
 
 # --- CONFIGURATION ---
 
@@ -162,7 +162,7 @@ def run_claudius_loop(max_loops, agents_json=None):
     claude_command = build_claude_command(agents_json)
 
     if agents_json:
-        print(f"[Claudius] Sub-agents loaded from --agents flag")
+        print("[Claudius] Sub-agents loaded from --agents flag")
 
     loop_count = 0
 
@@ -185,7 +185,7 @@ def run_claudius_loop(max_loops, agents_json=None):
                 stderr=subprocess.STDOUT,
                 text=True,
                 bufsize=1,  # Line buffered
-                encoding='utf-8',
+                encoding="utf-8",
                 creationflags=creation_flags
             )
         except FileNotFoundError:
@@ -212,14 +212,14 @@ def run_claudius_loop(max_loops, agents_json=None):
 
                     # Check for iteration complete signal
                     if "<iteration_complete>" in line.lower():
-                        print(f"\n[Claudius] Signal Detected: ITERATION_COMPLETE")
+                        print("\n[Claudius] Signal Detected: ITERATION_COMPLETE")
                         iteration_success = True
                         kill_process(process)
                         break
 
                     # Check for workflow complete signal
                     if "<workflow_complete>" in line.lower():
-                        print(f"\n[Claudius] Signal Detected: WORKFLOW_COMPLETE")
+                        print("\n[Claudius] Signal Detected: WORKFLOW_COMPLETE")
                         workflow_finished = True
                         kill_process(process)
                         break
@@ -303,15 +303,15 @@ def main():
         print("[Error] max_loops must be at least 1")
         sys.exit(1)
 
-    print(f"[Claudius] Starting autonomous code quality remediation loop")
+    print("[Claudius] Starting autonomous code quality remediation loop")
     print(f"[Claudius] Max iterations: {args.max_loops}")
     print(f"[Claudius] Working directory: {os.getcwd()}")
-    print(f"[Claudius] Branch: code-quality-remediation")
-    print(f"[Claudius] PRD file: PRD.md")
-    print(f"[Claudius] Progress file: progress.txt")
-    print(f"[Claudius] Sub-agents: code-quality, mypy-specialist, mcp-maintainer, leekduck-scraper-architect")
-    print(f"\n[Claudius] This will run AUTONOMOUSLY overnight.")
-    print(f"[Claudius] Press Ctrl+C to stop at any time.")
+    print("[Claudius] Branch: code-quality-remediation")
+    print("[Claudius] PRD file: PRD.md")
+    print("[Claudius] Progress file: progress.txt")
+    print("[Claudius] Sub-agents: code-quality, mypy-specialist, mcp-maintainer, leekduck-scraper-architect")
+    print("\n[Claudius] This will run AUTONOMOUSLY overnight.")
+    print("[Claudius] Press Ctrl+C to stop at any time.")
     print(f"\n{'='*60}\n")
 
     run_claudius_loop(args.max_loops, args.agents)

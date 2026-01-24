@@ -8,19 +8,20 @@ import json
 import os
 import sys
 import time
+from urllib.parse import urlparse
+
 import cloudscraper
 from bs4 import BeautifulSoup
 from markdownify import markdownify as md
-from urllib.parse import urlparse
-from pathlib import Path
+
 
 def get_scraper():
     """Initialize cloudscraper with proper settings"""
     return cloudscraper.create_scraper(
         browser={
-            'browser': 'chrome',
-            'platform': 'windows',
-            'desktop': True
+            "browser": "chrome",
+            "platform": "windows",
+            "desktop": True
         },
         delay=1
     )
@@ -28,25 +29,25 @@ def get_scraper():
 def get_headers():
     """Get headers for requests"""
     return {
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-        'Accept-Language': 'en-US,en;q=0.9',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.9",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
     }
 
 def extract_main_content(html):
     """Extract the main documentation content from the HTML"""
-    soup = BeautifulSoup(html, 'lxml')
+    soup = BeautifulSoup(html, "lxml")
 
     # Find the main content area - Ruff docs use <article> tag for main content
-    main_content = soup.find('article')
+    main_content = soup.find("article")
 
     if not main_content:
         # Fallback: try to find main tag
-        main_content = soup.find('main')
+        main_content = soup.find("main")
 
     if not main_content:
         # Last resort: return the whole body
-        main_content = soup.find('body')
+        main_content = soup.find("body")
 
     return main_content
 
@@ -56,23 +57,23 @@ def clean_content(content_element):
         return None
 
     # Make a copy to avoid modifying the original
-    content = BeautifulSoup(str(content_element), 'lxml')
+    content = BeautifulSoup(str(content_element), "lxml")
 
     # Remove common navigation and UI elements
     elements_to_remove = [
-        'nav',
-        'header',
-        'footer',
-        '.md-header',
-        '.md-footer',
-        '.md-sidebar',
-        '.md-nav',
-        '.md-search',
-        '.md-tabs',
-        'script',
-        'style',
-        '.md-content__button',
-        '.md-source',
+        "nav",
+        "header",
+        "footer",
+        ".md-header",
+        ".md-footer",
+        ".md-sidebar",
+        ".md-nav",
+        ".md-search",
+        ".md-tabs",
+        "script",
+        "style",
+        ".md-content__button",
+        ".md-source",
     ]
 
     for selector in elements_to_remove:
@@ -106,7 +107,7 @@ def scrape_ruff_page(scraper, url):
         main_content = extract_main_content(response.text)
 
         if not main_content:
-            print(f"  [WARNING] Could not find main content", file=sys.stderr)
+            print("  [WARNING] Could not find main content", file=sys.stderr)
             return None
 
         # Clean the content
@@ -118,7 +119,7 @@ def scrape_ruff_page(scraper, url):
         return markdown
 
     except Exception as e:
-        print(f"  [ERROR] {str(e)}", file=sys.stderr)
+        print(f"  [ERROR] {e!s}", file=sys.stderr)
         return None
 
 def url_to_filename(url):
@@ -130,25 +131,24 @@ def url_to_filename(url):
         https://docs.astral.sh/ruff/rules/unused-import/ -> rules__unused-import.md
     """
     parsed = urlparse(url)
-    path = parsed.path.strip('/')
+    path = parsed.path.strip("/")
 
     # Remove the 'ruff/' prefix if present
-    if path.startswith('ruff/'):
-        path = path[5:]
+    path = path.removeprefix("ruff/")
 
     if not path:
-        return 'index.md'
+        return "index.md"
 
     # Replace slashes with double underscores
-    filename = path.replace('/', '__') + '.md'
+    filename = path.replace("/", "__") + ".md"
 
     return filename
 
 def load_page_list(json_file):
     """Load the list of pages to scrape from JSON file"""
-    with open(json_file, 'r') as f:
+    with open(json_file) as f:
         data = json.load(f)
-    return data['pages']
+    return data["pages"]
 
 def bulk_scrape(json_file, output_dir, delay=0.5, resume_from=0):
     """
@@ -171,7 +171,7 @@ def bulk_scrape(json_file, output_dir, delay=0.5, resume_from=0):
     if resume_from > 0:
         print(f"Resuming from index {resume_from}", file=sys.stderr)
 
-    print("", file=sys.stderr)
+    print(file=sys.stderr)
 
     # Create output directory
     os.makedirs(output_dir, exist_ok=True)
@@ -196,8 +196,8 @@ def bulk_scrape(json_file, output_dir, delay=0.5, resume_from=0):
 
         # Progress indicator
         progress = f"[{i+1}/{total}]"
-        short_url = url.replace('https://docs.astral.sh/ruff/', '')
-        print(f"{progress} {short_url}", file=sys.stderr, end=' ... ')
+        short_url = url.replace("https://docs.astral.sh/ruff/", "")
+        print(f"{progress} {short_url}", file=sys.stderr, end=" ... ")
         sys.stderr.flush()
 
         # Check if file already exists
@@ -211,12 +211,12 @@ def bulk_scrape(json_file, output_dir, delay=0.5, resume_from=0):
 
         if markdown:
             # Save to file
-            with open(filepath, 'w', encoding='utf-8') as f:
+            with open(filepath, "w", encoding="utf-8") as f:
                 f.write(markdown)
             print(f"[SUCCESS] Saved to {filename}", file=sys.stderr)
             success_count += 1
         else:
-            print(f"[FAILED]", file=sys.stderr)
+            print("[FAILED]", file=sys.stderr)
             error_count += 1
 
         # Delay between requests to avoid rate limiting
@@ -224,7 +224,7 @@ def bulk_scrape(json_file, output_dir, delay=0.5, resume_from=0):
             time.sleep(delay)
 
     # Print summary
-    print("", file=sys.stderr)
+    print(file=sys.stderr)
     print("=" * 70, file=sys.stderr)
     print("Scraping complete!", file=sys.stderr)
     print(f"  Success: {success_count}", file=sys.stderr)
@@ -257,7 +257,7 @@ def main():
         print(f"  {sys.argv[0]} {json_file} {output_dir} {delay} <last_index>", file=sys.stderr)
         sys.exit(1)
     except Exception as e:
-        print(f"\nError: {str(e)}", file=sys.stderr)
+        print(f"\nError: {e!s}", file=sys.stderr)
         import traceback
         traceback.print_exc()
         sys.exit(1)

@@ -23,7 +23,7 @@ class TestRaidTools:
         mock_mcp = MockMCP()
         register_raid_tools(mock_mcp)
 
-        get_current_raids = captured_tools['get_current_raids']
+        get_current_raids = captured_tools["get_current_raids"]
         result = await get_current_raids()
 
         assert isinstance(result, str)
@@ -47,7 +47,7 @@ class TestRaidTools:
         mock_mcp = MockMCP()
         register_raid_tools(mock_mcp)
 
-        get_raid_by_tier = captured_tools['get_raid_by_tier']
+        get_raid_by_tier = captured_tools["get_raid_by_tier"]
         result = await get_raid_by_tier(tier=sample_raid_tier)
 
         assert isinstance(result, str)
@@ -70,7 +70,7 @@ class TestRaidTools:
         mock_mcp = MockMCP()
         register_raid_tools(mock_mcp)
 
-        get_raid_by_tier = captured_tools['get_raid_by_tier']
+        get_raid_by_tier = captured_tools["get_raid_by_tier"]
         result = await get_raid_by_tier(tier="5")
 
         assert isinstance(result, str)
@@ -93,7 +93,7 @@ class TestRaidTools:
         mock_mcp = MockMCP()
         register_raid_tools(mock_mcp)
 
-        get_shiny_raids = captured_tools['get_shiny_raids']
+        get_shiny_raids = captured_tools["get_shiny_raids"]
         result = await get_shiny_raids()
 
         assert isinstance(result, str)
@@ -117,7 +117,7 @@ class TestRaidTools:
         mock_mcp = MockMCP()
         register_raid_tools(mock_mcp)
 
-        search_raid_boss = captured_tools['search_raid_boss']
+        search_raid_boss = captured_tools["search_raid_boss"]
         result = await search_raid_boss(pokemon_name=sample_pokemon_name)
 
         assert isinstance(result, str)
@@ -140,7 +140,7 @@ class TestRaidTools:
         mock_mcp = MockMCP()
         register_raid_tools(mock_mcp)
 
-        search_raid_boss = captured_tools['search_raid_boss']
+        search_raid_boss = captured_tools["search_raid_boss"]
         result = await search_raid_boss(pokemon_name="magikarp")
 
         assert isinstance(result, str)
@@ -163,7 +163,7 @@ class TestRaidTools:
         mock_mcp = MockMCP()
         register_raid_tools(mock_mcp)
 
-        get_raids_by_type = captured_tools['get_raids_by_type']
+        get_raids_by_type = captured_tools["get_raids_by_type"]
         result = await get_raids_by_type(pokemon_type="water")
 
         assert isinstance(result, str)
@@ -186,7 +186,7 @@ class TestRaidTools:
         mock_mcp = MockMCP()
         register_raid_tools(mock_mcp)
 
-        get_weather_boosted_raids = captured_tools['get_weather_boosted_raids']
+        get_weather_boosted_raids = captured_tools["get_weather_boosted_raids"]
         result = await get_weather_boosted_raids(weather="sunny")
 
         assert isinstance(result, str)
@@ -209,7 +209,7 @@ class TestRaidTools:
         mock_mcp = MockMCP()
         register_raid_tools(mock_mcp)
 
-        get_raid_recommendations = captured_tools['get_raid_recommendations']
+        get_raid_recommendations = captured_tools["get_raid_recommendations"]
         result = await get_raid_recommendations()
 
         assert isinstance(result, str)
@@ -233,7 +233,7 @@ class TestRaidTools:
         mock_mcp = MockMCP()
         register_raid_tools(mock_mcp)
 
-        get_raid_recommendations = captured_tools['get_raid_recommendations']
+        get_raid_recommendations = captured_tools["get_raid_recommendations"]
         result = await get_raid_recommendations(shiny_only=True)
 
         assert isinstance(result, str)
@@ -256,7 +256,7 @@ class TestRaidTools:
         mock_mcp = MockMCP()
         register_raid_tools(mock_mcp)
 
-        get_raid_recommendations = captured_tools['get_raid_recommendations']
+        get_raid_recommendations = captured_tools["get_raid_recommendations"]
         result = await get_raid_recommendations(tier="5")
 
         assert isinstance(result, str)

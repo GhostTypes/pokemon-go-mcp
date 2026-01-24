@@ -33,7 +33,7 @@ class TestCrossCuttingTools:
         try:
             register_cross_cutting_tools()
 
-            get_all_shiny_pokemon = captured_tools['get_all_shiny_pokemon']
+            get_all_shiny_pokemon = captured_tools["get_all_shiny_pokemon"]
             result = await get_all_shiny_pokemon()
 
             assert isinstance(result, str)
@@ -70,7 +70,7 @@ class TestCrossCuttingTools:
         try:
             register_cross_cutting_tools()
 
-            search_pokemon_everywhere = captured_tools['search_pokemon_everywhere']
+            search_pokemon_everywhere = captured_tools["search_pokemon_everywhere"]
             result = await search_pokemon_everywhere(pokemon_name=sample_pokemon_name)
 
             assert isinstance(result, str)
@@ -107,7 +107,7 @@ class TestCrossCuttingTools:
         try:
             register_cross_cutting_tools()
 
-            search_pokemon_everywhere = captured_tools['search_pokemon_everywhere']
+            search_pokemon_everywhere = captured_tools["search_pokemon_everywhere"]
             result = await search_pokemon_everywhere(pokemon_name="xyznotfound123")
 
             assert isinstance(result, str)
@@ -144,7 +144,7 @@ class TestCrossCuttingTools:
         try:
             register_cross_cutting_tools()
 
-            get_daily_priorities = captured_tools['get_daily_priorities']
+            get_daily_priorities = captured_tools["get_daily_priorities"]
             result = await get_daily_priorities()
 
             assert isinstance(result, str)
@@ -181,7 +181,7 @@ class TestCrossCuttingTools:
         try:
             register_cross_cutting_tools()
 
-            get_server_status = captured_tools['get_server_status']
+            get_server_status = captured_tools["get_server_status"]
             result = await get_server_status()
 
             assert isinstance(result, str)
@@ -195,8 +195,8 @@ class TestCrossCuttingTools:
     @pytest.mark.asyncio
     async def test_clear_cache(self, ensure_test_data, mcp_server):
         """Test clear_cache tool."""
-        from pogo_mcp.server import register_cross_cutting_tools
         from pogo_mcp.api_client import api_client
+        from pogo_mcp.server import register_cross_cutting_tools
 
         captured_tools = {}
 
@@ -224,7 +224,7 @@ class TestCrossCuttingTools:
             await api_client.get_events()
             assert len(api_client._cache) > 0
 
-            clear_cache = captured_tools['clear_cache']
+            clear_cache = captured_tools["clear_cache"]
             result = await clear_cache()
 
             assert isinstance(result, str)

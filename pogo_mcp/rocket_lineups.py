@@ -1,17 +1,20 @@
 """Team Rocket lineups tools for the Pokemon Go MCP server."""
 
 import logging
-from typing import List, Optional, Dict, Any
 
 from fastmcp import FastMCP
 
 from .api_client import api_client
-from .types import RocketTrainerInfo, ShadowPokemonInfo, RocketLineupSlot
 from .utils import (
-    format_rocket_summary, filter_trainers_by_type, search_rocket_trainers_by_pokemon,
-    get_shiny_shadow_pokemon as get_shiny_shadow_pokemon_util, get_rocket_encounters as get_rocket_encounters_util, calculate_type_effectiveness,
-    get_current_time_str, validate_pokemon_name
+    calculate_type_effectiveness,
+    filter_trainers_by_type,
+    format_rocket_summary,
+    get_current_time_str,
+    search_rocket_trainers_by_pokemon,
+    validate_pokemon_name,
 )
+from .utils import get_rocket_encounters as get_rocket_encounters_util
+from .utils import get_shiny_shadow_pokemon as get_shiny_shadow_pokemon_util
 
 logger = logging.getLogger(__name__)
 
@@ -36,14 +39,14 @@ def register_rocket_tools(mcp: FastMCP) -> None:
             result += f"**Total Trainers:** {len(trainers)}\n\n"
 
             # Organize trainers by type
-            leaders = [t for t in trainers if 'leader' in t.title.lower() or 'boss' in t.title.lower()]
+            leaders = [t for t in trainers if "leader" in t.title.lower() or "boss" in t.title.lower()]
             grunts_by_type = {}
             other_trainers = []
 
             for trainer in trainers:
                 if trainer in leaders:
                     continue
-                elif trainer.type:
+                if trainer.type:
                     trainer_type = trainer.type.title()
                     if trainer_type not in grunts_by_type:
                         grunts_by_type[trainer_type] = []
@@ -84,7 +87,7 @@ def register_rocket_tools(mcp: FastMCP) -> None:
 
         except Exception as e:
             logger.error(f"Error fetching Team Rocket lineups: {e}")
-            return f"Error fetching Team Rocket lineups: {str(e)}"
+            return f"Error fetching Team Rocket lineups: {e!s}"
 
     @mcp.tool()
     async def search_rocket_by_pokemon(pokemon_name: str) -> str:
@@ -130,7 +133,7 @@ def register_rocket_tools(mcp: FastMCP) -> None:
 
         except Exception as e:
             logger.error(f"Error searching for Pokemon in Team Rocket lineups: {e}")
-            return f"Error searching for Pokemon: {str(e)}"
+            return f"Error searching for Pokemon: {e!s}"
 
     @mcp.tool()
     async def get_shiny_shadow_pokemon() -> str:
@@ -159,8 +162,8 @@ def register_rocket_tools(mcp: FastMCP) -> None:
 
                 # Weaknesses
                 if pokemon.weaknesses:
-                    double_weak = pokemon.weaknesses.get('double', [])
-                    single_weak = pokemon.weaknesses.get('single', [])
+                    double_weak = pokemon.weaknesses.get("double", [])
+                    single_weak = pokemon.weaknesses.get("single", [])
 
                     if double_weak:
                         result += f"**Double Weakness:** {', '.join(double_weak).title()}\n"
@@ -179,7 +182,7 @@ def register_rocket_tools(mcp: FastMCP) -> None:
 
         except Exception as e:
             logger.error(f"Error fetching shiny Shadow Pokemon: {e}")
-            return f"Error fetching shiny Shadow Pokemon: {str(e)}"
+            return f"Error fetching shiny Shadow Pokemon: {e!s}"
 
     @mcp.tool()
     async def get_rocket_encounters() -> str:
@@ -217,7 +220,7 @@ def register_rocket_tools(mcp: FastMCP) -> None:
 
                 result += "\n"
 
-            result += f"## 📊 Summary\n\n"
+            result += "## 📊 Summary\n\n"
             result += f"• **{len(encounters)}** trainers offer encounters\n"
             result += f"• **{total_encounters}** total encounter options\n"
             result += f"• **{shiny_encounters}** can be shiny ✨\n"
@@ -226,7 +229,7 @@ def register_rocket_tools(mcp: FastMCP) -> None:
 
         except Exception as e:
             logger.error(f"Error fetching Team Rocket encounters: {e}")
-            return f"Error fetching Team Rocket encounters: {str(e)}"
+            return f"Error fetching Team Rocket encounters: {e!s}"
 
     @mcp.tool()
     async def get_rocket_trainers_by_type(trainer_type: str) -> str:
@@ -275,7 +278,7 @@ def register_rocket_tools(mcp: FastMCP) -> None:
 
         except Exception as e:
             logger.error(f"Error filtering Team Rocket trainers by type: {e}")
-            return f"Error filtering Team Rocket trainers: {str(e)}"
+            return f"Error filtering Team Rocket trainers: {e!s}"
 
     @mcp.tool()
     async def calculate_pokemon_weakness(pokemon_name: str, attacking_type: str) -> str:
@@ -343,8 +346,8 @@ def register_rocket_tools(mcp: FastMCP) -> None:
 
             # Show weaknesses from data
             if target_pokemon.weaknesses:
-                double_weak = target_pokemon.weaknesses.get('double', [])
-                single_weak = target_pokemon.weaknesses.get('single', [])
+                double_weak = target_pokemon.weaknesses.get("double", [])
+                single_weak = target_pokemon.weaknesses.get("single", [])
 
                 if double_weak or single_weak:
                     result += "\n**Known Weaknesses:**\n"
@@ -357,7 +360,7 @@ def register_rocket_tools(mcp: FastMCP) -> None:
 
         except Exception as e:
             logger.error(f"Error calculating Pokemon weakness: {e}")
-            return f"Error calculating weakness: {str(e)}"
+            return f"Error calculating weakness: {e!s}"
 
     @mcp.tool()
     async def get_rocket_trainer_details(trainer_name: str) -> str:
@@ -394,7 +397,7 @@ def register_rocket_tools(mcp: FastMCP) -> None:
             if trainer.type:
                 result += f"**Specialty:** {trainer.type.title()} type\n"
             if trainer.quote:
-                result += f"**Quote:** *\"{trainer.quote}\"*\n"
+                result += f'**Quote:** *"{trainer.quote}"*\n'
 
             result += f"**Total Lineup Slots:** {len(trainer.lineups)}\n\n"
 
@@ -416,8 +419,8 @@ def register_rocket_tools(mcp: FastMCP) -> None:
                         result += f"• **Type:** {' / '.join(pokemon.types).title()}\n"
 
                     if pokemon.weaknesses:
-                        double_weak = pokemon.weaknesses.get('double', [])
-                        single_weak = pokemon.weaknesses.get('single', [])
+                        double_weak = pokemon.weaknesses.get("double", [])
+                        single_weak = pokemon.weaknesses.get("single", [])
 
                         if double_weak:
                             result += f"• **Double weakness:** {', '.join(double_weak).title()}\n"
@@ -442,4 +445,4 @@ def register_rocket_tools(mcp: FastMCP) -> None:
 
         except Exception as e:
             logger.error(f"Error getting trainer details: {e}")
-            return f"Error getting trainer details: {str(e)}"
+            return f"Error getting trainer details: {e!s}"

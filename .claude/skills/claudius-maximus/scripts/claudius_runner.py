@@ -13,10 +13,10 @@ Requirements:
     - Claude Code must be installed and authenticated
 """
 
-import subprocess
-import os
-import sys
 import argparse
+import os
+import subprocess
+import sys
 
 # --- CONFIGURATION ---
 
@@ -67,29 +67,29 @@ RULES:
 def build_claude_command(agents_json=None):
     """Build the Claude CLI command with optional agents."""
     cmd = [
-        "claude", 
+        "claude",
         "-p", SYSTEM_PROMPT,
         "--dangerously-skip-permissions",
         "--no-session-persistence"
     ]
-    
+
     # Add agents if provided
     if agents_json:
         cmd.extend(["--agents", agents_json])
-    
+
     return cmd
 
 
 
 def run_claudius_loop(max_loops, agents_json=None):
     """Main loop that runs Claude iterations until complete or max reached."""
-    
+
     # Pre-flight check
     if not os.path.exists("PRD.md"):
         print("[Error] Missing required file: PRD.md")
         print("Create a PRD.md file with your requirements before running.")
         sys.exit(1)
-    
+
     if not os.path.exists("progress.txt"):
         print("[Info] Creating empty progress.txt file...")
         with open("progress.txt", "w") as f:
@@ -97,9 +97,9 @@ def run_claudius_loop(max_loops, agents_json=None):
 
     # Build the command once
     claude_command = build_claude_command(agents_json)
-    
+
     if agents_json:
-        print(f"[Claudius] Sub-agents loaded from --agents flag")
+        print("[Claudius] Sub-agents loaded from --agents flag")
 
     loop_count = 0
 
@@ -108,13 +108,13 @@ def run_claudius_loop(max_loops, agents_json=None):
         print(f"\n{'='*60}")
         print(f"[Claudius] --- Starting Iteration {loop_count}/{max_loops} ---")
         print(f"{'='*60}")
-        
+
         # Launch Claude as a subprocess
         # creationflags for Windows signal handling
         creation_flags = 0
         if sys.platform == "win32":
             creation_flags = subprocess.CREATE_NEW_PROCESS_GROUP
-        
+
         try:
             process = subprocess.Popen(
                 claude_command,
@@ -122,7 +122,7 @@ def run_claudius_loop(max_loops, agents_json=None):
                 stderr=subprocess.STDOUT,
                 text=True,
                 bufsize=1,  # Line buffered
-                encoding='utf-8',
+                encoding="utf-8",
                 creationflags=creation_flags
             )
         except FileNotFoundError:
@@ -141,7 +141,7 @@ def run_claudius_loop(max_loops, agents_json=None):
                 line = process.stdout.readline()
                 if not line and process.poll() is not None:
                     break
-                
+
                 if line:
                     # Print output as it comes
                     sys.stdout.write(line)
@@ -149,18 +149,18 @@ def run_claudius_loop(max_loops, agents_json=None):
 
                     # Check for iteration complete signal
                     if "<iteration_complete>" in line.lower():
-                        print(f"\n[Claudius] Signal Detected: ITERATION_COMPLETE")
+                        print("\n[Claudius] Signal Detected: ITERATION_COMPLETE")
                         iteration_success = True
                         kill_process(process)
                         break
-                    
+
                     # Check for workflow complete signal
                     if "<workflow_complete>" in line.lower():
-                        print(f"\n[Claudius] Signal Detected: WORKFLOW_COMPLETE")
+                        print("\n[Claudius] Signal Detected: WORKFLOW_COMPLETE")
                         workflow_finished = True
                         kill_process(process)
                         break
-            
+
         except KeyboardInterrupt:
             print("\n[Claudius] User stopped execution (Ctrl+C).")
             kill_process(process)
@@ -175,7 +175,7 @@ def run_claudius_loop(max_loops, agents_json=None):
             print(f"{'='*60}")
             print("\nAll tasks finished. Review your commits and merge when ready.")
             sys.exit(0)
-        
+
         if not iteration_success:
             print(f"\n[Claudius] Warning: Iteration {loop_count} ended without a success signal.")
             print("[Claudius] Continuing to next iteration to retry...")
@@ -197,8 +197,8 @@ def kill_process(process):
             if sys.platform == "win32":
                 # Windows: use taskkill for forceful termination including children
                 subprocess.run(
-                    ["taskkill", "/F", "/T", "/PID", str(process.pid)], 
-                    stdout=subprocess.DEVNULL, 
+                    ["taskkill", "/F", "/T", "/PID", str(process.pid)],
+                    stdout=subprocess.DEVNULL,
                     stderr=subprocess.DEVNULL
                 )
             else:
@@ -218,8 +218,8 @@ def main():
         epilog="Example: python claudius_runner.py 20"
     )
     parser.add_argument(
-        "max_loops", 
-        type=int, 
+        "max_loops",
+        type=int,
         help="Maximum number of iterations allowed."
     )
     parser.add_argument(
@@ -229,16 +229,16 @@ def main():
         help="JSON string of sub-agents to pass to Claude (optional)."
     )
     args = parser.parse_args()
-    
+
     if args.max_loops < 1:
         print("[Error] max_loops must be at least 1")
         sys.exit(1)
-    
+
     print(f"[Claudius] Starting autonomous loop (max {args.max_loops} iterations)")
     print(f"[Claudius] Working directory: {os.getcwd()}")
-    print(f"[Claudius] PRD file: PRD.md")
-    print(f"[Claudius] Progress file: progress.txt")
-    
+    print("[Claudius] PRD file: PRD.md")
+    print("[Claudius] Progress file: progress.txt")
+
     run_claudius_loop(args.max_loops, args.agents)
 
 

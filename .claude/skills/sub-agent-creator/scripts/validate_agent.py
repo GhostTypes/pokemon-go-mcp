@@ -8,10 +8,9 @@ to fail validation and not be loaded by Claude Code.
 Run: python validate_agent.py <path-to-agent-file.md>
 """
 
-import sys
 import re
+import sys
 from pathlib import Path
-
 
 # Allowed color values
 VALID_COLORS = {"red", "blue", "green", "yellow", "purple", "orange", "pink", "cyan"}
@@ -43,9 +42,7 @@ def parse_frontmatter(content):
             key = key.strip()
             value = value.strip()
             # Remove quotes if present
-            if value.startswith('"') and value.endswith('"'):
-                value = value[1:-1]
-            elif value.startswith("'") and value.endswith("'"):
+            if (value.startswith('"') and value.endswith('"')) or (value.startswith("'") and value.endswith("'")):
                 value = value[1:-1]
             frontmatter[key] = value
 
@@ -57,18 +54,18 @@ def check_literal_newlines(text, context=""):
     errors = []
     # Look for literal \n not followed by another backslash (which would be \\n)
     # We want to catch \n that would appear as actual escape sequences
-    pattern = r'(?<!\\)(?:\\\\)*\\n'
+    pattern = r"(?<!\\)(?:\\\\)*\\n"
     # Also check in YAML values with quotes
-    if re.search(r'\\n', text):
+    if re.search(r"\\n", text):
         # Need to be more careful - check if it's a literal backslash-n
         # In YAML context, "value: Some text\n" is wrong
         # In markdown body, \n escape sequences are wrong
-        lines = text.split('\n')
+        lines = text.split("\n")
         for i, line in enumerate(lines, 1):
             # Look for literal \n in content (not in normal line breaks)
-            if '\\n' in line and not line.strip().startswith('#'):
+            if "\\n" in line and not line.strip().startswith("#"):
                 # Check if this looks like an escaped newline rather than normal text
-                if re.search(r'[^\\]\\n[^\\]|[^\\]\\n$', line):
+                if re.search(r"[^\\]\\n[^\\]|[^\\]\\n$", line):
                     errors.append(f"Line {i}: Found literal \\n escape sequence. Use actual newlines instead.")
     return errors
 
@@ -98,7 +95,7 @@ def validate_agent_file(filepath):
     # Check name format
     if "name" in frontmatter:
         name = frontmatter["name"]
-        if not re.match(r'^[a-z0-9-]+$', name):
+        if not re.match(r"^[a-z0-9-]+$", name):
             errors.append(f"Invalid name '{name}': Must use only lowercase letters, numbers, and hyphens")
 
     # Check description is single line
@@ -110,8 +107,8 @@ def validate_agent_file(filepath):
     # Check for literal \n in frontmatter values
     for key, value in frontmatter.items():
         if isinstance(value, str):
-            if '\\n' in value and key not in ["description"]:  # description already checked above
-                if not value.strip().endswith("\\n") or value.count('\\n') > 1:
+            if "\\n" in value and key not in ["description"]:  # description already checked above
+                if not value.strip().endswith("\\n") or value.count("\\n") > 1:
                     errors.append(f"Field '{key}' contains literal \\n. Use actual line breaks")
 
     # Check color if present
@@ -129,7 +126,7 @@ def validate_agent_file(filepath):
     # Check for common multi-line frontmatter issues
     frontmatter_section = content.split("\n---\n", 1)[0]
     if "description:" in frontmatter_section:
-        desc_match = re.search(r'description:\s*[|>]', frontmatter_section)
+        desc_match = re.search(r"description:\s*[|>]", frontmatter_section)
         if desc_match:
             errors.append("Description field must be ONE continuous line with NO line breaks. Do not use | or > multi-line YAML syntax.")
 
@@ -189,7 +186,7 @@ def main():
         print(f"[PASS] Validation PASSED: {filepath}")
         if frontmatter:
             print(f"\n   name: {frontmatter.get('name', 'N/A')}")
-            desc = frontmatter.get('description', 'N/A')
+            desc = frontmatter.get("description", "N/A")
             print(f"   description: {desc[:60]}{'...' if len(desc) > 60 else ''}")
         if warnings:
             print("\n[WARN] Warnings:")

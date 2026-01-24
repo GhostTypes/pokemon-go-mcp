@@ -23,7 +23,7 @@ class TestEggTools:
         mock_mcp = MockMCP()
         register_egg_tools(mock_mcp)
 
-        get_egg_hatches = captured_tools['get_egg_hatches']
+        get_egg_hatches = captured_tools["get_egg_hatches"]
         result = await get_egg_hatches()
 
         assert isinstance(result, str)
@@ -47,7 +47,7 @@ class TestEggTools:
         mock_mcp = MockMCP()
         register_egg_tools(mock_mcp)
 
-        get_egg_hatches_by_distance = captured_tools['get_egg_hatches_by_distance']
+        get_egg_hatches_by_distance = captured_tools["get_egg_hatches_by_distance"]
         result = await get_egg_hatches_by_distance(distance="2")
 
         assert isinstance(result, str)
@@ -70,7 +70,7 @@ class TestEggTools:
         mock_mcp = MockMCP()
         register_egg_tools(mock_mcp)
 
-        get_egg_hatches_by_distance = captured_tools['get_egg_hatches_by_distance']
+        get_egg_hatches_by_distance = captured_tools["get_egg_hatches_by_distance"]
         result = await get_egg_hatches_by_distance(distance="5 km")
 
         assert isinstance(result, str)
@@ -93,7 +93,7 @@ class TestEggTools:
         mock_mcp = MockMCP()
         register_egg_tools(mock_mcp)
 
-        get_egg_hatches_by_distance = captured_tools['get_egg_hatches_by_distance']
+        get_egg_hatches_by_distance = captured_tools["get_egg_hatches_by_distance"]
         result = await get_egg_hatches_by_distance(distance="10km")
 
         assert isinstance(result, str)
@@ -116,7 +116,7 @@ class TestEggTools:
         mock_mcp = MockMCP()
         register_egg_tools(mock_mcp)
 
-        get_shiny_egg_hatches = captured_tools['get_shiny_egg_hatches']
+        get_shiny_egg_hatches = captured_tools["get_shiny_egg_hatches"]
         result = await get_shiny_egg_hatches()
 
         assert isinstance(result, str)
@@ -140,7 +140,7 @@ class TestEggTools:
         mock_mcp = MockMCP()
         register_egg_tools(mock_mcp)
 
-        search_egg_pokemon = captured_tools['search_egg_pokemon']
+        search_egg_pokemon = captured_tools["search_egg_pokemon"]
         result = await search_egg_pokemon(pokemon_name=sample_pokemon_name)
 
         assert isinstance(result, str)
@@ -163,7 +163,7 @@ class TestEggTools:
         mock_mcp = MockMCP()
         register_egg_tools(mock_mcp)
 
-        search_egg_pokemon = captured_tools['search_egg_pokemon']
+        search_egg_pokemon = captured_tools["search_egg_pokemon"]
         result = await search_egg_pokemon(pokemon_name="mewtwo")
 
         assert isinstance(result, str)
@@ -186,7 +186,7 @@ class TestEggTools:
         mock_mcp = MockMCP()
         register_egg_tools(mock_mcp)
 
-        get_regional_egg_pokemon = captured_tools['get_regional_egg_pokemon']
+        get_regional_egg_pokemon = captured_tools["get_regional_egg_pokemon"]
         result = await get_regional_egg_pokemon()
 
         assert isinstance(result, str)
@@ -209,7 +209,7 @@ class TestEggTools:
         mock_mcp = MockMCP()
         register_egg_tools(mock_mcp)
 
-        get_gift_exchange_pokemon = captured_tools['get_gift_exchange_pokemon']
+        get_gift_exchange_pokemon = captured_tools["get_gift_exchange_pokemon"]
         result = await get_gift_exchange_pokemon()
 
         assert isinstance(result, str)
@@ -232,7 +232,7 @@ class TestEggTools:
         mock_mcp = MockMCP()
         register_egg_tools(mock_mcp)
 
-        get_route_gift_pokemon = captured_tools['get_route_gift_pokemon']
+        get_route_gift_pokemon = captured_tools["get_route_gift_pokemon"]
         result = await get_route_gift_pokemon()
 
         assert isinstance(result, str)
@@ -255,7 +255,7 @@ class TestEggTools:
         mock_mcp = MockMCP()
         register_egg_tools(mock_mcp)
 
-        get_adventure_sync_rewards = captured_tools['get_adventure_sync_rewards']
+        get_adventure_sync_rewards = captured_tools["get_adventure_sync_rewards"]
         result = await get_adventure_sync_rewards()
 
         assert isinstance(result, str)
@@ -278,7 +278,7 @@ class TestEggTools:
         mock_mcp = MockMCP()
         register_egg_tools(mock_mcp)
 
-        get_egg_recommendations = captured_tools['get_egg_recommendations']
+        get_egg_recommendations = captured_tools["get_egg_recommendations"]
         result = await get_egg_recommendations(priority="shiny")
 
         assert isinstance(result, str)
@@ -301,7 +301,7 @@ class TestEggTools:
         mock_mcp = MockMCP()
         register_egg_tools(mock_mcp)
 
-        get_egg_recommendations = captured_tools['get_egg_recommendations']
+        get_egg_recommendations = captured_tools["get_egg_recommendations"]
         result = await get_egg_recommendations(priority="rare")
 
         assert isinstance(result, str)
@@ -324,7 +324,7 @@ class TestEggTools:
         mock_mcp = MockMCP()
         register_egg_tools(mock_mcp)
 
-        get_egg_recommendations = captured_tools['get_egg_recommendations']
+        get_egg_recommendations = captured_tools["get_egg_recommendations"]
         result = await get_egg_recommendations(priority="quick")
 
         assert isinstance(result, str)
@@ -347,7 +347,7 @@ class TestEggTools:
         mock_mcp = MockMCP()
         register_egg_tools(mock_mcp)
 
-        get_egg_recommendations = captured_tools['get_egg_recommendations']
+        get_egg_recommendations = captured_tools["get_egg_recommendations"]
         result = await get_egg_recommendations()
 
         assert isinstance(result, str)

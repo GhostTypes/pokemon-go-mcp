@@ -23,7 +23,7 @@ class TestResearchTools:
         mock_mcp = MockMCP()
         register_research_tools(mock_mcp)
 
-        get_current_research = captured_tools['get_current_research']
+        get_current_research = captured_tools["get_current_research"]
         result = await get_current_research()
 
         assert isinstance(result, str)
@@ -47,7 +47,7 @@ class TestResearchTools:
         mock_mcp = MockMCP()
         register_research_tools(mock_mcp)
 
-        search_research_by_reward = captured_tools['search_research_by_reward']
+        search_research_by_reward = captured_tools["search_research_by_reward"]
         result = await search_research_by_reward(pokemon_name=sample_pokemon_name)
 
         assert isinstance(result, str)
@@ -70,7 +70,7 @@ class TestResearchTools:
         mock_mcp = MockMCP()
         register_research_tools(mock_mcp)
 
-        search_research_by_reward = captured_tools['search_research_by_reward']
+        search_research_by_reward = captured_tools["search_research_by_reward"]
         result = await search_research_by_reward(pokemon_name="mewtwo")
 
         assert isinstance(result, str)
@@ -93,7 +93,7 @@ class TestResearchTools:
         mock_mcp = MockMCP()
         register_research_tools(mock_mcp)
 
-        get_research_by_task_type = captured_tools['get_research_by_task_type']
+        get_research_by_task_type = captured_tools["get_research_by_task_type"]
         result = await get_research_by_task_type(task_type="catch")
 
         assert isinstance(result, str)
@@ -116,7 +116,7 @@ class TestResearchTools:
         mock_mcp = MockMCP()
         register_research_tools(mock_mcp)
 
-        get_shiny_research_rewards = captured_tools['get_shiny_research_rewards']
+        get_shiny_research_rewards = captured_tools["get_shiny_research_rewards"]
         result = await get_shiny_research_rewards()
 
         assert isinstance(result, str)
@@ -140,7 +140,7 @@ class TestResearchTools:
         mock_mcp = MockMCP()
         register_research_tools(mock_mcp)
 
-        get_easy_research_tasks = captured_tools['get_easy_research_tasks']
+        get_easy_research_tasks = captured_tools["get_easy_research_tasks"]
         result = await get_easy_research_tasks()
 
         assert isinstance(result, str)
@@ -163,7 +163,7 @@ class TestResearchTools:
         mock_mcp = MockMCP()
         register_research_tools(mock_mcp)
 
-        search_research_tasks = captured_tools['search_research_tasks']
+        search_research_tasks = captured_tools["search_research_tasks"]
         result = await search_research_tasks(query="catch")
 
         assert isinstance(result, str)
@@ -186,7 +186,7 @@ class TestResearchTools:
         mock_mcp = MockMCP()
         register_research_tools(mock_mcp)
 
-        search_research_tasks = captured_tools['search_research_tasks']
+        search_research_tasks = captured_tools["search_research_tasks"]
         result = await search_research_tasks(query="xyznotfound123")
 
         assert isinstance(result, str)
@@ -209,7 +209,7 @@ class TestResearchTools:
         mock_mcp = MockMCP()
         register_research_tools(mock_mcp)
 
-        get_research_recommendations = captured_tools['get_research_recommendations']
+        get_research_recommendations = captured_tools["get_research_recommendations"]
         result = await get_research_recommendations(priority="balanced")
 
         assert isinstance(result, str)
@@ -232,7 +232,7 @@ class TestResearchTools:
         mock_mcp = MockMCP()
         register_research_tools(mock_mcp)
 
-        get_research_recommendations = captured_tools['get_research_recommendations']
+        get_research_recommendations = captured_tools["get_research_recommendations"]
         result = await get_research_recommendations(priority="shiny")
 
         assert isinstance(result, str)
@@ -255,7 +255,7 @@ class TestResearchTools:
         mock_mcp = MockMCP()
         register_research_tools(mock_mcp)
 
-        get_research_recommendations = captured_tools['get_research_recommendations']
+        get_research_recommendations = captured_tools["get_research_recommendations"]
         result = await get_research_recommendations(priority="easy")
 
         assert isinstance(result, str)
@@ -278,7 +278,7 @@ class TestResearchTools:
         mock_mcp = MockMCP()
         register_research_tools(mock_mcp)
 
-        get_research_recommendations = captured_tools['get_research_recommendations']
+        get_research_recommendations = captured_tools["get_research_recommendations"]
         result = await get_research_recommendations(priority="rare")
 
         assert isinstance(result, str)

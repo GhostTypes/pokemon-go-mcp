@@ -5,17 +5,19 @@ Scrapes Ruff docs and converts to clean markdown, removing navigation and other 
 """
 
 import sys
+
 import cloudscraper
 from bs4 import BeautifulSoup
 from markdownify import markdownify as md
+
 
 def get_scraper():
     """Initialize cloudscraper with proper settings"""
     return cloudscraper.create_scraper(
         browser={
-            'browser': 'chrome',
-            'platform': 'windows',
-            'desktop': True
+            "browser": "chrome",
+            "platform": "windows",
+            "desktop": True
         },
         delay=1
     )
@@ -23,25 +25,25 @@ def get_scraper():
 def get_headers():
     """Get headers for requests"""
     return {
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-        'Accept-Language': 'en-US,en;q=0.9',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.9",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
     }
 
 def extract_main_content(html):
     """Extract the main documentation content from the HTML"""
-    soup = BeautifulSoup(html, 'lxml')
+    soup = BeautifulSoup(html, "lxml")
 
     # Find the main content area - Ruff docs use <article> tag for main content
-    main_content = soup.find('article')
+    main_content = soup.find("article")
 
     if not main_content:
         # Fallback: try to find main tag
-        main_content = soup.find('main')
+        main_content = soup.find("main")
 
     if not main_content:
         # Last resort: return the whole body
-        main_content = soup.find('body')
+        main_content = soup.find("body")
 
     if not main_content:
         return None
@@ -54,23 +56,23 @@ def clean_content(content_element):
         return None
 
     # Make a copy to avoid modifying the original
-    content = BeautifulSoup(str(content_element), 'lxml')
+    content = BeautifulSoup(str(content_element), "lxml")
 
     # Remove common navigation and UI elements
     elements_to_remove = [
-        'nav',  # Navigation bars
-        'header',  # Headers
-        'footer',  # Footers
-        '.md-header',  # Material for MkDocs header
-        '.md-footer',  # Material for MkDocs footer
-        '.md-sidebar',  # Sidebars
-        '.md-nav',  # Navigation
-        '.md-search',  # Search boxes
-        '.md-tabs',  # Tab navigation
-        'script',  # JavaScript
-        'style',  # Inline styles
-        '.md-content__button',  # Edit page buttons
-        '.md-source',  # Source links
+        "nav",  # Navigation bars
+        "header",  # Headers
+        "footer",  # Footers
+        ".md-header",  # Material for MkDocs header
+        ".md-footer",  # Material for MkDocs footer
+        ".md-sidebar",  # Sidebars
+        ".md-nav",  # Navigation
+        ".md-search",  # Search boxes
+        ".md-tabs",  # Tab navigation
+        "script",  # JavaScript
+        "style",  # Inline styles
+        ".md-content__button",  # Edit page buttons
+        ".md-source",  # Source links
     ]
 
     for selector in elements_to_remove:
@@ -128,14 +130,14 @@ def main():
         content = scrape_ruff_page(url)
 
         if output_file:
-            with open(output_file, 'w', encoding='utf-8') as f:
+            with open(output_file, "w", encoding="utf-8") as f:
                 f.write(content)
             print(f"Content saved to {output_file}", file=sys.stderr)
         else:
             print(content)
 
     except Exception as e:
-        print(f"Error: {str(e)}", file=sys.stderr)
+        print(f"Error: {e!s}", file=sys.stderr)
         import traceback
         traceback.print_exc()
         sys.exit(1)

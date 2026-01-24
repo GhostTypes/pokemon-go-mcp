@@ -1,7 +1,6 @@
 """Integration tests for Event-related MCP tools."""
 
 import pytest
-from pogo_mcp.api_client import api_client
 
 
 class TestEventTools:
@@ -27,7 +26,7 @@ class TestEventTools:
         register_event_tools(mock_mcp)
 
         # Get the tool function
-        get_current_events = captured_tools['get_current_events']
+        get_current_events = captured_tools["get_current_events"]
 
         # Call the tool
         result = await get_current_events()
@@ -55,7 +54,7 @@ class TestEventTools:
         mock_mcp = MockMCP()
         register_event_tools(mock_mcp)
 
-        get_event_details = captured_tools['get_event_details']
+        get_event_details = captured_tools["get_event_details"]
 
         # Call with a valid event ID
         result = await get_event_details(sample_event_id)
@@ -81,7 +80,7 @@ class TestEventTools:
         mock_mcp = MockMCP()
         register_event_tools(mock_mcp)
 
-        get_event_details = captured_tools['get_event_details']
+        get_event_details = captured_tools["get_event_details"]
 
         # Call with invalid event ID
         result = await get_event_details("invalid_event_id_12345")
@@ -107,7 +106,7 @@ class TestEventTools:
         mock_mcp = MockMCP()
         register_event_tools(mock_mcp)
 
-        get_community_day_info = captured_tools['get_community_day_info']
+        get_community_day_info = captured_tools["get_community_day_info"]
 
         # Call the tool
         result = await get_community_day_info()
@@ -135,7 +134,7 @@ class TestEventTools:
         mock_mcp = MockMCP()
         register_event_tools(mock_mcp)
 
-        get_event_spawns = captured_tools['get_event_spawns']
+        get_event_spawns = captured_tools["get_event_spawns"]
 
         # Call the tool without filter
         result = await get_event_spawns()
@@ -162,7 +161,7 @@ class TestEventTools:
         mock_mcp = MockMCP()
         register_event_tools(mock_mcp)
 
-        get_event_spawns = captured_tools['get_event_spawns']
+        get_event_spawns = captured_tools["get_event_spawns"]
 
         # Call the tool with a filter
         result = await get_event_spawns(event_type="community")
@@ -188,7 +187,7 @@ class TestEventTools:
         mock_mcp = MockMCP()
         register_event_tools(mock_mcp)
 
-        get_event_bonuses = captured_tools['get_event_bonuses']
+        get_event_bonuses = captured_tools["get_event_bonuses"]
 
         # Call the tool
         result = await get_event_bonuses()
@@ -215,7 +214,7 @@ class TestEventTools:
         mock_mcp = MockMCP()
         register_event_tools(mock_mcp)
 
-        search_events = captured_tools['search_events']
+        search_events = captured_tools["search_events"]
 
         # Call the tool with a common search term
         result = await search_events(query="event")
@@ -241,7 +240,7 @@ class TestEventTools:
         mock_mcp = MockMCP()
         register_event_tools(mock_mcp)
 
-        search_events = captured_tools['search_events']
+        search_events = captured_tools["search_events"]
 
         # Call with unlikely search term
         result = await search_events(query="xyzabc123notfound")

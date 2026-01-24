@@ -1,10 +1,12 @@
 """Shared fixtures for MCP server integration tests."""
 
-import pytest
 import asyncio
 from pathlib import Path
-from pogo_mcp.server import mcp
+
+import pytest
+
 from pogo_mcp.api_client import api_client
+from pogo_mcp.server import mcp
 
 
 @pytest.fixture(scope="session")
@@ -36,7 +38,6 @@ def api_client_instance():
 def fresh_cache():
     """Fixture that clears the cache before each test to ensure fresh data."""
     api_client.clear_cache()
-    yield
     # Cache is cleared again after test if needed
 
 

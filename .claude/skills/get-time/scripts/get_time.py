@@ -3,10 +3,11 @@
 Get the current local time in various formats with automatic timezone detection.
 """
 
-from datetime import datetime
+import json
 import sys
 import urllib.request
-import json
+from datetime import datetime
+
 
 def get_user_timezone():
     """
@@ -15,12 +16,12 @@ def get_user_timezone():
     """
     try:
         # Use ipapi.co free API to get timezone from IP
-        with urllib.request.urlopen('https://ipapi.co/json/', timeout=3) as response:
+        with urllib.request.urlopen("https://ipapi.co/json/", timeout=3) as response:
             data = json.loads(response.read().decode())
-            return data.get('timezone', 'UTC')
+            return data.get("timezone", "UTC")
     except:
         # Fallback to UTC if detection fails
-        return 'UTC'
+        return "UTC"
 
 def get_current_time(format_type="full", timezone=None):
     """
@@ -59,18 +60,18 @@ def get_current_time(format_type="full", timezone=None):
                 "unix": str(int(now.timestamp()))
             }
             return formats.get(format_type, formats["full"])
-    
+
     # Auto-detect timezone if not provided
     if timezone is None:
         timezone = get_user_timezone()
-    
+
     # Get current time in the detected/specified timezone
     tz = ZoneInfo(timezone)
     now = datetime.now(tz)
-    
+
     # Format the timezone abbreviation
     tz_abbr = now.strftime("%Z")
-    
+
     formats = {
         "full": now.strftime(f"%A, %B %d, %Y at %I:%M:%S %p {tz_abbr}"),
         "time": now.strftime("%I:%M:%S %p"),
@@ -79,14 +80,14 @@ def get_current_time(format_type="full", timezone=None):
         "iso": now.isoformat(),
         "unix": str(int(now.timestamp()))
     }
-    
+
     return formats.get(format_type, formats["full"])
 
 if __name__ == "__main__":
     # Get format from command line argument, default to "full"
     format_arg = sys.argv[1] if len(sys.argv) > 1 else "full"
-    
+
     # Optional timezone argument
     timezone_arg = sys.argv[2] if len(sys.argv) > 2 else None
-    
+
     print(get_current_time(format_arg, timezone_arg))

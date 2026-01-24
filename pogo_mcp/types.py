@@ -1,6 +1,5 @@
-from typing import List, Dict, Optional, Union, Any, TypedDict
 from dataclasses import dataclass
-from datetime import datetime
+from typing import Any, TypedDict
 
 
 @dataclass
@@ -23,7 +22,7 @@ class PokemonInfo:
     name: str
     image: str
     can_be_shiny: bool = False
-    combat_power: Optional[Dict[str, Any]] = None
+    combat_power: dict[str, Any] | None = None
 
 
 @dataclass
@@ -35,12 +34,12 @@ class BonusInfo:
 
 class EventExtraData(TypedDict, total=False):
     """Additional event-specific data"""
-    generic: Dict[str, Any]
-    communityday: Dict[str, Any]
-    raidbattles: Dict[str, Any]
-    raidday: Dict[str, Any]
-    spotlight: Dict[str, Any]
-    breakthrough: Dict[str, Any]
+    generic: dict[str, Any]
+    communityday: dict[str, Any]
+    raidbattles: dict[str, Any]
+    raidday: dict[str, Any]
+    spotlight: dict[str, Any]
+    breakthrough: dict[str, Any]
 
 
 @dataclass
@@ -54,7 +53,7 @@ class EventInfo:
     image: str
     start: str
     end: str
-    extra_data: Optional[EventExtraData] = None
+    extra_data: EventExtraData | None = None
 
 
 @dataclass
@@ -63,19 +62,19 @@ class RaidInfo:
     name: str
     tier: str
     can_be_shiny: bool
-    types: List[TypeInfo]
-    combat_power: Dict[str, Any]
-    boosted_weather: List[WeatherInfo]
+    types: list[TypeInfo]
+    combat_power: dict[str, Any]
+    boosted_weather: list[WeatherInfo]
     image: str
-    extra_data: Optional[Dict[str, Any]] = None
+    extra_data: dict[str, Any] | None = None
 
 
 @dataclass
 class ResearchTaskInfo:
     """Field research task information"""
     text: str
-    rewards: List[PokemonInfo]
-    task_type: Optional[str] = None
+    rewards: list[PokemonInfo]
+    task_type: str | None = None
 
 
 @dataclass
@@ -97,8 +96,8 @@ class EggInfo:
 class ShadowPokemonInfo:
     """Shadow Pokemon information for Team Rocket encounters"""
     name: str
-    types: List[str]
-    weaknesses: Dict[str, List[str]]
+    types: list[str]
+    weaknesses: dict[str, list[str]]
     image: str
     can_be_shiny: bool
 
@@ -108,7 +107,7 @@ class RocketLineupSlot:
     """Individual slot in a Rocket trainer's lineup"""
     slot: int
     is_encounter: bool
-    pokemon: List[ShadowPokemonInfo]
+    pokemon: list[ShadowPokemonInfo]
 
 
 @dataclass
@@ -119,7 +118,7 @@ class RocketTrainerInfo:
     quote: str
     image: str
     type: str
-    lineups: List[RocketLineupSlot]
+    lineups: list[RocketLineupSlot]
 
 
 @dataclass
@@ -137,16 +136,16 @@ class PromoCodeInfo:
     title: str
     description: str
     redemption_url: str
-    rewards: List[PromoCodeReward]
+    rewards: list[PromoCodeReward]
     expiration: str
 
 
 @dataclass
 class ApiData:
     """Complete API data structure"""
-    events: List[EventInfo]
-    raids: List[RaidInfo]
-    research: List[ResearchTaskInfo]
-    eggs: List[EggInfo]
-    rocket_lineups: List[RocketTrainerInfo]
-    promo_codes: List[PromoCodeInfo]
+    events: list[EventInfo]
+    raids: list[RaidInfo]
+    research: list[ResearchTaskInfo]
+    eggs: list[EggInfo]
+    rocket_lineups: list[RocketTrainerInfo]
+    promo_codes: list[PromoCodeInfo]

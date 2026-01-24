@@ -1,7 +1,7 @@
 """Integration tests for MCP server initialization and basic functionality."""
 
 import pytest
-from pogo_mcp.server import mcp
+
 from pogo_mcp import main
 
 
@@ -11,7 +11,7 @@ class TestMCPServerInitialization:
     def test_mcp_server_exists(self, mcp_server):
         """Test that MCP server instance is created."""
         assert mcp_server is not None
-        assert hasattr(mcp_server, 'tool')
+        assert hasattr(mcp_server, "tool")
 
     def test_mcp_server_name(self, mcp_server):
         """Test that MCP server has correct name."""
@@ -21,7 +21,7 @@ class TestMCPServerInitialization:
         """Test that MCP server has tools registered."""
         # The server should have tools registered
         # We can check that the mcp object has the tool decorator
-        assert hasattr(mcp_server, 'tool')
+        assert hasattr(mcp_server, "tool")
         # Check that it's callable
         assert callable(mcp_server.tool)
 

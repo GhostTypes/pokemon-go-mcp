@@ -2,16 +2,23 @@
 
 import json
 import logging
-from pathlib import Path
-from typing import Dict, List, Optional, Union
 from datetime import datetime, timezone
-from dateutil import parser
+from pathlib import Path
+from typing import Optional
 
 from .types import (
-    EventInfo, RaidInfo, ResearchTaskInfo, EggInfo, PokemonInfo,
-    TypeInfo, WeatherInfo, BonusInfo, EventExtraData, ApiData,
-    RocketTrainerInfo, ShadowPokemonInfo, RocketLineupSlot,
-    PromoCodeInfo, PromoCodeReward
+    EggInfo,
+    EventInfo,
+    PokemonInfo,
+    PromoCodeInfo,
+    PromoCodeReward,
+    RaidInfo,
+    ResearchTaskInfo,
+    RocketLineupSlot,
+    RocketTrainerInfo,
+    ShadowPokemonInfo,
+    TypeInfo,
+    WeatherInfo,
 )
 
 logger = logging.getLogger(__name__)
@@ -19,65 +26,65 @@ logger = logging.getLogger(__name__)
 
 class LeekDuckAPIClient:
     """Client for fetching Pokemon Go data using local scraper."""
-    
+
     def __init__(self, timeout: int = 30):
         """Initialize the API client."""
         self.timeout = timeout
-        self._cache: Dict[str, List[Dict]] = {}
-        self._cache_timestamp: Dict[str, datetime] = {}
+        self._cache: dict[str, list[dict]] = {}
+        self._cache_timestamp: dict[str, datetime] = {}
         self._cache_duration = 86400  # 24 hours cache
-        
+
         # Path to local scraped data directory
         self._local_data_dir = Path(__file__).parent.parent / "data"
-    
-    def _load_local_data(self, endpoint: str) -> List[Dict]:
+
+    def _load_local_data(self, endpoint: str) -> list[dict]:
         """Load data from local JSON files."""
         local_file = self._local_data_dir / f"{endpoint}.json"
-        
+
         if not local_file.exists():
             logger.error(f"Local file {local_file} does not exist. Run the scraper first.")
             return []
-        
+
         try:
-            with open(local_file, 'r', encoding='utf-8') as f:
+            with open(local_file, encoding="utf-8") as f:
                 data = json.load(f)
                 logger.info(f"Loaded {len(data)} items from local {endpoint} data")
                 return data
         except Exception as e:
             logger.error(f"Error loading local {endpoint} data: {e}")
             return []
-    
-    async def _fetch_data(self, endpoint: str) -> List[Dict]:
+
+    async def _fetch_data(self, endpoint: str) -> list[dict]:
         """Fetch data from local files with simple caching."""
         now = datetime.now(timezone.utc)
-        
+
         # Check if we have fresh cached data
-        if (endpoint in self._cache and 
+        if (endpoint in self._cache and
             endpoint in self._cache_timestamp and
             (now - self._cache_timestamp[endpoint]).seconds < self._cache_duration):
             logger.info(f"Using cached data for {endpoint}")
             return self._cache[endpoint]
-        
+
         # Load from local file
         data = self._load_local_data(endpoint)
-        
+
         # Cache the data
         self._cache[endpoint] = data
         self._cache_timestamp[endpoint] = now
-        
+
         return data
-    
-    async def get_events(self) -> List[EventInfo]:
+
+    async def get_events(self) -> list[EventInfo]:
         """Get all Pokemon Go events."""
         data = await self._fetch_data("events")
         events = []
-        
+
         for item in data:
             # Parse extra data if present
             extra_data = None
             if "extraData" in item:
                 extra_data = item["extraData"]
-            
+
             event = EventInfo(
                 event_id=item.get("eventID", ""),
                 name=item.get("name", ""),
@@ -90,14 +97,14 @@ class LeekDuckAPIClient:
                 extra_data=extra_data
             )
             events.append(event)
-        
+
         return events
-    
-    async def get_raids(self) -> List[RaidInfo]:
+
+    async def get_raids(self) -> list[RaidInfo]:
         """Get all current raid bosses."""
         data = await self._fetch_data("raids")
         raids = []
-        
+
         for item in data:
             # Parse types
             types = []
@@ -106,7 +113,7 @@ class LeekDuckAPIClient:
                     name=type_data.get("name", ""),
                     image=type_data.get("image", "")
                 ))
-            
+
             # Parse boosted weather
             weather = []
             for weather_data in item.get("boostedWeather", []):
@@ -114,7 +121,7 @@ class LeekDuckAPIClient:
                     name=weather_data.get("name", ""),
                     image=weather_data.get("image", "")
                 ))
-            
+
             raid = RaidInfo(
                 name=item.get("name", ""),
                 tier=item.get("tier", ""),
@@ -126,14 +133,14 @@ class LeekDuckAPIClient:
                 extra_data=item.get("extra_data")
             )
             raids.append(raid)
-        
+
         return raids
-    
-    async def get_research(self) -> List[ResearchTaskInfo]:
+
+    async def get_research(self) -> list[ResearchTaskInfo]:
         """Get all current field research tasks."""
         data = await self._fetch_data("research")
         research_tasks = []
-        
+
         for item in data:
             # Parse rewards
             rewards = []
@@ -145,17 +152,17 @@ class LeekDuckAPIClient:
                     combat_power=reward_data.get("combatPower")
                 )
                 rewards.append(pokemon)
-            
+
             task = ResearchTaskInfo(
                 text=item.get("text", ""),
                 rewards=rewards,
                 task_type=item.get("type")
             )
             research_tasks.append(task)
-        
+
         return research_tasks
-    
-    async def get_eggs(self) -> List[EggInfo]:
+
+    async def get_eggs(self) -> list[EggInfo]:
         """Get all Pokemon available from eggs."""
         data = await self._fetch_data("eggs")
         eggs = []
@@ -177,7 +184,7 @@ class LeekDuckAPIClient:
 
         return eggs
 
-    async def get_rocket_lineups(self) -> List[RocketTrainerInfo]:
+    async def get_rocket_lineups(self) -> list[RocketTrainerInfo]:
         """Get all Team Rocket trainer lineups."""
         data = await self._fetch_data("rocket-lineups")
         trainers = []
@@ -216,8 +223,8 @@ class LeekDuckAPIClient:
             trainers.append(trainer)
 
         return trainers
-    
-    async def get_promo_codes(self) -> List[PromoCodeInfo]:
+
+    async def get_promo_codes(self) -> list[PromoCodeInfo]:
         """Get all active promo codes."""
         data = await self._fetch_data("promo-codes")
         promo_codes = []
@@ -244,26 +251,25 @@ class LeekDuckAPIClient:
             promo_codes.append(promo_code)
 
         return promo_codes
-    
-    def extract_raids_from_events(self, events_data: List[EventInfo]) -> List[RaidInfo]:
+
+    def extract_raids_from_events(self, events_data: list[EventInfo]) -> list[RaidInfo]:
         """Extract raid boss data from events as fallback when raids.json is unavailable."""
         extracted_raids = []
         current_time = datetime.now(timezone.utc)
-        
+
         # Simple tier inference based on common patterns
         def infer_tier(name: str) -> str:
             name_lower = name.lower()
             if name_lower.startswith("mega "):
                 return "Mega"
-            elif any(legendary in name_lower for legendary in [
+            if any(legendary in name_lower for legendary in [
                 "palkia", "dialga", "giratina", "rayquaza", "kyogre", "groudon",
                 "lugia", "ho-oh", "mewtwo", "mew", "celebi", "jirachi", "deoxys",
                 "reshiram", "zekrom", "kyurem", "xerneas", "yveltal", "zygarde"
             ]):
                 return "5*"
-            else:
-                return "Unknown"
-        
+            return "Unknown"
+
         for event in events_data:
             # Check if event contains raid data (skip time check for now - let server handle filtering)
             if (event.extra_data and "raidbattles" in event.extra_data):
@@ -289,11 +295,11 @@ class LeekDuckAPIClient:
                         }
                     )
                     extracted_raids.append(raid)
-                    
+
         logger.info(f"Extracted {len(extracted_raids)} raid bosses from {len(events_data)} events")
         return extracted_raids
-    
-    async def get_all_data(self) -> Dict[str, Union[List[EventInfo], List[RaidInfo], List[ResearchTaskInfo], List[EggInfo], List[RocketTrainerInfo], List[PromoCodeInfo]]]:
+
+    async def get_all_data(self) -> dict[str, list[EventInfo] | list[RaidInfo] | list[ResearchTaskInfo] | list[EggInfo] | list[RocketTrainerInfo] | list[PromoCodeInfo]]:
         """Get all data from all endpoints with individual error handling."""
         logger.info("Fetching all Pokemon Go data...")
 
@@ -304,7 +310,7 @@ class LeekDuckAPIClient:
         eggs = []
         rocket_lineups = []
         promo_codes = []
-        
+
         # Fetch each data source individually with error handling
         try:
             events = await self.get_events()
@@ -312,7 +318,7 @@ class LeekDuckAPIClient:
         except Exception as e:
             logger.warning(f"Failed to fetch events data: {e}")
             events = []
-        
+
         try:
             raids = await self.get_raids()
             if len(raids) > 0:
@@ -332,14 +338,14 @@ class LeekDuckAPIClient:
             except Exception as extract_error:
                 logger.error(f"Failed to extract raids from events: {extract_error}")
                 raids = []
-        
+
         try:
             research = await self.get_research()
             logger.info(f"Successfully fetched {len(research)} research tasks")
         except Exception as e:
             logger.warning(f"Failed to fetch research data: {e}")
             research = []
-        
+
         try:
             eggs = await self.get_eggs()
             logger.info(f"Successfully fetched {len(eggs)} egg data")
@@ -371,7 +377,7 @@ class LeekDuckAPIClient:
             "rocket_lineups": rocket_lineups,
             "promo_codes": promo_codes
         }
-    
+
     def clear_cache(self):
         """Clear the data cache."""
         self._cache.clear()
@@ -380,7 +386,7 @@ class LeekDuckAPIClient:
 
 
 # Global API client instance - using a function to ensure proper initialization
-def get_api_client() -> 'LeekDuckAPIClient':
+def get_api_client() -> "LeekDuckAPIClient":
     """Get the global API client instance."""
     global _api_client_instance
     if _api_client_instance is None:
@@ -388,5 +394,5 @@ def get_api_client() -> 'LeekDuckAPIClient':
     return _api_client_instance
 
 # Initialize the global instance
-_api_client_instance: Optional['LeekDuckAPIClient'] = None
+_api_client_instance: Optional["LeekDuckAPIClient"] = None
 api_client = get_api_client()

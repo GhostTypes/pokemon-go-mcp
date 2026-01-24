@@ -4,12 +4,11 @@ These tests start the MCP server as a subprocess with stdio transport
 and connect as a real MCP client to test the full MCP protocol.
 """
 
-import pytest
 import asyncio
-import subprocess
-import sys
+from collections.abc import AsyncGenerator
 from pathlib import Path
-from typing import AsyncGenerator
+
+import pytest
 
 try:
     from mcp import ClientSession, StdioServerParameters

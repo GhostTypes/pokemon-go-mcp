@@ -23,7 +23,7 @@ class TestPromoCodeTools:
         mock_mcp = MockMCP()
         register_promo_code_tools(mock_mcp)
 
-        get_active_promo_codes = captured_tools['get_active_promo_codes']
+        get_active_promo_codes = captured_tools["get_active_promo_codes"]
         result = await get_active_promo_codes()
 
         assert isinstance(result, str)
