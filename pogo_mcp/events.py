@@ -41,7 +41,15 @@ def register_event_tools(mcp: FastMCP) -> None:
             logger.info(
                 f"Received events: {type(events)} with {len(events) if isinstance(events, list) else 'NOT A LIST'} items"
             )
+        except Exception as e:
+            error_msg = f"Error fetching events: {e!s}"
+            logger.exception(error_msg)
+            logger.exception(f"Exception type: {type(e)}")
+            import traceback
 
+            logger.exception(f"Traceback: {traceback.format_exc()}")
+            return error_msg
+        else:
             # Verify data structure
             if not isinstance(events, list):
                 raise TypeError(f"Expected list from get_events(), got {type(events)}")
@@ -68,15 +76,6 @@ def register_event_tools(mcp: FastMCP) -> None:
 
             result += f"\nTotal events found: {len(events)} (Active: {len(active_events)}, Upcoming: {len(upcoming_events)})"
 
-        except Exception as e:
-            error_msg = f"Error fetching events: {e!s}"
-            logger.exception(error_msg)
-            logger.exception(f"Exception type: {type(e)}")
-            import traceback
-
-            logger.exception(f"Traceback: {traceback.format_exc()}")
-            return error_msg
-        else:
             return result
 
     @mcp.tool()

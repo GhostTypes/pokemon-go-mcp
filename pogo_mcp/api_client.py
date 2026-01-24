@@ -361,6 +361,10 @@ class LeekDuckAPIClient:
 
         try:
             raids = await self.get_raids()
+        except (OSError, KeyError, TypeError) as e:
+            logger.warning("Failed to fetch raids data from raids.json: %s", e)
+            logger.info("Attempting to extract raid data from events as fallback...")
+        else:
             if len(raids) > 0:
                 logger.info(f"Successfully fetched {len(raids)} raids from raids.json")
             else:
@@ -369,22 +373,6 @@ class LeekDuckAPIClient:
                 )
                 msg = "Empty raids data"
                 raise ValueError(msg)
-        except (OSError, KeyError, TypeError, ValueError) as e:
-            logger.warning("Failed to fetch raids data from raids.json: %s", e)
-            logger.info("Attempting to extract raid data from events as fallback...")
-            try:
-                raids = self.extract_raids_from_events(events)
-                if raids:
-                    logger.info(
-                        f"Successfully extracted {len(raids)} raid bosses from events data"
-                    )
-                else:
-                    logger.warning("No raid data found in events either")
-            except (KeyError, TypeError, AttributeError) as extract_error:
-                logger.exception(
-                    "Failed to extract raids from events: %s", extract_error
-                )
-                raids = []
 
         try:
             research = await self.get_research()

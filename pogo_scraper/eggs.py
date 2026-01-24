@@ -30,6 +30,10 @@ async def scrape_eggs(scraper: "LeekDuckScraper", base_url: str) -> list[dict]:
         response.raise_for_status()
 
         soup = BeautifulSoup(response.text, "lxml")
+    except Exception as e:
+        logger.exception(f"Error scraping eggs: {e}")
+        return scraper._load_fallback_data("eggs.json", [])
+    else:
         eggs = []
 
         # Process egg sections
@@ -78,10 +82,6 @@ async def scrape_eggs(scraper: "LeekDuckScraper", base_url: str) -> list[dict]:
 
         scraper._save_data(eggs, "eggs.json")
 
-    except Exception as e:
-        logger.exception(f"Error scraping eggs: {e}")
-        return scraper._load_fallback_data("eggs.json", [])
-    else:
         return eggs
 
 

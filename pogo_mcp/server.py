@@ -287,7 +287,11 @@ def register_cross_cutting_tools() -> None:
             logger.info(
                 f"Received all_data with keys: {list(all_data.keys()) if isinstance(all_data, dict) else 'NOT A DICT'}"
             )
-
+        except Exception as e:
+            error_msg = f"Error generating daily priorities: {e!s}"
+            logger.exception(error_msg)
+            return error_msg
+        else:
             # Verify data structure
             if not isinstance(all_data, dict):
                 raise TypeError(
@@ -425,11 +429,6 @@ def register_cross_cutting_tools() -> None:
                     result += f"⚠️ **Unavailable data sources:** {', '.join(missing_sources)}\n"
                 result += "Recommendations are based on currently available data.\n"
 
-        except Exception as e:
-            error_msg = f"Error generating daily priorities: {e!s}"
-            logger.exception(error_msg)
-            return error_msg
-        else:
             return result
 
     @mcp.tool()
