@@ -20,17 +20,15 @@ from pogo_scraper.research import parse_research_task
 from pogo_scraper.rocket_lineups import parse_rocket_trainer
 
 
-def main():
+def main() -> None:
     """Generate all JSON test data from HTML fixtures."""
     fixtures_dir = Path("tests/fixtures")
     data_dir = Path("data")
     data_dir.mkdir(exist_ok=True)
     base_url = "https://leekduck.com"
 
-    print("Generating Pokemon Go MCP test data...\n")
 
     # Parse Events
-    print("Parsing events...")
     with open(fixtures_dir / "current_events.html", encoding="utf-8") as f:
         soup = BeautifulSoup(f.read(), "lxml")
 
@@ -43,10 +41,8 @@ def main():
 
     with open(data_dir / "events.json", "w", encoding="utf-8") as f:
         json.dump(events, f, indent=2)
-    print(f"  Generated {len(events)} events")
 
     # Parse Raids
-    print("Parsing raids...")
     with open(fixtures_dir / "current_raids.html", encoding="utf-8") as f:
         soup = BeautifulSoup(f.read(), "lxml")
 
@@ -69,8 +65,7 @@ def main():
                     boss = parse_raid_boss(card, current_tier, base_url)
                     if boss:
                         raids.append(boss)
-                except Exception as e:
-                    print(f"    Warning: Error parsing raid boss: {e}")
+                except Exception:
                     continue
 
     # Find shadow raid bosses container
@@ -90,16 +85,13 @@ def main():
                     boss = parse_raid_boss(card, current_tier, base_url)
                     if boss:
                         raids.append(boss)
-                except Exception as e:
-                    print(f"    Warning: Error parsing shadow raid boss: {e}")
+                except Exception:
                     continue
 
     with open(data_dir / "raids.json", "w", encoding="utf-8") as f:
         json.dump(raids, f, indent=2)
-    print(f"  Generated {len(raids)} raids")
 
     # Parse Research
-    print("Parsing research...")
     with open(fixtures_dir / "current_research.html", encoding="utf-8") as f:
         soup = BeautifulSoup(f.read(), "lxml")
 
@@ -110,16 +102,13 @@ def main():
             task = parse_research_task(research_item)
             if task:
                 research.append(task)
-        except Exception as e:
-            print(f"    Warning: Error parsing research task: {e}")
+        except Exception:
             continue
 
     with open(data_dir / "research.json", "w", encoding="utf-8") as f:
         json.dump(research, f, indent=2)
-    print(f"  Generated {len(research)} research tasks")
 
     # Parse Eggs
-    print("Parsing eggs...")
     with open(fixtures_dir / "current_eggs.html", encoding="utf-8") as f:
         soup = BeautifulSoup(f.read(), "lxml")
 
@@ -149,16 +138,13 @@ def main():
                         egg = parse_egg_item(card, current_type, current_adventure_sync, current_gift_exchange, current_route_gift)
                         if egg:
                             eggs.append(egg)
-                    except Exception as e:
-                        print(f"    Warning: Error parsing egg item: {e}")
+                    except Exception:
                         continue
 
     with open(data_dir / "eggs.json", "w", encoding="utf-8") as f:
         json.dump(eggs, f, indent=2)
-    print(f"  Generated {len(eggs)} eggs")
 
     # Parse Rocket Lineups
-    print("Parsing rocket lineups...")
     with open(fixtures_dir / "current_rocket_lineups.html", encoding="utf-8") as f:
         soup = BeautifulSoup(f.read(), "lxml")
 
@@ -169,16 +155,13 @@ def main():
             lineup = parse_rocket_trainer(profile, base_url)
             if lineup:
                 lineups.append(lineup)
-        except Exception as e:
-            print(f"    Warning: Error parsing rocket trainer: {e}")
+        except Exception:
             continue
 
     with open(data_dir / "rocket-lineups.json", "w", encoding="utf-8") as f:
         json.dump(lineups, f, indent=2)
-    print(f"  Generated {len(lineups)} rocket lineups")
 
     # Parse Promo Codes
-    print("Parsing promo codes...")
     with open(fixtures_dir / "current_promos.html", encoding="utf-8") as f:
         soup = BeautifulSoup(f.read(), "lxml")
 
@@ -189,19 +172,14 @@ def main():
             promo = parse_promo_card(card, base_url)
             if promo:
                 promos.append(promo)
-        except Exception as e:
-            print(f"    Warning: Error parsing promo code: {e}")
+        except Exception:
             continue
 
     with open(data_dir / "promo-codes.json", "w", encoding="utf-8") as f:
         json.dump(promos, f, indent=2)
-    print(f"  Generated {len(promos)} promo codes")
 
-    print("\nAll test data generated successfully!\n")
-    print("Generated files:")
     for json_file in sorted(data_dir.glob("*.json")):
-        size = json_file.stat().st_size
-        print(f"  - {json_file.name}: {size:,} bytes")
+        json_file.stat().st_size
 
 
 if __name__ == "__main__":

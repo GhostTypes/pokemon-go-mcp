@@ -34,7 +34,7 @@ class TestToolDiscovery:
 class TestExampleTool:
     """
     Tests for example_tool_1.
-    
+
     TODO: Rename this class and customize tests for your actual tools.
     """
 
@@ -62,7 +62,7 @@ class TestExampleTool:
         # Should indicate an error
         assert result.is_error or "error" in result.content[0].text.lower()
 
-    @pytest.mark.parametrize("input_val,expected_output", [
+    @pytest.mark.parametrize(("input_val", "expected_output"), [
         # TODO: Add test cases with (input, expected_output) pairs
         ("input1", "output1"),
         ("input2", "output2"),

@@ -21,7 +21,7 @@ def register_research_tools(mcp: FastMCP) -> None:
     @mcp.tool()
     async def get_current_research() -> str:
         """Get all current field research tasks in Pokemon Go.
-        
+
         Returns a comprehensive list of all field research tasks currently available
         from PokeStops, including task requirements and possible Pokemon rewards.
         Note: You receive ONE of the possible rewards, not all of them.
@@ -75,16 +75,16 @@ def register_research_tools(mcp: FastMCP) -> None:
             return result
 
         except Exception as e:
-            logger.error(f"Error fetching research tasks: {e}")
+            logger.exception(f"Error fetching research tasks: {e}")
             return f"Error fetching research tasks: {e!s}"
 
     @mcp.tool()
     async def search_research_by_reward(pokemon_name: str) -> str:
         """Find field research tasks that reward a specific Pokemon.
-        
+
         Args:
             pokemon_name: Name of the Pokemon to search for as a reward
-            
+
         Returns research tasks that can give the specified Pokemon as a reward.
         """
         try:
@@ -115,16 +115,16 @@ def register_research_tools(mcp: FastMCP) -> None:
             return result
 
         except Exception as e:
-            logger.error(f"Error searching research by reward: {e}")
+            logger.exception(f"Error searching research by reward: {e}")
             return f"Error searching research by reward: {e!s}"
 
     @mcp.tool()
     async def get_research_by_task_type(task_type: str) -> str:
         """Get field research tasks filtered by task type.
-        
+
         Args:
             task_type: Type of task to filter by (catch, battle, raid, spin, walk, etc.)
-            
+
         Returns research tasks that match the specified task type.
         """
         try:
@@ -157,13 +157,13 @@ def register_research_tools(mcp: FastMCP) -> None:
             return result
 
         except Exception as e:
-            logger.error(f"Error fetching {task_type} research: {e}")
+            logger.exception(f"Error fetching {task_type} research: {e}")
             return f"Error fetching {task_type} research: {e!s}"
 
     @mcp.tool()
     async def get_shiny_research_rewards() -> str:
         """Get all field research tasks that can reward shiny Pokemon.
-        
+
         Returns research tasks where at least one of the possible rewards
         can be encountered as a shiny, perfect for shiny hunters.
         """
@@ -202,13 +202,13 @@ def register_research_tools(mcp: FastMCP) -> None:
             return result
 
         except Exception as e:
-            logger.error(f"Error fetching shiny research: {e}")
+            logger.exception(f"Error fetching shiny research: {e}")
             return f"Error fetching shiny research: {e!s}"
 
     @mcp.tool()
     async def get_easy_research_tasks() -> str:
         """Get field research tasks that are easy to complete.
-        
+
         Returns tasks that can be completed quickly or with minimal effort,
         perfect for players who want to stack rewards efficiently.
         """
@@ -251,16 +251,16 @@ def register_research_tools(mcp: FastMCP) -> None:
             return result
 
         except Exception as e:
-            logger.error(f"Error fetching easy research: {e}")
+            logger.exception(f"Error fetching easy research: {e}")
             return f"Error fetching easy research: {e!s}"
 
     @mcp.tool()
     async def search_research_tasks(query: str) -> str:
         """Search field research tasks by task description.
-        
+
         Args:
             query: Search term to look for in task descriptions
-            
+
         Returns research tasks that match the search criteria.
         """
         try:
@@ -283,17 +283,17 @@ def register_research_tools(mcp: FastMCP) -> None:
             return result
 
         except Exception as e:
-            logger.error(f"Error searching research tasks: {e}")
+            logger.exception(f"Error searching research tasks: {e}")
             return f"Error searching research tasks: {e!s}"
 
     @mcp.tool()
     async def get_research_recommendations(priority: str = "balanced") -> str:
         """Get research task recommendations based on specified priority.
-        
+
         Args:
-            priority: Priority type - "shiny" for shiny hunters, "easy" for quick completion, 
+            priority: Priority type - "shiny" for shiny hunters, "easy" for quick completion,
                      "rare" for uncommon Pokemon, or "balanced" for general recommendations
-            
+
         Returns recommended research tasks to focus on based on the priority.
         """
         try:
@@ -342,7 +342,7 @@ def register_research_tools(mcp: FastMCP) -> None:
             # Sort by potential value (shiny tasks first)
             tasks.sort(key=lambda t: any(r.can_be_shiny for r in t.rewards), reverse=True)
 
-            for i, task in enumerate(tasks[:15]):  # Limit to top 15
+            for _i, task in enumerate(tasks[:15]):  # Limit to top 15
                 priority_marker = "🌟" if any(r.can_be_shiny for r in task.rewards) else "⭐"
                 result += f"{priority_marker} **{task.text}**\n"
 
@@ -355,5 +355,5 @@ def register_research_tools(mcp: FastMCP) -> None:
             return result
 
         except Exception as e:
-            logger.error(f"Error getting research recommendations: {e}")
+            logger.exception(f"Error getting research recommendations: {e}")
             return f"Error getting research recommendations: {e!s}"

@@ -2,6 +2,7 @@
 Handles parsing extra event information for community days
 """
 
+import contextlib
 import logging
 
 from bs4 import BeautifulSoup
@@ -126,10 +127,8 @@ async def parse_community_day_details(soup: BeautifulSoup, event: dict) -> None:
             step_name_elem = item.select_one(".step-name")
 
             if step_num_elem:
-                try:
+                with contextlib.suppress(ValueError):
                     research["step"] = int(step_num_elem.get_text(strip=True))
-                except ValueError:
-                    pass
 
             if step_name_elem:
                 research["name"] = step_name_elem.get_text(strip=True)

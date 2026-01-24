@@ -114,9 +114,8 @@ def scrape_ruff_page(scraper, url):
         cleaned_content = clean_content(main_content)
 
         # Convert to markdown
-        markdown = md(str(cleaned_content), heading_style="ATX")
+        return md(str(cleaned_content), heading_style="ATX")
 
-        return markdown
 
     except Exception as e:
         print(f"  [ERROR] {e!s}", file=sys.stderr)
@@ -140,9 +139,8 @@ def url_to_filename(url):
         return "index.md"
 
     # Replace slashes with double underscores
-    filename = path.replace("/", "__") + ".md"
+    return path.replace("/", "__") + ".md"
 
-    return filename
 
 def load_page_list(json_file):
     """Load the list of pages to scrape from JSON file"""

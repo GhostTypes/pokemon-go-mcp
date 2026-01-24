@@ -34,7 +34,8 @@ async def scrape_raids(scraper, base_url: str) -> list[dict]:
         # Find raid bosses container
         raid_bosses = soup.find(class_="raid-bosses")
         if not raid_bosses:
-            raise ValueError("Could not find raid-bosses container")
+            msg = "Could not find raid-bosses container"
+            raise ValueError(msg)
 
         # Process each tier in regular raids
         tiers = raid_bosses.find_all(class_="tier")
@@ -79,7 +80,7 @@ async def scrape_raids(scraper, base_url: str) -> list[dict]:
         return bosses
 
     except Exception as e:
-        logger.error(f"Error scraping raids: {e}")
+        logger.exception(f"Error scraping raids: {e}")
         return scraper._load_fallback_data("raids.json", [])
 
 

@@ -28,8 +28,6 @@ def backup_data(source_dir: str = "pogo_scraper/data", backup_dir: str = "test_b
         shutil.copy2(json_file, dest)
         copied_files.append(json_file.name)
 
-    print(f"[OK] Backed up {len(copied_files)} files to {backup_path}")
-    print(f"     Files: {', '.join(copied_files)}")
     return str(backup_path)
 
 
@@ -111,11 +109,6 @@ def compare_runs(dir1: str, dir2: str = "pogo_scraper/data") -> dict[str, Any]:
     path1 = Path(dir1)
     path2 = Path(dir2)
 
-    print(f"\n{'='*70}")
-    print("Comparing data directories:")
-    print(f"  Baseline: {path1}")
-    print(f"  Current:  {path2}")
-    print(f"{'='*70}\n")
 
     # Get all JSON files (exclude minified versions)
     files1 = {f.name for f in path1.glob("*.json") if not f.name.endswith(".min.json")}
@@ -139,27 +132,18 @@ def compare_runs(dir1: str, dir2: str = "pogo_scraper/data") -> dict[str, Any]:
 
         if is_same:
             results["identical"] += 1
-            print(f"[OK] {filename:30s} IDENTICAL")
             results["details"][filename] = "identical"
         elif file1.exists() and file2.exists():
             results["different"] += 1
-            print(f"[!!] {filename:30s} DIFFERENT")
-            for diff in diffs:
-                print(f"     {diff}")
+            for _diff in diffs:
+                pass
             results["details"][filename] = diffs
         else:
             results["missing"] += 1
-            print(f"[!]  {filename:30s} MISSING")
-            for diff in diffs:
-                print(f"     {diff}")
+            for _diff in diffs:
+                pass
             results["details"][filename] = "missing"
 
-    print(f"\n{'='*70}")
-    print("Summary:")
-    print(f"  [OK] Identical: {results['identical']}/{results['total_files']}")
-    print(f"  [!!] Different: {results['different']}/{results['total_files']}")
-    print(f"  [!]  Missing:   {results['missing']}/{results['total_files']}")
-    print(f"{'='*70}\n")
 
     return results
 
@@ -169,18 +153,14 @@ def benchmark_scraper(runs: int = 3) -> None:
     import subprocess
     import time
 
-    print(f"\n{'='*70}")
-    print(f"Running scraper benchmark ({runs} runs)")
-    print(f"{'='*70}\n")
 
     times = []
-    for i in range(runs):
+    for _i in range(runs):
         # Clear cache
         data_dir = Path("pogo_scraper/data")
         for f in data_dir.glob("*.json"):
             f.unlink()
 
-        print(f"Run {i+1}/{runs}...", end=" ", flush=True)
 
         start = time.time()
         result = subprocess.run(
@@ -193,20 +173,13 @@ def benchmark_scraper(runs: int = 3) -> None:
         times.append(elapsed)
 
         if result.returncode == 0:
-            print(f"OK ({elapsed:.2f}s)")
+            pass
         else:
-            print("FAILED")
-            print(result.stderr)
-
-    print(f"\n{'='*70}")
-    print("Benchmark Results:")
-    print(f"  Average: {sum(times)/len(times):.2f}s")
-    print(f"  Min:     {min(times):.2f}s")
-    print(f"  Max:     {max(times):.2f}s")
-    print(f"{'='*70}\n")
+            pass
 
 
-def main():
+
+def main() -> None:
     parser = argparse.ArgumentParser(description="Scraper testing utilities")
     subparsers = parser.add_subparsers(dest="command", help="Command to run")
 
@@ -236,16 +209,13 @@ def main():
         if baseline == "latest":
             backup_dir = Path("test_backups")
             if not backup_dir.exists():
-                print("[!] No backups found")
                 sys.exit(1)
 
             backups = sorted(backup_dir.iterdir(), key=lambda p: p.name, reverse=True)
             if not backups:
-                print("[!] No backups found")
                 sys.exit(1)
 
             baseline = str(backups[0])
-            print(f"Using latest backup: {baseline}\n")
 
         results = compare_runs(baseline, args.current)
 

@@ -11,7 +11,7 @@ import sys
 def clean_mypy_markdown(content):
     """
     Clean mypy documentation markdown content.
-    
+
     Removes:
     - Navigation header (everything before first H1 heading)
     - Footer navigation (Next/Previous links)
@@ -51,7 +51,7 @@ def clean_mypy_markdown(content):
     if footer_markers:
         # Sort by line number and take the first (earliest)
         footer_markers.sort(key=lambda x: x[1])
-        marker_type, end_idx = footer_markers[0]
+        _marker_type, end_idx = footer_markers[0]
 
         # Remove trailing blank lines before the footer marker
         while end_idx > start_idx and lines[end_idx - 1].strip() == "":
@@ -75,9 +75,8 @@ def clean_mypy_markdown(content):
     cleaned_content = re.sub(r"\n{3,}", "\n\n", cleaned_content)
 
     # Strip leading/trailing whitespace
-    cleaned_content = cleaned_content.strip()
+    return cleaned_content.strip()
 
-    return cleaned_content
 
 def main():
     if len(sys.argv) < 2:

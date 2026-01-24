@@ -47,7 +47,7 @@ async def scrape_promo_codes(scraper, base_url: str) -> list[dict]:
         return all_promo_codes
 
     except Exception as e:
-        logger.error(f"Error scraping promo codes: {e}")
+        logger.exception(f"Error scraping promo codes: {e}")
         return scraper._load_fallback_data("promo-codes.json", [])
 
 
@@ -121,7 +121,7 @@ def parse_promo_card(card_element, base_url: str) -> dict | None:
         if expiry_elem:
             expiration = expiry_elem.get("data-expires", "")
 
-        promo_data = {
+        return {
             "code": promo_code,
             "title": title,
             "description": description,
@@ -130,7 +130,6 @@ def parse_promo_card(card_element, base_url: str) -> dict | None:
             "expiration": expiration
         }
 
-        return promo_data
 
     except Exception as e:
         logger.warning(f"Error parsing promo card: {e}")

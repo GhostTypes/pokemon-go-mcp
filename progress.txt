@@ -14,7 +14,7 @@
 - [x] Task 1.3: Fix bare `Dict` type parameters in pogo_mcp/types.py
 - [x] Task 1.4: Convert EventExtraData from dataclass to TypedDict
 - [x] Task 1.5: Apply ruff auto-fixes (safe)
-- [ ] Task 1.6: Apply ruff auto-fixes (unsafe)
+- [x] Task 1.6: Apply ruff auto-fixes (unsafe)
 - [ ] Task 1.7: Format all files with ruff
 
 ### Phase 2: Type Safety (P1 - High Priority)
@@ -78,18 +78,18 @@
 
 ## Statistics
 
-**Tasks Completed:** 5 / 60+
-**Mypy Errors:** 1,094 → TBD
-**Ruff Errors:** 3,103 → 1,449 remaining
+**Tasks Completed:** 6 / 60+
+**Mypy Errors:** 1,094 → 235 remaining
+**Ruff Errors:** 3,103 → 677 remaining
 **Files Reformatted:** 59 files modified
 **Tests Passing:** 100% (117/117)
 
 ## Current Status
 
 **Phase:** Phase 1 - Foundation & Configuration
-**Current Task:** Task 1.5 completed
-**Last Commit:** Task 1.5
-**Time Elapsed:** 0h 3m
+**Current Task:** Task 1.6 completed
+**Last Commit:** Task 1.6
+**Time Elapsed:** 0h 5m
 
 ## Notes
 

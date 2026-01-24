@@ -38,7 +38,7 @@ def register_egg_tools(mcp: FastMCP) -> None:
     @mcp.tool()
     async def get_egg_hatches() -> str:
         """Get all Pokemon currently available from eggs in Pokemon Go.
-        
+
         Returns a comprehensive list of all Pokemon that can hatch from eggs,
         organized by egg distance with CP ranges, shiny availability, and special features.
         """
@@ -87,7 +87,7 @@ def register_egg_tools(mcp: FastMCP) -> None:
             return result
 
         except Exception as e:
-            logger.error(f"Error fetching egg hatches: {e}")
+            logger.exception(f"Error fetching egg hatches: {e}")
             return f"Error fetching egg hatches: {e!s}"
 
     @mcp.tool()
@@ -127,13 +127,13 @@ def register_egg_tools(mcp: FastMCP) -> None:
             return result
 
         except Exception as e:
-            logger.error(f"Error fetching {distance} egg hatches: {e}")
+            logger.exception(f"Error fetching {distance} egg hatches: {e}")
             return f"Error fetching {distance} egg hatches: {e!s}"
 
     @mcp.tool()
     async def get_shiny_egg_hatches() -> str:
         """Get all Pokemon from eggs that can be encountered as shiny.
-        
+
         Returns Pokemon that can hatch from eggs in their shiny form,
         organized by egg distance for efficient shiny hunting planning.
         """
@@ -154,7 +154,7 @@ def register_egg_tools(mcp: FastMCP) -> None:
 
             result = f"# ✨ Shiny-Eligible Egg Hatches (as of {get_current_time_str()})\n\n"
 
-            shiny_pokemon = sorted(list(set(e.name for e in shiny_eggs)))
+            shiny_pokemon = sorted({e.name for e in shiny_eggs})
             result += f"**Shiny Pokemon Available:** {', '.join(shiny_pokemon)}\n\n"
 
             # Sort by distance
@@ -173,16 +173,16 @@ def register_egg_tools(mcp: FastMCP) -> None:
             return result
 
         except Exception as e:
-            logger.error(f"Error fetching shiny egg hatches: {e}")
+            logger.exception(f"Error fetching shiny egg hatches: {e}")
             return f"Error fetching shiny egg hatches: {e!s}"
 
     @mcp.tool()
     async def search_egg_pokemon(pokemon_name: str) -> str:
         """Search for a specific Pokemon in current egg pools.
-        
+
         Args:
             pokemon_name: Name of the Pokemon to search for
-            
+
         Returns information about the Pokemon if it's available from eggs.
         """
         try:
@@ -210,13 +210,13 @@ def register_egg_tools(mcp: FastMCP) -> None:
             return result
 
         except Exception as e:
-            logger.error(f"Error searching egg Pokemon: {e}")
+            logger.exception(f"Error searching egg Pokemon: {e}")
             return f"Error searching egg Pokemon: {e!s}"
 
     @mcp.tool()
     async def get_regional_egg_pokemon() -> str:
         """Get Pokemon from eggs that are region-locked.
-        
+
         Returns regional Pokemon that can only be obtained from eggs in specific regions,
         useful for planning trades or travel.
         """
@@ -252,13 +252,13 @@ def register_egg_tools(mcp: FastMCP) -> None:
             return result
 
         except Exception as e:
-            logger.error(f"Error fetching regional egg Pokemon: {e}")
+            logger.exception(f"Error fetching regional egg Pokemon: {e}")
             return f"Error fetching regional egg Pokemon: {e!s}"
 
     @mcp.tool()
     async def get_gift_exchange_pokemon() -> str:
         """Get Pokemon that are available from gift eggs (7km eggs from friends).
-        
+
         Returns Pokemon that can be hatched from 7km eggs received from gifts,
         which often contain regional Pokemon and special variants.
         """
@@ -285,13 +285,13 @@ def register_egg_tools(mcp: FastMCP) -> None:
             return result
 
         except Exception as e:
-            logger.error(f"Error fetching gift exchange Pokemon: {e}")
+            logger.exception(f"Error fetching gift exchange Pokemon: {e}")
             return f"Error fetching gift exchange Pokemon: {e!s}"
 
     @mcp.tool()
     async def get_route_gift_pokemon() -> str:
         """Get Pokemon that are available from route gift eggs (7km eggs from route gifts).
-        
+
         Returns Pokemon that can be hatched from 7km eggs received from route gifts,
         which often contain special variants.
         """
@@ -318,13 +318,13 @@ def register_egg_tools(mcp: FastMCP) -> None:
             return result
 
         except Exception as e:
-            logger.error(f"Error fetching route gift Pokemon: {e}")
+            logger.exception(f"Error fetching route gift Pokemon: {e}")
             return f"Error fetching route gift Pokemon: {e!s}"
 
     @mcp.tool()
     async def get_adventure_sync_rewards() -> str:
         """Get Pokemon available as Adventure Sync rewards.
-        
+
         Returns Pokemon that can be obtained from Adventure Sync reward eggs,
         which are earned by walking specific distances each week.
         """
@@ -350,17 +350,17 @@ def register_egg_tools(mcp: FastMCP) -> None:
             return result
 
         except Exception as e:
-            logger.error(f"Error fetching Adventure Sync rewards: {e}")
+            logger.exception(f"Error fetching Adventure Sync rewards: {e}")
             return f"Error fetching Adventure Sync rewards: {e!s}"
 
     @mcp.tool()
     async def get_egg_recommendations(priority: str = "shiny") -> str:
         """Get egg incubation recommendations based on specified priority.
-        
+
         Args:
             priority: Priority type - "shiny" for shiny hunting, "rare" for uncommon Pokemon,
                      "quick" for fast hatches, or "distance" for specific distances
-            
+
         Returns recommended eggs to prioritize based on the criteria.
         """
         try:
@@ -430,5 +430,5 @@ def register_egg_tools(mcp: FastMCP) -> None:
             return result
 
         except Exception as e:
-            logger.error(f"Error getting egg recommendations: {e}")
+            logger.exception(f"Error getting egg recommendations: {e}")
             return f"Error getting egg recommendations: {e!s}"

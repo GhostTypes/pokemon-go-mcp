@@ -23,7 +23,7 @@ def register_raid_tools(mcp: FastMCP) -> None:
     @mcp.tool()
     async def get_current_raids() -> str:
         """Get all current raid bosses in Pokemon Go.
-        
+
         Returns a comprehensive list of all raid bosses currently available,
         organized by tier with CP ranges, types, weather boosts, and shiny availability.
         """
@@ -67,16 +67,16 @@ def register_raid_tools(mcp: FastMCP) -> None:
             return result
 
         except Exception as e:
-            logger.error(f"Error fetching raids: {e}")
+            logger.exception(f"Error fetching raids: {e}")
             return f"Error fetching raids: {e!s}"
 
     @mcp.tool()
     async def get_raid_by_tier(tier: str) -> str:
         """Get raid bosses filtered by tier.
-        
+
         Args:
             tier: Raid tier to filter by (1, 3, 5, Mega, etc.)
-            
+
         Returns raid bosses of the specified tier with full details.
         """
         try:
@@ -99,13 +99,13 @@ def register_raid_tools(mcp: FastMCP) -> None:
             return result
 
         except Exception as e:
-            logger.error(f"Error fetching {tier} raids: {e}")
+            logger.exception(f"Error fetching {tier} raids: {e}")
             return f"Error fetching {tier} raids: {e!s}"
 
     @mcp.tool()
     async def get_shiny_raids() -> str:
         """Get only raid bosses that can be encountered as shiny.
-        
+
         Returns all current raid bosses where the shiny form is available,
         perfect for shiny hunters planning their raid activities.
         """
@@ -137,16 +137,16 @@ def register_raid_tools(mcp: FastMCP) -> None:
             return result
 
         except Exception as e:
-            logger.error(f"Error fetching shiny raids: {e}")
+            logger.exception(f"Error fetching shiny raids: {e}")
             return f"Error fetching shiny raids: {e!s}"
 
     @mcp.tool()
     async def search_raid_boss(pokemon_name: str) -> str:
         """Search for a specific Pokemon in current raids.
-        
+
         Args:
             pokemon_name: Name of the Pokemon to search for
-            
+
         Returns information about the Pokemon if it's currently a raid boss.
         """
         try:
@@ -169,16 +169,16 @@ def register_raid_tools(mcp: FastMCP) -> None:
             return result
 
         except Exception as e:
-            logger.error(f"Error searching for raid boss: {e}")
+            logger.exception(f"Error searching for raid boss: {e}")
             return f"Error searching for raid boss: {e!s}"
 
     @mcp.tool()
     async def get_raids_by_type(pokemon_type: str) -> str:
         """Get raid bosses filtered by Pokemon type.
-        
+
         Args:
             pokemon_type: Pokemon type to filter by (e.g., Fire, Water, Electric)
-            
+
         Returns raid bosses that have the specified type.
         """
         try:
@@ -199,16 +199,16 @@ def register_raid_tools(mcp: FastMCP) -> None:
             return result
 
         except Exception as e:
-            logger.error(f"Error fetching {pokemon_type} raids: {e}")
+            logger.exception(f"Error fetching {pokemon_type} raids: {e}")
             return f"Error fetching {pokemon_type} raids: {e!s}"
 
     @mcp.tool()
     async def get_weather_boosted_raids(weather: str) -> str:
         """Get raid bosses that are boosted by specific weather.
-        
+
         Args:
             weather: Weather condition (Sunny, Rainy, Snowy, Foggy, Windy, Cloudy)
-            
+
         Returns raid bosses that receive a weather boost in the specified weather.
         """
         try:
@@ -234,17 +234,17 @@ def register_raid_tools(mcp: FastMCP) -> None:
             return result
 
         except Exception as e:
-            logger.error(f"Error fetching weather boosted raids: {e}")
+            logger.exception(f"Error fetching weather boosted raids: {e}")
             return f"Error fetching weather boosted raids: {e!s}"
 
     @mcp.tool()
     async def get_raid_recommendations(tier: str | None = None, shiny_only: bool = False) -> str:
         """Get raid recommendations based on specified criteria.
-        
+
         Args:
             tier: Optional tier filter (1, 3, 5, Mega)
             shiny_only: If True, only show raids where shiny is available
-            
+
         Returns recommended raids to focus on based on the criteria.
         """
         try:
@@ -301,5 +301,5 @@ def register_raid_tools(mcp: FastMCP) -> None:
             return result
 
         except Exception as e:
-            logger.error(f"Error getting raid recommendations: {e}")
+            logger.exception(f"Error getting raid recommendations: {e}")
             return f"Error getting raid recommendations: {e!s}"

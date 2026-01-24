@@ -124,10 +124,7 @@ def crawl_ruff_docs(start_url="https://docs.astral.sh/ruff/"):
 def main():
     """Main entry point"""
     # Get output file from command line or use default
-    if len(sys.argv) > 1:
-        output_file = sys.argv[1]
-    else:
-        output_file = "ruff_docs_pages.json"
+    output_file = sys.argv[1] if len(sys.argv) > 1 else "ruff_docs_pages.json"
 
     print("=" * 70, file=sys.stderr)
     print("Ruff Documentation Page Discovery", file=sys.stderr)

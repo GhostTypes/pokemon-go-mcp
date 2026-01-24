@@ -34,7 +34,7 @@ logger = logging.getLogger(__name__)
 
 
 
-async def log_response_hook(response):
+async def log_response_hook(response) -> None:
     """Event hook to log details of each HTTP response."""
     #await response.aread()  # Make sure the response body is available
     #logger.info("--- HTTP Response Debug ---")
@@ -49,7 +49,7 @@ async def log_response_hook(response):
 class LeekDuckScraper:
     """Main scraper class for Pokemon Go data from leekduck.com"""
 
-    def __init__(self, output_dir: str = "data", cache_duration: int = 300):
+    def __init__(self, output_dir: str = "data", cache_duration: int = 300) -> None:
         self.output_dir = Path(output_dir)
         self.cache_duration = cache_duration  # seconds
         self.base_url = "https://leekduck.com"
@@ -167,7 +167,7 @@ class LeekDuckScraper:
                 results[name] = await task
                 logger.info(f"Successfully scraped {name}: {len(results[name])} items")
             except Exception as e:
-                logger.error(f"Failed to scrape {name}: {e}")
+                logger.exception(f"Failed to scrape {name}: {e}")
                 results[name] = []
 
         # Save summary
@@ -262,7 +262,7 @@ Examples:
                 logger.info(f"✅ {target}: {len(results[target])} items")
 
             except Exception as e:
-                logger.error(f"❌ Failed to scrape {target}: {e}")
+                logger.exception(f"❌ Failed to scrape {target}: {e}")
                 results[target] = []
 
         total_items = sum(len(data) for data in results.values())
@@ -277,9 +277,7 @@ if __name__ == "__main__":
         import bs4
         import httpx
         import lxml
-    except ImportError as e:
-        print(f"Missing required dependency: {e}")
-        print("Install with: pip install httpx beautifulsoup4 lxml")
+    except ImportError:
         sys.exit(1)
 
     # Run the scraper

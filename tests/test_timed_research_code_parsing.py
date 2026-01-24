@@ -17,12 +17,10 @@ def download_timed_research_event_data():
     html_file = os.path.join(fixtures_dir, "timed_research_event.html")
 
     if not os.path.exists(html_file):
-        print("Downloading timed research event data...")
         response = requests.get("https://leekduck.com/events/max-finale-promo-code/")
         os.makedirs(fixtures_dir, exist_ok=True)
         with open(html_file, "w", encoding="utf-8") as f:
             f.write(response.text)
-        print("Download complete!")
     return html_file
 
 

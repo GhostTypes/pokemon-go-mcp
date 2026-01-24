@@ -17,12 +17,10 @@ def download_research_data():
     html_file = os.path.join(fixtures_dir, "current_research.html")
 
     if not os.path.exists(html_file):
-        print("Downloading current research data...")
         response = requests.get("https://leekduck.com/research/")
         os.makedirs(fixtures_dir, exist_ok=True)
         with open(html_file, "w", encoding="utf-8") as f:
             f.write(response.text)
-        print("Download complete!")
     return html_file
 
 def test_research_parsing():
@@ -73,7 +71,7 @@ def test_research_rewards_parsing():
 
     # Test first 3 research items
     valid_rewards_count = 0
-    for i, item in enumerate(research_items[:3]):
+    for _i, item in enumerate(research_items[:3]):
         result = parse_research_task(item)
         if result and "rewards" in result and len(result["rewards"]) > 0:
             # Check the first reward

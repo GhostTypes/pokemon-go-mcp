@@ -25,7 +25,7 @@ def register_event_tools(mcp: FastMCP) -> None:
     @mcp.tool()
     async def get_current_events() -> str:
         """Get all active and upcoming Pokemon Go events.
-        
+
         Returns a formatted list of all current and upcoming events with their details,
         including event type, duration, and links for more information.
         """
@@ -42,7 +42,8 @@ def register_event_tools(mcp: FastMCP) -> None:
 
             # Verify data structure
             if not isinstance(events, list):
-                raise TypeError(f"Expected list from get_events(), got {type(events)}")
+                msg = f"Expected list from get_events(), got {type(events)}"
+                raise TypeError(msg)
 
             current_time = datetime.now(timezone.utc)
 
@@ -70,19 +71,19 @@ def register_event_tools(mcp: FastMCP) -> None:
 
         except Exception as e:
             error_msg = f"Error fetching events: {e!s}"
-            logger.error(error_msg)
-            logger.error(f"Exception type: {type(e)}")
+            logger.exception(error_msg)
+            logger.exception(f"Exception type: {type(e)}")
             import traceback
-            logger.error(f"Traceback: {traceback.format_exc()}")
+            logger.exception(f"Traceback: {traceback.format_exc()}")
             return error_msg
 
     @mcp.tool()
     async def get_event_details(event_id: str) -> str:
         """Get detailed information about a specific Pokemon Go event.
-        
+
         Args:
             event_id: The ID of the event to get details for
-            
+
         Returns detailed information including spawns, bonuses, and special research if available.
         """
         try:
@@ -151,13 +152,13 @@ def register_event_tools(mcp: FastMCP) -> None:
             return result
 
         except Exception as e:
-            logger.error(f"Error fetching event details: {e}")
+            logger.exception(f"Error fetching event details: {e}")
             return f"Error fetching event details: {e!s}"
 
     @mcp.tool()
     async def get_community_day_info() -> str:
         """Get information about current or upcoming Community Day events.
-        
+
         Returns detailed Community Day information including featured Pokemon,
         bonuses, exclusive moves, and special research tasks.
         """
@@ -197,16 +198,16 @@ def register_event_tools(mcp: FastMCP) -> None:
             return result
 
         except Exception as e:
-            logger.error(f"Error fetching Community Day info: {e}")
+            logger.exception(f"Error fetching Community Day info: {e}")
             return f"Error fetching Community Day info: {e!s}"
 
     @mcp.tool()
     async def get_event_spawns(event_type: str | None = None) -> str:
         """Get Pokemon spawns from active events.
-        
+
         Args:
             event_type: Optional filter by event type (e.g., 'community-day', 'spotlight')
-            
+
         Returns information about Pokemon that are currently spawning more frequently due to events.
         """
         try:
@@ -244,13 +245,13 @@ def register_event_tools(mcp: FastMCP) -> None:
             return result
 
         except Exception as e:
-            logger.error(f"Error fetching event spawns: {e}")
+            logger.exception(f"Error fetching event spawns: {e}")
             return f"Error fetching event spawns: {e!s}"
 
     @mcp.tool()
     async def get_event_bonuses() -> str:
         """Get active bonuses from current Pokemon Go events.
-        
+
         Returns information about experience, stardust, candy, and other bonuses
         that are currently active from events.
         """
@@ -296,16 +297,16 @@ def register_event_tools(mcp: FastMCP) -> None:
             return result
 
         except Exception as e:
-            logger.error(f"Error fetching event bonuses: {e}")
+            logger.exception(f"Error fetching event bonuses: {e}")
             return f"Error fetching event bonuses: {e!s}"
 
     @mcp.tool()
     async def search_events(query: str) -> str:
         """Search for Pokemon Go events by name or description.
-        
+
         Args:
             query: Search term to look for in event names and types
-            
+
         Returns events that match the search criteria.
         """
         try:
@@ -330,5 +331,5 @@ def register_event_tools(mcp: FastMCP) -> None:
             return result
 
         except Exception as e:
-            logger.error(f"Error searching events: {e}")
+            logger.exception(f"Error searching events: {e}")
             return f"Error searching events: {e!s}"

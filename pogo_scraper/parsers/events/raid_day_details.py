@@ -2,6 +2,7 @@
 Handles parsing extra event information for raid days
 """
 
+import contextlib
 import logging
 
 from bs4 import BeautifulSoup
@@ -113,10 +114,8 @@ def _parse_research(soup: BeautifulSoup) -> list:
         # Step number
         step_num_elem = item.select_one(".step-number")
         if step_num_elem:
-            try:
+            with contextlib.suppress(ValueError):
                 research["step"] = int(step_num_elem.get_text(strip=True))
-            except ValueError:
-                pass
 
         # Step name
         step_name_elem = item.select_one(".step-name")

@@ -9,13 +9,13 @@ from .utils import get_current_time_str
 logger = logging.getLogger(__name__)
 
 
-def register_promo_code_tools(mcp):
+def register_promo_code_tools(mcp) -> None:
     """Register promo code related tools with the MCP server."""
 
     @mcp.tool()
     async def get_active_promo_codes() -> str:
         """Get all currently active promo codes with their rewards and expiration dates.
-        
+
         Returns a formatted list of active promo codes that can be redeemed in Pokemon GO,
         including their rewards, descriptions, and expiration information.
         """
@@ -57,5 +57,5 @@ def register_promo_code_tools(mcp):
             return result
 
         except Exception as e:
-            logger.error(f"Error fetching promo codes: {e}")
+            logger.exception(f"Error fetching promo codes: {e}")
             return f"Error fetching promo codes: {e!s}"

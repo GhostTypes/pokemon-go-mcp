@@ -108,7 +108,7 @@ async def scrape_events(scraper, base_url: str) -> list[dict]:
         return all_events
 
     except Exception as e:
-        logger.error(f"Error scraping events: {e}")
+        logger.exception(f"Error scraping events: {e}")
         return scraper._load_fallback_data("events.json", [])
 
 

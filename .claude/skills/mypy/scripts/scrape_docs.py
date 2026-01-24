@@ -60,8 +60,7 @@ def clean_html_to_markdown(html_content):
     """Convert HTML content to clean markdown format"""
     try:
         # Convert HTML to markdown with ATX-style headers
-        markdown_content = md(html_content, heading_style="ATX")
-        return markdown_content
+        return md(html_content, heading_style="ATX")
     except Exception as e:
         print(f"Warning: Error converting HTML to markdown: {e!s}", file=sys.stderr)
         return html_content
@@ -69,7 +68,7 @@ def clean_html_to_markdown(html_content):
 def clean_mypy_markdown(content):
     """
     Clean mypy documentation markdown content.
-    
+
     Removes:
     - Navigation header (everything before first H1 heading)
     - Footer navigation (Next/Previous links)
@@ -109,7 +108,7 @@ def clean_mypy_markdown(content):
     if footer_markers:
         # Sort by line number and take the first (earliest)
         footer_markers.sort(key=lambda x: x[1])
-        marker_type, end_idx = footer_markers[0]
+        _marker_type, end_idx = footer_markers[0]
 
         # Remove trailing blank lines before the footer marker
         while end_idx > start_idx and lines[end_idx - 1].strip() == "":
@@ -133,18 +132,17 @@ def clean_mypy_markdown(content):
     cleaned_content = re.sub(r"\n{3,}", "\n\n", cleaned_content)
 
     # Strip leading/trailing whitespace
-    cleaned_content = cleaned_content.strip()
+    return cleaned_content.strip()
 
-    return cleaned_content
 
 def scrape_url(url, scraper):
     """
     Scrape a URL using cloudscraper to bypass Cloudflare protection.
-    
+
     Args:
         url: The URL to scrape
         scraper: The cloudscraper instance to use
-    
+
     Returns:
         String containing the page content
     """

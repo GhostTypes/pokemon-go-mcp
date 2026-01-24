@@ -86,7 +86,7 @@ def register_rocket_tools(mcp: FastMCP) -> None:
             return result
 
         except Exception as e:
-            logger.error(f"Error fetching Team Rocket lineups: {e}")
+            logger.exception(f"Error fetching Team Rocket lineups: {e}")
             return f"Error fetching Team Rocket lineups: {e!s}"
 
     @mcp.tool()
@@ -132,7 +132,7 @@ def register_rocket_tools(mcp: FastMCP) -> None:
             return result
 
         except Exception as e:
-            logger.error(f"Error searching for Pokemon in Team Rocket lineups: {e}")
+            logger.exception(f"Error searching for Pokemon in Team Rocket lineups: {e}")
             return f"Error searching for Pokemon: {e!s}"
 
     @mcp.tool()
@@ -181,7 +181,7 @@ def register_rocket_tools(mcp: FastMCP) -> None:
             return result
 
         except Exception as e:
-            logger.error(f"Error fetching shiny Shadow Pokemon: {e}")
+            logger.exception(f"Error fetching shiny Shadow Pokemon: {e}")
             return f"Error fetching shiny Shadow Pokemon: {e!s}"
 
     @mcp.tool()
@@ -228,7 +228,7 @@ def register_rocket_tools(mcp: FastMCP) -> None:
             return result
 
         except Exception as e:
-            logger.error(f"Error fetching Team Rocket encounters: {e}")
+            logger.exception(f"Error fetching Team Rocket encounters: {e}")
             return f"Error fetching Team Rocket encounters: {e!s}"
 
     @mcp.tool()
@@ -277,7 +277,7 @@ def register_rocket_tools(mcp: FastMCP) -> None:
             return result
 
         except Exception as e:
-            logger.error(f"Error filtering Team Rocket trainers by type: {e}")
+            logger.exception(f"Error filtering Team Rocket trainers by type: {e}")
             return f"Error filtering Team Rocket trainers: {e!s}"
 
     @mcp.tool()
@@ -359,7 +359,7 @@ def register_rocket_tools(mcp: FastMCP) -> None:
             return result
 
         except Exception as e:
-            logger.error(f"Error calculating Pokemon weakness: {e}")
+            logger.exception(f"Error calculating Pokemon weakness: {e}")
             return f"Error calculating weakness: {e!s}"
 
     @mcp.tool()
@@ -444,5 +444,5 @@ def register_rocket_tools(mcp: FastMCP) -> None:
             return result
 
         except Exception as e:
-            logger.error(f"Error getting trainer details: {e}")
+            logger.exception(f"Error getting trainer details: {e}")
             return f"Error getting trainer details: {e!s}"

@@ -59,5 +59,5 @@ async def scrape_rocket_lineups(scraper, base_url: str) -> list[dict]:
         return rocket_trainers
 
     except Exception as e:
-        logger.error(f"Error scraping rocket lineups: {e}")
+        logger.exception(f"Error scraping rocket lineups: {e}")
         return scraper._load_fallback_data("rocket-lineups.json", [])

@@ -17,12 +17,10 @@ def download_eggs_data():
     html_file = os.path.join(fixtures_dir, "current_eggs.html")
 
     if not os.path.exists(html_file):
-        print("Downloading current eggs data...")
         response = requests.get("https://leekduck.com/eggs/")
         os.makedirs(fixtures_dir, exist_ok=True)
         with open(html_file, "w", encoding="utf-8") as f:
             f.write(response.text)
-        print("Download complete!")
     return html_file
 
 def test_egg_parsing():
@@ -93,7 +91,7 @@ def test_egg_cp_values():
 
     # Test first 5 cards
     valid_cp_count = 0
-    for i, card in enumerate(first_cards[:5]):
+    for _i, card in enumerate(first_cards[:5]):
         result = parse_egg_item(card, "2 km", False, False)
         if result and result["combatPower"] > 0:
             valid_cp_count += 1
@@ -122,7 +120,7 @@ def test_egg_rarity_parsing():
 
     # Test first 5 cards for rarity parsing
     rarity_parsed = False
-    for i, card in enumerate(first_cards[:5]):
+    for _i, card in enumerate(first_cards[:5]):
         result = parse_egg_item(card, "2 km", False, False)
         if result and "rarity" in result:
             # Rarity should be at least 1
@@ -163,6 +161,6 @@ def test_route_gift_egg_parsing():
     result = parse_egg_item(card, "7 km", False, False, True)
 
     assert result is not None, "Failed to parse route gift egg card"
-    assert result["isRouteGift"] == True, "Route gift flag not set correctly"
+    assert result["isRouteGift"], "Route gift flag not set correctly"
     assert result["rarity"] == 2, f"Expected rarity 2, got {result['rarity']}"
     assert result["name"] == "Bulbasaur", f"Expected name 'Bulbasaur', got {result['name']}"

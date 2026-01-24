@@ -144,17 +144,14 @@ def build_claude_command(agents_json=None):
 
 
 
-def run_claudius_loop(max_loops, agents_json=None):
+def run_claudius_loop(max_loops, agents_json=None) -> None:
     """Main loop that runs Claude iterations until complete or max reached."""
 
     # Pre-flight check
     if not os.path.exists("PRD.md"):
-        print("[Error] Missing required file: PRD.md")
-        print("Create a PRD.md file with your requirements before running.")
         sys.exit(1)
 
     if not os.path.exists("progress.txt"):
-        print("[Info] Creating empty progress.txt file...")
         with open("progress.txt", "w") as f:
             f.write("# Progress Log\n\n")
 
@@ -162,15 +159,12 @@ def run_claudius_loop(max_loops, agents_json=None):
     claude_command = build_claude_command(agents_json)
 
     if agents_json:
-        print("[Claudius] Sub-agents loaded from --agents flag")
+        pass
 
     loop_count = 0
 
     while loop_count < max_loops:
         loop_count += 1
-        print(f"\n{'='*60}")
-        print(f"[Claudius] --- Starting Iteration {loop_count}/{max_loops} ---")
-        print(f"{'='*60}")
 
         # Launch Claude as a subprocess
         # creationflags for Windows signal handling
@@ -189,10 +183,6 @@ def run_claudius_loop(max_loops, agents_json=None):
                 creationflags=creation_flags
             )
         except FileNotFoundError:
-            print("[Error] Claude Code not found. Install it with:")
-            print("  npm i -g @anthropic-ai/claude-code")
-            print("Or:")
-            print("  curl -fsSL https://claude.ai/install.sh | bash")
             sys.exit(1)
 
         iteration_success = False
@@ -212,20 +202,17 @@ def run_claudius_loop(max_loops, agents_json=None):
 
                     # Check for iteration complete signal
                     if "<iteration_complete>" in line.lower():
-                        print("\n[Claudius] Signal Detected: ITERATION_COMPLETE")
                         iteration_success = True
                         kill_process(process)
                         break
 
                     # Check for workflow complete signal
                     if "<workflow_complete>" in line.lower():
-                        print("\n[Claudius] Signal Detected: WORKFLOW_COMPLETE")
                         workflow_finished = True
                         kill_process(process)
                         break
 
         except KeyboardInterrupt:
-            print("\n[Claudius] User stopped execution (Ctrl+C).")
             kill_process(process)
             sys.exit(0)
 
@@ -233,33 +220,17 @@ def run_claudius_loop(max_loops, agents_json=None):
         kill_process(process)
 
         if workflow_finished:
-            print(f"\n{'='*60}")
-            print(f"[Claudius] PROJECT COMPLETE after {loop_count} iterations!")
-            print(f"{'='*60}")
-            print("\nAll code quality remediation tasks finished.")
-            print("Final verification:")
-            print("  - Mypy: 0 errors")
-            print("  - Ruff: 0 errors")
-            print("  - Ruff Format: Perfect")
-            print("  - Pytest: 100% pass")
-            print("\nReview your commits and merge when ready.")
             sys.exit(0)
 
         if not iteration_success:
-            print(f"\n[Claudius] Warning: Iteration {loop_count} ended without a success signal.")
-            print("[Claudius] Continuing to next iteration to retry...")
+            pass
             # Continue immediately - no delay
 
     # Reached max iterations without workflow_complete
-    print(f"\n{'='*60}")
-    print(f"[Claudius] Reached maximum limit of {max_loops} iterations.")
-    print(f"{'='*60}")
-    print("\nThe workflow did not complete. Check progress.txt to see what was done.")
-    print("You can run again with more iterations if needed.")
     sys.exit(1)
 
 
-def kill_process(process):
+def kill_process(process) -> None:
     """Platform-specific forced process termination."""
     if process.poll() is None:
         try:
@@ -281,7 +252,7 @@ def kill_process(process):
             pass
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(
         description="Run Claude Code in a Claudius (Ralph Wiggum) loop for code quality remediation.",
         epilog="Example: python claudius_runner.py 200"
@@ -300,19 +271,8 @@ def main():
     args = parser.parse_args()
 
     if args.max_loops < 1:
-        print("[Error] max_loops must be at least 1")
         sys.exit(1)
 
-    print("[Claudius] Starting autonomous code quality remediation loop")
-    print(f"[Claudius] Max iterations: {args.max_loops}")
-    print(f"[Claudius] Working directory: {os.getcwd()}")
-    print("[Claudius] Branch: code-quality-remediation")
-    print("[Claudius] PRD file: PRD.md")
-    print("[Claudius] Progress file: progress.txt")
-    print("[Claudius] Sub-agents: code-quality, mypy-specialist, mcp-maintainer, leekduck-scraper-architect")
-    print("\n[Claudius] This will run AUTONOMOUSLY overnight.")
-    print("[Claudius] Press Ctrl+C to stop at any time.")
-    print(f"\n{'='*60}\n")
 
     run_claudius_loop(args.max_loops, args.agents)
 

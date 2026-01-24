@@ -26,10 +26,7 @@ def is_valid_doc_url(url, base_domain):
         return False
 
     # Must be HTML page
-    if parsed.path and not (parsed.path.endswith(".html") or parsed.path.endswith("/")):
-        return False
-
-    return True
+    return not (parsed.path and not (parsed.path.endswith(".html") or parsed.path.endswith("/")))
 
 def get_all_links(html_content, base_url):
     """Extract all links from HTML content"""

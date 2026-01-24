@@ -34,7 +34,7 @@ def api_client_instance():
     return api_client
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def fresh_cache():
     """Fixture that clears the cache before each test to ensure fresh data."""
     api_client.clear_cache()

@@ -26,7 +26,7 @@ def get_user_timezone():
 def get_current_time(format_type="full", timezone=None):
     """
     Get current local time in specified format.
-    
+
     Args:
         format_type: Type of format to return
             - "full": Full datetime with timezone (default)
@@ -36,7 +36,7 @@ def get_current_time(format_type="full", timezone=None):
             - "iso": ISO 8601 format
             - "unix": Unix timestamp
         timezone: Specific timezone to use (auto-detected if None)
-    
+
     Returns:
         Formatted time string
     """

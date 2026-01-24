@@ -2,6 +2,7 @@
 Handles parsing rocket lineup information
 """
 
+import contextlib
 import logging
 
 logger = logging.getLogger(__name__)
@@ -82,10 +83,8 @@ def parse_lineup_slot(slot) -> dict | None:
         # Get slot number
         number_elem = slot.select_one(".number")
         if number_elem:
-            try:
+            with contextlib.suppress(ValueError):
                 slot_data["slot"] = int(number_elem.get_text(strip=True))
-            except ValueError:
-                pass
 
         # Check if this is an encounter slot (reward Pokemon)
         slot_data["is_encounter"] = bool(slot.select_one(".encounter-icon"))

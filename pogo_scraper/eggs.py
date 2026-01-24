@@ -5,6 +5,7 @@ Pokemon Go Eggs Scraper Module
 Handles scraping and parsing of egg hatch data from leekduck.com
 """
 
+import contextlib
 import json
 import logging
 
@@ -34,7 +35,8 @@ async def scrape_eggs(scraper, base_url: str) -> list[dict]:
         # Process egg sections
         page_content = soup.select_one(".page-content")
         if not page_content:
-            raise ValueError("Could not find page content")
+            msg = "Could not find page content"
+            raise ValueError(msg)
 
         current_type = ""
         current_adventure_sync = False
@@ -72,7 +74,7 @@ async def scrape_eggs(scraper, base_url: str) -> list[dict]:
         return eggs
 
     except Exception as e:
-        logger.error(f"Error scraping eggs: {e}")
+        logger.exception(f"Error scraping eggs: {e}")
         return scraper._load_fallback_data("eggs.json", [])
 
 
@@ -114,10 +116,8 @@ def parse_egg_item(item, egg_type: str, is_adventure_sync: bool, is_gift_exchang
         if cp_elem:
             cp_text = cp_elem.get_text(strip=True)
             if cp_text.startswith("CP"):
-                try:
+                with contextlib.suppress(ValueError):
                     pokemon["combatPower"] = int(cp_text[2:])
-                except ValueError:
-                    pass
 
         return pokemon
 

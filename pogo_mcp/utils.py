@@ -155,13 +155,12 @@ def format_event_summary(event: EventInfo) -> str:
     elif is_event_upcoming(event, current_time):
         status = "🔵 Upcoming"
 
-    summary = f"""**{event.name}** ({status})
+    return f"""**{event.name}** ({status})
 Type: {event.event_type}
 Start: {start_str}
 End: {end_str}
 Link: {event.link}"""
 
-    return summary
 
 
 def format_raid_summary(raid: RaidInfo) -> str:
@@ -182,13 +181,12 @@ def format_raid_summary(raid: RaidInfo) -> str:
 
     shiny_status = "✨ Can be Shiny" if raid.can_be_shiny else "❌ Not Shiny"
 
-    summary = f"""**{raid.name}** ({raid.tier})
+    return f"""**{raid.name}** ({raid.tier})
 Types: {types_str}
 {cp_info}
 Weather Boost: {weather_str}
 {shiny_status}"""
 
-    return summary
 
 
 def format_research_summary(task: ResearchTaskInfo) -> str:
@@ -200,11 +198,10 @@ def format_research_summary(task: ResearchTaskInfo) -> str:
 
     task_type_str = f" ({task.task_type})" if task.task_type else ""
 
-    summary = f"""**{task.text}**{task_type_str}
+    return f"""**{task.text}**{task_type_str}
 Possible Rewards: {rewards_str}
 Note: You get ONE of the rewards listed, not all of them."""
 
-    return summary
 
 
 def format_egg_summary(egg: EggInfo) -> str:
@@ -232,11 +229,10 @@ def format_egg_summary(egg: EggInfo) -> str:
 
     features_str = " | ".join(features) if features else "Standard"
 
-    summary = f"""**{egg.name}** ({egg.egg_type})
+    return f"""**{egg.name}** ({egg.egg_type})
 {cp_info}
 {features_str}"""
 
-    return summary
 
 
 def format_json_output(data: Any, indent: int = 2) -> str:
@@ -244,7 +240,7 @@ def format_json_output(data: Any, indent: int = 2) -> str:
     try:
         return json.dumps(data, indent=indent, default=str, ensure_ascii=False)
     except Exception as e:
-        logger.error(f"Failed to format JSON: {e}")
+        logger.exception(f"Failed to format JSON: {e}")
         return str(data)
 
 

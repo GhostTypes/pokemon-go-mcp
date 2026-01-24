@@ -17,12 +17,10 @@ def download_raids_data():
     html_file = os.path.join(fixtures_dir, "current_raids.html")
 
     if not os.path.exists(html_file):
-        print("Downloading current raids data...")
         response = requests.get("https://leekduck.com/boss/")
         os.makedirs(fixtures_dir, exist_ok=True)
         with open(html_file, "w", encoding="utf-8") as f:
             f.write(response.text)
-        print("Download complete!")
     return html_file
 
 def test_raids_parsing():
@@ -75,7 +73,7 @@ def test_raids_cp_values():
 
     # Test first 3 raid cards
     valid_cp_count = 0
-    for i, card in enumerate(raid_cards[:3]):
+    for _i, card in enumerate(raid_cards[:3]):
         result = parse_raid_boss(card, "Tier 1", "https://leekduck.com")
         if result and "combatPower" in result:
             cp_data = result["combatPower"]

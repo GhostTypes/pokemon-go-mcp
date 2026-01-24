@@ -54,7 +54,6 @@ def check_literal_newlines(text, context=""):
     errors = []
     # Look for literal \n not followed by another backslash (which would be \\n)
     # We want to catch \n that would appear as actual escape sequences
-    pattern = r"(?<!\\)(?:\\\\)*\\n"
     # Also check in YAML values with quotes
     if re.search(r"\\n", text):
         # Need to be more careful - check if it's a literal backslash-n

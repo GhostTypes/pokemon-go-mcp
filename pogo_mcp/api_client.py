@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 class LeekDuckAPIClient:
     """Client for fetching Pokemon Go data using local scraper."""
 
-    def __init__(self, timeout: int = 30):
+    def __init__(self, timeout: int = 30) -> None:
         """Initialize the API client."""
         self.timeout = timeout
         self._cache: dict[str, list[dict]] = {}
@@ -51,7 +51,7 @@ class LeekDuckAPIClient:
                 logger.info(f"Loaded {len(data)} items from local {endpoint} data")
                 return data
         except Exception as e:
-            logger.error(f"Error loading local {endpoint} data: {e}")
+            logger.exception(f"Error loading local {endpoint} data: {e}")
             return []
 
     async def _fetch_data(self, endpoint: str) -> list[dict]:
@@ -255,7 +255,7 @@ class LeekDuckAPIClient:
     def extract_raids_from_events(self, events_data: list[EventInfo]) -> list[RaidInfo]:
         """Extract raid boss data from events as fallback when raids.json is unavailable."""
         extracted_raids = []
-        current_time = datetime.now(timezone.utc)
+        datetime.now(timezone.utc)
 
         # Simple tier inference based on common patterns
         def infer_tier(name: str) -> str:
@@ -325,7 +325,8 @@ class LeekDuckAPIClient:
                 logger.info(f"Successfully fetched {len(raids)} raids from raids.json")
             else:
                 logger.warning("No raids data found in raids.json - attempting fallback...")
-                raise Exception("Empty raids data")
+                msg = "Empty raids data"
+                raise Exception(msg)
         except Exception as e:
             logger.warning(f"Failed to fetch raids data from raids.json: {e}")
             logger.info("Attempting to extract raid data from events as fallback...")
@@ -336,7 +337,7 @@ class LeekDuckAPIClient:
                 else:
                     logger.warning("No raid data found in events either")
             except Exception as extract_error:
-                logger.error(f"Failed to extract raids from events: {extract_error}")
+                logger.exception(f"Failed to extract raids from events: {extract_error}")
                 raids = []
 
         try:
@@ -378,7 +379,7 @@ class LeekDuckAPIClient:
             "promo_codes": promo_codes
         }
 
-    def clear_cache(self):
+    def clear_cache(self) -> None:
         """Clear the data cache."""
         self._cache.clear()
         self._cache_timestamp.clear()

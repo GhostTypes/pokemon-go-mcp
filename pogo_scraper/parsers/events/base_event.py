@@ -58,7 +58,7 @@ def parse_event_item(link_element, event_dates: dict, base_url: str) -> dict | N
         # Get dates from feed data
         dates = event_dates.get(event_id, {})
 
-        event = {
+        return {
             "eventID": event_id,
             "name": name,
             "eventType": infer_event_type(name, heading),
@@ -70,7 +70,6 @@ def parse_event_item(link_element, event_dates: dict, base_url: str) -> dict | N
             "extraData": {"generic": {"hasSpawns": False, "hasFieldResearchTasks": False}}
         }
 
-        return event
 
     except Exception as e:
         logger.warning(f"Error parsing event item: {e}")

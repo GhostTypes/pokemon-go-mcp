@@ -18,8 +18,7 @@ def load_json_file(filepath: str) -> list[Any]:
             with open(filepath, encoding="utf-8") as f:
                 return json.load(f)
         return []
-    except Exception as e:
-        print(f"Error loading {filepath}: {e}")
+    except Exception:
         return []
 
 
@@ -286,9 +285,8 @@ This branch contains automatically scraped Pokemon GO data from LeekDuck.com, up
     return readme
 
 
-def main():
+def main() -> None:
     """Main function to generate README with statistics."""
-    print("Generating data statistics README...")
 
     # Load all data files
     events = load_json_file("events.json")
@@ -315,8 +313,6 @@ def main():
     with open("README.md", "w", encoding="utf-8") as f:
         f.write(readme_content)
 
-    print("README.md generated successfully!")
-    print(f"Total items analyzed: {sum(s.get('total', 0) for s in stats.values())}")
 
 
 if __name__ == "__main__":

@@ -98,21 +98,22 @@ def scrape_ruff_page(url):
     response = scraper.get(url, headers=headers)
 
     if response.status_code != 200:
-        raise Exception(f"Failed to fetch {url}: Status {response.status_code}")
+        msg = f"Failed to fetch {url}: Status {response.status_code}"
+        raise Exception(msg)
 
     # Extract main content
     main_content = extract_main_content(response.text)
 
     if not main_content:
-        raise Exception(f"Could not find main content in {url}")
+        msg = f"Could not find main content in {url}"
+        raise Exception(msg)
 
     # Clean the content
     cleaned_content = clean_content(main_content)
 
     # Convert to markdown
-    markdown = md(str(cleaned_content), heading_style="ATX")
+    return md(str(cleaned_content), heading_style="ATX")
 
-    return markdown
 
 def main():
     if len(sys.argv) < 2:

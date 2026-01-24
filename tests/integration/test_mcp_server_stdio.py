@@ -27,7 +27,7 @@ def event_loop():
     loop.close()
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 async def mcp_session() -> AsyncGenerator:
     """Start the MCP server as a subprocess and connect via stdio.
 
@@ -38,7 +38,7 @@ async def mcp_session() -> AsyncGenerator:
         pytest.skip("MCP SDK not installed. Install with: pip install mcp")
 
     # Get the project root directory
-    project_root = Path(__file__).parent.parent.parent
+    Path(__file__).parent.parent.parent
 
     # Set up server parameters for stdio transport
     server_params = StdioServerParameters(

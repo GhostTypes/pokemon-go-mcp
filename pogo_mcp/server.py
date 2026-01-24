@@ -28,14 +28,14 @@ import os
 mcp = FastMCP("Pokemon Go MCP Server")
 
 
-def register_cross_cutting_tools():
+def register_cross_cutting_tools() -> None:
     """Register tools that work across all data sources."""
 
     @mcp.tool()
     async def get_all_shiny_pokemon() -> str:
         """Get all Pokemon currently available as shiny across all sources.
-        
-        Returns a comprehensive list of all shiny-eligible Pokemon from events, 
+
+        Returns a comprehensive list of all shiny-eligible Pokemon from events,
         raids, research rewards, and egg hatches. Perfect for shiny hunters!
         """
         try:
@@ -110,16 +110,16 @@ def register_cross_cutting_tools():
             return result
 
         except Exception as e:
-            logger.error(f"Error fetching all shiny Pokemon: {e}")
+            logger.exception(f"Error fetching all shiny Pokemon: {e}")
             return f"Error fetching all shiny Pokemon: {e!s}"
 
     @mcp.tool()
     async def search_pokemon_everywhere(pokemon_name: str) -> str:
         """Search for a Pokemon across all data sources (events, raids, research, eggs).
-        
+
         Args:
             pokemon_name: Name of the Pokemon to search for
-            
+
         Returns comprehensive information about where and how the Pokemon can be obtained.
         """
         try:
@@ -228,13 +228,13 @@ def register_cross_cutting_tools():
             return result
 
         except Exception as e:
-            logger.error(f"Error searching for Pokemon: {e}")
+            logger.exception(f"Error searching for Pokemon: {e}")
             return f"Error searching for Pokemon: {e!s}"
 
     @mcp.tool()
     async def get_daily_priorities() -> str:
         """Get daily priorities and recommendations for Pokemon Go activities.
-        
+
         Returns a curated list of what to focus on today based on active events,
         valuable raids, research tasks, and egg hatching recommendations.
         """
@@ -252,14 +252,17 @@ def register_cross_cutting_tools():
 
             # Verify data structure
             if not isinstance(all_data, dict):
-                raise TypeError(f"Expected dict from get_all_data(), got {type(all_data)}")
+                msg = f"Expected dict from get_all_data(), got {type(all_data)}"
+                raise TypeError(msg)
 
             if "events" not in all_data:
-                raise KeyError("Missing 'events' key in all_data")
+                msg = "Missing 'events' key in all_data"
+                raise KeyError(msg)
 
             events_data = all_data["events"]
             if not isinstance(events_data, list):
-                raise TypeError(f"Expected list for events, got {type(events_data)}")
+                msg = f"Expected list for events, got {type(events_data)}"
+                raise TypeError(msg)
 
             logger.info(f"Processing {len(events_data)} events...")
 
@@ -372,16 +375,16 @@ def register_cross_cutting_tools():
 
         except Exception as e:
             error_msg = f"Error generating daily priorities: {e!s}"
-            logger.error(error_msg)
-            logger.error(f"Exception type: {type(e)}")
+            logger.exception(error_msg)
+            logger.exception(f"Exception type: {type(e)}")
             import traceback
-            logger.error(f"Traceback: {traceback.format_exc()}")
+            logger.exception(f"Traceback: {traceback.format_exc()}")
             return error_msg
 
     @mcp.tool()
     async def get_server_status() -> str:
         """Get the current status and statistics of the Pokemon Go MCP server.
-        
+
         Returns information about data freshness, cache status, and summary statistics
         across all Pokemon Go data sources.
         """
@@ -465,13 +468,13 @@ def register_cross_cutting_tools():
             return result
 
         except Exception as e:
-            logger.error(f"Error getting server status: {e}")
+            logger.exception(f"Error getting server status: {e}")
             return f"Error getting server status: {e!s}"
 
     @mcp.tool()
     async def clear_cache() -> str:
         """Clear the API data cache to force fresh data retrieval.
-        
+
         Forces the server to fetch fresh data from the LeekDuck API on the next request.
         Use this if you suspect the data is stale or after major game updates.
         """
@@ -481,11 +484,11 @@ def register_cross_cutting_tools():
             return f"✅ Cache cleared successfully at {get_current_time_str()}\n\nFresh data will be fetched on the next request."
 
         except Exception as e:
-            logger.error(f"Error clearing cache: {e}")
+            logger.exception(f"Error clearing cache: {e}")
             return f"Error clearing cache: {e!s}"
 
 
-def main():
+def main() -> None:
     """Main entry point for the MCP server."""
     logger.info("Starting Pokemon Go MCP Server...")
 

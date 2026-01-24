@@ -20,12 +20,10 @@ def download_rocket_lineups_data():
     html_file = os.path.join(fixtures_dir, "current_rocket_lineups.html")
 
     if not os.path.exists(html_file):
-        print("Downloading current rocket lineups data...")
         response = requests.get("https://leekduck.com/rocket-lineups/")
         os.makedirs(fixtures_dir, exist_ok=True)
         with open(html_file, "w", encoding="utf-8") as f:
             f.write(response.text)
-        print("Download complete!")
     return html_file
 
 
@@ -78,7 +76,7 @@ def test_rocket_lineup_slots_parsing():
 
     # Test first 2 rocket profiles
     valid_lineups_count = 0
-    for i, profile in enumerate(rocket_profiles[:2]):
+    for _i, profile in enumerate(rocket_profiles[:2]):
         result = parse_rocket_trainer(profile, "https://leekduck.com")
         if result and "lineups" in result and len(result["lineups"]) > 0:
             # Check the first lineup slot

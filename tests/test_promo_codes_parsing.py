@@ -17,12 +17,10 @@ def download_promo_data():
     html_file = os.path.join(fixtures_dir, "current_promos.html")
 
     if not os.path.exists(html_file):
-        print("Downloading current promo codes data...")
         response = requests.get("https://leekduck.com/promo-codes/")
         os.makedirs(fixtures_dir, exist_ok=True)
         with open(html_file, "w", encoding="utf-8") as f:
             f.write(response.text)
-        print("Download complete!")
     return html_file
 
 
@@ -76,7 +74,7 @@ def test_promo_codes_list_parsing():
 
     # Test first 3 promo cards
     parsed_count = 0
-    for i, promo_card in enumerate(promo_cards[:3]):
+    for _i, promo_card in enumerate(promo_cards[:3]):
         result = parse_promo_card(promo_card, "https://leekduck.com")
         if result:
             parsed_count += 1
@@ -98,7 +96,7 @@ def test_expired_promo_codes_filtering():
     soup = BeautifulSoup(html_content, "lxml")
 
     # Find all promo cards including expired ones
-    all_promo_cards = soup.select("div.promo-card")
+    soup.select("div.promo-card")
     expired_promo_cards = soup.select("div.promo-card.expired, div.promo-card.-expired")
 
     # Should have some expired cards
