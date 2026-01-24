@@ -5,6 +5,7 @@ import logging
 from fastmcp import FastMCP
 
 from .api_client import api_client
+from .types import RaidInfo
 from .utils import (
     filter_raids_by_tier,
     filter_raids_by_type,
@@ -34,7 +35,7 @@ def register_raid_tools(mcp: FastMCP) -> None:
                 return "No raid data available."
 
             # Organize raids by tier
-            tiers = {}
+            tiers: dict[str, list[RaidInfo]] = {}
             for raid in raids:
                 tier = raid.tier
                 if tier not in tiers:
@@ -117,7 +118,7 @@ def register_raid_tools(mcp: FastMCP) -> None:
                 return "No shiny-eligible raid bosses found."
 
             # Organize by tier
-            tiers = {}
+            tiers: dict[str, list[RaidInfo]] = {}
             for raid in shiny_raids:
                 tier = raid.tier
                 if tier not in tiers:
@@ -279,7 +280,7 @@ def register_raid_tools(mcp: FastMCP) -> None:
                 result += f"## Tier {tier} Focus\n\n"
 
             # Organize by tier for recommendations
-            tiers = {}
+            tiers: dict[str, list[RaidInfo]] = {}
             for raid in raids:
                 tier_name = raid.tier
                 if tier_name not in tiers:

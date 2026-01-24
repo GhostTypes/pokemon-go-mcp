@@ -5,6 +5,7 @@ import logging
 from fastmcp import FastMCP
 
 from .api_client import api_client
+from .types import EggInfo
 from .utils import (
     filter_eggs_by_distance,
     format_egg_summary,
@@ -49,7 +50,7 @@ def register_egg_tools(mcp: FastMCP) -> None:
                 return "No egg hatch data available."
 
             # Organize by egg type
-            egg_types = {}
+            egg_types: dict[str, list[EggInfo]] = {}
             for egg in eggs:
                 egg_type = egg.egg_type
                 if egg_type not in egg_types:
@@ -152,7 +153,7 @@ def register_egg_tools(mcp: FastMCP) -> None:
                 return "No shiny-eligible Pokemon found in eggs."
 
             # Organize by egg type
-            egg_types = {}
+            egg_types: dict[str, list[EggInfo]] = {}
             for egg in shiny_eggs:
                 egg_type = egg.egg_type
                 if egg_type not in egg_types:
@@ -249,7 +250,7 @@ def register_egg_tools(mcp: FastMCP) -> None:
             )
 
             # Group by egg type
-            egg_types = {}
+            egg_types: dict[str, list[EggInfo]] = {}
             for egg in regional_eggs:
                 egg_type = egg.egg_type
                 if egg_type not in egg_types:
@@ -416,7 +417,7 @@ def register_egg_tools(mcp: FastMCP) -> None:
                 return f"No eggs found matching {priority} priority criteria."
 
             # Organize by distance for better recommendations
-            distances = {}
+            distances: dict[str, list[EggInfo]] = {}
             for egg in recommended:
                 dist = egg.egg_type
                 if dist not in distances:

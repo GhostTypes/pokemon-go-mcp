@@ -5,6 +5,7 @@ import logging
 from fastmcp import FastMCP
 
 from .api_client import api_client
+from .types import RocketTrainerInfo
 from .utils import (
     calculate_type_effectiveness,
     filter_trainers_by_type,
@@ -44,8 +45,8 @@ def register_rocket_tools(mcp: FastMCP) -> None:
                 for t in trainers
                 if "leader" in t.title.lower() or "boss" in t.title.lower()
             ]
-            grunts_by_type = {}
-            other_trainers = []
+            grunts_by_type: dict[str, list[RocketTrainerInfo]] = {}
+            other_trainers: list[RocketTrainerInfo] = []
 
             for trainer in trainers:
                 if trainer in leaders:
