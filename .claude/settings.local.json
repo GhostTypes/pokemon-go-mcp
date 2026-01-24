@@ -34,7 +34,10 @@
       "Bash([:*)",
       "Bash(then echo \"Setup files present\")",
       "Bash(else echo \"Setup files missing\")",
-      "Bash(fi:*)"
+      "Bash(fi:*)",
+      "Bash(for file in data/*.json)",
+      "Bash(do echo \"=== $file ===\")",
+      "Bash(ls:*)"
     ],
     "deny": [],
     "ask": []
