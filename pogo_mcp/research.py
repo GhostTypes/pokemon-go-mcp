@@ -74,7 +74,7 @@ def register_research_tools(mcp: FastMCP) -> None:
             result += f"{total_shiny_tasks} have potential shiny rewards\n"
 
         except Exception as e:
-            logger.exception(f"Error fetching research tasks: {e}")
+            logger.exception("Error fetching research tasks: %s", e)
             return f"Error fetching research tasks: {e!s}"
         else:
             return result
@@ -118,7 +118,7 @@ def register_research_tools(mcp: FastMCP) -> None:
                 result += f"✨ **Shiny Alert:** {len(shiny_tasks)} of these tasks can reward shiny {pokemon_name}!\n"
 
         except Exception as e:
-            logger.exception(f"Error searching research by reward: {e}")
+            logger.exception("Error searching research by reward: %s", e)
             return f"Error searching research by reward: {e!s}"
         else:
             return result
@@ -160,7 +160,7 @@ def register_research_tools(mcp: FastMCP) -> None:
             result += f"**Summary:** {len(matching_tasks)} {task_type} tasks, {shiny_tasks} have potential shiny rewards\n"
 
         except Exception as e:
-            logger.exception(f"Error fetching {task_type} research: {e}")
+            logger.exception("Error fetching %s research: %s", task_type, e)
             return f"Error fetching {task_type} research: {e!s}"
         else:
             return result
@@ -208,7 +208,7 @@ def register_research_tools(mcp: FastMCP) -> None:
                 result += "\n"
 
         except Exception as e:
-            logger.exception(f"Error fetching shiny research: {e}")
+            logger.exception("Error fetching shiny research: %s", e)
             return f"Error fetching shiny research: {e!s}"
         else:
             return result
@@ -270,7 +270,7 @@ def register_research_tools(mcp: FastMCP) -> None:
                 result += f"⭐ **High Value:** {len(valuable_easy)} of these easy tasks have shiny potential!\n"
 
         except Exception as e:
-            logger.exception(f"Error fetching easy research: {e}")
+            logger.exception("Error fetching easy research: %s", e)
             return f"Error fetching easy research: {e!s}"
         else:
             return result
@@ -303,7 +303,7 @@ def register_research_tools(mcp: FastMCP) -> None:
                 result += format_research_summary(task) + "\n\n"
 
         except Exception as e:
-            logger.exception(f"Error searching research tasks: {e}")
+            logger.exception("Error searching research tasks: %s", e)
             return f"Error searching research tasks: {e!s}"
         else:
             return result
@@ -402,7 +402,7 @@ def register_research_tools(mcp: FastMCP) -> None:
                 result += f"... and {len(tasks) - 15} more tasks match your criteria.\n"
 
         except Exception as e:
-            logger.exception(f"Error getting research recommendations: {e}")
+            logger.exception("Error getting research recommendations: %s", e)
             return f"Error getting research recommendations: {e!s}"
         else:
             return result

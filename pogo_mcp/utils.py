@@ -247,7 +247,7 @@ def format_json_output(data: object, indent: int = 2) -> str:
     try:
         return json.dumps(data, indent=indent, default=str, ensure_ascii=False)
     except Exception as e:
-        logger.exception(f"Failed to format JSON: {e}")
+        logger.exception("Failed to format JSON: %s", e)
         return str(data)
 
 

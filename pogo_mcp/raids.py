@@ -66,7 +66,7 @@ def register_raid_tools(mcp: FastMCP) -> None:
             result += f"**Summary:** {len(raids)} total raid bosses, {total_shiny} can be shiny\n"
 
         except Exception as e:
-            logger.exception(f"Error fetching raids: {e}")
+            logger.exception("Error fetching raids: %s", e)
             return f"Error fetching raids: {e!s}"
         else:
             return result
@@ -98,7 +98,7 @@ def register_raid_tools(mcp: FastMCP) -> None:
             result += f"**Summary:** {len(filtered_raids)} {tier} raids, {shiny_count} can be shiny\n"
 
         except Exception as e:
-            logger.exception(f"Error fetching {tier} raids: {e}")
+            logger.exception("Error fetching %s raids: %s", tier, e)
             return f"Error fetching {tier} raids: {e!s}"
         else:
             return result
@@ -138,7 +138,7 @@ def register_raid_tools(mcp: FastMCP) -> None:
             result += f"**Total:** {len(shiny_raids)} shiny-eligible raid bosses out of {len(raids)} total\n"
 
         except Exception as e:
-            logger.exception(f"Error fetching shiny raids: {e}")
+            logger.exception("Error fetching shiny raids: %s", e)
             return f"Error fetching shiny raids: {e!s}"
         else:
             return result
@@ -170,7 +170,7 @@ def register_raid_tools(mcp: FastMCP) -> None:
                 result += format_raid_summary(raid) + "\n\n"
 
         except Exception as e:
-            logger.exception(f"Error searching for raid boss: {e}")
+            logger.exception("Error searching for raid boss: %s", e)
             return f"Error searching for raid boss: {e!s}"
         else:
             return result
@@ -200,7 +200,7 @@ def register_raid_tools(mcp: FastMCP) -> None:
             result += f"**Summary:** {len(filtered_raids)} {pokemon_type}-type raids, {shiny_count} can be shiny\n"
 
         except Exception as e:
-            logger.exception(f"Error fetching {pokemon_type} raids: {e}")
+            logger.exception("Error fetching %s raids: %s", pokemon_type, e)
             return f"Error fetching {pokemon_type} raids: {e!s}"
         else:
             return result
@@ -236,7 +236,7 @@ def register_raid_tools(mcp: FastMCP) -> None:
             result += f"**Summary:** {len(boosted_raids)} raids boosted by {weather}, {shiny_count} can be shiny\n"
 
         except Exception as e:
-            logger.exception(f"Error fetching weather boosted raids: {e}")
+            logger.exception("Error fetching weather boosted raids: %s", e)
             return f"Error fetching weather boosted raids: {e!s}"
         else:
             return result
@@ -309,7 +309,7 @@ def register_raid_tools(mcp: FastMCP) -> None:
                     result += "\n\n"
 
         except Exception as e:
-            logger.exception(f"Error getting raid recommendations: {e}")
+            logger.exception("Error getting raid recommendations: %s", e)
             return f"Error getting raid recommendations: {e!s}"
         else:
             return result

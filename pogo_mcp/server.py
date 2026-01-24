@@ -127,7 +127,7 @@ def register_cross_cutting_tools() -> None:
                 result += f"Sources: {', '.join(pokemon_sources)}\n\n"
 
         except Exception as e:
-            logger.exception(f"Error fetching all shiny Pokemon: {e}")
+            logger.exception("Error fetching all shiny Pokemon: %s", e)
             return f"Error fetching all shiny Pokemon: {e!s}"
         else:
             return result
@@ -145,7 +145,7 @@ def register_cross_cutting_tools() -> None:
             if not validate_pokemon_name(pokemon_name):
                 return f"Invalid Pokemon name: '{pokemon_name}'"
 
-            logger.info(f"Searching for {pokemon_name} across all sources...")
+            logger.info("Searching for %s across all sources...", pokemon_name)
             all_data = await api_client.get_all_data()
 
             result = f"# Search Results: {pokemon_name.title()}\n\n"
@@ -260,7 +260,7 @@ def register_cross_cutting_tools() -> None:
                 result += f"✅ **{pokemon_name.title()}** found in Pokemon Go! Check the sources above for details.\n"
 
         except Exception as e:
-            logger.exception(f"Error searching for Pokemon: {e}")
+            logger.exception("Error searching for Pokemon: %s", e)
             return f"Error searching for Pokemon: {e!s}"
         else:
             return result
@@ -276,16 +276,18 @@ def register_cross_cutting_tools() -> None:
             logger.info("Generating daily priorities...")
 
             # Debug: Check api_client type
-            logger.debug(f"api_client type: {type(api_client)}")
+            logger.debug("api_client type: %s", type(api_client))
             logger.debug(
-                f"api_client methods: {[m for m in dir(api_client) if not m.startswith('_')]}"
+                "api_client methods: %s",
+                [m for m in dir(api_client) if not m.startswith("_")],
             )
 
             # Get all data with explicit error handling
             logger.info("Calling api_client.get_all_data()...")
             all_data = await api_client.get_all_data()
             logger.info(
-                f"Received all_data with keys: {list(all_data.keys()) if isinstance(all_data, dict) else 'NOT A DICT'}"
+                "Received all_data with keys: %s",
+                list(all_data.keys()) if isinstance(all_data, dict) else "NOT A DICT",
             )
         except Exception as e:
             error_msg = f"Error generating daily priorities: {e!s}"
@@ -302,7 +304,7 @@ def register_cross_cutting_tools() -> None:
                 raise KeyError("Missing 'events' key in all_data")
 
             events_data = cast(list[EventInfo], all_data["events"])
-            logger.info(f"Processing {len(events_data)} events...")
+            logger.info("Processing %d events...", len(events_data))
 
             current_time = datetime.now(timezone.utc)
 
@@ -541,7 +543,7 @@ def register_cross_cutting_tools() -> None:
             result += "• get_all_shiny_pokemon, search_pokemon_everywhere, get_daily_priorities\n"
 
         except Exception as e:
-            logger.exception(f"Error getting server status: {e}")
+            logger.exception("Error getting server status: %s", e)
             return f"Error getting server status: {e!s}"
         else:
             return result
@@ -559,7 +561,7 @@ def register_cross_cutting_tools() -> None:
             return f"✅ Cache cleared successfully at {get_current_time_str()}\n\nFresh data will be fetched on the next request."
 
         except Exception as e:
-            logger.exception(f"Error clearing cache: {e}")
+            logger.exception("Error clearing cache: %s", e)
             return f"Error clearing cache: {e!s}"
 
 
@@ -584,11 +586,11 @@ def main() -> None:
     if transport == "http":
         host = os.environ.get("MCP_HOST", "0.0.0.0")
         port = int(os.environ.get("MCP_PORT", "8000"))
-        logger.info(f"Starting HTTP Streamable Transport server on {host}:{port}")
+        logger.info("Starting HTTP Streamable Transport server on %s:%s", host, port)
         mcp.run(transport="http", host=host, port=port)
     elif transport == "sse":
         port = int(os.environ.get("MCP_PORT", "8000"))
-        logger.info(f"Starting SSE server on port {port}")
+        logger.info("Starting SSE server on port %s", port)
         mcp.run(transport="sse", port=port)
     else:
         logger.info("Starting stdio server")

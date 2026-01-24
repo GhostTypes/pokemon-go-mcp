@@ -33,21 +33,23 @@ def register_event_tools(mcp: FastMCP) -> None:
             logger.info("Fetching current events...")
 
             # Debug: Check api_client type
-            logger.debug(f"api_client type: {type(api_client)}")
+            logger.debug("api_client type: %s", type(api_client))
 
             # Get events with explicit error handling
             logger.info("Calling api_client.get_events()...")
             events = await api_client.get_events()
             logger.info(
-                f"Received events: {type(events)} with {len(events) if isinstance(events, list) else 'NOT A LIST'} items"
+                "Received events: %s with %s items",
+                type(events),
+                len(events) if isinstance(events, list) else "NOT A LIST"
             )
         except Exception as e:
             error_msg = f"Error fetching events: {e!s}"
             logger.exception(error_msg)
-            logger.exception(f"Exception type: {type(e)}")
+            logger.exception("Exception type: %s", type(e))
             import traceback
 
-            logger.exception(f"Traceback: {traceback.format_exc()}")
+            logger.exception("Traceback: %s", traceback.format_exc())
             return error_msg
         else:
             # Verify data structure
@@ -155,7 +157,7 @@ def register_event_tools(mcp: FastMCP) -> None:
                 result += f"```json\n{format_json_output(event.extra_data)}\n```\n"
 
         except Exception as e:
-            logger.exception(f"Error fetching event details: {e}")
+            logger.exception("Error fetching event details: %s", e)
             return f"Error fetching event details: {e!s}"
         else:
             return result
@@ -207,7 +209,7 @@ def register_event_tools(mcp: FastMCP) -> None:
                 result += "\n---\n\n"
 
         except Exception as e:
-            logger.exception(f"Error fetching Community Day info: {e}")
+            logger.exception("Error fetching Community Day info: %s", e)
             return f"Error fetching Community Day info: {e!s}"
         else:
             return result
@@ -260,7 +262,7 @@ def register_event_tools(mcp: FastMCP) -> None:
                     result += "No spawn information found for active events.\n"
 
         except Exception as e:
-            logger.exception(f"Error fetching event spawns: {e}")
+            logger.exception("Error fetching event spawns: %s", e)
             return f"Error fetching event spawns: {e!s}"
         else:
             return result
@@ -312,7 +314,7 @@ def register_event_tools(mcp: FastMCP) -> None:
                 result += "No bonus information found for active events.\n"
 
         except Exception as e:
-            logger.exception(f"Error fetching event bonuses: {e}")
+            logger.exception("Error fetching event bonuses: %s", e)
             return f"Error fetching event bonuses: {e!s}"
         else:
             return result
@@ -349,7 +351,7 @@ def register_event_tools(mcp: FastMCP) -> None:
                 result += format_event_summary(event) + "\n\n"
 
         except Exception as e:
-            logger.exception(f"Error searching events: {e}")
+            logger.exception("Error searching events: %s", e)
             return f"Error searching events: {e!s}"
         else:
             return result

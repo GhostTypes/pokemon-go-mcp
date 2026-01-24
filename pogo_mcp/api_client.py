@@ -43,17 +43,17 @@ class LeekDuckAPIClient:
 
         if not local_file.exists():
             logger.error(
-                f"Local file {local_file} does not exist. Run the scraper first."
+                "Local file %s does not exist. Run the scraper first.", local_file
             )
             return []
 
         try:
             with open(local_file, encoding="utf-8") as f:
                 data: list[dict[str, Any]] = json.load(f)
-                logger.info(f"Loaded {len(data)} items from local {endpoint} data")
+                logger.info("Loaded %d items from local %s data", len(data), endpoint)
                 return data
         except (OSError, json.JSONDecodeError) as e:
-            logger.exception(f"Error loading local {endpoint} data: {e}")
+            logger.exception("Error loading local %s data: %s", endpoint, e)
             return []
 
     async def _fetch_data(self, endpoint: str) -> list[dict[str, Any]]:
@@ -66,7 +66,7 @@ class LeekDuckAPIClient:
             and endpoint in self._cache_timestamp
             and (now - self._cache_timestamp[endpoint]).seconds < self._cache_duration
         ):
-            logger.info(f"Using cached data for {endpoint}")
+            logger.info("Using cached data for %s", endpoint)
             return self._cache[endpoint]
 
         # Load from local file
@@ -325,7 +325,9 @@ class LeekDuckAPIClient:
                     extracted_raids.append(raid)
 
         logger.info(
-            f"Extracted {len(extracted_raids)} raid bosses from {len(events_data)} events"
+            "Extracted %d raid bosses from %d events",
+            len(extracted_raids),
+            len(events_data),
         )
         return extracted_raids
 
@@ -354,7 +356,7 @@ class LeekDuckAPIClient:
         # Fetch each data source individually with error handling
         try:
             events = await self.get_events()
-            logger.info(f"Successfully fetched {len(events)} events")
+            logger.info("Successfully fetched %d events", len(events))
         except (OSError, KeyError, TypeError) as e:
             logger.warning("Failed to fetch events data: %s", e)
             events = []
@@ -366,7 +368,7 @@ class LeekDuckAPIClient:
             logger.info("Attempting to extract raid data from events as fallback...")
         else:
             if len(raids) > 0:
-                logger.info(f"Successfully fetched {len(raids)} raids from raids.json")
+                logger.info("Successfully fetched %d raids from raids.json", len(raids))
             else:
                 logger.warning(
                     "No raids data found in raids.json - attempting fallback..."
@@ -376,14 +378,14 @@ class LeekDuckAPIClient:
 
         try:
             research = await self.get_research()
-            logger.info(f"Successfully fetched {len(research)} research tasks")
+            logger.info("Successfully fetched %d research tasks", len(research))
         except (OSError, KeyError, TypeError) as e:
             logger.warning("Failed to fetch research data: %s", e)
             research = []
 
         try:
             eggs = await self.get_eggs()
-            logger.info(f"Successfully fetched {len(eggs)} egg data")
+            logger.info("Successfully fetched %d egg data", len(eggs))
         except (OSError, KeyError, TypeError) as e:
             logger.warning("Failed to fetch eggs data: %s", e)
             eggs = []
@@ -391,7 +393,8 @@ class LeekDuckAPIClient:
         try:
             rocket_lineups = await self.get_rocket_lineups()
             logger.info(
-                f"Successfully fetched {len(rocket_lineups)} Team Rocket trainers"
+                "Successfully fetched %d Team Rocket trainers",
+                len(rocket_lineups),
             )
         except (OSError, KeyError, TypeError) as e:
             logger.warning("Failed to fetch rocket lineups data: %s", e)
@@ -399,7 +402,7 @@ class LeekDuckAPIClient:
 
         try:
             promo_codes = await self.get_promo_codes()
-            logger.info(f"Successfully fetched {len(promo_codes)} promo codes")
+            logger.info("Successfully fetched %d promo codes", len(promo_codes))
         except (OSError, KeyError, TypeError) as e:
             logger.warning("Failed to fetch promo codes data: %s", e)
             promo_codes = []

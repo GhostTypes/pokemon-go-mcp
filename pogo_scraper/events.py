@@ -112,7 +112,7 @@ async def scrape_events(scraper: "LeekDuckScraper", base_url: str) -> list[dict]
         scraper._save_data(all_events, "events.json")
 
     except Exception as e:
-        logger.exception(f"Error scraping events: {e}")
+        logger.exception("Error scraping events: %s", e)
         return scraper._load_fallback_data("events.json", [])
     else:
         return all_events
@@ -121,7 +121,7 @@ async def scrape_events(scraper: "LeekDuckScraper", base_url: str) -> list[dict]
 async def fetch_event_details(scraper: "LeekDuckScraper", event: dict) -> None:
     """Fetch detailed event data from individual event page"""
     try:
-        logger.debug(f"Fetching details for event: {event['name']}")
+        logger.debug("Fetching details for event: %s", event["name"])
         response = await scraper.session.get(event["link"])
         response.raise_for_status()
 

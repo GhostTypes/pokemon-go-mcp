@@ -61,7 +61,7 @@ def register_promo_code_tools(mcp: FastMCP) -> None:
                 result += "---\n\n"
 
         except Exception as e:
-            logger.exception(f"Error fetching promo codes: {e}")
+            logger.exception("Error fetching promo codes: %s", e)
             return f"Error fetching promo codes: {e!s}"
         else:
             return result
