@@ -12,7 +12,7 @@
 - [x] Task 1.1: Update ruff configuration in pyproject.toml
 - [x] Task 1.2: Install missing type stubs
 - [x] Task 1.3: Fix bare `Dict` type parameters in pogo_mcp/types.py
-- [ ] Task 1.4: Convert EventExtraData from dataclass to TypedDict
+- [x] Task 1.4: Convert EventExtraData from dataclass to TypedDict
 - [ ] Task 1.5: Apply ruff auto-fixes (safe)
 - [ ] Task 1.6: Apply ruff auto-fixes (unsafe)
 - [ ] Task 1.7: Format all files with ruff
@@ -78,7 +78,7 @@
 
 ## Statistics
 
-**Tasks Completed:** 3 / 60+
+**Tasks Completed:** 4 / 60+
 **Mypy Errors:** 1,094 → TBD
 **Ruff Errors:** 3,103 → TBD
 **Files Reformatted:** 28 → TBD
@@ -87,9 +87,9 @@
 ## Current Status
 
 **Phase:** Phase 1 - Foundation & Configuration
-**Current Task:** Task 1.3 completed
-**Last Commit:** Task 1.3
-**Time Elapsed:** 0h 0m
+**Current Task:** Task 1.4 completed
+**Last Commit:** Task 1.4
+**Time Elapsed:** 0h 2m
 
 ## Notes
 

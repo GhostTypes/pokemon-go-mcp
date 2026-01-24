@@ -1,4 +1,4 @@
-from typing import List, Dict, Optional, Union, Any
+from typing import List, Dict, Optional, Union, Any, TypedDict
 from dataclasses import dataclass
 from datetime import datetime
 
@@ -33,15 +33,14 @@ class BonusInfo:
     image: str
 
 
-@dataclass
-class EventExtraData:
+class EventExtraData(TypedDict, total=False):
     """Additional event-specific data"""
-    generic: Optional[Dict[str, Any]] = None
-    communityday: Optional[Dict[str, Any]] = None
-    raidbattles: Optional[Dict[str, Any]] = None
-    raidday: Optional[Dict[str, Any]] = None
-    spotlight: Optional[Dict[str, Any]] = None
-    breakthrough: Optional[Dict[str, Any]] = None
+    generic: Dict[str, Any]
+    communityday: Dict[str, Any]
+    raidbattles: Dict[str, Any]
+    raidday: Dict[str, Any]
+    spotlight: Dict[str, Any]
+    breakthrough: Dict[str, Any]
 
 
 @dataclass
