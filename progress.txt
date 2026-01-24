@@ -43,7 +43,7 @@
 - [x] Task 5.3: Add timeouts to HTTP requests (7 violations fixed)
 
 ### Phase 6: Code Quality - Paths & Imports (P2)
-- [ ] Task 6.1: Replace os.path with pathlib (138 violations)
+- [x] Task 6.1: Replace os.path with pathlib (11 violations in main code fixed)
 - [ ] Task 6.2: Remove unused imports (87 violations)
 - [ ] Task 6.3: Fix deprecated imports (46 violations)
 - [ ] Task 6.4: Move imports to top level (91 violations)
@@ -78,11 +78,12 @@
 
 ## Statistics
 
-**Tasks Completed:** 24 / 60+
+**Tasks Completed:** 25 / 60+
 **Mypy Errors:** 1,094 → 0 errors (pogo_mcp/ only)
-**Ruff Errors:** 3,103 → ~369 remaining (66 G004 violations fixed)
-**Files Reformatted:** 131 files + 12 files (Task 4.1) = 143 total
+**Ruff Errors:** 3,103 → ~289 remaining
+**Files Reformatted:** 143 + 6 files (Task 6.1) = 149 total
 **Tests Passing:** 100% (117/117)
+**PTH Violations Fixed:** 11 violations in main code (Task 6.1)
 **Blind Exceptions Fixed:** 42 violations (Task 4.1)
 **Else Clauses Added:** 51 violations (Task 4.3)
 **Raises Moved to Else:** 4 violations (Task 4.4)
@@ -91,10 +92,10 @@
 
 ## Current Status
 
-**Phase:** Phase 5 - Logging & Security
-**Current Task:** Task 5.3 completed
-**Last Commit:** Task 5.3
-**Time Elapsed:** ~1h 18m
+**Phase:** Phase 6 - Paths & Imports
+**Current Task:** Task 6.1 completed
+**Last Commit:** Task 6.1
+**Time Elapsed:** ~1h 23m
 
 ## Notes
 
