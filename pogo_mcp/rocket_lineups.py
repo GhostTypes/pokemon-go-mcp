@@ -94,11 +94,11 @@ def register_rocket_tools(mcp: FastMCP) -> None:
             result += f"• **{total_encounters}** possible encounters\n"
             result += f"• **{shiny_count}** shiny-eligible Shadow Pokemon\n"
 
-            return result
-
         except Exception as e:
             logger.exception(f"Error fetching Team Rocket lineups: {e}")
             return f"Error fetching Team Rocket lineups: {e!s}"
+        else:
+            return result
 
     @mcp.tool()
     async def search_rocket_by_pokemon(pokemon_name: str) -> str:
@@ -152,11 +152,11 @@ def register_rocket_tools(mcp: FastMCP) -> None:
 
                 result += "\n\n"
 
-            return result
-
         except Exception as e:
             logger.exception(f"Error searching for Pokemon in Team Rocket lineups: {e}")
             return f"Error searching for Pokemon: {e!s}"
+        else:
+            return result
 
     @mcp.tool()
     async def get_shiny_shadow_pokemon() -> str:
@@ -205,11 +205,11 @@ def register_rocket_tools(mcp: FastMCP) -> None:
 
                 result += "\n"
 
-            return result
-
         except Exception as e:
             logger.exception(f"Error fetching shiny Shadow Pokemon: {e}")
             return f"Error fetching shiny Shadow Pokemon: {e!s}"
+        else:
+            return result
 
     @mcp.tool()
     async def get_rocket_encounters() -> str:
@@ -252,11 +252,11 @@ def register_rocket_tools(mcp: FastMCP) -> None:
             result += f"• **{total_encounters}** total encounter options\n"
             result += f"• **{shiny_encounters}** can be shiny ✨\n"
 
-            return result
-
         except Exception as e:
             logger.exception(f"Error fetching Team Rocket encounters: {e}")
             return f"Error fetching Team Rocket encounters: {e!s}"
+        else:
+            return result
 
     @mcp.tool()
     async def get_rocket_trainers_by_type(trainer_type: str) -> str:
@@ -301,11 +301,11 @@ def register_rocket_tools(mcp: FastMCP) -> None:
 
                 result += "\n"
 
-            return result
-
         except Exception as e:
             logger.exception(f"Error filtering Team Rocket trainers by type: {e}")
             return f"Error filtering Team Rocket trainers: {e!s}"
+        else:
+            return result
 
     @mcp.tool()
     async def calculate_pokemon_weakness(pokemon_name: str, attacking_type: str) -> str:
@@ -389,11 +389,11 @@ def register_rocket_tools(mcp: FastMCP) -> None:
                     if single_weak:
                         result += f"• **Weak to:** {', '.join(single_weak).title()}\n"
 
-            return result
-
         except Exception as e:
             logger.exception(f"Error calculating Pokemon weakness: {e}")
             return f"Error calculating weakness: {e!s}"
+        else:
+            return result
 
     @mcp.tool()
     async def get_rocket_trainer_details(trainer_name: str) -> str:
@@ -483,8 +483,8 @@ def register_rocket_tools(mcp: FastMCP) -> None:
             result += f"• **Possible Encounters:** {encounter_pokemon}\n"
             result += f"• **Shiny Opportunities:** {shiny_pokemon} ✨\n"
 
-            return result
-
         except Exception as e:
             logger.exception(f"Error getting trainer details: {e}")
             return f"Error getting trainer details: {e!s}"
+        else:
+            return result

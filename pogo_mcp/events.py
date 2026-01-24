@@ -68,8 +68,6 @@ def register_event_tools(mcp: FastMCP) -> None:
 
             result += f"\nTotal events found: {len(events)} (Active: {len(active_events)}, Upcoming: {len(upcoming_events)})"
 
-            return result
-
         except Exception as e:
             error_msg = f"Error fetching events: {e!s}"
             logger.exception(error_msg)
@@ -78,6 +76,8 @@ def register_event_tools(mcp: FastMCP) -> None:
 
             logger.exception(f"Traceback: {traceback.format_exc()}")
             return error_msg
+        else:
+            return result
 
     @mcp.tool()
     async def get_event_details(event_id: str) -> str:
@@ -155,11 +155,11 @@ def register_event_tools(mcp: FastMCP) -> None:
                 result += "**Raw Event Data:**\n"
                 result += f"```json\n{format_json_output(event.extra_data)}\n```\n"
 
-            return result
-
         except Exception as e:
             logger.exception(f"Error fetching event details: {e}")
             return f"Error fetching event details: {e!s}"
+        else:
+            return result
 
     @mcp.tool()
     async def get_community_day_info() -> str:
@@ -207,11 +207,11 @@ def register_event_tools(mcp: FastMCP) -> None:
 
                 result += "\n---\n\n"
 
-            return result
-
         except Exception as e:
             logger.exception(f"Error fetching Community Day info: {e}")
             return f"Error fetching Community Day info: {e!s}"
+        else:
+            return result
 
     @mcp.tool()
     async def get_event_spawns(event_type: str | None = None) -> str:
@@ -260,11 +260,11 @@ def register_event_tools(mcp: FastMCP) -> None:
                 else:
                     result += "No spawn information found for active events.\n"
 
-            return result
-
         except Exception as e:
             logger.exception(f"Error fetching event spawns: {e}")
             return f"Error fetching event spawns: {e!s}"
+        else:
+            return result
 
     @mcp.tool()
     async def get_event_bonuses() -> str:
@@ -312,11 +312,11 @@ def register_event_tools(mcp: FastMCP) -> None:
             if not bonuses_found:
                 result += "No bonus information found for active events.\n"
 
-            return result
-
         except Exception as e:
             logger.exception(f"Error fetching event bonuses: {e}")
             return f"Error fetching event bonuses: {e!s}"
+        else:
+            return result
 
     @mcp.tool()
     async def search_events(query: str) -> str:
@@ -349,8 +349,8 @@ def register_event_tools(mcp: FastMCP) -> None:
             for event in matching_events:
                 result += format_event_summary(event) + "\n\n"
 
-            return result
-
         except Exception as e:
             logger.exception(f"Error searching events: {e}")
             return f"Error searching events: {e!s}"
+        else:
+            return result

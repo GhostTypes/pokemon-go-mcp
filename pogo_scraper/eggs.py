@@ -77,11 +77,12 @@ async def scrape_eggs(scraper: "LeekDuckScraper", base_url: str) -> list[dict]:
                         continue
 
         scraper._save_data(eggs, "eggs.json")
-        return eggs
 
     except Exception as e:
         logger.exception(f"Error scraping eggs: {e}")
         return scraper._load_fallback_data("eggs.json", [])
+    else:
+        return eggs
 
 
 def parse_egg_item(
@@ -131,8 +132,7 @@ def parse_egg_item(
                 with contextlib.suppress(ValueError):
                     pokemon["combatPower"] = int(cp_text[2:])
 
-        return pokemon
-
     except (AttributeError, KeyError, ValueError, TypeError) as e:
         logger.warning("Error parsing egg item: %s", e)
-        return None
+    else:
+        return pokemon

@@ -45,11 +45,12 @@ async def scrape_promo_codes(scraper: "LeekDuckScraper", base_url: str) -> list[
                 continue
 
         scraper._save_data(all_promo_codes, "promo-codes.json")
-        return all_promo_codes
 
     except (httpx.HTTPError, OSError, json.JSONDecodeError) as e:
         logger.exception("Error scraping promo codes: %s", e)
         return scraper._load_fallback_data("promo-codes.json", [])
+    else:
+        return all_promo_codes
 
 
 def parse_promo_card(card_element: "bs4.element.Tag", base_url: str) -> dict | None:
@@ -124,6 +125,10 @@ def parse_promo_card(card_element: "bs4.element.Tag", base_url: str) -> dict | N
         if expiry_elem:
             expiration = expiry_elem.get("data-expires", "")
 
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.warning("Error parsing promo card: %s", e)
+        return None
+    else:
         return {
             "code": promo_code,
             "title": title,
@@ -132,7 +137,3 @@ def parse_promo_card(card_element: "bs4.element.Tag", base_url: str) -> dict | N
             "rewards": rewards,
             "expiration": expiration,
         }
-
-    except (AttributeError, KeyError, ValueError, TypeError) as e:
-        logger.warning("Error parsing promo card: %s", e)
-        return None

@@ -33,8 +33,8 @@
 
 ### Phase 4: Code Quality - Exception Handling (P1)
 - [x] Task 4.1: Fix blind except clauses (42 violations fixed)
-- [ ] Task 4.2: Fix Exception instance misuse (57 violations)
-- [ ] Task 4.3: Add else clauses to try blocks (55 violations)
+- [x] Task 4.2: Fix Exception instance misuse (0 violations - already complete)
+- [x] Task 4.3: Add else clauses to try blocks (51 violations fixed)
 - [ ] Task 4.4: Fix raise within try blocks (7 violations)
 
 ### Phase 5: Code Quality - Logging & Security (P1)
@@ -78,19 +78,20 @@
 
 ## Statistics
 
-**Tasks Completed:** 18 / 60+
+**Tasks Completed:** 20 / 60+
 **Mypy Errors:** 1,094 → 0 errors (pogo_mcp/ only)
-**Ruff Errors:** 3,103 → ~490 remaining (non-critical - Phase 4.1 complete)
+**Ruff Errors:** 3,103 → ~439 remaining (51 TRY300 violations fixed)
 **Files Reformatted:** 131 files + 12 files (Task 4.1) = 143 total
 **Tests Passing:** 100% (117/117)
 **Blind Exceptions Fixed:** 42 violations (Task 4.1)
+**Else Clauses Added:** 51 violations (Task 4.3)
 
 ## Current Status
 
-**Phase:** Phase 4 - Exception Handling (Task 4.1 COMPLETE)
-**Current Task:** Task 4.1 completed
-**Last Commit:** Task 4.1
-**Time Elapsed:** 0h 52m
+**Phase:** Phase 4 - Exception Handling (Task 4.3 COMPLETE)
+**Current Task:** Task 4.3 completed
+**Last Commit:** Task 4.3
+**Time Elapsed:** 0h 57m
 
 ## Notes
 

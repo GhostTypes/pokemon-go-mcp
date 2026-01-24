@@ -126,11 +126,11 @@ def register_cross_cutting_tools() -> None:
                 result += f"**{pokemon}**\n"
                 result += f"Sources: {', '.join(pokemon_sources)}\n\n"
 
-            return result
-
         except Exception as e:
             logger.exception(f"Error fetching all shiny Pokemon: {e}")
             return f"Error fetching all shiny Pokemon: {e!s}"
+        else:
+            return result
 
     @mcp.tool()
     async def search_pokemon_everywhere(pokemon_name: str) -> str:
@@ -259,11 +259,11 @@ def register_cross_cutting_tools() -> None:
             else:
                 result += f"✅ **{pokemon_name.title()}** found in Pokemon Go! Check the sources above for details.\n"
 
-            return result
-
         except Exception as e:
             logger.exception(f"Error searching for Pokemon: {e}")
             return f"Error searching for Pokemon: {e!s}"
+        else:
+            return result
 
     @mcp.tool()
     async def get_daily_priorities() -> str:
@@ -425,16 +425,12 @@ def register_cross_cutting_tools() -> None:
                     result += f"⚠️ **Unavailable data sources:** {', '.join(missing_sources)}\n"
                 result += "Recommendations are based on currently available data.\n"
 
-            return result
-
         except Exception as e:
             error_msg = f"Error generating daily priorities: {e!s}"
             logger.exception(error_msg)
-            logger.exception(f"Exception type: {type(e)}")
-            import traceback
-
-            logger.exception(f"Traceback: {traceback.format_exc()}")
             return error_msg
+        else:
+            return result
 
     @mcp.tool()
     async def get_server_status() -> str:
@@ -545,11 +541,11 @@ def register_cross_cutting_tools() -> None:
             result += "### Cross-Platform Tools\n"
             result += "• get_all_shiny_pokemon, search_pokemon_everywhere, get_daily_priorities\n"
 
-            return result
-
         except Exception as e:
             logger.exception(f"Error getting server status: {e}")
             return f"Error getting server status: {e!s}"
+        else:
+            return result
 
     @mcp.tool()
     async def clear_cache() -> str:

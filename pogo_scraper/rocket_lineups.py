@@ -60,8 +60,9 @@ async def scrape_rocket_lineups(
                 continue
 
         scraper._save_data(rocket_trainers, "rocket-lineups.json")
-        return rocket_trainers
 
     except (httpx.HTTPError, OSError, json.JSONDecodeError) as e:
         logger.exception("Error scraping rocket lineups: %s", e)
         return scraper._load_fallback_data("rocket-lineups.json", [])
+    else:
+        return rocket_trainers

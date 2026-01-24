@@ -82,11 +82,12 @@ async def scrape_raids(scraper: "LeekDuckScraper", base_url: str) -> list[dict]:
                         continue
 
         scraper._save_data(bosses, "raids.json")
-        return bosses
 
     except (httpx.HTTPError, OSError, json.JSONDecodeError) as e:
         logger.exception("Error scraping raids: %s", e)
         return scraper._load_fallback_data("raids.json", [])
+    else:
+        return bosses
 
 
 def parse_raid_boss(
@@ -164,8 +165,7 @@ def parse_raid_boss(
                 boosted_weather.append({"name": weather_name, "image": img_url})
         boss["boostedWeather"] = boosted_weather
 
-        return boss
-
     except (AttributeError, KeyError, ValueError, TypeError) as e:
         logger.warning("Error parsing raid boss card: %s", e)
-        return None
+    else:
+        return boss

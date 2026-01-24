@@ -44,11 +44,12 @@ async def scrape_research(scraper: "LeekDuckScraper", base_url: str) -> list[dic
                 continue
 
         scraper._save_data(research_tasks, "research.json")
-        return research_tasks
 
     except (httpx.HTTPError, OSError, json.JSONDecodeError) as e:
         logger.exception("Error scraping research: %s", e)
         return scraper._load_fallback_data("research.json", [])
+    else:
+        return research_tasks
 
 
 def parse_research_task(item: "bs4.element.Tag") -> dict | None:
@@ -65,11 +66,10 @@ def parse_research_task(item: "bs4.element.Tag") -> dict | None:
         reward_items = item.select(".reward")
         rewards = [r for r in (parse_research_reward(ri) for ri in reward_items) if r]
 
-        return {"text": task_text, "rewards": rewards} if rewards else None
-
     except (AttributeError, KeyError, ValueError, TypeError) as e:
         logger.warning("Error parsing research task: %s", e)
-        return None
+    else:
+        return {"text": task_text, "rewards": rewards} if rewards else None
 
 
 def parse_research_reward(reward_item: "bs4.element.Tag") -> dict | None:

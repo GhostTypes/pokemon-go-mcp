@@ -73,11 +73,11 @@ def register_research_tools(mcp: FastMCP) -> None:
             result += f"**Summary:** {len(research_tasks)} research tasks available, "
             result += f"{total_shiny_tasks} have potential shiny rewards\n"
 
-            return result
-
         except Exception as e:
             logger.exception(f"Error fetching research tasks: {e}")
             return f"Error fetching research tasks: {e!s}"
+        else:
+            return result
 
     @mcp.tool()
     async def search_research_by_reward(pokemon_name: str) -> str:
@@ -117,11 +117,11 @@ def register_research_tools(mcp: FastMCP) -> None:
             if shiny_tasks:
                 result += f"✨ **Shiny Alert:** {len(shiny_tasks)} of these tasks can reward shiny {pokemon_name}!\n"
 
-            return result
-
         except Exception as e:
             logger.exception(f"Error searching research by reward: {e}")
             return f"Error searching research by reward: {e!s}"
+        else:
+            return result
 
     @mcp.tool()
     async def get_research_by_task_type(task_type: str) -> str:
@@ -159,11 +159,11 @@ def register_research_tools(mcp: FastMCP) -> None:
 
             result += f"**Summary:** {len(matching_tasks)} {task_type} tasks, {shiny_tasks} have potential shiny rewards\n"
 
-            return result
-
         except Exception as e:
             logger.exception(f"Error fetching {task_type} research: {e}")
             return f"Error fetching {task_type} research: {e!s}"
+        else:
+            return result
 
     @mcp.tool()
     async def get_shiny_research_rewards() -> str:
@@ -207,11 +207,11 @@ def register_research_tools(mcp: FastMCP) -> None:
 
                 result += "\n"
 
-            return result
-
         except Exception as e:
             logger.exception(f"Error fetching shiny research: {e}")
             return f"Error fetching shiny research: {e!s}"
+        else:
+            return result
 
     @mcp.tool()
     async def get_easy_research_tasks() -> str:
@@ -269,11 +269,11 @@ def register_research_tools(mcp: FastMCP) -> None:
             if valuable_easy:
                 result += f"⭐ **High Value:** {len(valuable_easy)} of these easy tasks have shiny potential!\n"
 
-            return result
-
         except Exception as e:
             logger.exception(f"Error fetching easy research: {e}")
             return f"Error fetching easy research: {e!s}"
+        else:
+            return result
 
     @mcp.tool()
     async def search_research_tasks(query: str) -> str:
@@ -302,11 +302,11 @@ def register_research_tools(mcp: FastMCP) -> None:
             for task in matching_tasks:
                 result += format_research_summary(task) + "\n\n"
 
-            return result
-
         except Exception as e:
             logger.exception(f"Error searching research tasks: {e}")
             return f"Error searching research tasks: {e!s}"
+        else:
+            return result
 
     @mcp.tool()
     async def get_research_recommendations(priority: str = "balanced") -> str:
@@ -401,8 +401,8 @@ def register_research_tools(mcp: FastMCP) -> None:
             if len(tasks) > 15:
                 result += f"... and {len(tasks) - 15} more tasks match your criteria.\n"
 
-            return result
-
         except Exception as e:
             logger.exception(f"Error getting research recommendations: {e}")
             return f"Error getting research recommendations: {e!s}"
+        else:
+            return result

@@ -92,11 +92,11 @@ def register_egg_tools(mcp: FastMCP) -> None:
 
             result += f"**Summary:** {total_eggs} Pokemon in eggs, {shiny_eggs} can be shiny, {regional_eggs} are regional\n"
 
-            return result
-
         except Exception as e:
             logger.exception(f"Error fetching egg hatches: {e}")
             return f"Error fetching egg hatches: {e!s}"
+        else:
+            return result
 
     @mcp.tool()
     async def get_egg_hatches_by_distance(distance: str) -> str:
@@ -132,11 +132,11 @@ def register_egg_tools(mcp: FastMCP) -> None:
             result += f"**Summary:** {len(filtered_eggs)} Pokemon in {distance} eggs, "
             result += f"{shiny_count} can be shiny, {regional_count} are regional\n"
 
-            return result
-
         except Exception as e:
             logger.exception(f"Error fetching {distance} egg hatches: {e}")
             return f"Error fetching {distance} egg hatches: {e!s}"
+        else:
+            return result
 
     @mcp.tool()
     async def get_shiny_egg_hatches() -> str:
@@ -187,11 +187,11 @@ def register_egg_tools(mcp: FastMCP) -> None:
 
             result += f"**Total:** {len(shiny_eggs)} shiny-eligible Pokemon out of {len(eggs)} total in eggs\n"
 
-            return result
-
         except Exception as e:
             logger.exception(f"Error fetching shiny egg hatches: {e}")
             return f"Error fetching shiny egg hatches: {e!s}"
+        else:
+            return result
 
     @mcp.tool()
     async def search_egg_pokemon(pokemon_name: str) -> str:
@@ -224,11 +224,11 @@ def register_egg_tools(mcp: FastMCP) -> None:
                 distances = [e.egg_type for e in matching_eggs]
                 result += f"**Available from:** {', '.join(distances)}\n"
 
-            return result
-
         except Exception as e:
             logger.exception(f"Error searching egg Pokemon: {e}")
             return f"Error searching egg Pokemon: {e!s}"
+        else:
+            return result
 
     @mcp.tool()
     async def get_regional_egg_pokemon() -> str:
@@ -268,11 +268,11 @@ def register_egg_tools(mcp: FastMCP) -> None:
             regional_names = sorted([e.name for e in regional_eggs])
             result += f"**Regional Pokemon:** {', '.join(regional_names)}\n"
 
-            return result
-
         except Exception as e:
             logger.exception(f"Error fetching regional egg Pokemon: {e}")
             return f"Error fetching regional egg Pokemon: {e!s}"
+        else:
+            return result
 
     @mcp.tool()
     async def get_gift_exchange_pokemon() -> str:
@@ -303,11 +303,11 @@ def register_egg_tools(mcp: FastMCP) -> None:
             result += f"**Summary:** {len(gift_eggs)} Pokemon from gifts, "
             result += f"{shiny_count} can be shiny, {regional_count} are regional\n"
 
-            return result
-
         except Exception as e:
             logger.exception(f"Error fetching gift exchange Pokemon: {e}")
             return f"Error fetching gift exchange Pokemon: {e!s}"
+        else:
+            return result
 
     @mcp.tool()
     async def get_route_gift_pokemon() -> str:
@@ -336,11 +336,11 @@ def register_egg_tools(mcp: FastMCP) -> None:
             result += f"**Summary:** {len(route_gift_eggs)} Pokemon from route gifts, "
             result += f"{shiny_count} can be shiny, {regional_count} are regional\n"
 
-            return result
-
         except Exception as e:
             logger.exception(f"Error fetching route gift Pokemon: {e}")
             return f"Error fetching route gift Pokemon: {e!s}"
+        else:
+            return result
 
     @mcp.tool()
     async def get_adventure_sync_rewards() -> str:
@@ -370,11 +370,11 @@ def register_egg_tools(mcp: FastMCP) -> None:
             result += f"**Summary:** {len(as_eggs)} Adventure Sync Pokemon, {shiny_count} can be shiny\n"
             result += "\n**Tip:** Walk 25km or 50km per week to earn Adventure Sync rewards!\n"
 
-            return result
-
         except Exception as e:
             logger.exception(f"Error fetching Adventure Sync rewards: {e}")
             return f"Error fetching Adventure Sync rewards: {e!s}"
+        else:
+            return result
 
     @mcp.tool()
     async def get_egg_recommendations(priority: str = "shiny") -> str:
@@ -454,8 +454,8 @@ def register_egg_tools(mcp: FastMCP) -> None:
                     "💡 **Tip:** Save super incubators for rare regional Pokemon!\n"
                 )
 
-            return result
-
         except Exception as e:
             logger.exception(f"Error getting egg recommendations: {e}")
             return f"Error getting egg recommendations: {e!s}"
+        else:
+            return result
