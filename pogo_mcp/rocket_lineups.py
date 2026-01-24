@@ -362,8 +362,7 @@ def register_rocket_tools(mcp: FastMCP) -> None:
 
             if not target_pokemon:
                 return (
-                    f"{pokemon_name.title()} not found in current "
-                    f"Team Rocket lineups."
+                    f"{pokemon_name.title()} not found in current Team Rocket lineups."
                 )
 
             if not target_pokemon.types:

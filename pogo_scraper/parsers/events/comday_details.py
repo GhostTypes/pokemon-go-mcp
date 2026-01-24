@@ -128,9 +128,7 @@ async def parse_community_day_details(
                                             "bonusDisclaimers"
                                         ]
                                         if isinstance(disclaimers_list, list):
-                                            disclaimers_list.append(
-                                                clean_disclaimer
-                                            )
+                                            disclaimers_list.append(clean_disclaimer)
                             else:
                                 disclaimers_list = commday_data["bonusDisclaimers"]
                                 if isinstance(disclaimers_list, list):

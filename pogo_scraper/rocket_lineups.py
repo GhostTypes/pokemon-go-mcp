@@ -68,9 +68,7 @@ async def scrape_rocket_lineups(
     return rocket_trainers
 
 
-def _safe_parse_rocket_trainer(
-    profile: Tag, base_url: str
-) -> dict[str, Any] | None:
+def _safe_parse_rocket_trainer(profile: Tag, base_url: str) -> dict[str, Any] | None:
     """Safely parse individual rocket trainer with error handling"""
     try:
         return parse_rocket_trainer(profile, base_url)

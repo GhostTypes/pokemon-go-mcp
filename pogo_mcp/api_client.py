@@ -257,9 +257,7 @@ class LeekDuckAPIClient:
 
         return promo_codes
 
-    def extract_raids_from_events(
-        self, events_data: list[EventInfo]
-    ) -> list[RaidInfo]:
+    def extract_raids_from_events(self, events_data: list[EventInfo]) -> list[RaidInfo]:
         """Extract raid boss data from events as fallback when raids.json unavailable.
 
         This method provides a fallback when raids.json is not available.

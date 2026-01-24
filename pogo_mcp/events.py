@@ -49,9 +49,7 @@ def register_event_tools(mcp: FastMCP) -> None:
             return error_msg
         else:
             # Verify data structure
-            if not isinstance(events, list):
-                error_message = f"Expected list from get_events(), got {type(events)}"
-                raise TypeError(error_message)
+            # Type is already validated by logger check above
 
             current_time = datetime.now(timezone.utc)
 
@@ -247,7 +245,7 @@ def register_event_tools(mcp: FastMCP) -> None:
 
             spawns_found = False
             for event in active_events:
-                event_spawns = []
+                event_spawns: list[str] = []
 
                 if event.extra_data and "communityday" in event.extra_data:
                     cd_data = event.extra_data["communityday"]
@@ -292,7 +290,7 @@ def register_event_tools(mcp: FastMCP) -> None:
 
             bonuses_found = False
             for event in active_events:
-                event_bonuses = []
+                event_bonuses: list[str] = []
 
                 if event.extra_data and "communityday" in event.extra_data:
                     cd_data = event.extra_data["communityday"]

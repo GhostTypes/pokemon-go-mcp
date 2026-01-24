@@ -166,12 +166,8 @@ def parse_raid_boss(
                     if isinstance(boosted_cp, dict):
                         boosted = boosted_cp.get("boosted")
                         if isinstance(boosted, dict):
-                            boosted["min"] = int(
-                                boosted_parts[0].strip()
-                            )  # type: ignore[index]
-                            boosted["max"] = int(
-                                boosted_parts[1].strip()
-                            )  # type: ignore[index]
+                            boosted["min"] = int(boosted_parts[0].strip())  # type: ignore[index]
+                            boosted["max"] = int(boosted_parts[1].strip())  # type: ignore[index]
                 except ValueError:
                     pass
 

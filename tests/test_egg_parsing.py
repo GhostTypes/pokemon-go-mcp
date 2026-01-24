@@ -180,9 +180,9 @@ def test_route_gift_egg_parsing():
     assert result is not None, "Failed to parse route gift egg card"
     assert result["isRouteGift"], "Route gift flag not set correctly"
     expected_rarity = 2
-    assert (
-        result["rarity"] == expected_rarity
-    ), f"Expected rarity {expected_rarity}, got {result['rarity']}"
+    assert result["rarity"] == expected_rarity, (
+        f"Expected rarity {expected_rarity}, got {result['rarity']}"
+    )
     assert result["name"] == "Bulbasaur", (
         f"Expected name 'Bulbasaur', got {result['name']}"
     )

@@ -77,9 +77,13 @@ class TestRaidFallbackLogic:
             ),
         ]
 
-    def test_extract_raids_from_events(self, api_client_instance, sample_events_with_raids):
+    def test_extract_raids_from_events(
+        self, api_client_instance, sample_events_with_raids
+    ):
         """Test extraction of raid bosses from event data."""
-        extracted = api_client_instance.extract_raids_from_events(sample_events_with_raids)
+        extracted = api_client_instance.extract_raids_from_events(
+            sample_events_with_raids
+        )
 
         # Should extract 3 raids (2 from first event, 1 from second, 0 from third)
         assert len(extracted) == 3
@@ -183,9 +187,7 @@ class TestRaidFallbackLogic:
             end=now.isoformat(),
             image="unknown.png",
             extra_data={
-                "raidbattles": {
-                    "bosses": [{"name": "Snorlax", "canBeShiny": True}]
-                }
+                "raidbattles": {"bosses": [{"name": "Snorlax", "canBeShiny": True}]}
             },
         )
         raids = api_client_instance.extract_raids_from_events([unknown_event])
@@ -206,9 +208,7 @@ class TestRaidFallbackLogic:
             end=event_end.isoformat(),
             image="test.png",
             extra_data={
-                "raidbattles": {
-                    "bosses": [{"name": "Test Boss", "canBeShiny": False}]
-                }
+                "raidbattles": {"bosses": [{"name": "Test Boss", "canBeShiny": False}]}
             },
         )
 
