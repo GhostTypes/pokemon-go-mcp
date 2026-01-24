@@ -52,8 +52,14 @@ target-version = ['py310']
 [tool.ruff]
 target-version = "py310"
 line-length = 88
+
+[tool.ruff.lint]
 select = ["E", "F", "W", "I", "N", "UP", "YTT", "ANN", "S", "BLE", "FBT", "B", "A", "COM", "C4", "DTZ", "T10", "EM", "EXE", "FA", "ISC", "ICN", "G", "INP", "PIE", "T20", "PYI", "PT", "Q", "RSE", "RET", "SLF", "SLOT", "SIM", "TID", "TCH", "INT", "ARG", "PTH", "TD", "FIX", "ERA", "PD", "PGH", "PL", "TRY", "FLY", "NPY", "PERF", "FURB", "LOG", "RUF"]
-ignore = ["ANN101", "ANN102", "S101", "PLR0913", "PLR0912", "PLR0915"]
+ignore = ["S101", "PLR0913", "PLR0912", "PLR0915", "COM812", "ISC001"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["ANN", "ARG", "S101"]
+".claude/skills/**/*.py" = ["ANN", "ARG", "T201"]
 
 [tool.mypy]
 python_version = "3.10"
