@@ -17,7 +17,7 @@ def download_eggs_data():
     html_file = os.path.join(fixtures_dir, "current_eggs.html")
 
     if not os.path.exists(html_file):
-        response = requests.get("https://leekduck.com/eggs/")
+        response = requests.get("https://leekduck.com/eggs/", timeout=30)
         os.makedirs(fixtures_dir, exist_ok=True)
         with open(html_file, "w", encoding="utf-8") as f:
             f.write(response.text)

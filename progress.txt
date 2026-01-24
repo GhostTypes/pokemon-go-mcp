@@ -40,7 +40,7 @@
 ### Phase 5: Code Quality - Logging & Security (P1)
 - [x] Task 5.1: Replace print() with logging in pogo_mcp/ (226 violations) - Already complete
 - [x] Task 5.2: Fix logging f-strings (66 violations fixed)
-- [ ] Task 5.3: Add timeouts to HTTP requests (7 violations)
+- [x] Task 5.3: Add timeouts to HTTP requests (7 violations fixed)
 
 ### Phase 6: Code Quality - Paths & Imports (P2)
 - [ ] Task 6.1: Replace os.path with pathlib (138 violations)
@@ -78,7 +78,7 @@
 
 ## Statistics
 
-**Tasks Completed:** 23 / 60+
+**Tasks Completed:** 24 / 60+
 **Mypy Errors:** 1,094 → 0 errors (pogo_mcp/ only)
 **Ruff Errors:** 3,103 → ~369 remaining (66 G004 violations fixed)
 **Files Reformatted:** 131 files + 12 files (Task 4.1) = 143 total
@@ -87,13 +87,14 @@
 **Else Clauses Added:** 51 violations (Task 4.3)
 **Raises Moved to Else:** 4 violations (Task 4.4)
 **Logging F-Strings Fixed:** 66 violations (Task 5.2)
+**HTTP Timeouts Added:** 7 violations (Task 5.3)
 
 ## Current Status
 
 **Phase:** Phase 5 - Logging & Security
-**Current Task:** Task 5.2 completed
-**Last Commit:** Task 5.2
-**Time Elapsed:** ~1h 15m
+**Current Task:** Task 5.3 completed
+**Last Commit:** Task 5.3
+**Time Elapsed:** ~1h 18m
 
 ## Notes
 

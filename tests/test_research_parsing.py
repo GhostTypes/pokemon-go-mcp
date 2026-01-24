@@ -17,7 +17,7 @@ def download_research_data():
     html_file = os.path.join(fixtures_dir, "current_research.html")
 
     if not os.path.exists(html_file):
-        response = requests.get("https://leekduck.com/research/")
+        response = requests.get("https://leekduck.com/research/", timeout=30)
         os.makedirs(fixtures_dir, exist_ok=True)
         with open(html_file, "w", encoding="utf-8") as f:
             f.write(response.text)
