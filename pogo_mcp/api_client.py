@@ -48,7 +48,7 @@ class LeekDuckAPIClient:
             return []
 
         try:
-            with open(local_file, encoding="utf-8") as f:
+            with local_file.open(encoding="utf-8") as f:
                 data: list[dict[str, Any]] = json.load(f)
                 logger.info("Loaded %d items from local %s data", len(data), endpoint)
                 return data

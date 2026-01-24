@@ -153,7 +153,9 @@ def register_rocket_tools(mcp: FastMCP) -> None:
                 result += "\n\n"
 
         except Exception as e:
-            logger.exception("Error searching for Pokemon in Team Rocket lineups: %s", e)
+            logger.exception(
+                "Error searching for Pokemon in Team Rocket lineups: %s", e
+            )
             return f"Error searching for Pokemon: {e!s}"
         else:
             return result

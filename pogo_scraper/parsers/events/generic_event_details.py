@@ -20,7 +20,7 @@ async def parse_generic_event_details(soup: BeautifulSoup, event: dict) -> None:
         event: Event dictionary to update with extracted data
     """
     try:
-        logger.debug("Parsing generic event details for: %s", event['name'])
+        logger.debug("Parsing generic event details for: %s", event["name"])
 
         # Initialize generic data structure
         generic_data = {
@@ -95,7 +95,9 @@ async def parse_generic_event_details(soup: BeautifulSoup, event: dict) -> None:
         logger.debug("Successfully parsed generic event data for: %s", event["name"])
 
     except (AttributeError, KeyError, ValueError, TypeError) as e:
-        logger.warning("Error parsing generic event details for %s: %s", event["name"], e)
+        logger.warning(
+            "Error parsing generic event details for %s: %s", event["name"], e
+        )
         # Keep the existing structure on error
 
 

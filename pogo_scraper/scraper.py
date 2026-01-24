@@ -109,16 +109,16 @@ class LeekDuckScraper:
         min_output_file = self.output_dir / filename.replace(".json", ".min.json")
 
         # Write both files efficiently
-        with open(output_file, "w", encoding="utf-8") as f:
+        with output_file.open("w", encoding="utf-8") as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
 
-        with open(min_output_file, "w", encoding="utf-8") as f:
+        with min_output_file.open("w", encoding="utf-8") as f:
             json.dump(data, f, separators=(",", ":"), ensure_ascii=False)
 
         logger.info(
             "Saved %s items to %s",
-            len(data) if isinstance(data, list) else 'data',
-            output_file
+            len(data) if isinstance(data, list) else "data",
+            output_file,
         )
 
     async def scrape_events(self) -> list[dict]:
@@ -150,7 +150,7 @@ class LeekDuckScraper:
         cache_file = self.output_dir / filename
         if cache_file.exists():
             try:
-                with open(cache_file, encoding="utf-8") as f:
+                with cache_file.open(encoding="utf-8") as f:
                     logger.info("Using cached fallback data for %s", filename)
                     data = json.load(f)
                     # Ensure both .json and .min.json versions exist
@@ -181,7 +181,9 @@ class LeekDuckScraper:
         for name, task in tasks.items():
             try:
                 results[name] = await task
-                logger.info("Successfully scraped %s: %s items", name, len(results[name]))
+                logger.info(
+                    "Successfully scraped %s: %s items", name, len(results[name])
+                )
             except Exception as e:
                 logger.exception("Failed to scrape %s", name)
                 results[name] = []
@@ -194,10 +196,10 @@ class LeekDuckScraper:
         }
 
         summary_file = self.output_dir / "scrape_summary.json"
-        with open(summary_file, "w", encoding="utf-8") as f:
+        with summary_file.open("w", encoding="utf-8") as f:
             json.dump(summary, f, indent=2, ensure_ascii=False)
 
-        logger.info("Scraping completed! Total items: %s", summary['total_items'])
+        logger.info("Scraping completed! Total items: %s", summary["total_items"])
         return results
 
 
@@ -282,7 +284,7 @@ Examples:
             ]
 
     logger.info("Starting Pokemon Go data scraper...")
-    logger.info("Scraping: %s", ', '.join(scrape_targets))
+    logger.info("Scraping: %s", ", ".join(scrape_targets))
     logger.info("Output directory: %s", args.output_dir)
     logger.info("Cache duration: %s seconds", args.cache_duration)
 

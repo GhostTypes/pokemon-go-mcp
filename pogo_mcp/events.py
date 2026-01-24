@@ -41,7 +41,7 @@ def register_event_tools(mcp: FastMCP) -> None:
             logger.info(
                 "Received events: %s with %s items",
                 type(events),
-                len(events) if isinstance(events, list) else "NOT A LIST"
+                len(events) if isinstance(events, list) else "NOT A LIST",
             )
         except Exception as e:
             error_msg = f"Error fetching events: {e!s}"

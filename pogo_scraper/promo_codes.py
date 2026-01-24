@@ -21,7 +21,7 @@ async def scrape_promo_codes(scraper: "LeekDuckScraper", base_url: str) -> list[
     cache_file = scraper.output_dir / "promo-codes.json"
     if not scraper._should_fetch(cache_file):
         logger.info("Using cached promo codes data")
-        with open(cache_file, encoding="utf-8") as f:
+        with cache_file.open(encoding="utf-8") as f:
             return json.load(f)
 
     try:
