@@ -57,8 +57,8 @@
 - [x] Task 7.6: Fix line length issues (~40 violations fixed, reduced from 75 to ~35)
 
 ### Phase 8: Test File Remediation (P2)
-- [ ] Task 8.1: Add type annotations to test functions
-- [ ] Task 8.2: Fix test-specific code quality issues
+- [x] Task 8.1: Add type annotations to test functions (already complete)
+- [x] Task 8.2: Fix test-specific code quality issues (175 violations fixed)
 - [ ] Task 8.3: Improve test coverage (if needed)
 
 ### Phase 9: File-Specific Deep Cleans (P2)
@@ -78,12 +78,13 @@
 
 ## Statistics
 
-**Tasks Completed:** 34 / 60+
+**Tasks Completed:** 35 / 60+
 **Mypy Errors:** 1,094 → 0 errors (pogo_mcp/ only)
-**Ruff Errors:** 3,103 → ~220 remaining (significant progress on E501)
+**Ruff Errors:** 3,103 → ~45 remaining (tests/ complete, E501 and scraper issues remain)
 **Files Reformatted:** 143 + 6 files (Task 6.1) = 149 total
 **Tests Passing:** 100% (117/117)
 **Line Length Issues Fixed:** ~40 violations (reduced from 75 to ~35)
+**Test File Violations Fixed:** 175 violations (Task 8.2)
 **PTH Violations Fixed:** 11 violations in main code (Task 6.1)
 **Blind Exceptions Fixed:** 42 violations (Task 4.1)
 **Else Clauses Added:** 51 violations (Task 4.3)
@@ -101,10 +102,10 @@
 
 ## Current Status
 
-**Phase:** Phase 7 - Style & Cleanup
-**Current Task:** Task 7.6 completed (partial)
-**Last Commit:** Task 7.6
-**Time Elapsed:** ~1h 55m
+**Phase:** Phase 8 - Test File Remediation
+**Current Task:** Task 8.2 completed
+**Last Commit:** Task 8.1/8.2
+**Time Elapsed:** ~2h 0m
 
 ## Notes
 
