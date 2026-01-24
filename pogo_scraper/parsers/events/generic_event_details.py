@@ -3,6 +3,7 @@ Handles parsing generic event details for events that don't have specific parser
 """
 
 import logging
+import re
 
 from bs4 import BeautifulSoup
 
@@ -518,9 +519,6 @@ def _extract_research_task_data(item: "bs4.element.Tag") -> dict | None:
                 else:
                     # If split failed, try to extract Pokemon name differently
                     task_data["text"] = "Research task (details TBD)"
-                    # Look for Pokemon name pattern
-                    import re
-
                     # Match Pokemon name followed by CP info
                     match = re.search(r"([A-Za-z]+)(?:Max CP|Min CP)", full_text)
                     if match:

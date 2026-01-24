@@ -1,6 +1,7 @@
 """Event-related tools for the Pokemon Go MCP server."""
 
 import logging
+import traceback
 from datetime import datetime, timezone
 
 from fastmcp import FastMCP
@@ -47,8 +48,6 @@ def register_event_tools(mcp: FastMCP) -> None:
             error_msg = f"Error fetching events: {e!s}"
             logger.exception(error_msg)
             logger.exception("Exception type: %s", type(e))
-            import traceback
-
             logger.exception("Traceback: %s", traceback.format_exc())
             return error_msg
         else:

@@ -45,8 +45,8 @@
 ### Phase 6: Code Quality - Paths & Imports (P2)
 - [x] Task 6.1: Replace os.path with pathlib (11 violations in main code fixed)
 - [x] Task 6.2: Remove unused imports (7 violations fixed)
-- [ ] Task 6.3: Fix deprecated imports (46 violations)
-- [ ] Task 6.4: Move imports to top level (91 violations)
+- [x] Task 6.3: Fix deprecated imports (0 violations - already complete)
+- [x] Task 6.4: Move imports to top level (2 violations fixed)
 
 ### Phase 7: Code Quality - Style & Cleanup (P2)
 - [ ] Task 7.1: Remove unused arguments (149 violations)
@@ -78,9 +78,9 @@
 
 ## Statistics
 
-**Tasks Completed:** 26 / 60+
+**Tasks Completed:** 28 / 60+
 **Mypy Errors:** 1,094 → 0 errors (pogo_mcp/ only)
-**Ruff Errors:** 3,103 → ~282 remaining
+**Ruff Errors:** 3,103 → ~280 remaining
 **Files Reformatted:** 143 + 6 files (Task 6.1) = 149 total
 **Tests Passing:** 100% (117/117)
 **PTH Violations Fixed:** 11 violations in main code (Task 6.1)
@@ -90,13 +90,14 @@
 **Logging F-Strings Fixed:** 66 violations (Task 5.2)
 **HTTP Timeouts Added:** 7 violations (Task 5.3)
 **Unused Imports Fixed:** 7 violations (Task 6.2)
+**Import Relocations Fixed:** 2 violations (Task 6.4)
 
 ## Current Status
 
 **Phase:** Phase 6 - Paths & Imports
-**Current Task:** Task 6.2 completed
-**Last Commit:** Task 6.2
-**Time Elapsed:** ~1h 26m
+**Current Task:** Task 6.4 completed
+**Last Commit:** Task 6.4
+**Time Elapsed:** ~1h 30m
 
 ## Notes
 
