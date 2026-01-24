@@ -19,6 +19,14 @@ from .utils import get_shiny_shadow_pokemon as get_shiny_shadow_pokemon_util
 
 logger = logging.getLogger(__name__)
 
+# Type effectiveness multipliers for Pokemon type matchups
+EFFECTIVENESS_NO_EFFECT = 0.0
+EFFECTIVENESS_QUARTER = 0.25
+EFFECTIVENESS_HALF = 0.5
+EFFECTIVENESS_NORMAL = 1.0
+EFFECTIVENESS_DOUBLE = 2.0
+EFFECTIVENESS_QUADRUPLE = 4.0
+
 
 def register_rocket_tools(mcp: FastMCP) -> None:
     """Register all Team Rocket lineup tools with the MCP server."""
@@ -356,22 +364,22 @@ def register_rocket_tools(mcp: FastMCP) -> None:
             result += f"**Attacking Type:** {attacking_type.title()}\n\n"
 
             # Effectiveness description
-            if effectiveness == 0.0:
+            if effectiveness == EFFECTIVENESS_NO_EFFECT:
                 result += "**Result:** No Effect (0× damage) 🚫\n"
                 result += f"{attacking_type.title()} attacks have no effect on {' / '.join(target_pokemon.types).title()} types."
-            elif effectiveness == 0.25:
+            elif effectiveness == EFFECTIVENESS_QUARTER:
                 result += "**Result:** Not Very Effective (0.25× damage) 🔴\n"
                 result += "This is a very poor matchup."
-            elif effectiveness == 0.5:
+            elif effectiveness == EFFECTIVENESS_HALF:
                 result += "**Result:** Not Very Effective (0.5× damage) 🟠\n"
                 result += "This attack is resisted."
-            elif effectiveness == 1.0:
+            elif effectiveness == EFFECTIVENESS_NORMAL:
                 result += "**Result:** Normal Effectiveness (1× damage) ⚪\n"
                 result += "This attack deals normal damage."
-            elif effectiveness == 2.0:
+            elif effectiveness == EFFECTIVENESS_DOUBLE:
                 result += "**Result:** Super Effective (2× damage) 🟢\n"
                 result += "This attack is super effective!"
-            elif effectiveness == 4.0:
+            elif effectiveness == EFFECTIVENESS_QUADRUPLE:
                 result += "**Result:** Super Effective (4× damage) 🟢🟢\n"
                 result += "This attack is super effective against both types!"
             else:

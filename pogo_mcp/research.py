@@ -14,6 +14,9 @@ from .utils import (
 
 logger = logging.getLogger(__name__)
 
+# Maximum number of research tasks to show in detail before truncating
+MAX_RESEARCH_TASKS_TO_DISPLAY = 15
+
 
 def register_research_tools(mcp: FastMCP) -> None:
     """Register all research-related tools with the MCP server."""
@@ -398,8 +401,8 @@ def register_research_tools(mcp: FastMCP) -> None:
                 ]
                 result += f"Rewards: {', '.join(rewards)}\n\n"
 
-            if len(tasks) > 15:
-                result += f"... and {len(tasks) - 15} more tasks match your criteria.\n"
+            if len(tasks) > MAX_RESEARCH_TASKS_TO_DISPLAY:
+                result += f"... and {len(tasks) - MAX_RESEARCH_TASKS_TO_DISPLAY} more tasks match your criteria.\n"
 
         except Exception as e:
             logger.exception("Error getting research recommendations: %s", e)

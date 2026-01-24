@@ -50,7 +50,7 @@
 
 ### Phase 7: Code Quality - Style & Cleanup (P2)
 - [x] Task 7.1: Remove unused arguments (6 violations fixed)
-- [ ] Task 7.2: Extract magic values to constants (29 violations)
+- [x] Task 7.2: Extract magic values to constants (7 violations fixed)
 - [ ] Task 7.3: Simplify conditional logic (10+ violations)
 - [ ] Task 7.4: Remove commented-out code (10 violations)
 - [ ] Task 7.5: Fix TODO comments (15 violations)
@@ -78,9 +78,9 @@
 
 ## Statistics
 
-**Tasks Completed:** 29 / 60+
+**Tasks Completed:** 30 / 60+
 **Mypy Errors:** 1,094 → 0 errors (pogo_mcp/ only)
-**Ruff Errors:** 3,103 → ~280 remaining
+**Ruff Errors:** 3,103 → ~265 remaining
 **Files Reformatted:** 143 + 6 files (Task 6.1) = 149 total
 **Tests Passing:** 100% (117/117)
 **PTH Violations Fixed:** 11 violations in main code (Task 6.1)
@@ -92,12 +92,13 @@
 **Unused Imports Fixed:** 7 violations (Task 6.2)
 **Import Relocations Fixed:** 2 violations (Task 6.4)
 **Unused Arguments Fixed:** 6 violations (Task 7.1)
+**Magic Values Fixed:** 7 violations (Task 7.2)
 
 ## Current Status
 
 **Phase:** Phase 7 - Style & Cleanup
-**Current Task:** Task 7.1 completed
-**Last Commit:** Task 7.1
+**Current Task:** Task 7.2 completed
+**Last Commit:** Task 7.2
 **Time Elapsed:** ~1h 35m
 
 ## Notes

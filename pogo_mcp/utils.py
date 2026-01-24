@@ -19,6 +19,10 @@ from .types import (
 
 logger = logging.getLogger(__name__)
 
+# Constants for validation and parsing
+MIN_PARTS_FOR_DISTANCE = 2
+MAX_POKEMON_NAME_LENGTH = 50
+
 
 def parse_datetime(date_string: str) -> datetime | None:
     """Parse a date string into a datetime object."""
@@ -124,7 +128,7 @@ def filter_eggs_by_distance(eggs: list[EggInfo], distance: str) -> list[EggInfo]
         # Handle cases like "2 km adventure sync" - extract just the "X km" part
         if " km" in egg_distance:
             parts = egg_distance.split()
-            if len(parts) >= 2 and parts[1] == "km":
+            if len(parts) >= MIN_PARTS_FOR_DISTANCE and parts[1] == "km":
                 egg_distance_only = f"{parts[0]} km"
                 if egg_distance_only == distance_normalized:
                     filtered.append(egg)
@@ -262,7 +266,7 @@ def validate_pokemon_name(name: str) -> bool:
         return False
 
     # Basic validation - should be 1-50 characters, alphanumeric plus spaces and hyphens
-    if len(name) < 1 or len(name) > 50:
+    if len(name) < 1 or len(name) > MAX_POKEMON_NAME_LENGTH:
         return False
 
     # Allow letters, numbers, spaces, hyphens, and some special characters
