@@ -43,7 +43,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-async def log_response_hook(response: httpx.Response) -> None:
+async def log_response_hook(_response: httpx.Response) -> None:
     """Event hook to log details of each HTTP response."""
     # await response.aread()  # Make sure the response body is available
     # logger.info("--- HTTP Response Debug ---")
