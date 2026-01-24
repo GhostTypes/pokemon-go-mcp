@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/time_reminder.sh \"Session Start\""
+            "command": "python .claude/hooks/session_time.py"
           }
         ]
       }
@@ -16,7 +16,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/git_time_check.sh"
+            "command": "python .claude/hooks/check_git.py"
           }
         ]
       }

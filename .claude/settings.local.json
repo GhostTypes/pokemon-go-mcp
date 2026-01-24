@@ -26,7 +26,10 @@
       "mcp__pokemon-go-mcp__get_event_bonuses",
       "mcp__pokemon-go-mcp__get_current_events",
       "Bash(done)",
-      "Bash(Select-String \"Starting Pokemon|Scraping completed\")"
+      "Bash(Select-String \"Starting Pokemon|Scraping completed\")",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(CLAUDE_PROJECT_DIR=\"C:\\\\Users\\\\Cope\\\\Documents\\\\GitHub\\\\pokemon-go-mcp\" bash:*)"
     ],
     "deny": [],
     "ask": []
