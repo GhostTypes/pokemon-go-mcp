@@ -53,7 +53,7 @@
 - [x] Task 7.2: Extract magic values to constants (7 violations fixed)
 - [x] Task 7.3: Simplify conditional logic (2 violations fixed)
 - [x] Task 7.4: Remove commented-out code (10 violations fixed)
-- [ ] Task 7.5: Fix TODO comments (15 violations)
+- [x] Task 7.5: Fix TODO comments (8 violations fixed)
 - [ ] Task 7.6: Fix line length issues (351 violations)
 
 ### Phase 8: Test File Remediation (P2)
@@ -78,7 +78,7 @@
 
 ## Statistics
 
-**Tasks Completed:** 32 / 60+
+**Tasks Completed:** 33 / 60+
 **Mypy Errors:** 1,094 → 0 errors (pogo_mcp/ only)
 **Ruff Errors:** 3,103 → ~256 remaining (262 - 10 ERA001 fixes)
 **Files Reformatted:** 143 + 6 files (Task 6.1) = 149 total
@@ -95,13 +95,14 @@
 **Magic Values Fixed:** 7 violations (Task 7.2)
 **Conditional Logic Simplified:** 2 violations (Task 7.3)
 **Commented-Out Code Removed:** 10 violations (Task 7.4)
+**TODO Comments Fixed:** 8 violations in template file (Task 7.5)
 
 ## Current Status
 
 **Phase:** Phase 7 - Style & Cleanup
-**Current Task:** Task 7.4 completed
-**Last Commit:** Task 7.4
-**Time Elapsed:** ~1h 39m
+**Current Task:** Task 7.5 completed
+**Last Commit:** Task 7.5
+**Time Elapsed:** ~1h 40m
 
 ## Notes
 

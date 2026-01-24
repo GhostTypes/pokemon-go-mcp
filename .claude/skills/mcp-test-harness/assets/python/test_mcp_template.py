@@ -42,17 +42,19 @@ class TestExampleTool:
     TODO: Rename this class and customize tests for your actual tools.
     """
 
+    # noqa: TD002, TD003 - Template placeholder for users to customize
+
     async def test_basic_execution(self, client: Client):
         """Tool executes successfully with valid input."""
         result = await client.call_tool(
             name="example_tool_1",
             arguments={
-                # TODO: Add your tool's expected arguments
+                # TODO: Add your tool's expected arguments  # noqa: TD002, TD003
                 "param1": "value1",
             },
         )
 
-        # TODO: Update assertion to match your tool's expected output
+        # TODO: Update assertion to match your tool's expected output  # noqa: TD002, TD003
         assert result.content[0].text is not None
 
     async def test_handles_missing_required_param(self, client: Client):
@@ -68,7 +70,7 @@ class TestExampleTool:
     @pytest.mark.parametrize(
         ("input_val", "expected_output"),
         [
-            # TODO: Add test cases with (input, expected_output) pairs
+            # TODO: Add test cases with (input, expected_output) pairs  # noqa: TD002, TD003
             ("input1", "output1"),
             ("input2", "output2"),
         ],
@@ -98,7 +100,7 @@ class TestErrorHandling:
         Error messages should tell the user what went wrong
         and ideally how to fix it.
         """
-        # TODO: Trigger an error in one of your tools
+        # TODO: Trigger an error in one of your tools  # noqa: TD002, TD003
         result = await client.call_tool(
             name="example_tool_1",
             arguments={"param1": "invalid_value_that_causes_error"},
