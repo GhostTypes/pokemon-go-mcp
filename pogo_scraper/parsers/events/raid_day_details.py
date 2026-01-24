@@ -42,14 +42,14 @@ async def parse_raid_day_details(soup: BeautifulSoup, event: dict) -> None:
         ):
             event["extraData"]["raidday"] = raidday_data
             logger.info(
-                f"Raid Day details: {len(bosses)} bosses, {len(free_bonuses)} bonuses, "
-                f"{len(ticket_bonuses)} ticket bonuses, {len(research)} research, {len(shinies)} shinies"
+                "Raid Day details: %s bosses, %s bonuses, %s ticket bonuses, %s research, %s shinies",
+                len(bosses), len(free_bonuses), len(ticket_bonuses), len(research), len(shinies)
             )
         else:
             logger.warning("No raid day details found")
 
-    except Exception as e:
-        logger.warning(f"Error parsing Raid Day details: {e}", exc_info=True)
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.warning("Error parsing Raid Day details: %s", e, exc_info=True)
 
 
 def _parse_bonuses_with_sections(soup: BeautifulSoup) -> tuple:

@@ -90,7 +90,7 @@ async def scrape_events(scraper: "LeekDuckScraper", base_url: str) -> list[dict]
                         event_id = event.get("eventID")
                         # Skip if we've already seen this event ID
                         if event_id and event_id in seen_event_ids:
-                            logger.debug(f"Skipping duplicate event: {event_id}")
+                            logger.debug("Skipping duplicate event: %s", event_id)
                             continue
 
                         # Add event ID to seen set
@@ -98,8 +98,8 @@ async def scrape_events(scraper: "LeekDuckScraper", base_url: str) -> list[dict]
                             seen_event_ids.add(event_id)
 
                         events_to_fetch.append(event)
-                except Exception as e:
-                    logger.warning(f"Error parsing event: {e}")
+                except (AttributeError, KeyError, ValueError, TypeError) as e:
+                    logger.warning("Error parsing event: %s", e)
                     continue
 
         # Batch fetch event details concurrently
@@ -158,6 +158,6 @@ async def fetch_event_details(scraper: "LeekDuckScraper", event: dict) -> None:
             await parse_generic_event_details(soup, event)
         # Add more event types as needed
 
-    except Exception as e:
-        logger.warning(f"Error fetching details for event {event['name']}: {e}")
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.warning("Error fetching details for event %s: %s", event["name"], e)
         # Keep the default extraData structure

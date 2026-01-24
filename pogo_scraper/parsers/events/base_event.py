@@ -75,6 +75,6 @@ def parse_event_item(
             },
         }
 
-    except Exception as e:
-        logger.warning(f"Error parsing event item: {e}")
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.warning("Error parsing event item: %s", e)
         return None

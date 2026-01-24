@@ -20,7 +20,7 @@ async def parse_generic_event_details(soup: BeautifulSoup, event: dict) -> None:
         event: Event dictionary to update with extracted data
     """
     try:
-        logger.debug(f"Parsing generic event details for: {event['name']}")
+        logger.debug("Parsing generic event details for: %s", event['name'])
 
         # Initialize generic data structure
         generic_data = {
@@ -47,14 +47,14 @@ async def parse_generic_event_details(soup: BeautifulSoup, event: dict) -> None:
             generic_data["hasSpawns"] = True
             spawns_data = _parse_spawns_section(soup, spawns_section)
             generic_data["spawns"] = spawns_data
-            logger.debug(f"Found {len(spawns_data)} spawn entries")
+            logger.debug("Found %s spawn entries", len(spawns_data))
 
         # Parse bonuses section
         bonuses_section = soup.find("h2", id="bonuses")
         if bonuses_section:
             bonuses_data = _parse_bonuses_section(soup, bonuses_section)
             generic_data["bonuses"] = bonuses_data
-            logger.debug(f"Found {len(bonuses_data)} bonus entries")
+            logger.debug("Found %s bonus entries", len(bonuses_data))
 
         # Parse features section - look for various possible feature sections
         features_section = soup.find("h2", id="features")
@@ -72,7 +72,7 @@ async def parse_generic_event_details(soup: BeautifulSoup, event: dict) -> None:
         if features_section:
             features_data = _parse_features_section(soup, features_section)
             generic_data["features"] = features_data
-            logger.debug(f"Found {len(features_data)} feature entries")
+            logger.debug("Found %s feature entries", len(features_data))
 
         # Parse field research section
         research_section = soup.find("h2", id="field-research-tasks")
@@ -80,22 +80,22 @@ async def parse_generic_event_details(soup: BeautifulSoup, event: dict) -> None:
             generic_data["hasFieldResearchTasks"] = True
             research_data = _parse_field_research_section(soup, research_section)
             generic_data["fieldResearch"] = research_data
-            logger.debug(f"Found {len(research_data)} field research entries")
+            logger.debug("Found %s field research entries", len(research_data))
 
         # Parse raids section (if present)
         raids_section = soup.find("h2", id="raids")
         if raids_section:
             raids_data = _parse_raids_section(soup, raids_section)
             generic_data["raids"] = raids_data
-            logger.debug(f"Found {len(raids_data)} raid entries")
+            logger.debug("Found %s raid entries", len(raids_data))
 
         # Update event with generic data
         event["extraData"]["generic"] = generic_data
 
-        logger.debug(f"Successfully parsed generic event data for: {event['name']}")
+        logger.debug("Successfully parsed generic event data for: %s", event["name"])
 
-    except Exception as e:
-        logger.warning(f"Error parsing generic event details for {event['name']}: {e}")
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.warning("Error parsing generic event details for %s: %s", event["name"], e)
         # Keep the existing structure on error
 
 
@@ -134,8 +134,8 @@ def _parse_spawns_section(
 
             current = current.find_next_sibling()
 
-    except Exception as e:
-        logger.warning(f"Error parsing spawns section: {e}")
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.warning("Error parsing spawns section: %s", e)
 
     return spawns
 
@@ -169,8 +169,8 @@ def _parse_bonuses_section(
 
             current = current.find_next_sibling()
 
-    except Exception as e:
-        logger.warning(f"Error parsing bonuses section: {e}")
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.warning("Error parsing bonuses section: %s", e)
 
     return bonuses
 
@@ -232,8 +232,8 @@ def _parse_features_section(
 
             current = current.find_next_sibling()
 
-    except Exception as e:
-        logger.warning(f"Error parsing features section: {e}")
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.warning("Error parsing features section: %s", e)
 
     return features
 
@@ -274,8 +274,8 @@ def _parse_field_research_section(
 
             current = current.find_next_sibling()
 
-    except Exception as e:
-        logger.warning(f"Error parsing field research section: {e}")
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.warning("Error parsing field research section: %s", e)
 
     return research_tasks
 
@@ -323,8 +323,8 @@ def _parse_raids_section(
 
             current = current.find_next_sibling()
 
-    except Exception as e:
-        logger.warning(f"Error parsing raids section: {e}")
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.warning("Error parsing raids section: %s", e)
 
     return raids
 
@@ -388,8 +388,8 @@ def _extract_pokemon_data(item: "bs4.element.Tag") -> dict | None:
         if pokemon_data.get("name"):
             return pokemon_data
 
-    except Exception as e:
-        logger.debug(f"Error extracting Pokemon data: {e}")
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.debug("Error extracting Pokemon data: %s", e)
 
     return None
 
@@ -421,8 +421,8 @@ def _extract_bonus_data(item: "bs4.element.Tag") -> dict | None:
         if bonus_data.get("text"):
             return bonus_data
 
-    except Exception as e:
-        logger.debug(f"Error extracting bonus data: {e}")
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.debug("Error extracting bonus data: %s", e)
 
     return None
 
@@ -449,8 +449,8 @@ def _extract_feature_data(item: "bs4.element.Tag") -> dict | None:
         if feature_data.get("text"):
             return feature_data
 
-    except Exception as e:
-        logger.debug(f"Error extracting feature data: {e}")
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.debug("Error extracting feature data: %s", e)
 
     return None
 
@@ -547,7 +547,7 @@ def _extract_research_task_data(item: "bs4.element.Tag") -> dict | None:
         if task_data.get("text") or task_data.get("reward"):
             return task_data
 
-    except Exception as e:
-        logger.debug(f"Error extracting research task data: {e}")
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.debug("Error extracting research task data: %s", e)
 
     return None

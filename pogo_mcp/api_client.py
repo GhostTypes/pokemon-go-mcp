@@ -52,7 +52,7 @@ class LeekDuckAPIClient:
                 data: list[dict[str, Any]] = json.load(f)
                 logger.info(f"Loaded {len(data)} items from local {endpoint} data")
                 return data
-        except Exception as e:
+        except (OSError, json.JSONDecodeError) as e:
             logger.exception(f"Error loading local {endpoint} data: {e}")
             return []
 
@@ -355,8 +355,8 @@ class LeekDuckAPIClient:
         try:
             events = await self.get_events()
             logger.info(f"Successfully fetched {len(events)} events")
-        except Exception as e:
-            logger.warning(f"Failed to fetch events data: {e}")
+        except (OSError, KeyError, TypeError) as e:
+            logger.warning("Failed to fetch events data: %s", e)
             events = []
 
         try:
@@ -368,9 +368,9 @@ class LeekDuckAPIClient:
                     "No raids data found in raids.json - attempting fallback..."
                 )
                 msg = "Empty raids data"
-                raise Exception(msg)
-        except Exception as e:
-            logger.warning(f"Failed to fetch raids data from raids.json: {e}")
+                raise ValueError(msg)
+        except (OSError, KeyError, TypeError, ValueError) as e:
+            logger.warning("Failed to fetch raids data from raids.json: %s", e)
             logger.info("Attempting to extract raid data from events as fallback...")
             try:
                 raids = self.extract_raids_from_events(events)
@@ -380,24 +380,24 @@ class LeekDuckAPIClient:
                     )
                 else:
                     logger.warning("No raid data found in events either")
-            except Exception as extract_error:
+            except (KeyError, TypeError, AttributeError) as extract_error:
                 logger.exception(
-                    f"Failed to extract raids from events: {extract_error}"
+                    "Failed to extract raids from events: %s", extract_error
                 )
                 raids = []
 
         try:
             research = await self.get_research()
             logger.info(f"Successfully fetched {len(research)} research tasks")
-        except Exception as e:
-            logger.warning(f"Failed to fetch research data: {e}")
+        except (OSError, KeyError, TypeError) as e:
+            logger.warning("Failed to fetch research data: %s", e)
             research = []
 
         try:
             eggs = await self.get_eggs()
             logger.info(f"Successfully fetched {len(eggs)} egg data")
-        except Exception as e:
-            logger.warning(f"Failed to fetch eggs data: {e}")
+        except (OSError, KeyError, TypeError) as e:
+            logger.warning("Failed to fetch eggs data: %s", e)
             eggs = []
 
         try:
@@ -405,15 +405,15 @@ class LeekDuckAPIClient:
             logger.info(
                 f"Successfully fetched {len(rocket_lineups)} Team Rocket trainers"
             )
-        except Exception as e:
-            logger.warning(f"Failed to fetch rocket lineups data: {e}")
+        except (OSError, KeyError, TypeError) as e:
+            logger.warning("Failed to fetch rocket lineups data: %s", e)
             rocket_lineups = []
 
         try:
             promo_codes = await self.get_promo_codes()
             logger.info(f"Successfully fetched {len(promo_codes)} promo codes")
-        except Exception as e:
-            logger.warning(f"Failed to fetch promo codes data: {e}")
+        except (OSError, KeyError, TypeError) as e:
+            logger.warning("Failed to fetch promo codes data: %s", e)
             promo_codes = []
 
         logger.info("Completed fetching Pokemon Go data with individual error handling")

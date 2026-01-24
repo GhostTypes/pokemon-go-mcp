@@ -8,6 +8,7 @@ Handles scraping and parsing of Team Rocket lineup data from leekduck.com
 import json
 import logging
 
+import httpx
 from bs4 import BeautifulSoup
 
 logger = logging.getLogger(__name__)
@@ -54,13 +55,13 @@ async def scrape_rocket_lineups(
                 trainer = parse_rocket_trainer(profile, base_url)
                 if trainer:
                     rocket_trainers.append(trainer)
-            except Exception as e:
-                logger.warning(f"Error parsing rocket trainer: {e}")
+            except (AttributeError, KeyError, ValueError, TypeError) as e:
+                logger.warning("Error parsing rocket trainer: %s", e)
                 continue
 
         scraper._save_data(rocket_trainers, "rocket-lineups.json")
         return rocket_trainers
 
-    except Exception as e:
-        logger.exception(f"Error scraping rocket lineups: {e}")
+    except (httpx.HTTPError, OSError, json.JSONDecodeError) as e:
+        logger.exception("Error scraping rocket lineups: %s", e)
         return scraper._load_fallback_data("rocket-lineups.json", [])

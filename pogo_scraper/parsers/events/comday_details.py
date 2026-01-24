@@ -178,5 +178,5 @@ async def parse_community_day_details(soup: BeautifulSoup, event: dict) -> None:
         ):
             event["extraData"]["communityday"] = commday_data
 
-    except Exception as e:
-        logger.warning(f"Error parsing Community Day details: {e}")
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.warning("Error parsing Community Day details: %s", e)

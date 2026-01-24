@@ -42,5 +42,5 @@ async def parse_timed_research_code_details(soup: BeautifulSoup, event: dict) ->
         if timed_research_data["code"]:
             event["extraData"]["timedresearch"] = timed_research_data
 
-    except Exception as e:
-        logger.warning(f"Error parsing Timed Research details: {e}")
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.warning("Error parsing Timed Research details: %s", e)

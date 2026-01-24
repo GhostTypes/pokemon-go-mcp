@@ -8,6 +8,7 @@ Handles scraping and parsing of promo code data from leekduck.com
 import json
 import logging
 
+import httpx
 from bs4 import BeautifulSoup
 
 logger = logging.getLogger(__name__)
@@ -39,15 +40,15 @@ async def scrape_promo_codes(scraper: "LeekDuckScraper", base_url: str) -> list[
                 promo_code = parse_promo_card(card, base_url)
                 if promo_code:
                     all_promo_codes.append(promo_code)
-            except Exception as e:
-                logger.warning(f"Error parsing promo card: {e}")
+            except (AttributeError, KeyError, ValueError, TypeError) as e:
+                logger.warning("Error parsing promo card: %s", e)
                 continue
 
         scraper._save_data(all_promo_codes, "promo-codes.json")
         return all_promo_codes
 
-    except Exception as e:
-        logger.exception(f"Error scraping promo codes: {e}")
+    except (httpx.HTTPError, OSError, json.JSONDecodeError) as e:
+        logger.exception("Error scraping promo codes: %s", e)
         return scraper._load_fallback_data("promo-codes.json", [])
 
 
@@ -132,6 +133,6 @@ def parse_promo_card(card_element: "bs4.element.Tag", base_url: str) -> dict | N
             "expiration": expiration,
         }
 
-    except Exception as e:
-        logger.warning(f"Error parsing promo card: {e}")
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.warning("Error parsing promo card: %s", e)
         return None

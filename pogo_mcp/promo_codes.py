@@ -53,7 +53,7 @@ def register_promo_code_tools(mcp: FastMCP) -> None:
                             code.expiration.replace("Z", "+00:00")
                         )
                         result += f"**Expires:** {exp_date.strftime('%B %d, %Y at %I:%M %p %Z')}\n"
-                    except Exception:
+                    except (ValueError, AttributeError):
                         result += f"**Expires:** {code.expiration}\n"
 
                 # Redemption link

@@ -62,5 +62,5 @@ async def parse_breakthrough_details(soup: BeautifulSoup, event: dict) -> None:
         if breakthrough_data["name"] or breakthrough_data["list"]:
             event["extraData"]["breakthrough"] = breakthrough_data
 
-    except Exception as e:
-        logger.warning(f"Error parsing Research Breakthrough details: {e}")
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.warning("Error parsing Research Breakthrough details: %s", e)

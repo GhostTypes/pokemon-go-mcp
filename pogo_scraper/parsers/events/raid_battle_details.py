@@ -74,5 +74,5 @@ async def parse_raid_battle_details(soup: BeautifulSoup, event: dict) -> None:
         if raidbattle_data["bosses"] or raidbattle_data["shinies"]:
             event["extraData"]["raidbattles"] = raidbattle_data
 
-    except Exception as e:
-        logger.warning(f"Error parsing Raid Battle details: {e}")
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.warning("Error parsing Raid Battle details: %s", e)

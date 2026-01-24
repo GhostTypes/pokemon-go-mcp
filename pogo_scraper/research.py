@@ -8,6 +8,7 @@ Handles scraping and parsing of field research data from leekduck.com
 import json
 import logging
 
+import httpx
 from bs4 import BeautifulSoup
 
 logger = logging.getLogger(__name__)
@@ -38,15 +39,15 @@ async def scrape_research(scraper: "LeekDuckScraper", base_url: str) -> list[dic
                 task = parse_research_task(item)
                 if task:
                     research_tasks.append(task)
-            except Exception as e:
-                logger.warning(f"Error parsing research task: {e}")
+            except (AttributeError, KeyError, ValueError, TypeError) as e:
+                logger.warning("Error parsing research task: %s", e)
                 continue
 
         scraper._save_data(research_tasks, "research.json")
         return research_tasks
 
-    except Exception as e:
-        logger.exception(f"Error scraping research: {e}")
+    except (httpx.HTTPError, OSError, json.JSONDecodeError) as e:
+        logger.exception("Error scraping research: %s", e)
         return scraper._load_fallback_data("research.json", [])
 
 
@@ -66,8 +67,8 @@ def parse_research_task(item: "bs4.element.Tag") -> dict | None:
 
         return {"text": task_text, "rewards": rewards} if rewards else None
 
-    except Exception as e:
-        logger.warning(f"Error parsing research task: {e}")
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.warning("Error parsing research task: %s", e)
         return None
 
 
@@ -90,6 +91,6 @@ def parse_research_reward(reward_item: "bs4.element.Tag") -> dict | None:
             "can_be_shiny": bool(shiny_elem),
         }
 
-    except Exception as e:
-        logger.warning(f"Error parsing research reward: {e}")
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.warning("Error parsing research reward: %s", e)
         return None

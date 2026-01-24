@@ -8,6 +8,7 @@ Handles scraping and parsing of raid boss data from leekduck.com
 import json
 import logging
 
+import httpx
 from bs4 import BeautifulSoup
 
 logger = logging.getLogger(__name__)
@@ -53,8 +54,8 @@ async def scrape_raids(scraper: "LeekDuckScraper", base_url: str) -> list[dict]:
                     boss = parse_raid_boss(card, current_tier, base_url)
                     if boss:
                         bosses.append(boss)
-                except Exception as e:
-                    logger.warning(f"Error parsing raid boss: {e}")
+                except (AttributeError, KeyError, ValueError, TypeError) as e:
+                    logger.warning("Error parsing raid boss: %s", e)
                     continue
 
         # Find shadow raid bosses container
@@ -76,15 +77,15 @@ async def scrape_raids(scraper: "LeekDuckScraper", base_url: str) -> list[dict]:
                         boss = parse_raid_boss(card, current_tier, base_url)
                         if boss:
                             bosses.append(boss)
-                    except Exception as e:
-                        logger.warning(f"Error parsing shadow raid boss: {e}")
+                    except (AttributeError, KeyError, ValueError, TypeError) as e:
+                        logger.warning("Error parsing shadow raid boss: %s", e)
                         continue
 
         scraper._save_data(bosses, "raids.json")
         return bosses
 
-    except Exception as e:
-        logger.exception(f"Error scraping raids: {e}")
+    except (httpx.HTTPError, OSError, json.JSONDecodeError) as e:
+        logger.exception("Error scraping raids: %s", e)
         return scraper._load_fallback_data("raids.json", [])
 
 
@@ -165,6 +166,6 @@ def parse_raid_boss(
 
         return boss
 
-    except Exception as e:
-        logger.warning(f"Error parsing raid boss card: {e}")
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.warning("Error parsing raid boss card: %s", e)
         return None

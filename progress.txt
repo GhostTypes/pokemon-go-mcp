@@ -32,7 +32,7 @@
 - [x] Task 3.4: Replace Any with specific types (4 violations fixed)
 
 ### Phase 4: Code Quality - Exception Handling (P1)
-- [ ] Task 4.1: Fix blind except clauses (112 violations)
+- [x] Task 4.1: Fix blind except clauses (42 violations fixed)
 - [ ] Task 4.2: Fix Exception instance misuse (57 violations)
 - [ ] Task 4.3: Add else clauses to try blocks (55 violations)
 - [ ] Task 4.4: Fix raise within try blocks (7 violations)
@@ -78,18 +78,19 @@
 
 ## Statistics
 
-**Tasks Completed:** 17 / 60+
+**Tasks Completed:** 18 / 60+
 **Mypy Errors:** 1,094 → 0 errors (pogo_mcp/ only)
-**Ruff Errors:** 3,103 → ~532 remaining (non-critical - Phase 3 complete)
-**Files Reformatted:** 65 files (Task 1.7) + 1 file (Task 2.2) + 59 files (previous) + 1 file (Task 2.5) + 5 files (Task 3.1) = 131 total
+**Ruff Errors:** 3,103 → ~490 remaining (non-critical - Phase 4.1 complete)
+**Files Reformatted:** 131 files + 12 files (Task 4.1) = 143 total
 **Tests Passing:** 100% (117/117)
+**Blind Exceptions Fixed:** 42 violations (Task 4.1)
 
 ## Current Status
 
-**Phase:** Phase 3 - Type Annotations (COMPLETE)
-**Current Task:** Task 3.4 completed
-**Last Commit:** Task 3.4
-**Time Elapsed:** 0h 42m
+**Phase:** Phase 4 - Exception Handling (Task 4.1 COMPLETE)
+**Current Task:** Task 4.1 completed
+**Last Commit:** Task 4.1
+**Time Elapsed:** 0h 52m
 
 ## Notes
 

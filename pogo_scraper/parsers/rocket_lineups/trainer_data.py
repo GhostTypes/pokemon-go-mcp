@@ -68,8 +68,8 @@ def parse_rocket_trainer(profile: "bs4.element.Tag", base_url: str) -> dict | No
 
         return trainer if trainer["name"] else None
 
-    except Exception as e:
-        logger.warning(f"Error parsing rocket trainer profile: {e}")
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.warning("Error parsing rocket trainer profile: %s", e)
         return None
 
 
@@ -96,8 +96,8 @@ def parse_lineup_slot(slot: "bs4.element.Tag") -> dict | None:
 
         return slot_data if slot_data["pokemon"] else None
 
-    except Exception as e:
-        logger.warning(f"Error parsing lineup slot: {e}")
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.warning("Error parsing lineup slot: %s", e)
         return None
 
 
@@ -147,6 +147,6 @@ def parse_shadow_pokemon(pokemon_elem: "bs4.element.Tag") -> dict | None:
 
         return pokemon if pokemon["name"] else None
 
-    except Exception as e:
-        logger.warning(f"Error parsing shadow Pokemon: {e}")
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.warning("Error parsing shadow Pokemon: %s", e)
         return None

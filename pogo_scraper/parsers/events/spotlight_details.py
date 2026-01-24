@@ -79,5 +79,5 @@ async def parse_spotlight_details(soup: BeautifulSoup, event: dict) -> None:
         if spotlight_data["name"] or spotlight_data["list"]:
             event["extraData"]["spotlight"] = spotlight_data
 
-    except Exception as e:
-        logger.warning(f"Error parsing Spotlight Hour details: {e}")
+    except (AttributeError, KeyError, ValueError, TypeError) as e:
+        logger.warning("Error parsing Spotlight Hour details: %s", e)

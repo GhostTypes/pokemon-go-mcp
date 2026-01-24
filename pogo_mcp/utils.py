@@ -28,8 +28,8 @@ def parse_datetime(date_string: str) -> datetime | None:
     try:
         # Try parsing with dateutil first
         return parser.parse(date_string)
-    except Exception as e:
-        logger.warning(f"Failed to parse date '{date_string}': {e}")
+    except (ValueError, TypeError, OverflowError) as e:
+        logger.warning("Failed to parse date '%s': %s", date_string, e)
         return None
 
 

@@ -19,7 +19,7 @@ import httpx
 
 # Import page-specific scrapers
 try:
-    from . import (  # type: ignore
+    from . import (  # type: ignore # noqa: PLC0415
         eggs,
         events,
         promo_codes,
@@ -116,7 +116,9 @@ class LeekDuckScraper:
             json.dump(data, f, separators=(",", ":"), ensure_ascii=False)
 
         logger.info(
-            f"Saved {len(data) if isinstance(data, list) else 'data'} items to {output_file}"
+            "Saved %s items to %s",
+            len(data) if isinstance(data, list) else 'data',
+            output_file
         )
 
     async def scrape_events(self) -> list[dict]:
@@ -149,15 +151,15 @@ class LeekDuckScraper:
         if cache_file.exists():
             try:
                 with open(cache_file, encoding="utf-8") as f:
-                    logger.info(f"Using cached fallback data for {filename}")
+                    logger.info("Using cached fallback data for %s", filename)
                     data = json.load(f)
                     # Ensure both .json and .min.json versions exist
                     self._save_data(data, filename)
                     return data
-            except Exception as e:
-                logger.warning(f"Could not load cached {filename}: {e}")
+            except (OSError, json.JSONDecodeError) as e:
+                logger.warning("Could not load cached %s: %s", filename, e)
 
-        logger.warning(f"No cached data available for {filename}, returning default")
+        logger.warning("No cached data available for %s, returning default", filename)
         return default
 
     async def scrape_all(self) -> dict[str, Any]:
@@ -179,9 +181,9 @@ class LeekDuckScraper:
         for name, task in tasks.items():
             try:
                 results[name] = await task
-                logger.info(f"Successfully scraped {name}: {len(results[name])} items")
+                logger.info("Successfully scraped %s: %s items", name, len(results[name]))
             except Exception as e:
-                logger.exception(f"Failed to scrape {name}: {e}")
+                logger.exception("Failed to scrape %s", name)
                 results[name] = []
 
         # Save summary
@@ -195,7 +197,7 @@ class LeekDuckScraper:
         with open(summary_file, "w", encoding="utf-8") as f:
             json.dump(summary, f, indent=2, ensure_ascii=False)
 
-        logger.info(f"Scraping completed! Total items: {summary['total_items']}")
+        logger.info("Scraping completed! Total items: %s", summary['total_items'])
         return results
 
 
@@ -280,9 +282,9 @@ Examples:
             ]
 
     logger.info("Starting Pokemon Go data scraper...")
-    logger.info(f"Scraping: {', '.join(scrape_targets)}")
-    logger.info(f"Output directory: {args.output_dir}")
-    logger.info(f"Cache duration: {args.cache_duration} seconds")
+    logger.info("Scraping: %s", ', '.join(scrape_targets))
+    logger.info("Output directory: %s", args.output_dir)
+    logger.info("Cache duration: %s seconds", args.cache_duration)
 
     async with LeekDuckScraper(args.output_dir, args.cache_duration) as scraper:
         results = {}
@@ -303,14 +305,14 @@ Examples:
                 elif target == "promo_codes":
                     results[target] = await scraper.scrape_promo_codes()
 
-                logger.info(f"✅ {target}: {len(results[target])} items")
+                logger.info("✅ %s: %s items", target, len(results[target]))
 
             except Exception as e:
-                logger.exception(f"❌ Failed to scrape {target}: {e}")
+                logger.exception("❌ Failed to scrape %s", target)
                 results[target] = []
 
         total_items = sum(len(data) for data in results.values())
-        logger.info(f"🎉 Scraping completed! Total items: {total_items}")
+        logger.info("🎉 Scraping completed! Total items: %s", total_items)
 
         return results
 
