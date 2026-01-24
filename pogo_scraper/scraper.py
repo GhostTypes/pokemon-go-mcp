@@ -10,6 +10,7 @@ import asyncio
 import json
 import logging
 import sys
+import types
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -42,7 +43,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-async def log_response_hook(response) -> None:
+async def log_response_hook(response: httpx.Response) -> None:
     """Event hook to log details of each HTTP response."""
     # await response.aread()  # Make sure the response body is available
     # logger.info("--- HTTP Response Debug ---")
@@ -84,7 +85,12 @@ class LeekDuckScraper:
         )
         return self
 
-    async def __aexit__(self, exc_type, exc_val, exc_tb):
+    async def __aexit__(
+        self,
+        exc_type: type,
+        exc_val: BaseException | None,
+        exc_tb: types.TracebackType | None,
+    ) -> None:
         """Async context manager exit"""
         if self.session:
             await self.session.aclose()

@@ -13,7 +13,7 @@ from bs4 import BeautifulSoup
 logger = logging.getLogger(__name__)
 
 
-async def scrape_research(scraper, base_url: str) -> list[dict]:
+async def scrape_research(scraper: "LeekDuckScraper", base_url: str) -> list[dict]:
     """Scrape field research data from leekduck.com"""
     logger.info("Scraping research data...")
 
@@ -50,7 +50,7 @@ async def scrape_research(scraper, base_url: str) -> list[dict]:
         return scraper._load_fallback_data("research.json", [])
 
 
-def parse_research_task(item) -> dict | None:
+def parse_research_task(item: "bs4.element.Tag") -> dict | None:
     """Parse individual research task"""
     try:
         # Task text (updated selector)
@@ -71,7 +71,7 @@ def parse_research_task(item) -> dict | None:
         return None
 
 
-def parse_research_reward(reward_item) -> dict | None:
+def parse_research_reward(reward_item: "bs4.element.Tag") -> dict | None:
     """Parse individual research reward"""
     try:
         # Extract all elements upfront

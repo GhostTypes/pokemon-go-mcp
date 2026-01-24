@@ -13,7 +13,7 @@ from bs4 import BeautifulSoup
 logger = logging.getLogger(__name__)
 
 
-async def scrape_promo_codes(scraper, base_url: str) -> list[dict]:
+async def scrape_promo_codes(scraper: "LeekDuckScraper", base_url: str) -> list[dict]:
     """Scrape promo codes data from leekduck.com"""
     logger.info("Scraping promo codes data...")
 
@@ -51,7 +51,7 @@ async def scrape_promo_codes(scraper, base_url: str) -> list[dict]:
         return scraper._load_fallback_data("promo-codes.json", [])
 
 
-def parse_promo_card(card_element, base_url: str) -> dict | None:
+def parse_promo_card(card_element: "bs4.element.Tag", base_url: str) -> dict | None:
     """Parse individual promo card element"""
     try:
         # Check if card is expired

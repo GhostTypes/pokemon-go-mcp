@@ -13,7 +13,7 @@ from bs4 import BeautifulSoup
 logger = logging.getLogger(__name__)
 
 
-async def scrape_raids(scraper, base_url: str) -> list[dict]:
+async def scrape_raids(scraper: "LeekDuckScraper", base_url: str) -> list[dict]:
     """Scrape raid bosses data from leekduck.com"""
     logger.info("Scraping raids data...")
 
@@ -88,7 +88,9 @@ async def scrape_raids(scraper, base_url: str) -> list[dict]:
         return scraper._load_fallback_data("raids.json", [])
 
 
-def parse_raid_boss(card, current_tier: str, base_url: str) -> dict | None:
+def parse_raid_boss(
+    card: "bs4.element.Tag", current_tier: str, base_url: str
+) -> dict | None:
     """Parse individual raid boss card"""
     try:
         # Extract all needed elements upfront

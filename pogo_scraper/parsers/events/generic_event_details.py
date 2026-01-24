@@ -99,7 +99,9 @@ async def parse_generic_event_details(soup: BeautifulSoup, event: dict) -> None:
         # Keep the existing structure on error
 
 
-def _parse_spawns_section(soup: BeautifulSoup, spawns_section) -> list[dict]:
+def _parse_spawns_section(
+    soup: BeautifulSoup, spawns_section: "bs4.element.Tag"
+) -> list[dict]:
     """Parse the spawns section and extract Pokemon spawn data"""
     spawns = []
 
@@ -138,7 +140,9 @@ def _parse_spawns_section(soup: BeautifulSoup, spawns_section) -> list[dict]:
     return spawns
 
 
-def _parse_bonuses_section(soup: BeautifulSoup, bonuses_section) -> list[dict]:
+def _parse_bonuses_section(
+    soup: BeautifulSoup, bonuses_section: "bs4.element.Tag"
+) -> list[dict]:
     """Parse the bonuses section and extract bonus data"""
     bonuses = []
 
@@ -171,7 +175,9 @@ def _parse_bonuses_section(soup: BeautifulSoup, bonuses_section) -> list[dict]:
     return bonuses
 
 
-def _parse_features_section(soup: BeautifulSoup, features_section) -> list[dict]:
+def _parse_features_section(
+    soup: BeautifulSoup, features_section: "bs4.element.Tag"
+) -> list[dict]:
     """Parse the features section and extract feature data"""
     features = []
 
@@ -232,7 +238,9 @@ def _parse_features_section(soup: BeautifulSoup, features_section) -> list[dict]
     return features
 
 
-def _parse_field_research_section(soup: BeautifulSoup, research_section) -> list[dict]:
+def _parse_field_research_section(
+    soup: BeautifulSoup, research_section: "bs4.element.Tag"
+) -> list[dict]:
     """Parse the field research section and extract research task data"""
     research_tasks = []
 
@@ -272,7 +280,9 @@ def _parse_field_research_section(soup: BeautifulSoup, research_section) -> list
     return research_tasks
 
 
-def _parse_raids_section(soup: BeautifulSoup, raids_section) -> list[dict]:
+def _parse_raids_section(
+    soup: BeautifulSoup, raids_section: "bs4.element.Tag"
+) -> list[dict]:
     """Parse the raids section and extract raid data"""
     raids = []
 
@@ -319,7 +329,7 @@ def _parse_raids_section(soup: BeautifulSoup, raids_section) -> list[dict]:
     return raids
 
 
-def _extract_pokemon_data(item) -> dict | None:
+def _extract_pokemon_data(item: "bs4.element.Tag") -> dict | None:
     """Extract Pokemon data from a list item or container"""
     try:
         pokemon_data = {}
@@ -384,7 +394,7 @@ def _extract_pokemon_data(item) -> dict | None:
     return None
 
 
-def _extract_bonus_data(item) -> dict | None:
+def _extract_bonus_data(item: "bs4.element.Tag") -> dict | None:
     """Extract bonus data from a list item or container"""
     try:
         bonus_data = {}
@@ -417,7 +427,7 @@ def _extract_bonus_data(item) -> dict | None:
     return None
 
 
-def _extract_feature_data(item) -> dict | None:
+def _extract_feature_data(item: "bs4.element.Tag") -> dict | None:
     """Extract feature data from a list item or container"""
     try:
         feature_data = {}
@@ -445,7 +455,7 @@ def _extract_feature_data(item) -> dict | None:
     return None
 
 
-def _extract_research_task_data(item) -> dict | None:
+def _extract_research_task_data(item: "bs4.element.Tag") -> dict | None:
     """Extract research task data from a list item or container"""
     try:
         task_data = {}

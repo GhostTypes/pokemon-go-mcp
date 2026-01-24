@@ -8,7 +8,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def parse_rocket_trainer(profile, base_url: str) -> dict | None:
+def parse_rocket_trainer(profile: "bs4.element.Tag", base_url: str) -> dict | None:
     """Parse individual rocket trainer profile"""
     try:
         trainer = {
@@ -73,7 +73,7 @@ def parse_rocket_trainer(profile, base_url: str) -> dict | None:
         return None
 
 
-def parse_lineup_slot(slot) -> dict | None:
+def parse_lineup_slot(slot: "bs4.element.Tag") -> dict | None:
     """Parse individual lineup slot with Pokemon options"""
     try:
         slot_data = {"slot": 0, "is_encounter": False, "pokemon": []}
@@ -101,7 +101,7 @@ def parse_lineup_slot(slot) -> dict | None:
         return None
 
 
-def parse_shadow_pokemon(pokemon_elem) -> dict | None:
+def parse_shadow_pokemon(pokemon_elem: "bs4.element.Tag") -> dict | None:
     """Parse individual shadow Pokemon with weakness data"""
     try:
         pokemon = {

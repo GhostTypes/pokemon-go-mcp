@@ -40,7 +40,7 @@ except ImportError:
 logger = logging.getLogger(__name__)
 
 
-async def scrape_events(scraper, base_url: str) -> list[dict]:
+async def scrape_events(scraper: "LeekDuckScraper", base_url: str) -> list[dict]:
     """Scrape events data from leekduck.com"""
     logger.info("Scraping events data...")
 
@@ -117,7 +117,7 @@ async def scrape_events(scraper, base_url: str) -> list[dict]:
         return scraper._load_fallback_data("events.json", [])
 
 
-async def fetch_event_details(scraper, event: dict) -> None:
+async def fetch_event_details(scraper: "LeekDuckScraper", event: dict) -> None:
     """Fetch detailed event data from individual event page"""
     try:
         logger.debug(f"Fetching details for event: {event['name']}")

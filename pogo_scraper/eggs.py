@@ -14,7 +14,7 @@ from bs4 import BeautifulSoup
 logger = logging.getLogger(__name__)
 
 
-async def scrape_eggs(scraper, base_url: str) -> list[dict]:
+async def scrape_eggs(scraper: "LeekDuckScraper", base_url: str) -> list[dict]:
     """Scrape egg hatch data from leekduck.com"""
     logger.info("Scraping eggs data...")
 
@@ -85,7 +85,7 @@ async def scrape_eggs(scraper, base_url: str) -> list[dict]:
 
 
 def parse_egg_item(
-    item,
+    item: "bs4.element.Tag",
     egg_type: str,
     is_adventure_sync: bool,
     is_gift_exchange: bool,

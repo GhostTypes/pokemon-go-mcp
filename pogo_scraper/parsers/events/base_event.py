@@ -31,7 +31,9 @@ def infer_event_type(name: str, heading: str) -> str:
     return "event"
 
 
-def parse_event_item(link_element, event_dates: dict, base_url: str) -> dict | None:
+def parse_event_item(
+    link_element: "bs4.element.Tag", event_dates: dict, base_url: str
+) -> dict | None:
     """Parse individual event item from the events page"""
     try:
         wrapper = link_element.find("div", class_="event-item-wrapper")

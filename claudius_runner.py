@@ -127,7 +127,7 @@ RULES:
 """
 
 
-def build_claude_command(agents_json=None):
+def build_claude_command(agents_json: str | None = None) -> list[str]:
     """Build the Claude CLI command with optional agents."""
     cmd = [
         "claude",
@@ -144,7 +144,7 @@ def build_claude_command(agents_json=None):
     return cmd
 
 
-def run_claudius_loop(max_loops, agents_json=None) -> None:
+def run_claudius_loop(max_loops: int, agents_json: str | None = None) -> None:
     """Main loop that runs Claude iterations until complete or max reached."""
 
     # Pre-flight check
@@ -230,7 +230,7 @@ def run_claudius_loop(max_loops, agents_json=None) -> None:
     sys.exit(1)
 
 
-def kill_process(process) -> None:
+def kill_process(process: subprocess.Popen) -> None:
     """Platform-specific forced process termination."""
     if process.poll() is None:
         try:
