@@ -27,7 +27,7 @@
 
 ### Phase 3: Code Quality - Type Annotations (P1)
 - [x] Task 3.1: Add missing function argument type annotations (298 violations)
-- [ ] Task 3.2: Add missing return type annotations - public functions (181 violations)
+- [x] Task 3.2: Add missing return type annotations - public functions (1 violation)
 - [ ] Task 3.3: Add missing return type annotations - private functions (130 violations)
 - [ ] Task 3.4: Replace Any with specific types (6 violations)
 
@@ -78,18 +78,18 @@
 
 ## Statistics
 
-**Tasks Completed:** 14 / 60+
-**Mypy Errors:** 1,094 → 0 errors
-**Ruff Errors:** 3,103 → ~550 remaining (non-critical)
+**Tasks Completed:** 15 / 60+
+**Mypy Errors:** 1,094 → 0 errors (pogo_mcp/ only)
+**Ruff Errors:** 3,103 → ~540 remaining (non-critical)
 **Files Reformatted:** 65 files (Task 1.7) + 1 file (Task 2.2) + 59 files (previous) + 1 file (Task 2.5) + 5 files (Task 3.1) = 131 total
 **Tests Passing:** 100% (117/117)
 
 ## Current Status
 
 **Phase:** Phase 3 - Type Annotations (IN PROGRESS)
-**Current Task:** Task 3.1 completed
-**Last Commit:** Task 3.1
-**Time Elapsed:** 0h 35m
+**Current Task:** Task 3.2 completed
+**Last Commit:** Task 3.2
+**Time Elapsed:** 0h 40m
 
 ## Notes
 

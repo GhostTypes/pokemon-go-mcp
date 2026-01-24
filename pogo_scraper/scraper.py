@@ -199,7 +199,7 @@ class LeekDuckScraper:
         return results
 
 
-async def main():
+async def main() -> dict[str, list[Any]]:
     """Main CLI interface"""
     parser = argparse.ArgumentParser(
         description="Pokemon Go LeekDuck Data Scraper",
