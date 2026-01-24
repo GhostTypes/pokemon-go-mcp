@@ -15,9 +15,9 @@ def main():
         if tool == "Bash":
             command = tool_input.get("command", "")
 
-            # Check if command contains "git"
-            if "git" in command:
-                # Get current time - use project dir if available
+            # Check if command is a commit or push (operations that finalize work)
+            if "git" in command and any(cmd in command for cmd in ["commit", "push"]):
+                # Get current time
                 time_script = ".claude/skills/get-time/scripts/get_time.py"
                 if os.environ.get("CLAUDE_PROJECT_DIR"):
                     time_script = os.path.join(os.environ["CLAUDE_PROJECT_DIR"], time_script)
@@ -30,7 +30,14 @@ def main():
                 )
 
                 if result.stdout.strip():
-                    print(f"[Git Command] Current time: {result.stdout.strip()}")
+                    current_time = result.stdout.strip()
+                    print(f"\n{'='*60}")
+                    print(f"[TIME TRACKING REMINDER]")
+                    print(f"Current time: {current_time}")
+                    print(f"Before committing: Calculate elapsed time from your start time")
+                    print(f"Include duration in commit message (e.g., 'Time: ~2h 15m')")
+                    print(f"Update progress.txt with time tracking data")
+                    print(f"{'='*60}\n")
 
     except Exception as e:
         # Silently fail - don't break the workflow
