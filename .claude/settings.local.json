@@ -29,7 +29,12 @@
       "Bash(Select-String \"Starting Pokemon|Scraping completed\")",
       "Bash(git commit:*)",
       "Bash(git push:*)",
-      "Bash(CLAUDE_PROJECT_DIR=\"C:\\\\Users\\\\Cope\\\\Documents\\\\GitHub\\\\pokemon-go-mcp\" bash:*)"
+      "Bash(CLAUDE_PROJECT_DIR=\"C:\\\\Users\\\\Cope\\\\Documents\\\\GitHub\\\\pokemon-go-mcp\" bash:*)",
+      "Bash(if:*)",
+      "Bash([:*)",
+      "Bash(then echo \"Setup files present\")",
+      "Bash(else echo \"Setup files missing\")",
+      "Bash(fi:*)"
     ],
     "deny": [],
     "ask": []

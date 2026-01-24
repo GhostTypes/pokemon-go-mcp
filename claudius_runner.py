@@ -66,21 +66,29 @@ RULES:
 
 def build_claude_command(agents_json=None):
     """Build the claude-glm CLI command with optional agents."""
-    # Build the prompt with flags
-    # Note: -p takes the prompt as an argument, flag order matters
+    # Write system prompt to a temp file to avoid shell escaping issues
+    temp_prompt_file = ".claudius_prompt.txt"
+    with open(temp_prompt_file, "w", encoding="utf-8") as f:
+        f.write(SYSTEM_PROMPT)
+
+    # Build command using --system-prompt-file and -p for the task
     cmd = [
         "claude-glm",
         "--no-session-persistence",
         "--dangerously-skip-permissions",
+        f"--system-prompt-file={temp_prompt_file}",
         "-p",
-        SYSTEM_PROMPT,
+        "@PRD.md @progress.txt",  # The actual task/query
     ]
 
     # Add agents if provided
     if agents_json:
         cmd.extend(["--agents", agents_json])
 
-    return cmd
+    # Convert to string for shell=True on Windows
+    if sys.platform == "win32":
+        return subprocess.list2cmdline(cmd)
+    return " ".join(cmd)
 
 
 def run_claudius_loop(max_loops, agents_json=None):
