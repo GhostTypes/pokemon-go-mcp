@@ -103,7 +103,7 @@ class LeekDuckScraper:
         cache_age = datetime.now().timestamp() - cache_file.stat().st_mtime
         return cache_age > self.cache_duration
 
-    def _save_data(self, data: Any, filename: str) -> None:
+    def _save_data(self, data: object, filename: str) -> None:
         """Save data to JSON file - optimized single-pass write"""
         output_file = self.output_dir / filename
         min_output_file = self.output_dir / filename.replace(".json", ".min.json")
@@ -143,7 +143,7 @@ class LeekDuckScraper:
         """Scrape promo codes data from leekduck.com"""
         return await promo_codes.scrape_promo_codes(self, self.base_url)
 
-    def _load_fallback_data(self, filename: str, default: Any) -> Any:
+    def _load_fallback_data(self, filename: str, default: object) -> object:
         """Load fallback data from cache or return default"""
         cache_file = self.output_dir / filename
         if cache_file.exists():

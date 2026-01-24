@@ -242,7 +242,7 @@ def format_egg_summary(egg: EggInfo) -> str:
 {features_str}"""
 
 
-def format_json_output(data: Any, indent: int = 2) -> str:
+def format_json_output(data: object, indent: int = 2) -> str:
     """Format data as pretty-printed JSON."""
     try:
         return json.dumps(data, indent=indent, default=str, ensure_ascii=False)
