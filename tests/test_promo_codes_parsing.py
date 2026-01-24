@@ -1,26 +1,24 @@
-import os
 import sys
+from pathlib import Path
 
 import requests
+from bs4 import BeautifulSoup
 
 # Add the project root to the path so we can import the scraper
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-
-from bs4 import BeautifulSoup
+sys.path.insert(0, str(Path(__file__).parent))
 
 from pogo_scraper.promo_codes import parse_promo_card
 
 
 def download_promo_data():
     """Download current promo codes data if it doesn't exist"""
-    fixtures_dir = os.path.join(os.path.dirname(__file__), "fixtures")
-    html_file = os.path.join(fixtures_dir, "current_promos.html")
+    fixtures_dir = Path(__file__).parent / "fixtures"
+    html_file = fixtures_dir / "current_promos.html"
 
-    if not os.path.exists(html_file):
+    if not html_file.exists():
         response = requests.get("https://leekduck.com/promo-codes/", timeout=30)
-        os.makedirs(fixtures_dir, exist_ok=True)
-        with open(html_file, "w", encoding="utf-8") as f:
-            f.write(response.text)
+        fixtures_dir.mkdir(parents=True, exist_ok=True)
+        html_file.write_text(response.text, encoding="utf-8")
     return html_file
 
 
@@ -30,8 +28,7 @@ def test_promo_codes_parsing():
     html_file = download_promo_data()
 
     # Read the current promo codes HTML file
-    with open(html_file, encoding="utf-8") as f:
-        html_content = f.read()
+    html_content = html_file.read_text(encoding="utf-8")
 
     # Parse with BeautifulSoup
     soup = BeautifulSoup(html_content, "lxml")
@@ -66,8 +63,7 @@ def test_promo_codes_list_parsing():
     html_file = download_promo_data()
 
     # Read the current promo codes HTML file
-    with open(html_file, encoding="utf-8") as f:
-        html_content = f.read()
+    html_content = html_file.read_text(encoding="utf-8")
 
     # Parse with BeautifulSoup
     soup = BeautifulSoup(html_content, "lxml")
@@ -91,8 +87,7 @@ def test_expired_promo_codes_filtering():
     html_file = download_promo_data()
 
     # Read the current promo codes HTML file
-    with open(html_file, encoding="utf-8") as f:
-        html_content = f.read()
+    html_content = html_file.read_text(encoding="utf-8")
 
     # Parse with BeautifulSoup
     soup = BeautifulSoup(html_content, "lxml")
@@ -116,8 +111,7 @@ def test_promo_code_rewards_parsing():
     html_file = download_promo_data()
 
     # Read the current promo codes HTML file
-    with open(html_file, encoding="utf-8") as f:
-        html_content = f.read()
+    html_content = html_file.read_text(encoding="utf-8")
 
     # Parse with BeautifulSoup
     soup = BeautifulSoup(html_content, "lxml")

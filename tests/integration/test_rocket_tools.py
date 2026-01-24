@@ -2,6 +2,9 @@
 
 import pytest
 
+from pogo_mcp.api_client import api_client
+from pogo_mcp.rocket_lineups import register_rocket_tools
+
 
 class TestRocketTools:
     """Integration tests for all Team Rocket-related tools."""
@@ -9,7 +12,6 @@ class TestRocketTools:
     @pytest.mark.asyncio
     async def test_get_team_rocket_lineups(self, ensure_test_data, mcp_server):
         """Test get_team_rocket_lineups tool."""
-        from pogo_mcp.rocket_lineups import register_rocket_tools
 
         captured_tools = {}
 
@@ -36,7 +38,6 @@ class TestRocketTools:
         self, ensure_test_data, sample_pokemon_name, mcp_server
     ):
         """Test search_rocket_by_pokemon tool."""
-        from pogo_mcp.rocket_lineups import register_rocket_tools
 
         captured_tools = {}
 
@@ -62,7 +63,6 @@ class TestRocketTools:
         self, ensure_test_data, mcp_server
     ):
         """Test search_rocket_by_pokemon with Pokemon not in lineups."""
-        from pogo_mcp.rocket_lineups import register_rocket_tools
 
         captured_tools = {}
 
@@ -86,7 +86,6 @@ class TestRocketTools:
     @pytest.mark.asyncio
     async def test_get_shiny_shadow_pokemon(self, ensure_test_data, mcp_server):
         """Test get_shiny_shadow_pokemon tool."""
-        from pogo_mcp.rocket_lineups import register_rocket_tools
 
         captured_tools = {}
 
@@ -111,7 +110,6 @@ class TestRocketTools:
     @pytest.mark.asyncio
     async def test_get_rocket_encounters(self, ensure_test_data, mcp_server):
         """Test get_rocket_encounters tool."""
-        from pogo_mcp.rocket_lineups import register_rocket_tools
 
         captured_tools = {}
 
@@ -136,7 +134,6 @@ class TestRocketTools:
     @pytest.mark.asyncio
     async def test_get_rocket_trainers_by_type(self, ensure_test_data, mcp_server):
         """Test get_rocket_trainers_by_type tool."""
-        from pogo_mcp.rocket_lineups import register_rocket_tools
 
         captured_tools = {}
 
@@ -160,7 +157,6 @@ class TestRocketTools:
     @pytest.mark.asyncio
     async def test_get_rocket_trainers_by_type_fire(self, ensure_test_data, mcp_server):
         """Test get_rocket_trainers_by_type with fire type."""
-        from pogo_mcp.rocket_lineups import register_rocket_tools
 
         captured_tools = {}
 
@@ -186,7 +182,6 @@ class TestRocketTools:
         self, ensure_test_data, sample_pokemon_name, mcp_server
     ):
         """Test calculate_pokemon_weakness tool."""
-        from pogo_mcp.rocket_lineups import register_rocket_tools
 
         captured_tools = {}
 
@@ -214,7 +209,6 @@ class TestRocketTools:
         self, ensure_test_data, mcp_server
     ):
         """Test calculate_pokemon_weakness with water vs fire."""
-        from pogo_mcp.rocket_lineups import register_rocket_tools
 
         captured_tools = {}
 
@@ -230,8 +224,6 @@ class TestRocketTools:
         register_rocket_tools(mock_mcp)
 
         # Get a pokemon name from the data
-        from pogo_mcp.api_client import api_client
-
         trainers = await api_client.get_rocket_lineups()
         if trainers and trainers[0].lineups and trainers[0].lineups[0].pokemon:
             pokemon_name = trainers[0].lineups[0].pokemon[0].name
@@ -249,7 +241,6 @@ class TestRocketTools:
         self, ensure_test_data, sample_trainer_name, mcp_server
     ):
         """Test get_rocket_trainer_details tool."""
-        from pogo_mcp.rocket_lineups import register_rocket_tools
 
         captured_tools = {}
 
@@ -276,7 +267,6 @@ class TestRocketTools:
         self, ensure_test_data, mcp_server
     ):
         """Test get_rocket_trainer_details with invalid trainer name."""
-        from pogo_mcp.rocket_lineups import register_rocket_tools
 
         captured_tools = {}
 

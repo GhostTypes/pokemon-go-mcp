@@ -2,6 +2,8 @@
 
 import pytest
 
+from pogo_mcp.raids import register_raid_tools
+
 
 class TestRaidTools:
     """Integration tests for all raid-related tools."""
@@ -9,7 +11,6 @@ class TestRaidTools:
     @pytest.mark.asyncio
     async def test_get_current_raids(self, ensure_test_data, mcp_server):
         """Test get_current_raids tool."""
-        from pogo_mcp.raids import register_raid_tools
 
         captured_tools = {}
 
@@ -36,7 +37,6 @@ class TestRaidTools:
         self, ensure_test_data, sample_raid_tier, mcp_server
     ):
         """Test get_raid_by_tier tool."""
-        from pogo_mcp.raids import register_raid_tools
 
         captured_tools = {}
 
@@ -60,7 +60,6 @@ class TestRaidTools:
     @pytest.mark.asyncio
     async def test_get_raid_by_tier_tier_5(self, ensure_test_data, mcp_server):
         """Test get_raid_by_tier with tier 5."""
-        from pogo_mcp.raids import register_raid_tools
 
         captured_tools = {}
 
@@ -84,7 +83,6 @@ class TestRaidTools:
     @pytest.mark.asyncio
     async def test_get_shiny_raids(self, ensure_test_data, mcp_server):
         """Test get_shiny_raids tool."""
-        from pogo_mcp.raids import register_raid_tools
 
         captured_tools = {}
 
@@ -111,7 +109,6 @@ class TestRaidTools:
         self, ensure_test_data, sample_pokemon_name, mcp_server
     ):
         """Test search_raid_boss tool."""
-        from pogo_mcp.raids import register_raid_tools
 
         captured_tools = {}
 
@@ -135,7 +132,6 @@ class TestRaidTools:
     @pytest.mark.asyncio
     async def test_search_raid_boss_not_found(self, ensure_test_data, mcp_server):
         """Test search_raid_boss with Pokemon not in raids."""
-        from pogo_mcp.raids import register_raid_tools
 
         captured_tools = {}
 
@@ -159,7 +155,6 @@ class TestRaidTools:
     @pytest.mark.asyncio
     async def test_get_raids_by_type(self, ensure_test_data, mcp_server):
         """Test get_raids_by_type tool."""
-        from pogo_mcp.raids import register_raid_tools
 
         captured_tools = {}
 
@@ -183,7 +178,6 @@ class TestRaidTools:
     @pytest.mark.asyncio
     async def test_get_weather_boosted_raids(self, ensure_test_data, mcp_server):
         """Test get_weather_boosted_raids tool."""
-        from pogo_mcp.raids import register_raid_tools
 
         captured_tools = {}
 
@@ -207,7 +201,6 @@ class TestRaidTools:
     @pytest.mark.asyncio
     async def test_get_raid_recommendations(self, ensure_test_data, mcp_server):
         """Test get_raid_recommendations tool without filters."""
-        from pogo_mcp.raids import register_raid_tools
 
         captured_tools = {}
 
@@ -234,7 +227,6 @@ class TestRaidTools:
         self, ensure_test_data, mcp_server
     ):
         """Test get_raid_recommendations with shiny_only filter."""
-        from pogo_mcp.raids import register_raid_tools
 
         captured_tools = {}
 
@@ -260,7 +252,6 @@ class TestRaidTools:
         self, ensure_test_data, mcp_server
     ):
         """Test get_raid_recommendations with tier filter."""
-        from pogo_mcp.raids import register_raid_tools
 
         captured_tools = {}
 

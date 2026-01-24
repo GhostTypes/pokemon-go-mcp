@@ -5,7 +5,9 @@ and connect as a real MCP client to test the full MCP protocol.
 """
 
 import asyncio
+import json
 from collections.abc import AsyncGenerator
+from contextlib import suppress
 from pathlib import Path
 
 import pytest
@@ -37,9 +39,6 @@ async def mcp_session() -> AsyncGenerator:
     if not MCP_AVAILABLE:
         pytest.skip("MCP SDK not installed. Install with: pip install mcp")
 
-    # Get the project root directory
-    Path(__file__).parent.parent.parent
-
     # Set up server parameters for stdio transport
     server_params = StdioServerParameters(
         command="uv",
@@ -68,17 +67,13 @@ async def mcp_session() -> AsyncGenerator:
 
         finally:
             # Exit the session context manager
-            try:
+            with suppress(Exception):
                 await session.__aexit__(None, None, None)
-            except Exception:
-                pass  # Ignore cleanup errors
 
     finally:
         # Exit the stdio context manager
-        try:
+        with suppress(Exception):
             await stdio_ctx.__aexit__(None, None, None)
-        except Exception:
-            pass  # Ignore cleanup errors
 
 
 class TestMCPServerStdioConnection:
@@ -144,8 +139,9 @@ class TestMCPToolsDiscovery:
         """
         response = await mcp_session.list_tools()
 
-        # Should have at least 20 tools
-        assert len(response.tools) >= 20
+        # Should have at least some minimum number of tools
+        min_tools = 20
+        assert len(response.tools) >= min_tools
 
 
 class TestMCPCrossCuttingTools:
@@ -349,7 +345,8 @@ class TestMCPConcurrentCalls:
         results = await asyncio.gather(*tasks, return_exceptions=True)
 
         # All should succeed
-        assert len(results) == 3
+        num_tasks = 3
+        assert len(results) == num_tasks
         for result in results:
             assert not isinstance(result, Exception)
             assert result.content is not None
@@ -360,8 +357,6 @@ class TestMCPConcurrentCalls:
 @pytest.fixture(scope="session")
 def ensure_test_data():
     """Ensure test data files exist before running integration tests."""
-    from pathlib import Path
-
     data_dir = Path(__file__).parent.parent.parent / "data"
     required_files = [
         "events.json",
@@ -390,20 +385,15 @@ def ensure_test_data():
 @pytest.fixture(scope="session")
 def sample_pokemon_name(ensure_test_data):
     """Get a sample Pokemon name for testing search functions."""
-    import json
-    from pathlib import Path
-
     # Try raids first
     data_file = Path(__file__).parent.parent.parent / "data" / "raids.json"
-    with open(data_file) as f:
-        raids = json.load(f)
+    raids = json.loads(data_file.read_text())
     if raids:
         return raids[0]["name"]
 
     # Try research
     data_file = Path(__file__).parent.parent.parent / "data" / "research.json"
-    with open(data_file) as f:
-        research = json.load(f)
+    research = json.loads(data_file.read_text())
     if research and research[0].get("rewards"):
         return research[0]["rewards"][0]["name"]
 

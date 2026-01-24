@@ -2,6 +2,8 @@
 
 import pytest
 
+from pogo_mcp.events import register_event_tools
+
 
 class TestEventTools:
     """Integration tests for all event-related tools."""
@@ -9,8 +11,6 @@ class TestEventTools:
     @pytest.mark.asyncio
     async def test_get_current_events(self, ensure_test_data, mcp_server):
         """Test get_current_events tool."""
-        # Import the tool function
-        from pogo_mcp.events import register_event_tools
 
         # Create a mock mcp instance to capture the registered tool
         captured_tools = {}
@@ -43,7 +43,6 @@ class TestEventTools:
         self, ensure_test_data, sample_event_id, mcp_server
     ):
         """Test get_event_details tool."""
-        from pogo_mcp.events import register_event_tools
 
         captured_tools = {}
 
@@ -70,7 +69,6 @@ class TestEventTools:
     @pytest.mark.asyncio
     async def test_get_event_details_invalid_id(self, ensure_test_data, mcp_server):
         """Test get_event_details with invalid event ID."""
-        from pogo_mcp.events import register_event_tools
 
         captured_tools = {}
 
@@ -97,7 +95,6 @@ class TestEventTools:
     @pytest.mark.asyncio
     async def test_get_community_day_info(self, ensure_test_data, mcp_server):
         """Test get_community_day_info tool."""
-        from pogo_mcp.events import register_event_tools
 
         captured_tools = {}
 
@@ -126,7 +123,6 @@ class TestEventTools:
     @pytest.mark.asyncio
     async def test_get_event_spawns(self, ensure_test_data, mcp_server):
         """Test get_event_spawns tool."""
-        from pogo_mcp.events import register_event_tools
 
         captured_tools = {}
 
@@ -154,7 +150,6 @@ class TestEventTools:
     @pytest.mark.asyncio
     async def test_get_event_spawns_with_filter(self, ensure_test_data, mcp_server):
         """Test get_event_spawns tool with event type filter."""
-        from pogo_mcp.events import register_event_tools
 
         captured_tools = {}
 
@@ -181,7 +176,6 @@ class TestEventTools:
     @pytest.mark.asyncio
     async def test_get_event_bonuses(self, ensure_test_data, mcp_server):
         """Test get_event_bonuses tool."""
-        from pogo_mcp.events import register_event_tools
 
         captured_tools = {}
 
@@ -209,7 +203,6 @@ class TestEventTools:
     @pytest.mark.asyncio
     async def test_search_events(self, ensure_test_data, mcp_server):
         """Test search_events tool."""
-        from pogo_mcp.events import register_event_tools
 
         captured_tools = {}
 
@@ -236,7 +229,6 @@ class TestEventTools:
     @pytest.mark.asyncio
     async def test_search_events_no_results(self, ensure_test_data, mcp_server):
         """Test search_events tool with query that returns no results."""
-        from pogo_mcp.events import register_event_tools
 
         captured_tools = {}
 

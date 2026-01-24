@@ -2,6 +2,10 @@
 
 import pytest
 
+from pogo_mcp import server as server_module
+from pogo_mcp.api_client import api_client
+from pogo_mcp.server import register_cross_cutting_tools
+
 
 class TestCrossCuttingTools:
     """Integration tests for all cross-cutting tools that span multiple data sources."""
@@ -9,8 +13,6 @@ class TestCrossCuttingTools:
     @pytest.mark.asyncio
     async def test_get_all_shiny_pokemon(self, ensure_test_data, mcp_server):
         """Test get_all_shiny_pokemon tool."""
-        from pogo_mcp.server import register_cross_cutting_tools
-
         captured_tools = {}
 
         class MockMCP:
@@ -25,12 +27,10 @@ class TestCrossCuttingTools:
                 return decorator
 
         # Save the original mcp
-        from pogo_mcp import server
-
-        original_mcp = server.mcp
+        original_mcp = server_module.mcp
 
         # Replace with our mock
-        server.mcp = MockMCP()
+        server_module.mcp = MockMCP()
 
         try:
             register_cross_cutting_tools()
@@ -43,15 +43,13 @@ class TestCrossCuttingTools:
             assert "Shiny" in result or "shiny" in result or "No" in result
         finally:
             # Restore original mcp
-            server.mcp = original_mcp
+            server_module.mcp = original_mcp
 
     @pytest.mark.asyncio
     async def test_search_pokemon_everywhere(
         self, ensure_test_data, sample_pokemon_name, mcp_server
     ):
         """Test search_pokemon_everywhere tool."""
-        from pogo_mcp.server import register_cross_cutting_tools
-
         captured_tools = {}
 
         class MockMCP:
@@ -66,12 +64,10 @@ class TestCrossCuttingTools:
                 return decorator
 
         # Save the original mcp
-        from pogo_mcp import server
-
-        original_mcp = server.mcp
+        original_mcp = server_module.mcp
 
         # Replace with our mock
-        server.mcp = MockMCP()
+        server_module.mcp = MockMCP()
 
         try:
             register_cross_cutting_tools()
@@ -84,15 +80,13 @@ class TestCrossCuttingTools:
             assert "Search Results" in result or sample_pokemon_name in result
         finally:
             # Restore original mcp
-            server.mcp = original_mcp
+            server_module.mcp = original_mcp
 
     @pytest.mark.asyncio
     async def test_search_pokemon_everywhere_not_found(
         self, ensure_test_data, mcp_server
     ):
         """Test search_pokemon_everywhere with Pokemon not found."""
-        from pogo_mcp.server import register_cross_cutting_tools
-
         captured_tools = {}
 
         class MockMCP:
@@ -107,12 +101,10 @@ class TestCrossCuttingTools:
                 return decorator
 
         # Save the original mcp
-        from pogo_mcp import server
-
-        original_mcp = server.mcp
+        original_mcp = server_module.mcp
 
         # Replace with our mock
-        server.mcp = MockMCP()
+        server_module.mcp = MockMCP()
 
         try:
             register_cross_cutting_tools()
@@ -125,13 +117,11 @@ class TestCrossCuttingTools:
             assert "not found" in result.lower() or "could mean" in result.lower()
         finally:
             # Restore original mcp
-            server.mcp = original_mcp
+            server_module.mcp = original_mcp
 
     @pytest.mark.asyncio
     async def test_get_daily_priorities(self, ensure_test_data, mcp_server):
         """Test get_daily_priorities tool."""
-        from pogo_mcp.server import register_cross_cutting_tools
-
         captured_tools = {}
 
         class MockMCP:
@@ -146,12 +136,10 @@ class TestCrossCuttingTools:
                 return decorator
 
         # Save the original mcp
-        from pogo_mcp import server
-
-        original_mcp = server.mcp
+        original_mcp = server_module.mcp
 
         # Replace with our mock
-        server.mcp = MockMCP()
+        server_module.mcp = MockMCP()
 
         try:
             register_cross_cutting_tools()
@@ -164,13 +152,11 @@ class TestCrossCuttingTools:
             assert "Daily" in result or "Priorities" in result or "priorities" in result
         finally:
             # Restore original mcp
-            server.mcp = original_mcp
+            server_module.mcp = original_mcp
 
     @pytest.mark.asyncio
     async def test_get_server_status(self, ensure_test_data, mcp_server):
         """Test get_server_status tool."""
-        from pogo_mcp.server import register_cross_cutting_tools
-
         captured_tools = {}
 
         class MockMCP:
@@ -185,12 +171,10 @@ class TestCrossCuttingTools:
                 return decorator
 
         # Save the original mcp
-        from pogo_mcp import server
-
-        original_mcp = server.mcp
+        original_mcp = server_module.mcp
 
         # Replace with our mock
-        server.mcp = MockMCP()
+        server_module.mcp = MockMCP()
 
         try:
             register_cross_cutting_tools()
@@ -204,14 +188,11 @@ class TestCrossCuttingTools:
             assert "Data Statistics" in result or "statistics" in result.lower()
         finally:
             # Restore original mcp
-            server.mcp = original_mcp
+            server_module.mcp = original_mcp
 
     @pytest.mark.asyncio
     async def test_clear_cache(self, ensure_test_data, mcp_server):
         """Test clear_cache tool."""
-        from pogo_mcp.api_client import api_client
-        from pogo_mcp.server import register_cross_cutting_tools
-
         captured_tools = {}
 
         class MockMCP:
@@ -226,19 +207,17 @@ class TestCrossCuttingTools:
                 return decorator
 
         # Save the original mcp
-        from pogo_mcp import server
-
-        original_mcp = server.mcp
+        original_mcp = server_module.mcp
 
         # Replace with our mock
-        server.mcp = MockMCP()
+        server_module.mcp = MockMCP()
 
         try:
             register_cross_cutting_tools()
 
             # Populate cache first
             await api_client.get_events()
-            assert len(api_client._cache) > 0
+            assert len(api_client._cache) > 0  # noqa: SLF001
 
             clear_cache = captured_tools["clear_cache"]
             result = await clear_cache()
@@ -248,7 +227,7 @@ class TestCrossCuttingTools:
             assert "cleared" in result.lower() or "Cache" in result
 
             # Verify cache is actually cleared
-            assert len(api_client._cache) == 0
+            assert len(api_client._cache) == 0  # noqa: SLF001
         finally:
             # Restore original mcp
-            server.mcp = original_mcp
+            server_module.mcp = original_mcp

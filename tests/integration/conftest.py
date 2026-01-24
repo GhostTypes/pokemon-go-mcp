@@ -1,6 +1,7 @@
 """Shared fixtures for MCP server integration tests."""
 
 import asyncio
+import json
 from pathlib import Path
 
 import pytest
@@ -81,12 +82,8 @@ def ensure_test_data(data_dir):
 @pytest.fixture(scope="session")
 def sample_event_id(ensure_test_data):
     """Get a sample event ID for testing event-specific functions."""
-    # Load events synchronously for session-scoped fixture
-    import json
-    from pathlib import Path
-
     data_file = Path(__file__).parent.parent.parent / "data" / "events.json"
-    with open(data_file) as f:
+    with data_file.open() as f:
         events = json.load(f)
     if events:
         return events[0]["eventID"]
@@ -96,19 +93,16 @@ def sample_event_id(ensure_test_data):
 @pytest.fixture(scope="session")
 def sample_pokemon_name(ensure_test_data):
     """Get a sample Pokemon name for testing search functions."""
-    import json
-    from pathlib import Path
-
     # Try raids first
     data_file = Path(__file__).parent.parent.parent / "data" / "raids.json"
-    with open(data_file) as f:
+    with data_file.open() as f:
         raids = json.load(f)
     if raids:
         return raids[0]["name"]
 
     # Try research
     data_file = Path(__file__).parent.parent.parent / "data" / "research.json"
-    with open(data_file) as f:
+    with data_file.open() as f:
         research = json.load(f)
     if research and research[0].get("rewards"):
         return research[0]["rewards"][0]["name"]
@@ -119,11 +113,8 @@ def sample_pokemon_name(ensure_test_data):
 @pytest.fixture(scope="session")
 def sample_raid_tier(ensure_test_data):
     """Get a sample raid tier for testing tier-specific functions."""
-    import json
-    from pathlib import Path
-
     data_file = Path(__file__).parent.parent.parent / "data" / "raids.json"
-    with open(data_file) as f:
+    with data_file.open() as f:
         raids = json.load(f)
     if raids:
         return raids[0]["tier"]
@@ -133,11 +124,8 @@ def sample_raid_tier(ensure_test_data):
 @pytest.fixture(scope="session")
 def sample_trainer_name(ensure_test_data):
     """Get a sample Team Rocket trainer name for testing."""
-    import json
-    from pathlib import Path
-
     data_file = Path(__file__).parent.parent.parent / "data" / "rocket-lineups.json"
-    with open(data_file) as f:
+    with data_file.open() as f:
         trainers = json.load(f)
     if trainers:
         return trainers[0]["name"]

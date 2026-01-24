@@ -104,18 +104,18 @@ class TestMCPServerCaching:
         api_client_instance.clear_cache()
 
         # Verify cache is empty
-        assert len(api_client_instance._cache) == 0
-        assert len(api_client_instance._cache_timestamp) == 0
+        assert len(api_client_instance._cache) == 0  # noqa: SLF001
+        assert len(api_client_instance._cache_timestamp) == 0  # noqa: SLF001
 
     @pytest.mark.asyncio
     async def test_cache_population(self, fresh_cache, api_client_instance):
         """Test that cache is populated after fetching data."""
         # Cache should be empty initially
-        assert len(api_client_instance._cache) == 0
+        assert len(api_client_instance._cache) == 0  # noqa: SLF001
 
         # Fetch data
         await api_client_instance.get_events()
 
         # Cache should now have data
-        assert "events" in api_client_instance._cache
-        assert "events" in api_client_instance._cache_timestamp
+        assert "events" in api_client_instance._cache  # noqa: SLF001
+        assert "events" in api_client_instance._cache_timestamp  # noqa: SLF001

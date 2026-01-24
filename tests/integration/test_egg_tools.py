@@ -2,6 +2,8 @@
 
 import pytest
 
+from pogo_mcp.eggs import register_egg_tools
+
 
 class TestEggTools:
     """Integration tests for all egg-related tools."""
@@ -9,7 +11,6 @@ class TestEggTools:
     @pytest.mark.asyncio
     async def test_get_egg_hatches(self, ensure_test_data, mcp_server):
         """Test get_egg_hatches tool."""
-        from pogo_mcp.eggs import register_egg_tools
 
         captured_tools = {}
 
@@ -34,7 +35,6 @@ class TestEggTools:
     @pytest.mark.asyncio
     async def test_get_egg_hatches_by_distance_2km(self, ensure_test_data, mcp_server):
         """Test get_egg_hatches_by_distance with 2km eggs."""
-        from pogo_mcp.eggs import register_egg_tools
 
         captured_tools = {}
 
@@ -58,7 +58,6 @@ class TestEggTools:
     @pytest.mark.asyncio
     async def test_get_egg_hatches_by_distance_5km(self, ensure_test_data, mcp_server):
         """Test get_egg_hatches_by_distance with 5km eggs."""
-        from pogo_mcp.eggs import register_egg_tools
 
         captured_tools = {}
 
@@ -82,7 +81,6 @@ class TestEggTools:
     @pytest.mark.asyncio
     async def test_get_egg_hatches_by_distance_10km(self, ensure_test_data, mcp_server):
         """Test get_egg_hatches_by_distance with 10km eggs."""
-        from pogo_mcp.eggs import register_egg_tools
 
         captured_tools = {}
 
@@ -106,7 +104,6 @@ class TestEggTools:
     @pytest.mark.asyncio
     async def test_get_shiny_egg_hatches(self, ensure_test_data, mcp_server):
         """Test get_shiny_egg_hatches tool."""
-        from pogo_mcp.eggs import register_egg_tools
 
         captured_tools = {}
 
@@ -133,7 +130,6 @@ class TestEggTools:
         self, ensure_test_data, sample_pokemon_name, mcp_server
     ):
         """Test search_egg_pokemon tool."""
-        from pogo_mcp.eggs import register_egg_tools
 
         captured_tools = {}
 
@@ -157,7 +153,6 @@ class TestEggTools:
     @pytest.mark.asyncio
     async def test_search_egg_pokemon_not_found(self, ensure_test_data, mcp_server):
         """Test search_egg_pokemon with Pokemon not in eggs."""
-        from pogo_mcp.eggs import register_egg_tools
 
         captured_tools = {}
 
@@ -181,7 +176,6 @@ class TestEggTools:
     @pytest.mark.asyncio
     async def test_get_regional_egg_pokemon(self, ensure_test_data, mcp_server):
         """Test get_regional_egg_pokemon tool."""
-        from pogo_mcp.eggs import register_egg_tools
 
         captured_tools = {}
 
@@ -205,7 +199,6 @@ class TestEggTools:
     @pytest.mark.asyncio
     async def test_get_gift_exchange_pokemon(self, ensure_test_data, mcp_server):
         """Test get_gift_exchange_pokemon tool."""
-        from pogo_mcp.eggs import register_egg_tools
 
         captured_tools = {}
 
@@ -229,7 +222,6 @@ class TestEggTools:
     @pytest.mark.asyncio
     async def test_get_route_gift_pokemon(self, ensure_test_data, mcp_server):
         """Test get_route_gift_pokemon tool."""
-        from pogo_mcp.eggs import register_egg_tools
 
         captured_tools = {}
 
@@ -253,7 +245,6 @@ class TestEggTools:
     @pytest.mark.asyncio
     async def test_get_adventure_sync_rewards(self, ensure_test_data, mcp_server):
         """Test get_adventure_sync_rewards tool."""
-        from pogo_mcp.eggs import register_egg_tools
 
         captured_tools = {}
 
@@ -277,7 +268,6 @@ class TestEggTools:
     @pytest.mark.asyncio
     async def test_get_egg_recommendations_shiny(self, ensure_test_data, mcp_server):
         """Test get_egg_recommendations with shiny priority."""
-        from pogo_mcp.eggs import register_egg_tools
 
         captured_tools = {}
 
@@ -301,7 +291,6 @@ class TestEggTools:
     @pytest.mark.asyncio
     async def test_get_egg_recommendations_rare(self, ensure_test_data, mcp_server):
         """Test get_egg_recommendations with rare priority."""
-        from pogo_mcp.eggs import register_egg_tools
 
         captured_tools = {}
 
@@ -325,7 +314,6 @@ class TestEggTools:
     @pytest.mark.asyncio
     async def test_get_egg_recommendations_quick(self, ensure_test_data, mcp_server):
         """Test get_egg_recommendations with quick priority."""
-        from pogo_mcp.eggs import register_egg_tools
 
         captured_tools = {}
 
@@ -349,7 +337,6 @@ class TestEggTools:
     @pytest.mark.asyncio
     async def test_get_egg_recommendations_default(self, ensure_test_data, mcp_server):
         """Test get_egg_recommendations with default priority."""
-        from pogo_mcp.eggs import register_egg_tools
 
         captured_tools = {}
 

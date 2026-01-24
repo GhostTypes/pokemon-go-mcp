@@ -1,28 +1,27 @@
-import os
+import asyncio
 import sys
+from pathlib import Path
 
 import requests
-
-# Add the project root to the path so we can import the scraper
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-
 from bs4 import BeautifulSoup
 
-from pogo_scraper.events import infer_event_type
+# Add the project root to the path so we can import the scraper
+sys.path.insert(0, str(Path(__file__).parent))
+
+from pogo_scraper.events import infer_event_type, parse_timed_research_code_details
 
 
 def download_timed_research_event_data():
     """Download timed research event data if it doesn't exist"""
-    fixtures_dir = os.path.join(os.path.dirname(__file__), "fixtures")
-    html_file = os.path.join(fixtures_dir, "timed_research_event.html")
+    fixtures_dir = Path(__file__).parent / "fixtures"
+    html_file = fixtures_dir / "timed_research_event.html"
 
-    if not os.path.exists(html_file):
+    if not html_file.exists():
         response = requests.get(
             "https://leekduck.com/events/max-finale-promo-code/", timeout=30
         )
-        os.makedirs(fixtures_dir, exist_ok=True)
-        with open(html_file, "w", encoding="utf-8") as f:
-            f.write(response.text)
+        fixtures_dir.mkdir(parents=True, exist_ok=True)
+        html_file.write_text(response.text, encoding="utf-8")
     return html_file
 
 
@@ -47,14 +46,14 @@ def test_timed_research_code_extraction():
     html_file = download_timed_research_event_data()
 
     # Read the timed research event HTML file
-    with open(html_file, encoding="utf-8") as f:
-        html_content = f.read()
+    html_content = html_file.read_text(encoding="utf-8")
 
     # Parse with BeautifulSoup
     soup = BeautifulSoup(html_content, "lxml")
 
     # Look for the specific timed research code element
-    # Looking for: <h2 id="timed-research-code-gofestmax">Timed Research Code: GOFESTMAX</h2>
+    # Looking for: <h2 id="timed-research-code-gofestmax">Timed Research Code:
+    # GOFESTMAX</h2>
     code_header = soup.find("h2", id="timed-research-code-gofestmax")
 
     # Should find the timed research code header
@@ -78,8 +77,7 @@ def test_timed_research_expiration_extraction():
     html_file = download_timed_research_event_data()
 
     # Read the timed research event HTML file
-    with open(html_file, encoding="utf-8") as f:
-        html_content = f.read()
+    html_content = html_file.read_text(encoding="utf-8")
 
     # Parse with BeautifulSoup
     soup = BeautifulSoup(html_content, "lxml")
@@ -103,26 +101,24 @@ def test_timed_research_expiration_extraction():
     assert research_expires is not None, "Research expiration date not found"
 
     # Check that they contain the expected dates
-    assert "August 3, 2025" in code_expires, (
-        f"Code expiration should contain 'August 3, 2025', got '{code_expires}'"
+    code_date = "August 3, 2025"
+    assert code_date in code_expires, (
+        f"Code expiration should contain '{code_date}', got '{code_expires}'"
     )
-    assert "Sunday, August 24, 2025" in research_expires, (
-        f"Research expiration should contain 'Sunday, August 24, 2025', got '{research_expires}'"
+    research_date = "Sunday, August 24, 2025"
+    assert research_date in research_expires, (
+        f"Research expiration should contain '{research_date}', "
+        f"got '{research_expires}'"
     )
 
 
 def test_timed_research_details_parsing():
     """Test that timed research details are correctly parsed"""
-    # Import the function we want to test
-    sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
-    from pogo_scraper.events import parse_timed_research_code_details
-
     # Download data if needed
     html_file = download_timed_research_event_data()
 
     # Read the timed research event HTML file
-    with open(html_file, encoding="utf-8") as f:
-        html_content = f.read()
+    html_content = html_file.read_text(encoding="utf-8")
 
     # Create a mock event dictionary
     event = {"extraData": {}}
@@ -131,8 +127,6 @@ def test_timed_research_details_parsing():
     soup = BeautifulSoup(html_content, "lxml")
 
     # Call the function (it's async, so we need to handle that)
-    import asyncio
-
     asyncio.run(parse_timed_research_code_details(soup, event))
 
     # Check that the timed research data was added to extraData
@@ -155,9 +149,13 @@ def test_timed_research_details_parsing():
     assert timed_research_data["code"] == "GOFESTMAX", (
         f"Expected code 'GOFESTMAX', got '{timed_research_data['code']}'"
     )
-    assert "August 3, 2025" in timed_research_data["code_expires"], (
-        f"Code expires should contain 'August 3, 2025', got '{timed_research_data['code_expires']}'"
+    code_expiration = "August 3, 2025"
+    assert code_expiration in timed_research_data["code_expires"], (
+        f"Code expires should contain '{code_expiration}', "
+        f"got '{timed_research_data['code_expires']}'"
     )
-    assert "Sunday, August 24, 2025" in timed_research_data["research_expires"], (
-        f"Research expires should contain 'Sunday, August 24, 2025', got '{timed_research_data['research_expires']}'"
+    research_expiration = "Sunday, August 24, 2025"
+    assert research_expiration in timed_research_data["research_expires"], (
+        f"Research expires should contain '{research_expiration}', "
+        f"got '{timed_research_data['research_expires']}'"
     )

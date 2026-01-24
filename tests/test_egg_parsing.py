@@ -1,26 +1,24 @@
-import os
 import sys
+from pathlib import Path
 
 import requests
+from bs4 import BeautifulSoup
 
 # Add the project root to the path so we can import the scraper
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-
-from bs4 import BeautifulSoup
+sys.path.insert(0, str(Path(__file__).parent))
 
 from pogo_scraper.eggs import parse_egg_item
 
 
 def download_eggs_data():
     """Download current eggs data if it doesn't exist"""
-    fixtures_dir = os.path.join(os.path.dirname(__file__), "fixtures")
-    html_file = os.path.join(fixtures_dir, "current_eggs.html")
+    fixtures_dir = Path(__file__).parent / "fixtures"
+    html_file = fixtures_dir / "current_eggs.html"
 
-    if not os.path.exists(html_file):
+    if not html_file.exists():
         response = requests.get("https://leekduck.com/eggs/", timeout=30)
-        os.makedirs(fixtures_dir, exist_ok=True)
-        with open(html_file, "w", encoding="utf-8") as f:
-            f.write(response.text)
+        fixtures_dir.mkdir(parents=True, exist_ok=True)
+        html_file.write_text(response.text, encoding="utf-8")
     return html_file
 
 
@@ -30,8 +28,7 @@ def test_egg_parsing():
     html_file = download_eggs_data()
 
     # Read the current eggs HTML file
-    with open(html_file, encoding="utf-8") as f:
-        html_content = f.read()
+    html_content = html_file.read_text(encoding="utf-8")
 
     # Parse with BeautifulSoup
     soup = BeautifulSoup(html_content, "lxml")
@@ -51,7 +48,9 @@ def test_egg_parsing():
 
     # Test the first card
     first_card = first_cards[0]
-    result = parse_egg_item(first_card, "2 km", False, False)
+    result = parse_egg_item(
+        first_card, "2 km", is_adventure_sync=False, is_gift_exchange=False
+    )
 
     # Should successfully parse the card
     assert result is not None, "Failed to parse first card"
@@ -83,8 +82,7 @@ def test_egg_cp_values():
     html_file = download_eggs_data()
 
     # Read the current eggs HTML file
-    with open(html_file, encoding="utf-8") as f:
-        html_content = f.read()
+    html_content = html_file.read_text(encoding="utf-8")
 
     # Parse with BeautifulSoup
     soup = BeautifulSoup(html_content, "lxml")
@@ -98,7 +96,9 @@ def test_egg_cp_values():
     # Test first 5 cards
     valid_cp_count = 0
     for _i, card in enumerate(first_cards[:5]):
-        result = parse_egg_item(card, "2 km", False, False)
+        result = parse_egg_item(
+            card, "2 km", is_adventure_sync=False, is_gift_exchange=False
+        )
         if result and result["combatPower"] > 0:
             valid_cp_count += 1
 
@@ -112,8 +112,7 @@ def test_egg_rarity_parsing():
     html_file = download_eggs_data()
 
     # Read the current eggs HTML file
-    with open(html_file, encoding="utf-8") as f:
-        html_content = f.read()
+    html_content = html_file.read_text(encoding="utf-8")
 
     # Parse with BeautifulSoup
     soup = BeautifulSoup(html_content, "lxml")
@@ -127,7 +126,9 @@ def test_egg_rarity_parsing():
     # Test first 5 cards for rarity parsing
     rarity_parsed = False
     for _i, card in enumerate(first_cards[:5]):
-        result = parse_egg_item(card, "2 km", False, False)
+        result = parse_egg_item(
+            card, "2 km", is_adventure_sync=False, is_gift_exchange=False
+        )
         if result and "rarity" in result:
             # Rarity should be at least 1
             assert result["rarity"] >= 1, (
@@ -142,13 +143,15 @@ def test_egg_rarity_parsing():
 def test_route_gift_egg_parsing():
     """Test that route gift eggs are correctly identified"""
     # Create a mock HTML element that represents a route gift egg
-    from bs4 import BeautifulSoup
 
     # Mock HTML for a route gift egg card
     mock_html = """
     <li class="pokemon-card pokemon-card-7km">
         <div class="icon">
-            <img src="https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm1.icon.png" alt="Bulbasaur"/>
+            <img
+                src="https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm1.icon.png"
+                alt="Bulbasaur"
+            />
             <svg class="shiny-icon"><use href="#shiny-icon"/></svg>
         </div>
         <span class="name">Bulbasaur</span>
@@ -166,11 +169,20 @@ def test_route_gift_egg_parsing():
     card = soup.select_one(".pokemon-card")
 
     # Test parsing with route gift flag
-    result = parse_egg_item(card, "7 km", False, False, True)
+    result = parse_egg_item(
+        card,
+        "7 km",
+        is_adventure_sync=False,
+        is_gift_exchange=False,
+        is_route_gift=True,
+    )
 
     assert result is not None, "Failed to parse route gift egg card"
     assert result["isRouteGift"], "Route gift flag not set correctly"
-    assert result["rarity"] == 2, f"Expected rarity 2, got {result['rarity']}"
+    expected_rarity = 2
+    assert (
+        result["rarity"] == expected_rarity
+    ), f"Expected rarity {expected_rarity}, got {result['rarity']}"
     assert result["name"] == "Bulbasaur", (
         f"Expected name 'Bulbasaur', got {result['name']}"
     )

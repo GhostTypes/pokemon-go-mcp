@@ -2,6 +2,8 @@
 
 import pytest
 
+from pogo_mcp.research import register_research_tools
+
 
 class TestResearchTools:
     """Integration tests for all research-related tools."""
@@ -9,7 +11,6 @@ class TestResearchTools:
     @pytest.mark.asyncio
     async def test_get_current_research(self, ensure_test_data, mcp_server):
         """Test get_current_research tool."""
-        from pogo_mcp.research import register_research_tools
 
         captured_tools = {}
 
@@ -36,7 +37,6 @@ class TestResearchTools:
         self, ensure_test_data, sample_pokemon_name, mcp_server
     ):
         """Test search_research_by_reward tool."""
-        from pogo_mcp.research import register_research_tools
 
         captured_tools = {}
 
@@ -62,7 +62,6 @@ class TestResearchTools:
         self, ensure_test_data, mcp_server
     ):
         """Test search_research_by_reward with Pokemon not in research."""
-        from pogo_mcp.research import register_research_tools
 
         captured_tools = {}
 
@@ -86,7 +85,6 @@ class TestResearchTools:
     @pytest.mark.asyncio
     async def test_get_research_by_task_type(self, ensure_test_data, mcp_server):
         """Test get_research_by_task_type tool."""
-        from pogo_mcp.research import register_research_tools
 
         captured_tools = {}
 
@@ -110,7 +108,6 @@ class TestResearchTools:
     @pytest.mark.asyncio
     async def test_get_shiny_research_rewards(self, ensure_test_data, mcp_server):
         """Test get_shiny_research_rewards tool."""
-        from pogo_mcp.research import register_research_tools
 
         captured_tools = {}
 
@@ -135,7 +132,6 @@ class TestResearchTools:
     @pytest.mark.asyncio
     async def test_get_easy_research_tasks(self, ensure_test_data, mcp_server):
         """Test get_easy_research_tasks tool."""
-        from pogo_mcp.research import register_research_tools
 
         captured_tools = {}
 
@@ -159,7 +155,6 @@ class TestResearchTools:
     @pytest.mark.asyncio
     async def test_search_research_tasks(self, ensure_test_data, mcp_server):
         """Test search_research_tasks tool."""
-        from pogo_mcp.research import register_research_tools
 
         captured_tools = {}
 
@@ -183,7 +178,6 @@ class TestResearchTools:
     @pytest.mark.asyncio
     async def test_search_research_tasks_no_results(self, ensure_test_data, mcp_server):
         """Test search_research_tasks with query that returns no results."""
-        from pogo_mcp.research import register_research_tools
 
         captured_tools = {}
 
@@ -209,7 +203,6 @@ class TestResearchTools:
         self, ensure_test_data, mcp_server
     ):
         """Test get_research_recommendations with balanced priority."""
-        from pogo_mcp.research import register_research_tools
 
         captured_tools = {}
 
@@ -235,7 +228,6 @@ class TestResearchTools:
         self, ensure_test_data, mcp_server
     ):
         """Test get_research_recommendations with shiny priority."""
-        from pogo_mcp.research import register_research_tools
 
         captured_tools = {}
 
@@ -261,7 +253,6 @@ class TestResearchTools:
         self, ensure_test_data, mcp_server
     ):
         """Test get_research_recommendations with easy priority."""
-        from pogo_mcp.research import register_research_tools
 
         captured_tools = {}
 
@@ -287,7 +278,6 @@ class TestResearchTools:
         self, ensure_test_data, mcp_server
     ):
         """Test get_research_recommendations with rare priority."""
-        from pogo_mcp.research import register_research_tools
 
         captured_tools = {}
 
