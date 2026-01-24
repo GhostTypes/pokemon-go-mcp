@@ -1,4 +1,4 @@
-from typing import List, Dict, Optional, Union
+from typing import List, Dict, Optional, Union, Any
 from dataclasses import dataclass
 from datetime import datetime
 
@@ -23,7 +23,7 @@ class PokemonInfo:
     name: str
     image: str
     can_be_shiny: bool = False
-    combat_power: Optional[Dict] = None
+    combat_power: Optional[Dict[str, Any]] = None
 
 
 @dataclass
@@ -36,12 +36,12 @@ class BonusInfo:
 @dataclass
 class EventExtraData:
     """Additional event-specific data"""
-    generic: Optional[Dict] = None
-    communityday: Optional[Dict] = None
-    raidbattles: Optional[Dict] = None
-    raidday: Optional[Dict] = None
-    spotlight: Optional[Dict] = None
-    breakthrough: Optional[Dict] = None
+    generic: Optional[Dict[str, Any]] = None
+    communityday: Optional[Dict[str, Any]] = None
+    raidbattles: Optional[Dict[str, Any]] = None
+    raidday: Optional[Dict[str, Any]] = None
+    spotlight: Optional[Dict[str, Any]] = None
+    breakthrough: Optional[Dict[str, Any]] = None
 
 
 @dataclass
@@ -65,10 +65,10 @@ class RaidInfo:
     tier: str
     can_be_shiny: bool
     types: List[TypeInfo]
-    combat_power: Dict
+    combat_power: Dict[str, Any]
     boosted_weather: List[WeatherInfo]
     image: str
-    extra_data: Optional[Dict] = None
+    extra_data: Optional[Dict[str, Any]] = None
 
 
 @dataclass
