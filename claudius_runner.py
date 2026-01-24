@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Claudius Runner - Ralph Wiggum Loop for Claude Code
+Claudius Runner - Ralph Wiggum Loop for Autonomous Coding
 
-Runs Claude Code in an autonomous loop until all tasks are complete or max iterations reached.
+Runs claude-glm in an autonomous loop until all tasks are complete or max iterations reached.
 Each iteration has no memory - progress is tracked via PRD.md and progress.txt files.
 
 Usage:
@@ -10,7 +10,7 @@ Usage:
 
 Requirements:
     - PRD.md and progress.txt must exist in the current directory
-    - Claude Code must be installed and authenticated
+    - claude-glm must be installed and authenticated
 """
 
 import argparse
@@ -65,9 +65,9 @@ RULES:
 
 
 def build_claude_command(agents_json=None):
-    """Build the Claude CLI command with optional agents."""
+    """Build the claude-glm CLI command with optional agents."""
     cmd = [
-        "claude",
+        "claude-glm",
         "-p",
         SYSTEM_PROMPT,
         "--dangerously-skip-permissions",
@@ -126,7 +126,7 @@ def run_claudius_loop(max_loops, agents_json=None):
                 creationflags=creation_flags,
             )
         except FileNotFoundError:
-            print("[Error] Claude Code not found. Install it with:")
+            print("[Error] claude-glm not found. Install it with:")
             print("  npm i -g @anthropic-ai/claude-code")
             print("Or:")
             print("  curl -fsSL https://claude.ai/install.sh | bash")
@@ -216,7 +216,7 @@ def kill_process(process):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Run Claude Code in a Claudius (Ralph Wiggum) loop.",
+        description="Run claude-glm in a Claudius (Ralph Wiggum) loop.",
         epilog="Example: python claudius_runner.py 20",
     )
     parser.add_argument(
