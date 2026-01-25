@@ -36,14 +36,15 @@ async def scrape_raids(
             return json.load(f)  # type: ignore[return-value]
 
     try:
-        raids_url = f"{base_url}/boss/"
+        # Use raid-bosses URL (boss/ now redirects to raid-bosses/)
+        raids_url = f"{base_url}/raid-bosses/"
         response = await scraper.session.get(raids_url)
         response.raise_for_status()
 
         soup = BeautifulSoup(response.text, "lxml")
         bosses: list[dict[str, Any]] = []
 
-        # Find raid bosses container
+        # Find raid bosses container (look for both regular and shadow raids)
         raid_bosses = soup.find(class_="raid-bosses")
         if not raid_bosses:
             msg = "Could not find raid-bosses container"

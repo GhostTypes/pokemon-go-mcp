@@ -128,15 +128,34 @@ def parse_egg_item(
         if not name:
             return None
 
+        # Validate: Check for actual HTML parsing errors where multiple span.name elements
+        # exist in a single card (this would indicate malformed HTML structure)
+        all_name_elems = item.select("span.name")
+        if len(all_name_elems) > 1:
+            # This card has multiple name elements - likely malformed HTML
+            # Log all names for debugging and skip this card
+            all_names = [elem.get_text(strip=True) for elem in all_name_elems]
+            logger.warning(
+                "Skipping Pokemon card with multiple name elements (malformed HTML): %s",
+                " | ".join(all_names),
+            )
+            return None
+
         img_elem = item.select_one("img")
         shiny_elem = item.select_one(".shiny-icon")
         regional_elem = item.select_one(".regional-icon")
+
+        # Validate: Check for placeholder/default image which indicates parsing failure
+        image_url = img_elem.get("src", "") if img_elem else ""
+        if "pokemon_icon_000.png" in image_url or not image_url:
+            logger.warning("Skipping Pokemon with invalid/missing image: %s", name)
+            return None
 
         pokemon: dict[str, Any] = {
             "name": name,
             "eggType": egg_type,
             "isAdventureSync": is_adventure_sync,
-            "image": img_elem.get("src", "") if img_elem else "",
+            "image": image_url,
             "canBeShiny": bool(shiny_elem),
             "combatPower": -1,
             "isRegional": bool(regional_elem),

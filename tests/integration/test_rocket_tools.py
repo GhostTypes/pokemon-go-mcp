@@ -286,3 +286,129 @@ class TestRocketTools:
 
         assert isinstance(result, str)
         assert "not found" in result.lower() or "No" in result
+
+    @pytest.mark.asyncio
+    async def test_calculate_pokemon_weakness_any_pokemon(self, mcp_server):
+        """Test calculate_pokemon_weakness with Pokemon NOT in Team Rocket lineups.
+
+        This tests the new PokeAPI fallback functionality that allows
+        weakness calculations for ANY Pokemon, not just those in lineups.
+        """
+
+        captured_tools = {}
+
+        class MockMCP:
+            def tool(self):
+                def decorator(func):
+                    captured_tools[func.__name__] = func
+                    return func
+
+                return decorator
+
+        mock_mcp = MockMCP()
+        register_rocket_tools(mock_mcp)
+
+        calculate_pokemon_weakness = captured_tools["calculate_pokemon_weakness"]
+
+        # Test with a legendary Pokemon that's unlikely to be in Team Rocket lineups
+        # "Mewtwo" is a good test case - well-known, rarely in lineups
+        result = await calculate_pokemon_weakness(
+            pokemon_name="Mewtwo", attacking_type="ghost"
+        )
+
+        assert isinstance(result, str)
+        assert len(result) > 0
+        assert "Mewtwo" in result or "mewtwo" in result.lower()
+        # Should indicate data source (either Team Rocket or PokeAPI)
+        assert "Data Source" in result or "Effectiveness" in result
+        # Ghost should be super effective against Psychic type Mewtwo
+        assert "2x" in result or "4x" in result or "Super Effective" in result
+
+    @pytest.mark.asyncio
+    async def test_calculate_pokemon_weakness_pikachu(self, mcp_server):
+        """Test calculate_pokemon_weakness with Pikachu (Electric type).
+
+        Pikachu is a common Pokemon that tests the type calculation.
+        Ground should be super effective.
+        """
+
+        captured_tools = {}
+
+        class MockMCP:
+            def tool(self):
+                def decorator(func):
+                    captured_tools[func.__name__] = func
+                    return func
+
+                return decorator
+
+        mock_mcp = MockMCP()
+        register_rocket_tools(mock_mcp)
+
+        calculate_pokemon_weakness = captured_tools["calculate_pokemon_weakness"]
+
+        result = await calculate_pokemon_weakness(
+            pokemon_name="Pikachu", attacking_type="ground"
+        )
+
+        assert isinstance(result, str)
+        assert len(result) > 0
+        assert "Pikachu" in result or "pikachu" in result.lower()
+        # Ground is super effective against Electric
+        assert ("2x" in result or "Super Effective" in result or "effectiveness" in result.lower())
+
+    @pytest.mark.asyncio
+    async def test_calculate_pokemon_weakness_invalid_type(self, mcp_server):
+        """Test calculate_pokemon_weakness with invalid attacking type."""
+
+        captured_tools = {}
+
+        class MockMCP:
+            def tool(self):
+                def decorator(func):
+                    captured_tools[func.__name__] = func
+                    return func
+
+                return decorator
+
+        mock_mcp = MockMCP()
+        register_rocket_tools(mock_mcp)
+
+        calculate_pokemon_weakness = captured_tools["calculate_pokemon_weakness"]
+
+        result = await calculate_pokemon_weakness(
+            pokemon_name="Mewtwo", attacking_type="invalid_type"
+        )
+
+        assert isinstance(result, str)
+        assert len(result) > 0
+        assert "Invalid" in result or "invalid" in result.lower() or "Valid types" in result
+
+    @pytest.mark.asyncio
+    async def test_calculate_pokemon_weakness_invalid_pokemon(self, mcp_server):
+        """Test calculate_pokemon_weakness with invalid Pokemon name."""
+
+        captured_tools = {}
+
+        class MockMCP:
+            def tool(self):
+                def decorator(func):
+                    captured_tools[func.__name__] = func
+                    return func
+
+                return decorator
+
+        mock_mcp = MockMCP()
+        register_rocket_tools(mock_mcp)
+
+        calculate_pokemon_weakness = captured_tools["calculate_pokemon_weakness"]
+
+        result = await calculate_pokemon_weakness(
+            pokemon_name="NotARealPokemon999", attacking_type="fire"
+        )
+
+        assert isinstance(result, str)
+        assert len(result) > 0
+        # Should indicate Pokemon not found
+        assert "not found" in result.lower() or "could not find" in result.lower() or "check the spelling" in result.lower()
+

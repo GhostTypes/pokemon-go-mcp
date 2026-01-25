@@ -14,7 +14,6 @@ Usage:
 
 import argparse
 import json
-import os
 import sys
 from pathlib import Path
 from typing import Any
@@ -26,7 +25,7 @@ def load_settings(filepath: Path) -> dict[str, Any]:
         return {}
 
     try:
-        with open(filepath, "r", encoding="utf-8") as f:
+        with open(filepath, encoding="utf-8") as f:
             content = f.read().strip()
             if not content:
                 return {}
@@ -49,7 +48,7 @@ def save_settings(filepath: Path, settings: dict[str, Any]) -> None:
     if filepath.exists():
         backup_path = filepath.with_suffix(".json.backup")
         try:
-            with open(filepath, "r") as src, open(backup_path, "w") as dst:
+            with open(filepath) as src, open(backup_path, "w") as dst:
                 dst.write(src.read())
             print(f"Created backup at {backup_path}", file=sys.stderr)
         except Exception as e:

@@ -1,19 +1,20 @@
 """Unit tests for pogo_mcp utility functions."""
 
-import pytest
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta, timezone
 
+import pytest
+
+from pogo_mcp.types import EggInfo, EventInfo, PokemonInfo, RaidInfo, TypeInfo
 from pogo_mcp.utils import (
-    parse_datetime,
-    is_event_active,
-    is_event_upcoming,
-    search_pokemon_by_name,
-    filter_shiny_pokemon,
+    filter_eggs_by_distance,
     filter_raids_by_tier,
     filter_raids_by_type,
-    filter_eggs_by_distance,
+    filter_shiny_pokemon,
+    is_event_active,
+    is_event_upcoming,
+    parse_datetime,
+    search_pokemon_by_name,
 )
-from pogo_mcp.types import EventInfo, PokemonInfo, RaidInfo, EggInfo, TypeInfo
 
 
 class TestDatetimeParsing:

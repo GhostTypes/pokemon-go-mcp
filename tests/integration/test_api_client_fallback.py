@@ -1,9 +1,9 @@
 """Integration tests for API client fallback logic."""
 
-import pytest
 from datetime import datetime, timezone
 
-from pogo_mcp.api_client import LeekDuckAPIClient
+import pytest
+
 from pogo_mcp.types import EventInfo
 
 

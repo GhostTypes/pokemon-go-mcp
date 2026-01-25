@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING
 from fastmcp import FastMCP
 
 from .api_client import api_client
+from .pokemon_types import fetch_pokemon_types
 from .utils import (
     calculate_type_effectiveness,
     filter_trainers_by_type,
@@ -333,10 +334,13 @@ def register_rocket_tools(mcp: FastMCP) -> None:
 
     @mcp.tool()
     async def calculate_pokemon_weakness(pokemon_name: str, attacking_type: str) -> str:
-        """Calculate type effectiveness when attacking a specific Shadow Pokemon.
+        """Calculate type effectiveness when attacking a specific Pokemon.
+
+        This tool works for ANY Pokemon, not just those in Team Rocket lineups.
+        It uses PokeAPI to look up Pokemon types for any valid Pokemon name.
 
         Args:
-            pokemon_name: Name of the Shadow Pokemon to attack
+            pokemon_name: Name of the Pokemon to analyze (e.g., "Mewtwo", "Charizard")
             attacking_type: Type of attack to use (e.g., "fire", "water", "fighting")
 
         Returns the damage multiplier and effectiveness description.
@@ -345,10 +349,41 @@ def register_rocket_tools(mcp: FastMCP) -> None:
             if not validate_pokemon_name(pokemon_name):
                 return f"Invalid Pokemon name: '{pokemon_name}'"
 
-            trainers = await api_client.get_rocket_lineups()
+            # Normalize attacking type
+            attacking_type_normalized = attacking_type.lower().strip()
 
-            # Find the Pokemon in Team Rocket lineups
+            # Validate attacking type
+            valid_types = {
+                "normal",
+                "fire",
+                "water",
+                "grass",
+                "electric",
+                "ice",
+                "fighting",
+                "poison",
+                "ground",
+                "flying",
+                "psychic",
+                "bug",
+                "rock",
+                "ghost",
+                "dragon",
+                "dark",
+                "steel",
+                "fairy",
+            }
+
+            if attacking_type_normalized not in valid_types:
+                return (
+                    f"Invalid attacking type: '{attacking_type}'. "
+                    f"Valid types are: {', '.join(sorted(valid_types))}"
+                )
+
+            # First, try to find Pokemon in Team Rocket lineups (fast path)
+            trainers = await api_client.get_rocket_lineups()
             target_pokemon = None
+
             for trainer in trainers:
                 for slot in trainer.lineups:
                     for pokemon in slot.pokemon:
@@ -360,37 +395,65 @@ def register_rocket_tools(mcp: FastMCP) -> None:
                 if target_pokemon:
                     break
 
-            if not target_pokemon:
-                return (
-                    f"{pokemon_name.title()} not found in current Team Rocket lineups."
+            pokemon_data = None
+            data_source = ""
+
+            # If found in lineups, use that data
+            if target_pokemon:
+                pokemon_data = {
+                    "name": target_pokemon.name,
+                    "types": target_pokemon.types,
+                    "weaknesses": target_pokemon.weaknesses,
+                }
+                data_source = "Team Rocket lineups"
+
+            # Otherwise, fetch from PokeAPI
+            else:
+                logger.info(
+                    "Pokemon '%s' not in Team Rocket lineups, fetching from PokeAPI",
+                    pokemon_name,
                 )
+                api_data = await fetch_pokemon_types(pokemon_name)
 
-            if not target_pokemon.types:
-                return f"No type information available for {target_pokemon.name}."
+                if not api_data:
+                    return (
+                        f"Could not find Pokemon '{pokemon_name}'. "
+                        f"Please check the spelling and try again.\n\n"
+                        f"Note: Pokemon names must be exact. For example, use 'Mewtwo' "
+                        f"not 'Mew Two', or 'Porygon-Z' with a hyphen."
+                    )
 
+                pokemon_data = api_data
+                data_source = "PokeAPI"
+
+            if not pokemon_data.get("types"):
+                return f"No type information available for {pokemon_data.get('name', pokemon_name)}."
+
+            pokemon_types = pokemon_data["types"]
             effectiveness = calculate_type_effectiveness(
-                attacking_type, target_pokemon.types
+                attacking_type_normalized, pokemon_types
             )
 
             result = (
                 f"# Type Effectiveness: {attacking_type.title()} vs "
-                f"{target_pokemon.name}\n\n"
+                f"{pokemon_data['name'].title()}\n\n"
             )
-            result += f"**Target Pokemon:** {target_pokemon.name}\n"
-            types_str = " / ".join(target_pokemon.types).title()
+            result += f"**Target Pokemon:** {pokemon_data['name'].title()}\n"
+            types_str = " / ".join(pokemon_types).title()
             result += f"**Target Types:** {types_str}\n"
-            result += f"**Attacking Type:** {attacking_type.title()}\n\n"
+            result += f"**Attacking Type:** {attacking_type.title()}\n"
+            result += f"**Data Source:** {data_source}\n\n"
 
             # Effectiveness description
             if effectiveness == EFFECTIVENESS_NO_EFFECT:
                 result += "**Result:** No Effect (0x damage) 🚫\n"
                 result += (
                     f"{attacking_type.title()} attacks have no effect on "
-                    f"{' / '.join(target_pokemon.types).title()} types."
+                    f"{types_str} types."
                 )
             elif effectiveness == EFFECTIVENESS_QUARTER:
                 result += "**Result:** Not Very Effective (0.25x damage) 🔴\n"
-                result += "This is a very poor matchup."
+                result += "This is a very poor matchup (doubly resisted)."
             elif effectiveness == EFFECTIVENESS_HALF:
                 result += "**Result:** Not Very Effective (0.5x damage) 🟠\n"
                 result += "This attack is resisted."
@@ -407,9 +470,10 @@ def register_rocket_tools(mcp: FastMCP) -> None:
                 result += f"**Result:** {effectiveness}x damage\n"
 
             # Show weaknesses from data
-            if target_pokemon.weaknesses:
-                double_weak = target_pokemon.weaknesses.get("double", [])
-                single_weak = target_pokemon.weaknesses.get("single", [])
+            weaknesses = pokemon_data.get("weaknesses", {})
+            if weaknesses:
+                double_weak = weaknesses.get("double", [])
+                single_weak = weaknesses.get("single", [])
 
                 if double_weak or single_weak:
                     result += "\n**Known Weaknesses:**\n"

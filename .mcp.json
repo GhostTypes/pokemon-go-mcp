@@ -1,0 +1,28 @@
+{
+  "mcpServers": {
+    "pokemon-go": {
+      "command": "uv",
+      "args": [
+        "run",
+        "python",
+        "C:\\Users\\Cope\\Documents\\GitHub\\pokemon-go-mcp\\server.py"
+      ],
+      "env": {
+        "PYTHONPATH": "C:\\Users\\Cope\\Documents\\GitHub\\pokemon-go-mcp"
+      }
+    },
+    "cloudscraper": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "C:\\Users\\Cope\\Documents\\GitHub\\cloudscraper-mcp-server",
+        "python",
+        "C:\\Users\\Cope\\Documents\\GitHub\\cloudscraper-mcp-server\\server.py"
+      ],
+      "env": {
+        "PYTHONPATH": "C:\\Users\\Cope\\Documents\\GitHub\\cloudscraper-mcp-server"
+      }
+    }
+  }
+}

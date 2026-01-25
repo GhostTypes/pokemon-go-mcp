@@ -42,7 +42,7 @@ class TestExampleTool:
     TODO: Rename this class and customize tests for your actual tools.
     """
 
-    # noqa: TD002, TD003 - Template placeholder for users to customize
+
 
     async def test_basic_execution(self, client: Client):
         """Tool executes successfully with valid input."""
