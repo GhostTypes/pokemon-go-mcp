@@ -71,9 +71,12 @@ def parse_event_item(
         # Debug: Log when dates are missing
         if not dates.get("start") and not dates.get("end"):
             # Log the first few missing date events for debugging
-            import logging
+            import logging  # noqa: PLC0415
+
             logger_debug = logging.getLogger(__name__)
-            logger_debug.debug("No dates found for event ID: %s (href: %s)", event_id, href)
+            logger_debug.debug(
+                "No dates found for event ID: %s (href: %s)", event_id, href
+            )
 
         return {
             "eventID": event_id,

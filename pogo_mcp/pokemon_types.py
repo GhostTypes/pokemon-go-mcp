@@ -54,9 +54,7 @@ async def fetch_pokemon_types(pokemon_name: str) -> dict[str, Any] | None:
             data = response.json()
 
             # Extract type names
-            types = [
-                type_info["type"]["name"] for type_info in data.get("types", [])
-            ]
+            types = [type_info["type"]["name"] for type_info in data.get("types", [])]
 
             # Calculate weaknesses using type chart
             weaknesses = calculate_weaknesses_from_types(types)
@@ -78,8 +76,8 @@ async def fetch_pokemon_types(pokemon_name: str) -> dict[str, Any] | None:
             "Timeout fetching Pokemon data from PokeAPI for '%s'", pokemon_name
         )
         return None
-    except httpx.HTTPError as e:
-        logger.exception("HTTP error fetching Pokemon data: %s", e)
+    except httpx.HTTPError:
+        logger.exception("HTTP error fetching Pokemon data")
         return None
     except Exception:
         logger.exception("Error fetching Pokemon types for '%s'", pokemon_name)

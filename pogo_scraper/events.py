@@ -120,8 +120,11 @@ async def scrape_events(
         all_events.extend(events_to_fetch)
 
         # Log deduplication stats
-        logger.info("Scraped %d unique events (filtered %d duplicates)",
-                    len(all_events), len(seen_event_ids))
+        logger.info(
+            "Scraped %d unique events (filtered %d duplicates)",
+            len(all_events),
+            len(seen_event_ids),
+        )
 
         scraper._save_data(all_events, "events.json")  # noqa: SLF001
 

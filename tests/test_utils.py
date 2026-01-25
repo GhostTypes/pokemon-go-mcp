@@ -16,6 +16,11 @@ from pogo_mcp.utils import (
     search_pokemon_by_name,
 )
 
+# Test date used across multiple test fixtures
+TEST_DATE_YEAR = 2026
+TEST_DATE_MONTH = 1
+TEST_DATE_DAY = 24
+
 
 class TestDatetimeParsing:
     """Test datetime parsing utility."""
@@ -25,9 +30,9 @@ class TestDatetimeParsing:
         result = parse_datetime("2026-01-24 12:00:00")
         assert result is not None
         assert isinstance(result, datetime)
-        assert result.year == 2026
-        assert result.month == 1
-        assert result.day == 24
+        assert result.year == TEST_DATE_YEAR
+        assert result.month == TEST_DATE_MONTH
+        assert result.day == TEST_DATE_DAY
 
     def test_parse_none_input(self):
         """Test parsing None input."""
@@ -51,7 +56,15 @@ class TestEventStatusChecks:
     @pytest.fixture
     def current_time(self):
         """Fixed current time for testing."""
-        return datetime(2026, 1, 24, 12, 0, 0, tzinfo=timezone.utc)
+        return datetime(
+            TEST_DATE_YEAR,
+            TEST_DATE_MONTH,
+            TEST_DATE_DAY,
+            12,
+            0,
+            0,
+            tzinfo=timezone.utc,
+        )
 
     @pytest.fixture
     def active_event(self, current_time):
@@ -183,7 +196,7 @@ class TestPokemonFilters:
     def test_search_pokemon_by_name_partial_match(self, sample_pokemon):
         """Test partial name match."""
         result = search_pokemon_by_name("chu", sample_pokemon)
-        assert len(result) == 2
+        assert len(result) == 2  # noqa: PLR2004 - Pikachu and Raichu match
         names = [p.name for p in result]
         assert "Pikachu" in names
         assert "Raichu" in names
@@ -202,7 +215,7 @@ class TestPokemonFilters:
     def test_filter_shiny_pokemon(self, sample_pokemon):
         """Test filtering for shiny-capable Pokemon."""
         result = filter_shiny_pokemon(sample_pokemon)
-        assert len(result) == 3
+        assert len(result) == 3  # noqa: PLR2004 - Pikachu, Charizard, and Raichu are shiny-capable
         names = [p.name for p in result]
         assert "Pikachu" in names
         assert "Charizard" in names

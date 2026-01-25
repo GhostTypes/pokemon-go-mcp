@@ -8,10 +8,14 @@ import json
 import sys
 from pathlib import Path
 
+import pytest
+
 # Add parent directory to path to import pogo_scraper
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from bs4 import BeautifulSoup
+
+from pogo_scraper.eggs import parse_egg_item
 
 
 def test_multi_word_pokemon_names_accepted():
@@ -37,25 +41,28 @@ def test_multi_word_pokemon_names_accepted():
         </li>
     </ul>
     """
-
-    from pogo_scraper.eggs import parse_egg_item
-
     soup = BeautifulSoup(html, "lxml")
     cards = soup.select("li.pokemon-card")
 
     results = []
     for card in cards:
-        result = parse_egg_item(card, "10 km", is_adventure_sync=False, is_gift_exchange=False, is_route_gift=False)
+        result = parse_egg_item(
+            card,
+            "10 km",
+            is_adventure_sync=False,
+            is_gift_exchange=False,
+            is_route_gift=False,
+        )
         if result:
             results.append(result["name"])
 
-    assert len(results) == 4, f"Expected 4 Pokemon, got {len(results)}"
-    assert "Basculin (White Striped)" in results, "Basculin (White Striped) should be accepted"
+    assert len(results) == 4, f"Expected 4 Pokemon, got {len(results)}"  # noqa: PLR2004 - 4 test Pokemon in HTML
+    assert "Basculin (White Striped)" in results, (
+        "Basculin (White Striped) should be accepted"
+    )
     assert "Indeedee (Male)" in results, "Indeedee (Male) should be accepted"
     assert "Hisuian Qwilfish" in results, "Hisuian Qwilfish should be accepted"
     assert "Galarian Meowth" in results, "Galarian Meowth should be accepted"
-
-    print("[PASS] All legitimate multi-word Pokemon names are correctly accepted")
 
 
 def test_malformed_html_with_multiple_names_detected():
@@ -74,25 +81,28 @@ def test_malformed_html_with_multiple_names_detected():
         </li>
     </ul>
     """
-
-    from pogo_scraper.eggs import parse_egg_item
-
     soup = BeautifulSoup(html, "lxml")
     cards = soup.select("li.pokemon-card")
 
     results = []
     for card in cards:
-        result = parse_egg_item(card, "5 km", is_adventure_sync=False, is_gift_exchange=False, is_route_gift=False)
+        result = parse_egg_item(
+            card,
+            "5 km",
+            is_adventure_sync=False,
+            is_gift_exchange=False,
+            is_route_gift=False,
+        )
         if result:
             results.append(result["name"])
 
     # Only Bulbasaur should be parsed; Sableye+Toxel card should be skipped
-    assert len(results) == 1, f"Expected 1 Pokemon (malformed card skipped), got {len(results)}"
+    assert len(results) == 1, (
+        f"Expected 1 Pokemon (malformed card skipped), got {len(results)}"
+    )
     assert results[0] == "Bulbasaur", "Only Bulbasaur should be parsed"
     assert "Sableye" not in results, "Malformed Sableye card should be skipped"
     assert "Toxel" not in results, "Malformed Toxel card should be skipped"
-
-    print("[PASS] Malformed HTML with multiple span.name elements is correctly detected and skipped")
 
 
 def test_scraped_data_quality():
@@ -100,26 +110,22 @@ def test_scraped_data_quality():
     eggs_file = Path("data/eggs.json")
 
     if not eggs_file.exists():
-        print("[SKIP] data/eggs.json not found, skipping data quality test")
-        return
+        pytest.skip("data/eggs.json not found")
 
     with eggs_file.open(encoding="utf-8") as f:
         data = json.load(f)
 
     # Check for known bad concatenated names
     names = [item["name"] for item in data]
-    bad_names = [name for name in names if " " in name and "(" not in name and "-" not in name and len(name.split()) > 2]
+    bad_names = [
+        name
+        for name in names
+        if " " in name and "(" not in name and "-" not in name and len(name.split()) > 2  # noqa: PLR2004 - More than 2 words suggests concatenation
+    ]
 
     assert len(bad_names) == 0, f"Found potentially concatenated names: {bad_names}"
 
     # Verify legitimate multi-word names are present
-    assert "Basculin (White Striped)" in names, "Basculin (White Striped) should be in data"
-
-    print(f"[PASS] Scraped data quality check passed ({len(data)} Pokemon, no concatenated names)")
-
-
-if __name__ == "__main__":
-    test_multi_word_pokemon_names_accepted()
-    test_malformed_html_with_multiple_names_detected()
-    test_scraped_data_quality()
-    print("\n[SUCCESS] All tests passed!")
+    assert "Basculin (White Striped)" in names, (
+        "Basculin (White Striped) should be in data"
+    )

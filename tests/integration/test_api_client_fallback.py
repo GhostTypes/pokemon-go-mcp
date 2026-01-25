@@ -86,7 +86,7 @@ class TestRaidFallbackLogic:
         )
 
         # Should extract 3 raids (2 from first event, 1 from second, 0 from third)
-        assert len(extracted) == 3
+        assert len(extracted) == 3  # noqa: PLR2004 - Expected number of raids extracted from events
 
         # Check first raid (Mega Rayquaza)
         assert extracted[0].name == "Mega Rayquaza"

@@ -828,6 +828,21 @@
       "generic": {
         "hasSpawns": false,
         "hasFieldResearchTasks": false
+      },
+      "raidbattles": {
+        "bosses": [
+          {
+            "name": "Tornadus (Incarnate)",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_641_11.png",
+            "canBeShiny": true
+          }
+        ],
+        "shinies": [
+          {
+            "name": "Tornadus (Incarnate)",
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pokemon_icon_641_11_shiny.png"
+          }
+        ]
       }
     }
   },
