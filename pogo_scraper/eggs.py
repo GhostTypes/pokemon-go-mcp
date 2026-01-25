@@ -128,15 +128,16 @@ def parse_egg_item(
         if not name:
             return None
 
-        # Validate: Check for actual HTML parsing errors where multiple span.name elements
-        # exist in a single card (this would indicate malformed HTML structure)
+        # Validate: Check for actual HTML parsing errors where multiple
+        # span.name elements exist in a single card (malformed HTML)
         all_name_elems = item.select("span.name")
         if len(all_name_elems) > 1:
             # This card has multiple name elements - likely malformed HTML
             # Log all names for debugging and skip this card
             all_names = [elem.get_text(strip=True) for elem in all_name_elems]
             logger.warning(
-                "Skipping Pokemon card with multiple name elements (malformed HTML): %s",
+                "Skipping Pokemon card with multiple name elements "
+                "(malformed HTML): %s",
                 " | ".join(all_names),
             )
             return None

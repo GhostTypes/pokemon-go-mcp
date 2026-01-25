@@ -26,22 +26,22 @@ uv run python server.py
 MCP_TRANSPORT=http MCP_PORT=8000 uv run python server.py
 
 # Code formatting
-ruff format .
+uv run ruff format .
 
 # Linting
-ruff check .
+uv run ruff check .
 
 # Type checking
-pyright
+uv run mypy pogo_mcp/
 
 # Run tests
-pytest
+uv run pytest
 
 # Run tests with coverage
-pytest --cov=pogo_mcp
+uv run pytest --cov=pogo_mcp
 
 # Run a specific test module
-pytest tests/test_events_parsing.py
+uv run pytest tests/test_events_parsing.py
 ```
 
 ### Scraper (`pogo_scraper/`)

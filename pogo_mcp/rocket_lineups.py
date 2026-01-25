@@ -427,18 +427,22 @@ def register_rocket_tools(mcp: FastMCP) -> None:
                 data_source = "PokeAPI"
 
             if not pokemon_data.get("types"):
-                return f"No type information available for {pokemon_data.get('name', pokemon_name)}."
+                return (
+                    f"No type information available for "
+                    f"{pokemon_data.get('name', pokemon_name)}."
+                )
 
-            pokemon_types = pokemon_data["types"]
+            pokemon_types = list(pokemon_data["types"])
+            pokemon_name_display = str(pokemon_data.get("name", pokemon_name))
             effectiveness = calculate_type_effectiveness(
                 attacking_type_normalized, pokemon_types
             )
 
             result = (
                 f"# Type Effectiveness: {attacking_type.title()} vs "
-                f"{pokemon_data['name'].title()}\n\n"
+                f"{pokemon_name_display.title()}\n\n"
             )
-            result += f"**Target Pokemon:** {pokemon_data['name'].title()}\n"
+            result += f"**Target Pokemon:** {pokemon_name_display.title()}\n"
             types_str = " / ".join(pokemon_types).title()
             result += f"**Target Types:** {types_str}\n"
             result += f"**Attacking Type:** {attacking_type.title()}\n"
@@ -470,7 +474,8 @@ def register_rocket_tools(mcp: FastMCP) -> None:
                 result += f"**Result:** {effectiveness}x damage\n"
 
             # Show weaknesses from data
-            weaknesses = pokemon_data.get("weaknesses", {})
+            weaknesses_raw = pokemon_data.get("weaknesses", {})
+            weaknesses = weaknesses_raw if isinstance(weaknesses_raw, dict) else {}
             if weaknesses:
                 double_weak = weaknesses.get("double", [])
                 single_weak = weaknesses.get("single", [])

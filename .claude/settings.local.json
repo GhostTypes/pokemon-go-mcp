@@ -91,7 +91,13 @@
       "Bash(uv run mypy:*)",
       "Bash(uv run pytest:*)",
       "Bash(pytest:*)",
-      "Bash(uv run python:*)"
+      "Bash(uv run python:*)",
+      "Bash(grep:*)",
+      "Bash(mypy:*)",
+      "Bash(uv run ruff:*)",
+      "Bash(del:*)",
+      "Bash(git mv:*)",
+      "mcp__pokemon-go__search_research_tasks"
     ],
     "deny": [],
     "ask": []

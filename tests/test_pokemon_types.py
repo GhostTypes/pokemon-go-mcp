@@ -28,7 +28,7 @@ class TestPokemonTypes:
 
     def test_calculate_weaknesses_from_types_dual_type(self):
         """Test weakness calculation for dual-type Pokemon."""
-        # Charizard: Fire/Flying
+        # Testing with Charizard's types (Fire and Flying)
         weaknesses = calculate_weaknesses_from_types(["fire", "flying"])
 
         # Both weak to rock (double weakness)
@@ -90,7 +90,7 @@ class TestPokemonTypes:
 
         assert data is not None
         assert "types" in data
-        assert len(data["types"]) == 2  # Fire/Flying
+        assert len(data["types"]) == 2  # noqa: PLR2004 - Charizard is dual-type: Fire/Flying
         types_lower = [t.lower() for t in data["types"]]
         assert "fire" in types_lower
         assert "flying" in types_lower

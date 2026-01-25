@@ -355,7 +355,11 @@ class TestRocketTools:
         assert len(result) > 0
         assert "Pikachu" in result or "pikachu" in result.lower()
         # Ground is super effective against Electric
-        assert ("2x" in result or "Super Effective" in result or "effectiveness" in result.lower())
+        assert (
+            "2x" in result
+            or "Super Effective" in result
+            or "effectiveness" in result.lower()
+        )
 
     @pytest.mark.asyncio
     async def test_calculate_pokemon_weakness_invalid_type(self, mcp_server):
@@ -382,7 +386,11 @@ class TestRocketTools:
 
         assert isinstance(result, str)
         assert len(result) > 0
-        assert "Invalid" in result or "invalid" in result.lower() or "Valid types" in result
+        assert (
+            "Invalid" in result
+            or "invalid" in result.lower()
+            or "Valid types" in result
+        )
 
     @pytest.mark.asyncio
     async def test_calculate_pokemon_weakness_invalid_pokemon(self, mcp_server):
@@ -410,5 +418,8 @@ class TestRocketTools:
         assert isinstance(result, str)
         assert len(result) > 0
         # Should indicate Pokemon not found
-        assert "not found" in result.lower() or "could not find" in result.lower() or "check the spelling" in result.lower()
-
+        assert (
+            "not found" in result.lower()
+            or "could not find" in result.lower()
+            or "check the spelling" in result.lower()
+        )
