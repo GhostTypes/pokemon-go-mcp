@@ -2,3 +2,28 @@
 uv.lock
 data/*
 !data/*.json
+
+# Temp files
+temp_*
+*ANALYSIS*.md
+*REPORT*.md
+*BASELINE*.txt
+analyze_*.py
+test_backups/
+
+# IDE and development
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local settings
+.claude/settings.local.json
