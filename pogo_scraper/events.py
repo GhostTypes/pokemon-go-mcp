@@ -24,6 +24,9 @@ try:
     )
     from .parsers.events.comday_details import parse_community_day_details
     from .parsers.events.generic_event_details import parse_generic_event_details
+    from .parsers.events.pokestop_showcase_details import (
+        parse_pokestop_showcase_details,
+    )
     from .parsers.events.raid_battle_details import parse_raid_battle_details
     from .parsers.events.raid_day_details import parse_raid_day_details
     from .parsers.events.research_breakthrough_details import parse_breakthrough_details
@@ -36,6 +39,9 @@ except ImportError:
     from parsers.events.base_event import parse_event_item
     from parsers.events.comday_details import parse_community_day_details
     from parsers.events.generic_event_details import parse_generic_event_details
+    from parsers.events.pokestop_showcase_details import (
+        parse_pokestop_showcase_details,
+    )
     from parsers.events.raid_battle_details import parse_raid_battle_details
     from parsers.events.raid_day_details import parse_raid_day_details
     from parsers.events.research_breakthrough_details import parse_breakthrough_details
@@ -178,8 +184,11 @@ async def fetch_event_details(
             await parse_breakthrough_details(soup, event)
         elif event["eventType"] == "timed-research-promo":
             await parse_timed_research_code_details(soup, event)
-        elif event["eventType"] == "event":
-            # Use generic parser for standard "event" type events
+        elif event["eventType"] == "pokestop-showcase":
+            await parse_pokestop_showcase_details(soup, event)
+            await parse_generic_event_details(soup, event)
+        else:
+            # Use generic parser for standard and unknown event types
             await parse_generic_event_details(soup, event)
         # Add more event types as needed
 

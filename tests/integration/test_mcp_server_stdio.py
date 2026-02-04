@@ -6,6 +6,7 @@ and connect as a real MCP client to test the full MCP protocol.
 
 import asyncio
 import json
+import sys
 from collections.abc import AsyncGenerator
 from contextlib import suppress
 from pathlib import Path
@@ -41,8 +42,8 @@ async def mcp_session() -> AsyncGenerator:
 
     # Set up server parameters for stdio transport
     server_params = StdioServerParameters(
-        command="uv",
-        args=["run", "python", "-m", "pogo_mcp.server"],
+        command=sys.executable,
+        args=["-m", "pogo_mcp.server"],
         env=None,  # Use current environment
     )
 
