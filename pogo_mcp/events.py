@@ -252,23 +252,26 @@ def register_event_tools(mcp: FastMCP) -> None:
 
             result = f"# Event Spawns (as of {get_current_time_str()})\n\n"
 
+            def _collect_spawn_names(
+                extra_data: dict[str, object] | None, key: str
+            ) -> list[str]:
+                if not extra_data or key not in extra_data:
+                    return []
+                data = extra_data[key]
+                if not isinstance(data, dict):
+                    return []
+                spawns = data.get("spawns", [])
+                if not isinstance(spawns, list):
+                    return []
+                return [spawn.get("name", "Unknown") for spawn in spawns]
+
             spawns_found = False
             for event in active_events:
                 event_spawns: list[str] = []
-
-                if event.extra_data and "communityday" in event.extra_data:
-                    cd_data = event.extra_data["communityday"]
-                    spawns = cd_data.get("spawns", [])
-                    event_spawns.extend(
-                        spawn.get("name", "Unknown") for spawn in spawns
-                    )
-
-                if event.extra_data and "generic" in event.extra_data:
-                    generic_data = event.extra_data["generic"]
-                    spawns = generic_data.get("spawns", [])
-                    event_spawns.extend(
-                        spawn.get("name", "Unknown") for spawn in spawns
-                    )
+                event_spawns.extend(
+                    _collect_spawn_names(event.extra_data, "communityday")
+                )
+                event_spawns.extend(_collect_spawn_names(event.extra_data, "generic"))
 
                 if event_spawns:
                     spawns_found = True
@@ -304,37 +307,41 @@ def register_event_tools(mcp: FastMCP) -> None:
 
             result = f"# Active Event Bonuses (as of {get_current_time_str()})\n\n"
 
+            def _collect_bonus_texts(
+                extra_data: dict[str, object] | None,
+                key: str,
+                prefix: str | None = None,
+            ) -> list[str]:
+                if not extra_data or key not in extra_data:
+                    return []
+                data = extra_data[key]
+                if not isinstance(data, dict):
+                    return []
+                bonuses = data.get("bonuses", [])
+                if not isinstance(bonuses, list):
+                    return []
+                texts = [bonus.get("text", "Unknown") for bonus in bonuses]
+                if prefix:
+                    return [f"{prefix}{text}" for text in texts]
+                return texts
+
             bonuses_found = False
             for event in active_events:
                 event_bonuses: list[str] = []
-
-                if event.extra_data and "communityday" in event.extra_data:
-                    cd_data = event.extra_data["communityday"]
-                    bonuses = cd_data.get("bonuses", [])
-                    event_bonuses.extend(
-                        bonus.get("text", "Unknown") for bonus in bonuses
-                    )
+                event_bonuses.extend(
+                    _collect_bonus_texts(event.extra_data, "communityday")
+                )
+                event_bonuses.extend(_collect_bonus_texts(event.extra_data, "raidday"))
 
                 if event.extra_data and "raidday" in event.extra_data:
                     rd_data = event.extra_data["raidday"]
-                    # Add free bonuses
-                    bonuses = rd_data.get("bonuses", [])
-                    event_bonuses.extend(
-                        bonus.get("text", "Unknown") for bonus in bonuses
-                    )
-                    # Add ticket bonuses (marked as premium)
                     ticket_bonuses = rd_data.get("ticketBonuses", [])
                     event_bonuses.extend(
                         f"[TICKET] {bonus.get('text', 'Unknown')}"
                         for bonus in ticket_bonuses
                     )
 
-                if event.extra_data and "generic" in event.extra_data:
-                    generic_data = event.extra_data["generic"]
-                    bonuses = generic_data.get("bonuses", [])
-                    event_bonuses.extend(
-                        bonus.get("text", "Unknown") for bonus in bonuses
-                    )
+                event_bonuses.extend(_collect_bonus_texts(event.extra_data, "generic"))
 
                 if event_bonuses:
                     bonuses_found = True
@@ -412,16 +419,18 @@ def register_event_tools(mcp: FastMCP) -> None:
             result = (
                 f"# PokéStop Showcase Events (as of {get_current_time_str()})\n\n"
             )
-
+            event_details = []
             for event in showcase_events:
-                result += format_event_summary(event) + "\n\n"
+                details = format_event_summary(event) + "\n\n"
 
                 showcase_info = extract_pokestop_showcase_info(event)
                 if showcase_info and showcase_info["showcase_pokemon"]:
                     pokemon_list = ", ".join(showcase_info["showcase_pokemon"])
-                    result += f"**Showcase Pokémon:** {pokemon_list}\n"
+                    details += f"**Showcase Pokémon:** {pokemon_list}\n"
 
-                result += "\n---\n\n"
+                event_details.append(details)
+
+            result += "\n\n---\n\n".join(event_details)
 
         except Exception as e:
             logger.exception("Error fetching PokéStop Showcase info")
