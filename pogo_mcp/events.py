@@ -165,7 +165,8 @@ def register_event_tools(mcp: FastMCP) -> None:
 
                 # Raw extra data
                 result += "**Raw Event Data:**\n"
-                result += f"```json\n{format_json_output(event.extra_data)}\n```\n"
+                raw_json = format_json_output(event.extra_data).replace("```", "` ` `")
+                result += f"```json\n{raw_json}\n```\n"
 
         except Exception as e:
             logger.exception("Error fetching event details")
@@ -310,6 +311,7 @@ def register_event_tools(mcp: FastMCP) -> None:
             def _collect_bonus_texts(
                 extra_data: dict[str, object] | None,
                 key: str,
+                list_key: str = "bonuses",
                 prefix: str | None = None,
             ) -> list[str]:
                 if not extra_data or key not in extra_data:
@@ -317,7 +319,7 @@ def register_event_tools(mcp: FastMCP) -> None:
                 data = extra_data[key]
                 if not isinstance(data, dict):
                     return []
-                bonuses = data.get("bonuses", [])
+                bonuses = data.get(list_key, [])
                 if not isinstance(bonuses, list):
                     return []
                 texts = [bonus.get("text", "Unknown") for bonus in bonuses]
@@ -332,15 +334,14 @@ def register_event_tools(mcp: FastMCP) -> None:
                     _collect_bonus_texts(event.extra_data, "communityday")
                 )
                 event_bonuses.extend(_collect_bonus_texts(event.extra_data, "raidday"))
-
-                if event.extra_data and "raidday" in event.extra_data:
-                    rd_data = event.extra_data["raidday"]
-                    ticket_bonuses = rd_data.get("ticketBonuses", [])
-                    event_bonuses.extend(
-                        f"[TICKET] {bonus.get('text', 'Unknown')}"
-                        for bonus in ticket_bonuses
+                event_bonuses.extend(
+                    _collect_bonus_texts(
+                        event.extra_data,
+                        "raidday",
+                        list_key="ticketBonuses",
+                        prefix="[TICKET] ",
                     )
-
+                )
                 event_bonuses.extend(_collect_bonus_texts(event.extra_data, "generic"))
 
                 if event_bonuses:
@@ -421,14 +422,13 @@ def register_event_tools(mcp: FastMCP) -> None:
             )
             event_details = []
             for event in showcase_events:
-                details = format_event_summary(event) + "\n\n"
-
+                parts = [format_event_summary(event)]
                 showcase_info = extract_pokestop_showcase_info(event)
                 if showcase_info and showcase_info["showcase_pokemon"]:
                     pokemon_list = ", ".join(showcase_info["showcase_pokemon"])
-                    details += f"**Showcase Pokémon:** {pokemon_list}\n"
+                    parts.append(f"**Showcase Pokémon:** {pokemon_list}")
 
-                event_details.append(details)
+                event_details.append("\n\n".join(parts))
 
             result += "\n\n---\n\n".join(event_details)
 
