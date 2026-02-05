@@ -15,6 +15,7 @@ logger = logging.getLogger(__name__)
 def _parse_showcase_pokemon(soup: BeautifulSoup) -> list[dict[str, Any]]:
     """Parse showcase Pokemon from the event page."""
     pokemon: list[dict[str, Any]] = []
+    seen_names: set[str] = set()
 
     page_content = soup.select_one(".page-content")
     if not page_content:
@@ -22,8 +23,11 @@ def _parse_showcase_pokemon(soup: BeautifulSoup) -> list[dict[str, Any]]:
 
     for item in page_content.select(".pkmn-list-item"):
         data = _extract_pokemon_data(item)
-        if data and data not in pokemon:
-            pokemon.append(data)
+        if data:
+            name = data.get("name")
+            if name and name not in seen_names:
+                pokemon.append(data)
+                seen_names.add(name)
 
     return pokemon
 

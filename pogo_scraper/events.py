@@ -153,45 +153,53 @@ async def fetch_event_details(
 
         soup = BeautifulSoup(response.text, "lxml")
 
-        # Initialize extraData with generic flags
-        generic_data: dict[str, Any] = {
-            "hasSpawns": False,
-            "hasFieldResearchTasks": False,
-        }
-
-        # Check for spawns section (ScrapedDuck looks for id='spawns')
-        if soup.find(id="spawns"):
-            generic_data["hasSpawns"] = True
-
-        # Check for field research section
-        # (ScrapedDuck looks for id='field-research-tasks')
-        if soup.find(id="field-research-tasks"):
-            generic_data["hasFieldResearchTasks"] = True
-
-        # Set basic generic data
-        event["extraData"]["generic"] = generic_data
-
-        # Get event-type specific data
-        if event["eventType"] == "community-day":
-            await parse_community_day_details(soup, event)
-        elif event["eventType"] == "raid-day":
-            await parse_raid_day_details(soup, event)
-        elif event["eventType"] == "raid-battles":
-            await parse_raid_battle_details(soup, event)
-        elif event["eventType"] == "pokemon-spotlight-hour":
-            await parse_spotlight_details(soup, event)
-        elif event["eventType"] == "research-breakthrough":
-            await parse_breakthrough_details(soup, event)
-        elif event["eventType"] == "timed-research-promo":
-            await parse_timed_research_code_details(soup, event)
-        elif event["eventType"] == "pokestop-showcase":
-            await parse_pokestop_showcase_details(soup, event)
-            await parse_generic_event_details(soup, event)
-        else:
-            # Use generic parser for standard and unknown event types
-            await parse_generic_event_details(soup, event)
-        # Add more event types as needed
+        await apply_event_parsers(soup, event)
 
     except (AttributeError, KeyError, ValueError, TypeError) as e:
         logger.warning("Error fetching details for event %s: %s", event["name"], e)
         # Keep the default extraData structure
+
+
+async def apply_event_parsers(
+    soup: BeautifulSoup,
+    event: dict[str, Any],
+) -> None:
+    """Apply generic flags and event-type-specific parsers to an event."""
+    # Initialize extraData with generic flags
+    generic_data: dict[str, Any] = {
+        "hasSpawns": False,
+        "hasFieldResearchTasks": False,
+    }
+
+    # Check for spawns section (ScrapedDuck looks for id='spawns')
+    if soup.find(id="spawns"):
+        generic_data["hasSpawns"] = True
+
+    # Check for field research section
+    # (ScrapedDuck looks for id='field-research-tasks')
+    if soup.find(id="field-research-tasks"):
+        generic_data["hasFieldResearchTasks"] = True
+
+    # Set basic generic data
+    event["extraData"]["generic"] = generic_data
+
+    # Get event-type specific data
+    if event["eventType"] == "community-day":
+        await parse_community_day_details(soup, event)
+    elif event["eventType"] == "raid-day":
+        await parse_raid_day_details(soup, event)
+    elif event["eventType"] == "raid-battles":
+        await parse_raid_battle_details(soup, event)
+    elif event["eventType"] == "pokemon-spotlight-hour":
+        await parse_spotlight_details(soup, event)
+    elif event["eventType"] == "research-breakthrough":
+        await parse_breakthrough_details(soup, event)
+    elif event["eventType"] == "timed-research-promo":
+        await parse_timed_research_code_details(soup, event)
+    elif event["eventType"] == "pokestop-showcase":
+        await parse_pokestop_showcase_details(soup, event)
+        await parse_generic_event_details(soup, event)
+    else:
+        # Use generic parser for standard and unknown event types
+        await parse_generic_event_details(soup, event)
+    # Add more event types as needed

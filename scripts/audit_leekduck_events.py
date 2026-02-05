@@ -19,21 +19,8 @@ from xml.etree import ElementTree
 import cloudscraper
 from bs4 import BeautifulSoup
 
+from pogo_scraper.events import apply_event_parsers
 from pogo_scraper.parsers.events.base_event import infer_event_type, parse_event_item
-from pogo_scraper.parsers.events.comday_details import parse_community_day_details
-from pogo_scraper.parsers.events.generic_event_details import parse_generic_event_details
-from pogo_scraper.parsers.events.pokestop_showcase_details import (
-    parse_pokestop_showcase_details,
-)
-from pogo_scraper.parsers.events.raid_battle_details import parse_raid_battle_details
-from pogo_scraper.parsers.events.raid_day_details import parse_raid_day_details
-from pogo_scraper.parsers.events.research_breakthrough_details import (
-    parse_breakthrough_details,
-)
-from pogo_scraper.parsers.events.spotlight_details import parse_spotlight_details
-from pogo_scraper.parsers.events.timed_reseach_code_details import (
-    parse_timed_research_code_details,
-)
 
 BASE_URL = "https://leekduck.com"
 EVENTS_URL = urljoin(BASE_URL, "/events/")
@@ -127,33 +114,7 @@ def _build_event_from_page(url: str, soup: BeautifulSoup) -> dict:
 
 
 async def _apply_detail_parsers(soup: BeautifulSoup, event: dict) -> None:
-    event["extraData"].setdefault(
-        "generic", {"hasSpawns": False, "hasFieldResearchTasks": False}
-    )
-
-    if soup.find(id="spawns"):
-        event["extraData"]["generic"]["hasSpawns"] = True
-    if soup.find(id="field-research-tasks"):
-        event["extraData"]["generic"]["hasFieldResearchTasks"] = True
-
-    event_type = event.get("eventType")
-    if event_type == "community-day":
-        await parse_community_day_details(soup, event)
-    elif event_type == "raid-day":
-        await parse_raid_day_details(soup, event)
-    elif event_type == "raid-battles":
-        await parse_raid_battle_details(soup, event)
-    elif event_type == "pokemon-spotlight-hour":
-        await parse_spotlight_details(soup, event)
-    elif event_type == "research-breakthrough":
-        await parse_breakthrough_details(soup, event)
-    elif event_type == "timed-research-promo":
-        await parse_timed_research_code_details(soup, event)
-    elif event_type == "pokestop-showcase":
-        await parse_pokestop_showcase_details(soup, event)
-        await parse_generic_event_details(soup, event)
-    else:
-        await parse_generic_event_details(soup, event)
+    await apply_event_parsers(soup, event)
 
 
 def _dedupe_events(events: Iterable[dict]) -> list[dict]:
