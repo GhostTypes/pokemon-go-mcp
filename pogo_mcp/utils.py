@@ -337,7 +337,7 @@ def extract_pokestop_showcase_info(event: EventInfo) -> dict[str, Any] | None:
 
     return {
         "showcase_pokemon": [
-            pokemon.get("name") for pokemon in showcase_data.get("showcasePokemon", [])
+            name for pokemon in showcase_data.get("showcasePokemon", []) if (name := pokemon.get("name"))
         ],
     }
 
