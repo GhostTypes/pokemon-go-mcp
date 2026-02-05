@@ -251,3 +251,27 @@ class TestEventTools:
         # Should indicate no results
         assert isinstance(result, str)
         assert "No events found" in result or "not found" in result.lower()
+
+    @pytest.mark.asyncio
+    async def test_get_pokestop_showcase_info(self, ensure_test_data, mcp_server):
+        """Test get_pokestop_showcase_info tool."""
+
+        captured_tools = {}
+
+        class MockMCP:
+            def tool(self):
+                def decorator(func):
+                    captured_tools[func.__name__] = func
+                    return func
+
+                return decorator
+
+        mock_mcp = MockMCP()
+        register_event_tools(mock_mcp)
+
+        get_pokestop_showcase_info = captured_tools["get_pokestop_showcase_info"]
+
+        result = await get_pokestop_showcase_info()
+
+        assert isinstance(result, str)
+        assert len(result) > 0

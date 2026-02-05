@@ -6,6 +6,7 @@ and connect as a real MCP client to test the full MCP protocol.
 
 import asyncio
 import json
+import sys
 from collections.abc import AsyncGenerator
 from contextlib import suppress
 from pathlib import Path
@@ -41,8 +42,8 @@ async def mcp_session() -> AsyncGenerator:
 
     # Set up server parameters for stdio transport
     server_params = StdioServerParameters(
-        command="uv",
-        args=["run", "python", "-m", "pogo_mcp.server"],
+        command=sys.executable,
+        args=["-m", "pogo_mcp.server"],
         env=None,  # Use current environment
     )
 
@@ -241,6 +242,19 @@ class TestMCPEventTools:
         """Test the search_events tool."""
         # Search for "community" events
         response = await mcp_session.call_tool("search_events", {"query": "community"})
+
+        assert response.content is not None
+        assert len(response.content) > 0
+
+        content_text = response.content[0].text
+        assert len(content_text) > 0
+
+    @pytest.mark.asyncio
+    async def test_get_pokestop_showcase_info(
+        self, mcp_session: ClientSession, ensure_test_data
+    ):
+        """Test the get_pokestop_showcase_info tool."""
+        response = await mcp_session.call_tool("get_pokestop_showcase_info", {})
 
         assert response.content is not None
         assert len(response.content) > 0

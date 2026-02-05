@@ -8,6 +8,7 @@ from fastmcp import FastMCP
 from .api_client import api_client
 from .utils import (
     extract_community_day_info,
+    extract_pokestop_showcase_info,
     extract_raid_day_info,
     format_event_summary,
     format_json_output,
@@ -154,6 +155,14 @@ def register_event_tools(mcp: FastMCP) -> None:
                         shiny = ", ".join(rd_info["shiny_available"])
                         result += f"**Shiny Available:** {shiny}\n\n"
 
+                # PokéStop Showcase specific info
+                showcase_info = extract_pokestop_showcase_info(event)
+                if showcase_info and showcase_info["showcase_pokemon"]:
+                    showcase_pokemon = ", ".join(showcase_info["showcase_pokemon"])
+                    result += (
+                        f"**PokéStop Showcase Pokémon:** {showcase_pokemon}\n\n"
+                    )
+
                 # Raw extra data
                 result += "**Raw Event Data:**\n"
                 result += f"```json\n{format_json_output(event.extra_data)}\n```\n"
@@ -254,6 +263,13 @@ def register_event_tools(mcp: FastMCP) -> None:
                         spawn.get("name", "Unknown") for spawn in spawns
                     )
 
+                if event.extra_data and "generic" in event.extra_data:
+                    generic_data = event.extra_data["generic"]
+                    spawns = generic_data.get("spawns", [])
+                    event_spawns.extend(
+                        spawn.get("name", "Unknown") for spawn in spawns
+                    )
+
                 if event_spawns:
                     spawns_found = True
                     result += f"## {event.name}\n"
@@ -313,6 +329,13 @@ def register_event_tools(mcp: FastMCP) -> None:
                         for bonus in ticket_bonuses
                     )
 
+                if event.extra_data and "generic" in event.extra_data:
+                    generic_data = event.extra_data["generic"]
+                    bonuses = generic_data.get("bonuses", [])
+                    event_bonuses.extend(
+                        bonus.get("text", "Unknown") for bonus in bonuses
+                    )
+
                 if event_bonuses:
                     bonuses_found = True
                     result += f"## {event.name}\n"
@@ -363,5 +386,45 @@ def register_event_tools(mcp: FastMCP) -> None:
         except Exception as e:
             logger.exception("Error searching events")
             return f"Error searching events: {e!s}"
+        else:
+            return result
+
+    @mcp.tool()
+    async def get_pokestop_showcase_info() -> str:
+        """Get information about active or upcoming PokéStop Showcase events."""
+        try:
+            events = await api_client.get_events()
+            current_time = datetime.now(timezone.utc)
+
+            showcase_events = [
+                e
+                for e in events
+                if "pokestop-showcase" in e.event_type.lower()
+                and (
+                    is_event_active(e, current_time)
+                    or is_event_upcoming(e, current_time)
+                )
+            ]
+
+            if not showcase_events:
+                return "No active or upcoming PokéStop Showcase events found."
+
+            result = (
+                f"# PokéStop Showcase Events (as of {get_current_time_str()})\n\n"
+            )
+
+            for event in showcase_events:
+                result += format_event_summary(event) + "\n\n"
+
+                showcase_info = extract_pokestop_showcase_info(event)
+                if showcase_info and showcase_info["showcase_pokemon"]:
+                    pokemon_list = ", ".join(showcase_info["showcase_pokemon"])
+                    result += f"**Showcase Pokémon:** {pokemon_list}\n"
+
+                result += "\n---\n\n"
+
+        except Exception as e:
+            logger.exception("Error fetching PokéStop Showcase info")
+            return f"Error fetching PokéStop Showcase info: {e!s}"
         else:
             return result

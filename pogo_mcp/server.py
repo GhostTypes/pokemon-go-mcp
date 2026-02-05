@@ -174,6 +174,22 @@ def register_cross_cutting_tools() -> None:
                         if name_lower in shiny.get("name", "").lower()
                     )
 
+                if event.extra_data and "generic" in event.extra_data:
+                    generic_data = event.extra_data["generic"]
+                    event_matches.extend(
+                        f"Increased spawns in {event.name}"
+                        for spawn in generic_data.get("spawns", [])
+                        if name_lower in spawn.get("name", "").lower()
+                    )
+
+                if event.extra_data and "pokestopshowcase" in event.extra_data:
+                    showcase_data = event.extra_data["pokestopshowcase"]
+                    event_matches.extend(
+                        f"Showcased in {event.name}"
+                        for pokemon in showcase_data.get("showcasePokemon", [])
+                        if name_lower in pokemon.get("name", "").lower()
+                    )
+
             if event_matches:
                 found_anywhere = True
                 result += "## 🎉 Events\n\n"

@@ -328,6 +328,20 @@ def extract_raid_day_info(event: EventInfo) -> dict[str, Any] | None:
     }
 
 
+def extract_pokestop_showcase_info(event: EventInfo) -> dict[str, Any] | None:
+    """Extract PokéStop Showcase specific information from an event."""
+    if not event.extra_data or "pokestopshowcase" not in event.extra_data:
+        return None
+
+    showcase_data = event.extra_data["pokestopshowcase"]
+
+    return {
+        "showcase_pokemon": [
+            pokemon.get("name") for pokemon in showcase_data.get("showcasePokemon", [])
+        ],
+    }
+
+
 # Team Rocket / Shadow Pokemon utilities
 def format_rocket_summary(trainer: RocketTrainerInfo) -> str:
     """Format a Team Rocket trainer summary for display."""
