@@ -6,8 +6,7 @@ __description__ = (
     "A comprehensive MCP server for Pokemon Go events, raids, research, and eggs"
 )
 
-from .server import main
-from .types import (
+from .pogo_types import (
     BonusInfo,
     EggInfo,
     EventInfo,
@@ -20,6 +19,7 @@ from .types import (
     TypeInfo,
     WeatherInfo,
 )
+from .server import main
 from .utils import (
     format_egg_summary,
     format_event_summary,

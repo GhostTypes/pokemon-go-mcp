@@ -45,6 +45,7 @@ class EventExtraData(TypedDict, total=False):
     raidday: dict[str, Any]
     spotlight: dict[str, Any]
     breakthrough: dict[str, Any]
+    pokestopshowcase: dict[str, Any]
 
 
 @dataclass

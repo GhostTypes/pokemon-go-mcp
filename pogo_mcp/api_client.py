@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Optional
 
-from .types import (
+from .pogo_types import (
     EggInfo,
     EventInfo,
     PokemonInfo,

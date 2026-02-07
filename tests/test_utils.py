@@ -4,7 +4,7 @@ from datetime import datetime, timedelta, timezone
 
 import pytest
 
-from pogo_mcp.types import EggInfo, EventInfo, PokemonInfo, RaidInfo, TypeInfo
+from pogo_mcp.pogo_types import EggInfo, EventInfo, PokemonInfo, RaidInfo, TypeInfo
 from pogo_mcp.utils import (
     filter_eggs_by_distance,
     filter_raids_by_tier,

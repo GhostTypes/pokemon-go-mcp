@@ -7,7 +7,7 @@ from typing import Any
 
 from dateutil import parser
 
-from .types import (
+from .pogo_types import (
     EggInfo,
     EventInfo,
     PokemonInfo,
@@ -337,7 +337,9 @@ def extract_pokestop_showcase_info(event: EventInfo) -> dict[str, Any] | None:
 
     return {
         "showcase_pokemon": [
-            name for pokemon in showcase_data.get("showcasePokemon", []) if (name := pokemon.get("name"))
+            name
+            for pokemon in showcase_data.get("showcasePokemon", [])
+            if (name := pokemon.get("name"))
         ],
     }
 

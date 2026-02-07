@@ -14,7 +14,7 @@ from .utils import (
 )
 
 if TYPE_CHECKING:
-    from .types import EggInfo
+    from .pogo_types import EggInfo
 
 logger = logging.getLogger(__name__)
 

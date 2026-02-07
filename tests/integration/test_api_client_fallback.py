@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 
 import pytest
 
-from pogo_mcp.types import EventInfo
+from pogo_mcp.pogo_types import EventInfo
 
 
 class TestRaidFallbackLogic:

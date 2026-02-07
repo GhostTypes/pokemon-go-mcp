@@ -2,6 +2,7 @@
 
 import logging
 from datetime import datetime, timezone
+from typing import TYPE_CHECKING
 
 from fastmcp import FastMCP
 
@@ -16,6 +17,9 @@ from .utils import (
     is_event_active,
     is_event_upcoming,
 )
+
+if TYPE_CHECKING:
+    from .pogo_types import EventExtraData
 
 logger = logging.getLogger(__name__)
 
@@ -159,9 +163,7 @@ def register_event_tools(mcp: FastMCP) -> None:
                 showcase_info = extract_pokestop_showcase_info(event)
                 if showcase_info and showcase_info["showcase_pokemon"]:
                     showcase_pokemon = ", ".join(showcase_info["showcase_pokemon"])
-                    result += (
-                        f"**PokéStop Showcase Pokémon:** {showcase_pokemon}\n\n"
-                    )
+                    result += f"**PokéStop Showcase Pokémon:** {showcase_pokemon}\n\n"
 
                 # Raw extra data
                 result += "**Raw Event Data:**\n"
@@ -254,11 +256,11 @@ def register_event_tools(mcp: FastMCP) -> None:
             result = f"# Event Spawns (as of {get_current_time_str()})\n\n"
 
             def _collect_spawn_names(
-                extra_data: dict[str, object] | None, key: str
+                extra_data: "EventExtraData | None", key: str
             ) -> list[str]:
                 if not extra_data or key not in extra_data:
                     return []
-                data = extra_data[key]
+                data = extra_data.get(key)
                 if not isinstance(data, dict):
                     return []
                 spawns = data.get("spawns", [])
@@ -309,14 +311,14 @@ def register_event_tools(mcp: FastMCP) -> None:
             result = f"# Active Event Bonuses (as of {get_current_time_str()})\n\n"
 
             def _collect_bonus_texts(
-                extra_data: dict[str, object] | None,
+                extra_data: "EventExtraData | None",
                 key: str,
                 list_key: str = "bonuses",
                 prefix: str | None = None,
             ) -> list[str]:
                 if not extra_data or key not in extra_data:
                     return []
-                data = extra_data[key]
+                data = extra_data.get(key)
                 if not isinstance(data, dict):
                     return []
                 bonuses = data.get(list_key, [])
@@ -417,9 +419,7 @@ def register_event_tools(mcp: FastMCP) -> None:
             if not showcase_events:
                 return "No active or upcoming PokéStop Showcase events found."
 
-            result = (
-                f"# PokéStop Showcase Events (as of {get_current_time_str()})\n\n"
-            )
+            result = f"# PokéStop Showcase Events (as of {get_current_time_str()})\n\n"
             event_details = []
             for event in showcase_events:
                 parts = [format_event_summary(event)]

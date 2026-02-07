@@ -12,9 +12,12 @@ import asyncio
 import logging
 from collections import Counter
 from dataclasses import dataclass
-from typing import Iterable
+from typing import TYPE_CHECKING
 from urllib.parse import urljoin
-from xml.etree import ElementTree
+from xml.etree import ElementTree as ET
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
 import cloudscraper
 from bs4 import BeautifulSoup
@@ -81,7 +84,7 @@ def _collect_sitemap_event_links(
     scraper: cloudscraper.CloudScraper, limit: int | None
 ) -> list[str]:
     sitemap_text = _download_text(scraper, SITEMAP_URL)
-    root = ElementTree.fromstring(sitemap_text)
+    root = ET.fromstring(sitemap_text)  # noqa: S314
 
     urls: list[str] = []
     for url in root.iter():
@@ -177,7 +180,9 @@ async def _audit_sitemap(
 
 
 def _log_summary(prefix: str, result: AuditResult) -> None:
-    logger.info("%s parsed %s events with %s errors", prefix, result.parsed, result.errors)
+    logger.info(
+        "%s parsed %s events with %s errors", prefix, result.parsed, result.errors
+    )
     for event_type, count in result.event_types.most_common():
         logger.info("%s event type: %s (%s)", prefix, event_type, count)
 
@@ -196,9 +201,7 @@ def main() -> None:
 
     scraper = cloudscraper.create_scraper()
     event_dates = _load_event_dates(scraper)
-    current_events = _dedupe_events(
-        _collect_current_event_links(scraper, event_dates)
-    )
+    current_events = _dedupe_events(_collect_current_event_links(scraper, event_dates))
 
     current_result = asyncio.run(_audit_events(scraper, current_events))
     _log_summary("Current", current_result)

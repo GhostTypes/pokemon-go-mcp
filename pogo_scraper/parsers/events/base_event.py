@@ -51,7 +51,7 @@ def infer_event_type(name: str, heading: str) -> str:
         event_type = "pokemon-go-tour"
     elif "research day" in name_lower or "research day" in heading_lower:
         event_type = "research-day"
-    elif heading_lower == "season" or "season" in heading_lower:
+    elif heading_lower == "season" or heading_lower.startswith("season"):
         event_type = "season"
     elif heading_lower == "event":
         event_type = "event"

@@ -21,7 +21,7 @@ from .utils import (
 )
 
 if TYPE_CHECKING:
-    from .types import (
+    from .pogo_types import (
         EggInfo,
         EventInfo,
         RaidInfo,
@@ -161,7 +161,7 @@ def register_cross_cutting_tools() -> None:
             ) -> list[str]:
                 if not event.extra_data or data_key not in event.extra_data:
                     return []
-                data = event.extra_data[data_key]
+                data = event.extra_data.get(data_key)
                 if not isinstance(data, dict):
                     return []
                 items = data.get(list_key, [])
