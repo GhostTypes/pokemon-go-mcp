@@ -2,12 +2,14 @@
 
 import logging
 from datetime import datetime, timezone
+from typing import TYPE_CHECKING
 
 from fastmcp import FastMCP
 
 from .api_client import api_client
 from .utils import (
     extract_community_day_info,
+    extract_pokestop_showcase_info,
     extract_raid_day_info,
     format_event_summary,
     format_json_output,
@@ -15,6 +17,9 @@ from .utils import (
     is_event_active,
     is_event_upcoming,
 )
+
+if TYPE_CHECKING:
+    from .pogo_types import EventExtraData
 
 logger = logging.getLogger(__name__)
 
@@ -154,9 +159,16 @@ def register_event_tools(mcp: FastMCP) -> None:
                         shiny = ", ".join(rd_info["shiny_available"])
                         result += f"**Shiny Available:** {shiny}\n\n"
 
+                # PokéStop Showcase specific info
+                showcase_info = extract_pokestop_showcase_info(event)
+                if showcase_info and showcase_info["showcase_pokemon"]:
+                    showcase_pokemon = ", ".join(showcase_info["showcase_pokemon"])
+                    result += f"**PokéStop Showcase Pokémon:** {showcase_pokemon}\n\n"
+
                 # Raw extra data
                 result += "**Raw Event Data:**\n"
-                result += f"```json\n{format_json_output(event.extra_data)}\n```\n"
+                raw_json = format_json_output(event.extra_data).replace("```", "` ` `")
+                result += f"```json\n{raw_json}\n```\n"
 
         except Exception as e:
             logger.exception("Error fetching event details")
@@ -243,16 +255,26 @@ def register_event_tools(mcp: FastMCP) -> None:
 
             result = f"# Event Spawns (as of {get_current_time_str()})\n\n"
 
+            def _collect_spawn_names(
+                extra_data: "EventExtraData | None", key: str
+            ) -> list[str]:
+                if not extra_data or key not in extra_data:
+                    return []
+                data = extra_data.get(key)
+                if not isinstance(data, dict):
+                    return []
+                spawns = data.get("spawns", [])
+                if not isinstance(spawns, list):
+                    return []
+                return [spawn.get("name", "Unknown") for spawn in spawns]
+
             spawns_found = False
             for event in active_events:
                 event_spawns: list[str] = []
-
-                if event.extra_data and "communityday" in event.extra_data:
-                    cd_data = event.extra_data["communityday"]
-                    spawns = cd_data.get("spawns", [])
-                    event_spawns.extend(
-                        spawn.get("name", "Unknown") for spawn in spawns
-                    )
+                event_spawns.extend(
+                    _collect_spawn_names(event.extra_data, "communityday")
+                )
+                event_spawns.extend(_collect_spawn_names(event.extra_data, "generic"))
 
                 if event_spawns:
                     spawns_found = True
@@ -288,30 +310,41 @@ def register_event_tools(mcp: FastMCP) -> None:
 
             result = f"# Active Event Bonuses (as of {get_current_time_str()})\n\n"
 
+            def _collect_bonus_texts(
+                extra_data: "EventExtraData | None",
+                key: str,
+                list_key: str = "bonuses",
+                prefix: str | None = None,
+            ) -> list[str]:
+                if not extra_data or key not in extra_data:
+                    return []
+                data = extra_data.get(key)
+                if not isinstance(data, dict):
+                    return []
+                bonuses = data.get(list_key, [])
+                if not isinstance(bonuses, list):
+                    return []
+                texts = [bonus.get("text", "Unknown") for bonus in bonuses]
+                if prefix:
+                    return [f"{prefix}{text}" for text in texts]
+                return texts
+
             bonuses_found = False
             for event in active_events:
                 event_bonuses: list[str] = []
-
-                if event.extra_data and "communityday" in event.extra_data:
-                    cd_data = event.extra_data["communityday"]
-                    bonuses = cd_data.get("bonuses", [])
-                    event_bonuses.extend(
-                        bonus.get("text", "Unknown") for bonus in bonuses
+                event_bonuses.extend(
+                    _collect_bonus_texts(event.extra_data, "communityday")
+                )
+                event_bonuses.extend(_collect_bonus_texts(event.extra_data, "raidday"))
+                event_bonuses.extend(
+                    _collect_bonus_texts(
+                        event.extra_data,
+                        "raidday",
+                        list_key="ticketBonuses",
+                        prefix="[TICKET] ",
                     )
-
-                if event.extra_data and "raidday" in event.extra_data:
-                    rd_data = event.extra_data["raidday"]
-                    # Add free bonuses
-                    bonuses = rd_data.get("bonuses", [])
-                    event_bonuses.extend(
-                        bonus.get("text", "Unknown") for bonus in bonuses
-                    )
-                    # Add ticket bonuses (marked as premium)
-                    ticket_bonuses = rd_data.get("ticketBonuses", [])
-                    event_bonuses.extend(
-                        f"[TICKET] {bonus.get('text', 'Unknown')}"
-                        for bonus in ticket_bonuses
-                    )
+                )
+                event_bonuses.extend(_collect_bonus_texts(event.extra_data, "generic"))
 
                 if event_bonuses:
                     bonuses_found = True
@@ -363,5 +396,44 @@ def register_event_tools(mcp: FastMCP) -> None:
         except Exception as e:
             logger.exception("Error searching events")
             return f"Error searching events: {e!s}"
+        else:
+            return result
+
+    @mcp.tool()
+    async def get_pokestop_showcase_info() -> str:
+        """Get information about active or upcoming PokéStop Showcase events."""
+        try:
+            events = await api_client.get_events()
+            current_time = datetime.now(timezone.utc)
+
+            showcase_events = [
+                e
+                for e in events
+                if "pokestop-showcase" in e.event_type.lower()
+                and (
+                    is_event_active(e, current_time)
+                    or is_event_upcoming(e, current_time)
+                )
+            ]
+
+            if not showcase_events:
+                return "No active or upcoming PokéStop Showcase events found."
+
+            result = f"# PokéStop Showcase Events (as of {get_current_time_str()})\n\n"
+            event_details = []
+            for event in showcase_events:
+                parts = [format_event_summary(event)]
+                showcase_info = extract_pokestop_showcase_info(event)
+                if showcase_info and showcase_info["showcase_pokemon"]:
+                    pokemon_list = ", ".join(showcase_info["showcase_pokemon"])
+                    parts.append(f"**Showcase Pokémon:** {pokemon_list}")
+
+                event_details.append("\n\n".join(parts))
+
+            result += "\n\n---\n\n".join(event_details)
+
+        except Exception as e:
+            logger.exception("Error fetching PokéStop Showcase info")
+            return f"Error fetching PokéStop Showcase info: {e!s}"
         else:
             return result

@@ -16,7 +16,7 @@ from .utils import (
 )
 
 if TYPE_CHECKING:
-    from .types import RaidInfo
+    from .pogo_types import RaidInfo
 
 logger = logging.getLogger(__name__)
 

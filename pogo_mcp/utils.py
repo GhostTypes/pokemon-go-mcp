@@ -7,7 +7,7 @@ from typing import Any
 
 from dateutil import parser
 
-from .types import (
+from .pogo_types import (
     EggInfo,
     EventInfo,
     PokemonInfo,
@@ -325,6 +325,22 @@ def extract_raid_day_info(event: EventInfo) -> dict[str, Any] | None:
         ],
         "research": rd_data.get("research", []),
         "shiny_available": [shiny.get("name") for shiny in rd_data.get("shinies", [])],
+    }
+
+
+def extract_pokestop_showcase_info(event: EventInfo) -> dict[str, Any] | None:
+    """Extract PokéStop Showcase specific information from an event."""
+    if not event.extra_data or "pokestopshowcase" not in event.extra_data:
+        return None
+
+    showcase_data = event.extra_data["pokestopshowcase"]
+
+    return {
+        "showcase_pokemon": [
+            name
+            for pokemon in showcase_data.get("showcasePokemon", [])
+            if (name := pokemon.get("name"))
+        ],
     }
 
 

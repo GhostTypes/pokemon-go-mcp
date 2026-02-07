@@ -21,7 +21,7 @@ from .utils import (
 )
 
 if TYPE_CHECKING:
-    from .types import (
+    from .pogo_types import (
         EggInfo,
         EventInfo,
         RaidInfo,
@@ -153,26 +153,56 @@ def register_cross_cutting_tools() -> None:
             found_anywhere = False
             name_lower = pokemon_name.lower()
 
+            def _collect_event_matches(
+                event: "EventInfo",
+                data_key: str,
+                list_key: str,
+                message: str,
+            ) -> list[str]:
+                if not event.extra_data or data_key not in event.extra_data:
+                    return []
+                data = event.extra_data.get(data_key)
+                if not isinstance(data, dict):
+                    return []
+                items = data.get(list_key, [])
+                if not isinstance(items, list):
+                    return []
+                return [
+                    message.format(event=event.name)
+                    for item in items
+                    if name_lower in item.get("name", "").lower()
+                ]
+
             # Search in events
             events = cast("list[EventInfo]", all_data["events"])
             event_matches: list[str] = []
             for event in events:
-                if event.extra_data and "communityday" in event.extra_data:
-                    cd_data = event.extra_data["communityday"]
-
-                    # Check spawns
-                    event_matches.extend(
-                        f"Featured in {event.name}"
-                        for spawn in cd_data.get("spawns", [])
-                        if name_lower in spawn.get("name", "").lower()
+                event_matches.extend(
+                    _collect_event_matches(
+                        event, "communityday", "spawns", "Featured in {event}"
                     )
-
-                    # Check shinies
-                    event_matches.extend(
-                        f"Shiny available in {event.name}"
-                        for shiny in cd_data.get("shinies", [])
-                        if name_lower in shiny.get("name", "").lower()
+                )
+                event_matches.extend(
+                    _collect_event_matches(
+                        event,
+                        "communityday",
+                        "shinies",
+                        "Shiny available in {event}",
                     )
+                )
+                event_matches.extend(
+                    _collect_event_matches(
+                        event, "generic", "spawns", "Increased spawns in {event}"
+                    )
+                )
+                event_matches.extend(
+                    _collect_event_matches(
+                        event,
+                        "pokestopshowcase",
+                        "showcasePokemon",
+                        "Showcased in {event}",
+                    )
+                )
 
             if event_matches:
                 found_anywhere = True

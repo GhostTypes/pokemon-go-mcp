@@ -19,7 +19,7 @@ from .utils import get_rocket_encounters as get_rocket_encounters_util
 from .utils import get_shiny_shadow_pokemon as get_shiny_shadow_pokemon_util
 
 if TYPE_CHECKING:
-    from .types import RocketTrainerInfo
+    from .pogo_types import RocketTrainerInfo
 
 logger = logging.getLogger(__name__)
 

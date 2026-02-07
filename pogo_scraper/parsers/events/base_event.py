@@ -3,6 +3,7 @@ Handles parsing base events
 """
 
 import logging
+import unicodedata
 from typing import Any
 
 from bs4.element import Tag
@@ -10,10 +11,16 @@ from bs4.element import Tag
 logger = logging.getLogger(__name__)
 
 
+def _normalize_text(text: str) -> str:
+    """Normalize text for matching by removing accents and extra whitespace."""
+    normalized = unicodedata.normalize("NFKD", text or "")
+    return " ".join(normalized.encode("ascii", "ignore").decode("ascii").split())
+
+
 def infer_event_type(name: str, heading: str) -> str:
     """Infer event type based on name and heading"""
-    name_lower = name.lower()
-    heading_lower = heading.lower()
+    name_lower = _normalize_text(name).lower()
+    heading_lower = _normalize_text(heading).lower()
 
     # Match specific event patterns
     if "raid day" in name_lower or "raid day" in heading_lower:
@@ -30,6 +37,22 @@ def infer_event_type(name: str, heading: str) -> str:
         event_type = "pokestop-showcase"
     elif "promo" in name_lower and "research" in name_lower:
         event_type = "timed-research-promo"
+    elif "raid hour" in name_lower or "raid hour" in heading_lower:
+        event_type = "raid-hour"
+    elif "max monday" in name_lower or "max monday" in heading_lower:
+        event_type = "max-mondays"
+    elif "max battle" in name_lower or "max battle" in heading_lower:
+        event_type = "max-battles"
+    elif "go battle league" in name_lower or "go battle league" in heading_lower:
+        event_type = "go-battle-league"
+    elif "go pass" in name_lower or "go pass" in heading_lower:
+        event_type = "go-pass"
+    elif "pokemon go tour" in name_lower or "pokemon go tour" in heading_lower:
+        event_type = "pokemon-go-tour"
+    elif "research day" in name_lower or "research day" in heading_lower:
+        event_type = "research-day"
+    elif heading_lower == "season" or heading_lower.startswith("season"):
+        event_type = "season"
     elif heading_lower == "event":
         event_type = "event"
     else:
