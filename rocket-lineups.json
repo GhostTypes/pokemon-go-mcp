@@ -1,0 +1,4362 @@
+[
+  {
+    "name": "Giovanni",
+    "title": "Team GO Rocket Boss",
+    "quote": "I will not tolerate your interference.",
+    "image": "https://cdn.leekduck.com/assets/img/rocket/boss-giovanni.png",
+    "type": null,
+    "lineups": [
+      {
+        "slot": 1,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Persian",
+            "types": [
+              "normal"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fighting"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm53.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      },
+      {
+        "slot": 2,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Kangaskhan",
+            "types": [
+              "normal"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fighting"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm115.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Rhyperior",
+            "types": [
+              "ground",
+              "rock"
+            ],
+            "weaknesses": {
+              "double": [
+                "water",
+                "grass"
+              ],
+              "single": [
+                "ice",
+                "fighting",
+                "ground",
+                "steel"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm464.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Machamp",
+            "types": [
+              "fighting"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "flying",
+                "psychic",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm68.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      },
+      {
+        "slot": 3,
+        "is_encounter": true,
+        "pokemon": [
+          {
+            "name": "Reshiram",
+            "types": [
+              "dragon",
+              "fire"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "ground",
+                "rock",
+                "dragon"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm643.icon.png",
+            "can_be_shiny": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Cliff",
+    "title": "Team GO Rocket Leader",
+    "quote": "My strength comes from my loyalty to Team GO Rocket.",
+    "image": "https://cdn.leekduck.com/assets/img/rocket/leader-cliff.png",
+    "type": null,
+    "lineups": [
+      {
+        "slot": 1,
+        "is_encounter": true,
+        "pokemon": [
+          {
+            "name": "Axew",
+            "types": [
+              "dragon"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "ice",
+                "dragon",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm610.icon.png",
+            "can_be_shiny": true
+          }
+        ]
+      },
+      {
+        "slot": 2,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Snorlax",
+            "types": [
+              "normal"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fighting"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm143.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Golurk",
+            "types": [
+              "ground",
+              "ghost"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "water",
+                "grass",
+                "ice",
+                "ghost",
+                "dark"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm623.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Galarian Weezing",
+            "types": [
+              "poison",
+              "fairy"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "ground",
+                "psychic",
+                "steel"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm110.fGALARIAN.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      },
+      {
+        "slot": 3,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Tyranitar",
+            "types": [
+              "rock",
+              "dark"
+            ],
+            "weaknesses": {
+              "double": [
+                "fighting"
+              ],
+              "single": [
+                "water",
+                "grass",
+                "ground",
+                "bug",
+                "steel",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm248.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Camerupt",
+            "types": [
+              "fire",
+              "ground"
+            ],
+            "weaknesses": {
+              "double": [
+                "water"
+              ],
+              "single": [
+                "ground"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm323.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Gallade",
+            "types": [
+              "psychic",
+              "fighting"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "flying",
+                "ghost",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm475.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Arlo",
+    "title": "Team GO Rocket Leader",
+    "quote": "It's time to learn your place in the world.",
+    "image": "https://cdn.leekduck.com/assets/img/rocket/leader-arlo.png",
+    "type": null,
+    "lineups": [
+      {
+        "slot": 1,
+        "is_encounter": true,
+        "pokemon": [
+          {
+            "name": "Tyrunt",
+            "types": [
+              "rock",
+              "dragon"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "ice",
+                "fighting",
+                "ground",
+                "dragon",
+                "steel",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm696.icon.png",
+            "can_be_shiny": true
+          }
+        ]
+      },
+      {
+        "slot": 2,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Steelix",
+            "types": [
+              "steel",
+              "ground"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fire",
+                "water",
+                "fighting",
+                "ground"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm208.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Golurk",
+            "types": [
+              "ground",
+              "ghost"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "water",
+                "grass",
+                "ice",
+                "ghost",
+                "dark"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm623.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Slowbro",
+            "types": [
+              "water",
+              "psychic"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "electric",
+                "grass",
+                "bug",
+                "ghost",
+                "dark"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm80.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      },
+      {
+        "slot": 3,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Alakazam",
+            "types": [
+              "psychic"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "bug",
+                "ghost",
+                "dark"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm65.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Charizard",
+            "types": [
+              "fire",
+              "flying"
+            ],
+            "weaknesses": {
+              "double": [
+                "rock"
+              ],
+              "single": [
+                "water",
+                "electric"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm6.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Scizor",
+            "types": [
+              "bug",
+              "steel"
+            ],
+            "weaknesses": {
+              "double": [
+                "fire"
+              ],
+              "single": []
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm212.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Sierra",
+    "title": "Team GO Rocket Leader",
+    "quote": "I envy you—you get to battle me!",
+    "image": "https://cdn.leekduck.com/assets/img/rocket/leader-sierra.png",
+    "type": null,
+    "lineups": [
+      {
+        "slot": 1,
+        "is_encounter": true,
+        "pokemon": [
+          {
+            "name": "Amaura",
+            "types": [
+              "rock",
+              "ice"
+            ],
+            "weaknesses": {
+              "double": [
+                "fighting",
+                "steel"
+              ],
+              "single": [
+                "water",
+                "grass",
+                "ground",
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm698.icon.png",
+            "can_be_shiny": true
+          }
+        ]
+      },
+      {
+        "slot": 2,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Blastoise",
+            "types": [
+              "water"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "grass",
+                "electric"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm9.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Flygon",
+            "types": [
+              "ground",
+              "dragon"
+            ],
+            "weaknesses": {
+              "double": [
+                "ice"
+              ],
+              "single": [
+                "dragon",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm330.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Ferrothorn",
+            "types": [
+              "grass",
+              "steel"
+            ],
+            "weaknesses": {
+              "double": [
+                "fire"
+              ],
+              "single": [
+                "fighting"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm598.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      },
+      {
+        "slot": 3,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Milotic",
+            "types": [
+              "water"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "grass",
+                "electric"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm350.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Houndoom",
+            "types": [
+              "dark",
+              "fire"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "water",
+                "fighting",
+                "ground",
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm229.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Steelix",
+            "types": [
+              "steel",
+              "ground"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fire",
+                "water",
+                "fighting",
+                "ground"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm208.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Normal-type Male Grunt",
+    "title": "Team GO Rocket Grunt",
+    "quote": "Normal does not mean weak.",
+    "image": "https://cdn.leekduck.com/assets/img/rocket/male-grunt.png",
+    "type": "normal",
+    "lineups": [
+      {
+        "slot": 1,
+        "is_encounter": true,
+        "pokemon": [
+          {
+            "name": "Teddiursa",
+            "types": [
+              "normal"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fighting"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm216.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Hoothoot",
+            "types": [
+              "normal",
+              "flying"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "electric",
+                "ice",
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm163.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Porygon",
+            "types": [
+              "normal"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fighting"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm137.icon.png",
+            "can_be_shiny": true
+          }
+        ]
+      },
+      {
+        "slot": 2,
+        "is_encounter": true,
+        "pokemon": [
+          {
+            "name": "Loudred",
+            "types": [
+              "normal"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fighting"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm294.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Stufful",
+            "types": [
+              "normal",
+              "fighting"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fighting",
+                "flying",
+                "psychic",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm759.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Starly",
+            "types": [
+              "normal",
+              "flying"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "electric",
+                "ice",
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm396.icon.png",
+            "can_be_shiny": true
+          }
+        ]
+      },
+      {
+        "slot": 3,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Ursaring",
+            "types": [
+              "normal"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fighting"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm217.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Swellow",
+            "types": [
+              "normal",
+              "flying"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "electric",
+                "ice",
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm277.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Kangaskhan",
+            "types": [
+              "normal"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fighting"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm115.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Fire-type Female Grunt",
+    "title": "Team GO Rocket Grunt",
+    "quote": "Do you know how hot Pokémon fire breath can get?",
+    "image": "https://cdn.leekduck.com/assets/img/rocket/female-grunt.png",
+    "type": "fire",
+    "lineups": [
+      {
+        "slot": 1,
+        "is_encounter": true,
+        "pokemon": [
+          {
+            "name": "Litwick",
+            "types": [
+              "ghost",
+              "fire"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "water",
+                "ground",
+                "rock",
+                "ghost",
+                "dark"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm607.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Ponyta",
+            "types": [
+              "fire"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "water",
+                "ground",
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm77.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Torchic",
+            "types": [
+              "fire"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "water",
+                "ground",
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm255.icon.png",
+            "can_be_shiny": true
+          }
+        ]
+      },
+      {
+        "slot": 2,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Magmar",
+            "types": [
+              "fire"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "water",
+                "ground",
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm126.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Blaziken",
+            "types": [
+              "fire",
+              "fighting"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "water",
+                "ground",
+                "flying",
+                "psychic"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm257.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Camerupt",
+            "types": [
+              "fire",
+              "ground"
+            ],
+            "weaknesses": {
+              "double": [
+                "water"
+              ],
+              "single": [
+                "ground"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm323.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      },
+      {
+        "slot": 3,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Darmanitan",
+            "types": [
+              "fire"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "water",
+                "ground",
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm555.fSTANDARD.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Delphox",
+            "types": [
+              "fire",
+              "psychic"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "water",
+                "ground",
+                "rock",
+                "ghost",
+                "dark"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm655.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Magmortar",
+            "types": [
+              "fire"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "water",
+                "ground",
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm467.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Water-type Female Grunt",
+    "title": "Team GO Rocket Grunt",
+    "quote": "These waters are treacherous!",
+    "image": "https://cdn.leekduck.com/assets/img/rocket/female-grunt.png",
+    "type": "water",
+    "lineups": [
+      {
+        "slot": 1,
+        "is_encounter": true,
+        "pokemon": [
+          {
+            "name": "Mudkip",
+            "types": [
+              "water"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "grass",
+                "electric"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm258.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Tentacool",
+            "types": [
+              "water",
+              "poison"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "electric",
+                "ground",
+                "psychic"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm72.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Krabby",
+            "types": [
+              "water"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "grass",
+                "electric"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm98.icon.png",
+            "can_be_shiny": true
+          }
+        ]
+      },
+      {
+        "slot": 2,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Dewpider",
+            "types": [
+              "water",
+              "bug"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "electric",
+                "flying",
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm751.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Swampert",
+            "types": [
+              "water",
+              "ground"
+            ],
+            "weaknesses": {
+              "double": [
+                "grass"
+              ],
+              "single": []
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm260.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Sharpedo",
+            "types": [
+              "water",
+              "dark"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "electric",
+                "grass",
+                "fighting",
+                "bug",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm319.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      },
+      {
+        "slot": 3,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Walrein",
+            "types": [
+              "ice",
+              "water"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "electric",
+                "grass",
+                "fighting",
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm365.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Greninja",
+            "types": [
+              "water",
+              "dark"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "electric",
+                "grass",
+                "fighting",
+                "bug",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm658.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Tentacruel",
+            "types": [
+              "water",
+              "poison"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "electric",
+                "ground",
+                "psychic"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm73.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Water-type Male Grunt",
+    "title": "Team GO Rocket Grunt",
+    "quote": "These waters are treacherous!",
+    "image": "https://cdn.leekduck.com/assets/img/rocket/male-grunt.png",
+    "type": "water",
+    "lineups": [
+      {
+        "slot": 1,
+        "is_encounter": true,
+        "pokemon": [
+          {
+            "name": "Magikarp",
+            "types": [
+              "water"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "grass",
+                "electric"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm129.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Feebas",
+            "types": [
+              "water"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "grass",
+                "electric"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm349.icon.png",
+            "can_be_shiny": true
+          }
+        ]
+      },
+      {
+        "slot": 2,
+        "is_encounter": true,
+        "pokemon": [
+          {
+            "name": "Magikarp",
+            "types": [
+              "water"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "grass",
+                "electric"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm129.icon.png",
+            "can_be_shiny": true
+          }
+        ]
+      },
+      {
+        "slot": 3,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Magikarp",
+            "types": [
+              "water"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "grass",
+                "electric"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm129.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Gyarados",
+            "types": [
+              "water",
+              "flying"
+            ],
+            "weaknesses": {
+              "double": [
+                "electric"
+              ],
+              "single": [
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm130.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Electric-type Female Grunt",
+    "title": "Team GO Rocket Grunt",
+    "quote": "Get ready to be shocked!",
+    "image": "https://cdn.leekduck.com/assets/img/rocket/female-grunt.png",
+    "type": "electric",
+    "lineups": [
+      {
+        "slot": 1,
+        "is_encounter": true,
+        "pokemon": [
+          {
+            "name": "Voltorb",
+            "types": [
+              "electric"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "ground"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm100.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Shinx",
+            "types": [
+              "electric"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "ground"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm403.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Helioptile",
+            "types": [
+              "electric",
+              "normal"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fighting",
+                "ground"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm694.icon.png",
+            "can_be_shiny": true
+          }
+        ]
+      },
+      {
+        "slot": 2,
+        "is_encounter": true,
+        "pokemon": [
+          {
+            "name": "Electabuzz",
+            "types": [
+              "electric"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "ground"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm125.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Voltorb",
+            "types": [
+              "electric"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "ground"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm100.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Alolan Geodude",
+            "types": [
+              "rock",
+              "electric"
+            ],
+            "weaknesses": {
+              "double": [
+                "ground"
+              ],
+              "single": [
+                "water",
+                "grass",
+                "fighting"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm74.fALOLA.icon.png",
+            "can_be_shiny": true
+          }
+        ]
+      },
+      {
+        "slot": 3,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Luxray",
+            "types": [
+              "electric"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "ground"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm405.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Ampharos",
+            "types": [
+              "electric"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "ground"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm181.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Galvantula",
+            "types": [
+              "bug",
+              "electric"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fire",
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm596.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Grass-type Male Grunt",
+    "title": "Team GO Rocket Grunt",
+    "quote": "Don't tangle with us!",
+    "image": "https://cdn.leekduck.com/assets/img/rocket/male-grunt.png",
+    "type": "grass",
+    "lineups": [
+      {
+        "slot": 1,
+        "is_encounter": true,
+        "pokemon": [
+          {
+            "name": "Phantump",
+            "types": [
+              "ghost",
+              "grass"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fire",
+                "ice",
+                "flying",
+                "ghost",
+                "dark"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm708.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Treecko",
+            "types": [
+              "grass"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fire",
+                "ice",
+                "poison",
+                "flying",
+                "bug"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm252.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Tangela",
+            "types": [
+              "grass"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fire",
+                "ice",
+                "poison",
+                "flying",
+                "bug"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm114.icon.png",
+            "can_be_shiny": true
+          }
+        ]
+      },
+      {
+        "slot": 2,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Lileep",
+            "types": [
+              "rock",
+              "grass"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "ice",
+                "fighting",
+                "bug",
+                "steel"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm345.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Sceptile",
+            "types": [
+              "grass"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fire",
+                "ice",
+                "poison",
+                "flying",
+                "bug"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm254.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Morelull",
+            "types": [
+              "grass",
+              "fairy"
+            ],
+            "weaknesses": {
+              "double": [
+                "poison"
+              ],
+              "single": [
+                "fire",
+                "ice",
+                "flying",
+                "steel"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm755.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      },
+      {
+        "slot": 3,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Chesnaught",
+            "types": [
+              "grass",
+              "fighting"
+            ],
+            "weaknesses": {
+              "double": [
+                "flying"
+              ],
+              "single": [
+                "fire",
+                "ice",
+                "poison",
+                "psychic",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm652.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Trevenant",
+            "types": [
+              "ghost",
+              "grass"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fire",
+                "ice",
+                "flying",
+                "ghost",
+                "dark"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm709.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Cradily",
+            "types": [
+              "rock",
+              "grass"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "ice",
+                "fighting",
+                "bug",
+                "steel"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm346.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Ice-type Female Grunt",
+    "title": "Team GO Rocket Grunt",
+    "quote": "You're gonna be frozen in your tracks.",
+    "image": "https://cdn.leekduck.com/assets/img/rocket/female-grunt.png",
+    "type": "ice",
+    "lineups": [
+      {
+        "slot": 1,
+        "is_encounter": true,
+        "pokemon": [
+          {
+            "name": "Seel",
+            "types": [
+              "water"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "grass",
+                "electric"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm86.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Delibird",
+            "types": [
+              "ice",
+              "flying"
+            ],
+            "weaknesses": {
+              "double": [
+                "rock"
+              ],
+              "single": [
+                "fire",
+                "electric",
+                "steel"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm225.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Spheal",
+            "types": [
+              "ice",
+              "water"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "electric",
+                "grass",
+                "fighting",
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm363.icon.png",
+            "can_be_shiny": true
+          }
+        ]
+      },
+      {
+        "slot": 2,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Sealeo",
+            "types": [
+              "ice",
+              "water"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "electric",
+                "grass",
+                "fighting",
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm364.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Froslass",
+            "types": [
+              "ice",
+              "ghost"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fire",
+                "rock",
+                "ghost",
+                "dark",
+                "steel"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm478.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Alolan Ninetales",
+            "types": [
+              "ice",
+              "fairy"
+            ],
+            "weaknesses": {
+              "double": [
+                "steel"
+              ],
+              "single": [
+                "fire",
+                "poison",
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm38.fALOLA.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      },
+      {
+        "slot": 3,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Aurorus",
+            "types": [
+              "rock",
+              "ice"
+            ],
+            "weaknesses": {
+              "double": [
+                "fighting",
+                "steel"
+              ],
+              "single": [
+                "water",
+                "grass",
+                "ground",
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm699.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Froslass",
+            "types": [
+              "ice",
+              "ghost"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fire",
+                "rock",
+                "ghost",
+                "dark",
+                "steel"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm478.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Glalie",
+            "types": [
+              "ice"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fire",
+                "fighting",
+                "rock",
+                "steel"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm362.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Fighting-type Female Grunt",
+    "title": "Team GO Rocket Grunt",
+    "quote": "This buff physique isn't just for show!",
+    "image": "https://cdn.leekduck.com/assets/img/rocket/female-grunt.png",
+    "type": "fighting",
+    "lineups": [
+      {
+        "slot": 1,
+        "is_encounter": true,
+        "pokemon": [
+          {
+            "name": "Timburr",
+            "types": [
+              "fighting"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "flying",
+                "psychic",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm532.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Mankey",
+            "types": [
+              "fighting"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "flying",
+                "psychic",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm56.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Machop",
+            "types": [
+              "fighting"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "flying",
+                "psychic",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm66.icon.png",
+            "can_be_shiny": true
+          }
+        ]
+      },
+      {
+        "slot": 2,
+        "is_encounter": true,
+        "pokemon": [
+          {
+            "name": "Hitmontop",
+            "types": [
+              "fighting"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "flying",
+                "psychic",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm237.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Hitmonlee",
+            "types": [
+              "fighting"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "flying",
+                "psychic",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm106.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Hitmonchan",
+            "types": [
+              "fighting"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "flying",
+                "psychic",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm107.icon.png",
+            "can_be_shiny": true
+          }
+        ]
+      },
+      {
+        "slot": 3,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Conkeldurr",
+            "types": [
+              "fighting"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "flying",
+                "psychic",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm534.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Annihilape",
+            "types": [
+              "fighting",
+              "ghost"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "flying",
+                "psychic",
+                "ghost",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm979.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Infernape",
+            "types": [
+              "fire",
+              "fighting"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "water",
+                "ground",
+                "flying",
+                "psychic"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm392.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Poison-type Female Grunt",
+    "title": "Team GO Rocket Grunt",
+    "quote": "Coiled and ready to strike!",
+    "image": "https://cdn.leekduck.com/assets/img/rocket/female-grunt.png",
+    "type": "poison",
+    "lineups": [
+      {
+        "slot": 1,
+        "is_encounter": true,
+        "pokemon": [
+          {
+            "name": "Oddish",
+            "types": [
+              "grass",
+              "poison"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fire",
+                "ice",
+                "flying",
+                "psychic"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm43.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Zubat",
+            "types": [
+              "poison",
+              "flying"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "electric",
+                "ice",
+                "psychic",
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm41.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Qwilfish",
+            "types": [
+              "water",
+              "poison"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "electric",
+                "ground",
+                "psychic"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm211.icon.png",
+            "can_be_shiny": true
+          }
+        ]
+      },
+      {
+        "slot": 2,
+        "is_encounter": true,
+        "pokemon": [
+          {
+            "name": "Galarian Weezing",
+            "types": [
+              "poison",
+              "fairy"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "ground",
+                "psychic",
+                "steel"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm110.fGALARIAN.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Nidorino",
+            "types": [
+              "poison"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "ground",
+                "psychic"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm33.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Nidorina",
+            "types": [
+              "poison"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "ground",
+                "psychic"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm30.icon.png",
+            "can_be_shiny": true
+          }
+        ]
+      },
+      {
+        "slot": 3,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Weezing",
+            "types": [
+              "poison"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "ground",
+                "psychic"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm110.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Toxicroak",
+            "types": [
+              "poison",
+              "fighting"
+            ],
+            "weaknesses": {
+              "double": [
+                "psychic"
+              ],
+              "single": [
+                "ground",
+                "flying"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm454.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Amoonguss",
+            "types": [
+              "grass",
+              "poison"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fire",
+                "ice",
+                "flying",
+                "psychic"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm591.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Ground-type Male Grunt",
+    "title": "Team GO Rocket Grunt",
+    "quote": "You'll be defeated into the ground!",
+    "image": "https://cdn.leekduck.com/assets/img/rocket/male-grunt.png",
+    "type": "ground",
+    "lineups": [
+      {
+        "slot": 1,
+        "is_encounter": true,
+        "pokemon": [
+          {
+            "name": "Rhyhorn",
+            "types": [
+              "ground",
+              "rock"
+            ],
+            "weaknesses": {
+              "double": [
+                "water",
+                "grass"
+              ],
+              "single": [
+                "ice",
+                "fighting",
+                "ground",
+                "steel"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm111.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Gligar",
+            "types": [
+              "ground",
+              "flying"
+            ],
+            "weaknesses": {
+              "double": [
+                "ice"
+              ],
+              "single": [
+                "water"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm207.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Trapinch",
+            "types": [
+              "ground"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "water",
+                "grass",
+                "ice"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm328.icon.png",
+            "can_be_shiny": true
+          }
+        ]
+      },
+      {
+        "slot": 2,
+        "is_encounter": true,
+        "pokemon": [
+          {
+            "name": "Gligar",
+            "types": [
+              "ground",
+              "flying"
+            ],
+            "weaknesses": {
+              "double": [
+                "ice"
+              ],
+              "single": [
+                "water"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm207.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Claydol",
+            "types": [
+              "ground",
+              "psychic"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "water",
+                "grass",
+                "ice",
+                "bug",
+                "ghost",
+                "dark"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm344.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Vibrava",
+            "types": [
+              "ground",
+              "dragon"
+            ],
+            "weaknesses": {
+              "double": [
+                "ice"
+              ],
+              "single": [
+                "dragon",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm329.icon.png",
+            "can_be_shiny": true
+          }
+        ]
+      },
+      {
+        "slot": 3,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Golurk",
+            "types": [
+              "ground",
+              "ghost"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "water",
+                "grass",
+                "ice",
+                "ghost",
+                "dark"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm623.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Hippowdon",
+            "types": [
+              "ground"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "water",
+                "grass",
+                "ice"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm450.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Flygon",
+            "types": [
+              "ground",
+              "dragon"
+            ],
+            "weaknesses": {
+              "double": [
+                "ice"
+              ],
+              "single": [
+                "dragon",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm330.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Flying-type Female Grunt",
+    "title": "Team GO Rocket Grunt",
+    "quote": "Battle against my Flying-type Pokémon!",
+    "image": "https://cdn.leekduck.com/assets/img/rocket/female-grunt.png",
+    "type": "flying",
+    "lineups": [
+      {
+        "slot": 1,
+        "is_encounter": true,
+        "pokemon": [
+          {
+            "name": "Taillow",
+            "types": [
+              "normal",
+              "flying"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "electric",
+                "ice",
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm276.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Rookidee",
+            "types": [
+              "flying"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "electric",
+                "ice",
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm821.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Swablu",
+            "types": [
+              "normal",
+              "flying"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "electric",
+                "ice",
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm333.icon.png",
+            "can_be_shiny": true
+          }
+        ]
+      },
+      {
+        "slot": 2,
+        "is_encounter": true,
+        "pokemon": [
+          {
+            "name": "Scyther",
+            "types": [
+              "bug",
+              "flying"
+            ],
+            "weaknesses": {
+              "double": [
+                "rock"
+              ],
+              "single": [
+                "fire",
+                "electric",
+                "ice",
+                "flying"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm123.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Zubat",
+            "types": [
+              "poison",
+              "flying"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "electric",
+                "ice",
+                "psychic",
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm41.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Gligar",
+            "types": [
+              "ground",
+              "flying"
+            ],
+            "weaknesses": {
+              "double": [
+                "ice"
+              ],
+              "single": [
+                "water"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm207.icon.png",
+            "can_be_shiny": true
+          }
+        ]
+      },
+      {
+        "slot": 3,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Dragonite",
+            "types": [
+              "dragon",
+              "flying"
+            ],
+            "weaknesses": {
+              "double": [
+                "ice"
+              ],
+              "single": [
+                "rock",
+                "dragon",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm149.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Toucannon",
+            "types": [
+              "normal",
+              "flying"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "electric",
+                "ice",
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm733.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Swanna",
+            "types": [
+              "water",
+              "flying"
+            ],
+            "weaknesses": {
+              "double": [
+                "electric"
+              ],
+              "single": [
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm581.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Psychic-type Male Grunt",
+    "title": "Team GO Rocket Grunt",
+    "quote": "Are you scared of psychics that use unseen power?",
+    "image": "https://cdn.leekduck.com/assets/img/rocket/male-grunt.png",
+    "type": "psychic",
+    "lineups": [
+      {
+        "slot": 1,
+        "is_encounter": true,
+        "pokemon": [
+          {
+            "name": "Wobbuffet",
+            "types": [
+              "psychic"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "bug",
+                "ghost",
+                "dark"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm202.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Ralts",
+            "types": [
+              "psychic",
+              "fairy"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "poison",
+                "ghost",
+                "steel"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm280.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Drowzee",
+            "types": [
+              "psychic"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "bug",
+                "ghost",
+                "dark"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm96.icon.png",
+            "can_be_shiny": true
+          }
+        ]
+      },
+      {
+        "slot": 2,
+        "is_encounter": true,
+        "pokemon": [
+          {
+            "name": "Drowzee",
+            "types": [
+              "psychic"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "bug",
+                "ghost",
+                "dark"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm96.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Duosion",
+            "types": [
+              "psychic"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "bug",
+                "ghost",
+                "dark"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm578.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Wobbuffet",
+            "types": [
+              "psychic"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "bug",
+                "ghost",
+                "dark"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm202.icon.png",
+            "can_be_shiny": true
+          }
+        ]
+      },
+      {
+        "slot": 3,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Gallade",
+            "types": [
+              "psychic",
+              "fighting"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "flying",
+                "ghost",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm475.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Malamar",
+            "types": [
+              "dark",
+              "psychic"
+            ],
+            "weaknesses": {
+              "double": [
+                "bug"
+              ],
+              "single": [
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm687.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Reuniclus",
+            "types": [
+              "psychic"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "bug",
+                "ghost",
+                "dark"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm579.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Bug-type Male Grunt",
+    "title": "Team GO Rocket Grunt",
+    "quote": "Go, my super bug Pokémon!",
+    "image": "https://cdn.leekduck.com/assets/img/rocket/male-grunt.png",
+    "type": "bug",
+    "lineups": [
+      {
+        "slot": 1,
+        "is_encounter": true,
+        "pokemon": [
+          {
+            "name": "Venonat",
+            "types": [
+              "bug",
+              "poison"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fire",
+                "flying",
+                "psychic",
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm48.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Weedle",
+            "types": [
+              "bug",
+              "poison"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fire",
+                "flying",
+                "psychic",
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm13.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Grubbin",
+            "types": [
+              "bug"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fire",
+                "flying",
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm736.icon.png",
+            "can_be_shiny": true
+          }
+        ]
+      },
+      {
+        "slot": 2,
+        "is_encounter": true,
+        "pokemon": [
+          {
+            "name": "Pinsir",
+            "types": [
+              "bug"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fire",
+                "flying",
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm127.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Anorith",
+            "types": [
+              "rock",
+              "bug"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "water",
+                "rock",
+                "steel"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm347.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Dewpider",
+            "types": [
+              "water",
+              "bug"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "electric",
+                "flying",
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm751.icon.png",
+            "can_be_shiny": true
+          }
+        ]
+      },
+      {
+        "slot": 3,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Scizor",
+            "types": [
+              "bug",
+              "steel"
+            ],
+            "weaknesses": {
+              "double": [
+                "fire"
+              ],
+              "single": []
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm212.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Scolipede",
+            "types": [
+              "bug",
+              "poison"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fire",
+                "flying",
+                "psychic",
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm545.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Vikavolt",
+            "types": [
+              "bug",
+              "electric"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fire",
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm738.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Rock-type Male Grunt",
+    "title": "Team GO Rocket Grunt",
+    "quote": "Let's rock and roll!",
+    "image": "https://cdn.leekduck.com/assets/img/rocket/male-grunt.png",
+    "type": "rock",
+    "lineups": [
+      {
+        "slot": 1,
+        "is_encounter": true,
+        "pokemon": [
+          {
+            "name": "Onix",
+            "types": [
+              "rock",
+              "ground"
+            ],
+            "weaknesses": {
+              "double": [
+                "water",
+                "grass"
+              ],
+              "single": [
+                "ice",
+                "fighting",
+                "ground",
+                "steel"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm95.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Kabuto",
+            "types": [
+              "rock",
+              "water"
+            ],
+            "weaknesses": {
+              "double": [
+                "grass"
+              ],
+              "single": [
+                "electric",
+                "fighting",
+                "ground"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm140.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Cranidos",
+            "types": [
+              "rock"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "water",
+                "grass",
+                "fighting",
+                "ground",
+                "steel"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm408.icon.png",
+            "can_be_shiny": true
+          }
+        ]
+      },
+      {
+        "slot": 2,
+        "is_encounter": true,
+        "pokemon": [
+          {
+            "name": "Shieldon",
+            "types": [
+              "rock",
+              "steel"
+            ],
+            "weaknesses": {
+              "double": [
+                "fighting",
+                "ground"
+              ],
+              "single": [
+                "water"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm410.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Graveler",
+            "types": [
+              "rock",
+              "ground"
+            ],
+            "weaknesses": {
+              "double": [
+                "water",
+                "grass"
+              ],
+              "single": [
+                "ice",
+                "fighting",
+                "ground",
+                "steel"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm75.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Cranidos",
+            "types": [
+              "rock"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "water",
+                "grass",
+                "fighting",
+                "ground",
+                "steel"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm408.icon.png",
+            "can_be_shiny": true
+          }
+        ]
+      },
+      {
+        "slot": 3,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Tyrantrum",
+            "types": [
+              "rock",
+              "dragon"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "ice",
+                "fighting",
+                "ground",
+                "dragon",
+                "steel",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm697.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Golem",
+            "types": [
+              "rock",
+              "ground"
+            ],
+            "weaknesses": {
+              "double": [
+                "water",
+                "grass"
+              ],
+              "single": [
+                "ice",
+                "fighting",
+                "ground",
+                "steel"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm76.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Aurorus",
+            "types": [
+              "rock",
+              "ice"
+            ],
+            "weaknesses": {
+              "double": [
+                "fighting",
+                "steel"
+              ],
+              "single": [
+                "water",
+                "grass",
+                "ground",
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm699.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Ghost-type Male Grunt",
+    "title": "Team GO Rocket Grunt",
+    "quote": "Ke...ke...ke...ke...ke...ke!",
+    "image": "https://cdn.leekduck.com/assets/img/rocket/male-grunt.png",
+    "type": "ghost",
+    "lineups": [
+      {
+        "slot": 1,
+        "is_encounter": true,
+        "pokemon": [
+          {
+            "name": "Duskull",
+            "types": [
+              "ghost"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "ghost",
+                "dark"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm355.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Gastly",
+            "types": [
+              "ghost",
+              "poison"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "ground",
+                "psychic",
+                "ghost",
+                "dark"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm92.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Yamask",
+            "types": [
+              "ghost"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "ghost",
+                "dark"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm562.icon.png",
+            "can_be_shiny": true
+          }
+        ]
+      },
+      {
+        "slot": 2,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Dusclops",
+            "types": [
+              "ghost"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "ghost",
+                "dark"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm356.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Sableye",
+            "types": [
+              "dark",
+              "ghost"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm302.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Cofagrigus",
+            "types": [
+              "ghost"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "ghost",
+                "dark"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm563.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      },
+      {
+        "slot": 3,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Gengar",
+            "types": [
+              "ghost",
+              "poison"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "ground",
+                "psychic",
+                "ghost",
+                "dark"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm94.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Froslass",
+            "types": [
+              "ice",
+              "ghost"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fire",
+                "rock",
+                "ghost",
+                "dark",
+                "steel"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm478.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Cofagrigus",
+            "types": [
+              "ghost"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "ghost",
+                "dark"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm563.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Dragon-type Female Grunt",
+    "title": "Team GO Rocket Grunt",
+    "quote": "ROAR! ...How'd that sound?",
+    "image": "https://cdn.leekduck.com/assets/img/rocket/female-grunt.png",
+    "type": "dragon",
+    "lineups": [
+      {
+        "slot": 1,
+        "is_encounter": true,
+        "pokemon": [
+          {
+            "name": "Noibat",
+            "types": [
+              "flying",
+              "dragon"
+            ],
+            "weaknesses": {
+              "double": [
+                "ice"
+              ],
+              "single": [
+                "rock",
+                "dragon",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm714.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Deino",
+            "types": [
+              "dark",
+              "dragon"
+            ],
+            "weaknesses": {
+              "double": [
+                "fairy"
+              ],
+              "single": [
+                "ice",
+                "fighting",
+                "bug",
+                "dragon"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm633.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Dratini",
+            "types": [
+              "dragon"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "ice",
+                "dragon",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm147.icon.png",
+            "can_be_shiny": true
+          }
+        ]
+      },
+      {
+        "slot": 2,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Alolan Exeggutor",
+            "types": [
+              "grass",
+              "dragon"
+            ],
+            "weaknesses": {
+              "double": [
+                "ice"
+              ],
+              "single": [
+                "poison",
+                "flying",
+                "bug",
+                "dragon",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm103.fALOLA.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Dragonair",
+            "types": [
+              "dragon"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "ice",
+                "dragon",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm148.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Gabite",
+            "types": [
+              "dragon",
+              "ground"
+            ],
+            "weaknesses": {
+              "double": [
+                "ice"
+              ],
+              "single": [
+                "dragon",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm444.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      },
+      {
+        "slot": 3,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Dragonite",
+            "types": [
+              "dragon",
+              "flying"
+            ],
+            "weaknesses": {
+              "double": [
+                "ice"
+              ],
+              "single": [
+                "rock",
+                "dragon",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm149.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Garchomp",
+            "types": [
+              "dragon",
+              "ground"
+            ],
+            "weaknesses": {
+              "double": [
+                "ice"
+              ],
+              "single": [
+                "dragon",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm445.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Salamence",
+            "types": [
+              "dragon",
+              "flying"
+            ],
+            "weaknesses": {
+              "double": [
+                "ice"
+              ],
+              "single": [
+                "rock",
+                "dragon",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm373.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Dark-type Female Grunt",
+    "title": "Team GO Rocket Grunt",
+    "quote": "Wherever there is light, there is also shadow.",
+    "image": "https://cdn.leekduck.com/assets/img/rocket/female-grunt.png",
+    "type": "dark",
+    "lineups": [
+      {
+        "slot": 1,
+        "is_encounter": true,
+        "pokemon": [
+          {
+            "name": "Carvanha",
+            "types": [
+              "water",
+              "dark"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "electric",
+                "grass",
+                "fighting",
+                "bug",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm318.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Poochyena",
+            "types": [
+              "dark"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fighting",
+                "bug",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm261.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Alolan Rattata",
+            "types": [
+              "dark",
+              "normal"
+            ],
+            "weaknesses": {
+              "double": [
+                "fighting"
+              ],
+              "single": [
+                "bug",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm19.fALOLA.icon.png",
+            "can_be_shiny": true
+          }
+        ]
+      },
+      {
+        "slot": 2,
+        "is_encounter": true,
+        "pokemon": [
+          {
+            "name": "Sneasel",
+            "types": [
+              "dark",
+              "ice"
+            ],
+            "weaknesses": {
+              "double": [
+                "fighting"
+              ],
+              "single": [
+                "fire",
+                "bug",
+                "rock",
+                "steel",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm215.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Houndour",
+            "types": [
+              "dark",
+              "fire"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "water",
+                "fighting",
+                "ground",
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm228.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Absol",
+            "types": [
+              "dark"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fighting",
+                "bug",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm359.icon.png",
+            "can_be_shiny": true
+          }
+        ]
+      },
+      {
+        "slot": 3,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Liepard",
+            "types": [
+              "dark"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fighting",
+                "bug",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm510.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Hydreigon",
+            "types": [
+              "dark",
+              "dragon"
+            ],
+            "weaknesses": {
+              "double": [
+                "fairy"
+              ],
+              "single": [
+                "ice",
+                "fighting",
+                "bug",
+                "dragon"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm635.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Steel-type Male Grunt",
+    "title": "Team GO Rocket Grunt",
+    "quote": "You're no match for my iron will!",
+    "image": "https://cdn.leekduck.com/assets/img/rocket/male-grunt.png",
+    "type": "steel",
+    "lineups": [
+      {
+        "slot": 1,
+        "is_encounter": true,
+        "pokemon": [
+          {
+            "name": "Alolan Sandshrew",
+            "types": [
+              "ice",
+              "steel"
+            ],
+            "weaknesses": {
+              "double": [
+                "fire",
+                "fighting"
+              ],
+              "single": [
+                "ground"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm27.fALOLA.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Aron",
+            "types": [
+              "steel",
+              "rock"
+            ],
+            "weaknesses": {
+              "double": [
+                "fighting",
+                "ground"
+              ],
+              "single": [
+                "water"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm304.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Beldum",
+            "types": [
+              "steel",
+              "psychic"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fire",
+                "ground",
+                "ghost",
+                "dark"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm374.icon.png",
+            "can_be_shiny": true
+          }
+        ]
+      },
+      {
+        "slot": 2,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Lairon",
+            "types": [
+              "steel",
+              "rock"
+            ],
+            "weaknesses": {
+              "double": [
+                "fighting",
+                "ground"
+              ],
+              "single": [
+                "water"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm305.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Skarmory",
+            "types": [
+              "steel",
+              "flying"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fire",
+                "electric"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm227.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Metang",
+            "types": [
+              "steel",
+              "psychic"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fire",
+                "ground",
+                "ghost",
+                "dark"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm375.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      },
+      {
+        "slot": 3,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Aggron",
+            "types": [
+              "steel",
+              "rock"
+            ],
+            "weaknesses": {
+              "double": [
+                "fighting",
+                "ground"
+              ],
+              "single": [
+                "water"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm306.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Alolan Sandslash",
+            "types": [
+              "ice",
+              "steel"
+            ],
+            "weaknesses": {
+              "double": [
+                "fire",
+                "fighting"
+              ],
+              "single": [
+                "ground"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm28.fALOLA.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Probopass",
+            "types": [
+              "rock",
+              "steel"
+            ],
+            "weaknesses": {
+              "double": [
+                "fighting",
+                "ground"
+              ],
+              "single": [
+                "water"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm476.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Fairy-type Female Grunt",
+    "title": "Team GO Rocket Grunt",
+    "quote": "Check out my cute Pokémon!",
+    "image": "https://cdn.leekduck.com/assets/img/rocket/female-grunt.png",
+    "type": "fairy",
+    "lineups": [
+      {
+        "slot": 1,
+        "is_encounter": true,
+        "pokemon": [
+          {
+            "name": "Ralts",
+            "types": [
+              "psychic",
+              "fairy"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "poison",
+                "ghost",
+                "steel"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm280.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Snubbull",
+            "types": [
+              "fairy"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "poison",
+                "steel"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm209.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Alolan Vulpix",
+            "types": [
+              "ice"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fire",
+                "fighting",
+                "rock",
+                "steel"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm37.fALOLA.icon.png",
+            "can_be_shiny": true
+          }
+        ]
+      },
+      {
+        "slot": 2,
+        "is_encounter": true,
+        "pokemon": [
+          {
+            "name": "Snubbull",
+            "types": [
+              "fairy"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "poison",
+                "steel"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm209.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Galarian Weezing",
+            "types": [
+              "poison",
+              "fairy"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "ground",
+                "psychic",
+                "steel"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm110.fGALARIAN.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Kirlia",
+            "types": [
+              "psychic",
+              "fairy"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "poison",
+                "ghost",
+                "steel"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm281.icon.png",
+            "can_be_shiny": true
+          }
+        ]
+      },
+      {
+        "slot": 3,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Alolan Ninetales",
+            "types": [
+              "ice",
+              "fairy"
+            ],
+            "weaknesses": {
+              "double": [
+                "steel"
+              ],
+              "single": [
+                "fire",
+                "poison",
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm38.fALOLA.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Galarian Weezing",
+            "types": [
+              "poison",
+              "fairy"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "ground",
+                "psychic",
+                "steel"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm110.fGALARIAN.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Granbull",
+            "types": [
+              "fairy"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "poison",
+                "steel"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm210.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Male Grunt",
+    "title": "Team GO Rocket Grunt",
+    "quote": "Winning is for winners.",
+    "image": "https://cdn.leekduck.com/assets/img/rocket/male-grunt.png",
+    "type": null,
+    "lineups": [
+      {
+        "slot": 1,
+        "is_encounter": true,
+        "pokemon": [
+          {
+            "name": "Bulbasaur",
+            "types": [
+              "grass",
+              "poison"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fire",
+                "ice",
+                "flying",
+                "psychic"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm1.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Charmander",
+            "types": [
+              "fire"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "water",
+                "ground",
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm4.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Squirtle",
+            "types": [
+              "water"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "grass",
+                "electric"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm7.icon.png",
+            "can_be_shiny": true
+          }
+        ]
+      },
+      {
+        "slot": 2,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Ivysaur",
+            "types": [
+              "grass",
+              "poison"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fire",
+                "ice",
+                "flying",
+                "psychic"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm2.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Charmeleon",
+            "types": [
+              "fire"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "water",
+                "ground",
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm5.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Wartortle",
+            "types": [
+              "water"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "grass",
+                "electric"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm8.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      },
+      {
+        "slot": 3,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Venusaur",
+            "types": [
+              "grass",
+              "poison"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fire",
+                "ice",
+                "flying",
+                "psychic"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm3.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Charizard",
+            "types": [
+              "fire",
+              "flying"
+            ],
+            "weaknesses": {
+              "double": [
+                "rock"
+              ],
+              "single": [
+                "water",
+                "electric"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm6.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Blastoise",
+            "types": [
+              "water"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "grass",
+                "electric"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm9.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Female Grunt",
+    "title": "Team GO Rocket Grunt",
+    "quote": "Winning is for winners.",
+    "image": "https://cdn.leekduck.com/assets/img/rocket/female-grunt.png",
+    "type": null,
+    "lineups": [
+      {
+        "slot": 1,
+        "is_encounter": true,
+        "pokemon": [
+          {
+            "name": "Snorlax",
+            "types": [
+              "normal"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fighting"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm143.icon.png",
+            "can_be_shiny": true
+          },
+          {
+            "name": "Lapras",
+            "types": [
+              "water",
+              "ice"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "electric",
+                "grass",
+                "fighting",
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm131.icon.png",
+            "can_be_shiny": true
+          }
+        ]
+      },
+      {
+        "slot": 2,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Poliwrath",
+            "types": [
+              "water",
+              "fighting"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "electric",
+                "grass",
+                "flying",
+                "psychic",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm62.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Gardevoir",
+            "types": [
+              "psychic",
+              "fairy"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "poison",
+                "ghost",
+                "steel"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm282.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Snorlax",
+            "types": [
+              "normal"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fighting"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm143.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      },
+      {
+        "slot": 3,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Gyarados",
+            "types": [
+              "water",
+              "flying"
+            ],
+            "weaknesses": {
+              "double": [
+                "electric"
+              ],
+              "single": [
+                "rock"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm130.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Dragonite",
+            "types": [
+              "dragon",
+              "flying"
+            ],
+            "weaknesses": {
+              "double": [
+                "ice"
+              ],
+              "single": [
+                "rock",
+                "dragon",
+                "fairy"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm149.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Snorlax",
+            "types": [
+              "normal"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fighting"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm143.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Decoy Female Grunt",
+    "title": "Team GO Rocket Grunt",
+    "quote": "Fooled ya, twerp.",
+    "image": "https://cdn.leekduck.com/assets/img/rocket/female-grunt.png",
+    "type": null,
+    "lineups": [
+      {
+        "slot": 1,
+        "is_encounter": true,
+        "pokemon": [
+          {
+            "name": "Bellsprout",
+            "types": [
+              "grass",
+              "poison"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fire",
+                "ice",
+                "flying",
+                "psychic"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm69.icon.png",
+            "can_be_shiny": true
+          }
+        ]
+      },
+      {
+        "slot": 2,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Raticate",
+            "types": [
+              "normal"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fighting"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm20.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Weepinbell",
+            "types": [
+              "grass",
+              "poison"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fire",
+                "ice",
+                "flying",
+                "psychic"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm70.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      },
+      {
+        "slot": 3,
+        "is_encounter": false,
+        "pokemon": [
+          {
+            "name": "Raticate",
+            "types": [
+              "normal"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fighting"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm20.icon.png",
+            "can_be_shiny": false
+          },
+          {
+            "name": "Snorlax",
+            "types": [
+              "normal"
+            ],
+            "weaknesses": {
+              "double": [],
+              "single": [
+                "fighting"
+              ]
+            },
+            "image": "https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm143.icon.png",
+            "can_be_shiny": false
+          }
+        ]
+      }
+    ]
+  }
+]
